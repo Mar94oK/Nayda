@@ -86,10 +86,29 @@ void TriangleCardPointer::paintEvent(QPaintEvent *event)
 
     QPainterPath path;
 
-    path.moveTo(normalRect.topLeft());
-    path.lineTo(normalRect.bottomRight());
-    path.lineTo(normalRect.bottomLeft());
-    path.lineTo(normalRect.topLeft());
+
+
+    if (_positionTopLeft.y() - _actualCardSize.height() - 30 < 0) { //higher, than allowed
+
+        path.moveTo(normalRect.topLeft());
+        //path.lineTo(_positionBottomRight.x(), normalRect.topLeft().y());
+        path.lineTo(normalRect.bottomRight());
+        path.lineTo(normalRect.bottomLeft());
+        path.lineTo(normalRect.topLeft());
+
+    }
+    else {
+
+        path.moveTo(normalRect.topLeft());
+        //path.lineTo(_positionBottomRight.x(), normalRect.topLeft().y());
+        path.lineTo(normalRect.topRight());
+        path.lineTo(normalRect.bottomLeft());
+        path.lineTo(normalRect.topLeft());
+
+    }
+
+
+
 
     painter.fillPath(path, QBrush(QColor(244,183,82,150)));
 
@@ -245,13 +264,13 @@ void TriangleCardPointer::show(QPoint positionTopLeft, QPoint positionBottomRigh
     }
     else {
 
-        yPos =  positionTopLeft.y() - _actualCardSize.height()-20; //20 == height of the Triangle
+        yPos =  positionTopLeft.y() - 10; //20 == height of the Triangle
 
     }
 
     if (positionBottomRight.x() + _actualCardSize.width() + 10 > QApplication::desktop()->availableGeometry().width()) { //righter, than allowed
 
-        xPos = QApplication::desktop()->availableGeometry().width() - _actualCardSize.width();
+        xPos = positionTopLeft.x();
 
     }
     else {
@@ -312,6 +331,8 @@ void TriangleCardPointer::setUpTriangleCardPointer(QPoint positionTopLeft, QPoin
     //pass the Points value to the TriangleCardPointer
     _positionBottomRight = positionBottomRight;
     _positionTopLeft = positionTopLeft;
+
+    qDebug() << "Delta: " << _positionBottomRight.x() - positionTopLeft.x();
 
 
 }
