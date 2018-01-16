@@ -284,8 +284,16 @@ The_Game::The_Game(QWidget *parent) :
 
     _popUpCardWidget = new PopUpCard();
 
+
+     //create CardPointerWidget
+
+    _cardPointer = new TriangleCardPointer();
+
     //pass the cards to PopUp Widget
     passDecksToPopUpCardWidget();
+
+
+
 
 
 }
@@ -1846,6 +1854,9 @@ void The_Game::showTheCardInCentre(PositionedCard card)
     _popUpCardWidget->setUpPopUpCard(card.card);
     _popUpCardWidget->show(card.positionTopLeft, card.positionBottomRight);
 
+    _cardPointer->setUpTriangleCardPointer(card.positionTopLeft, card.positionBottomRight);
+    _cardPointer->show(card.positionTopLeft, card.positionBottomRight);
+
 }
 
 //void The_Game::showTheCardNearItsPosition(PositionedCard card)
@@ -1857,6 +1868,7 @@ void The_Game::showTheCardInCentre(PositionedCard card)
 void The_Game::hideTheCardInCentre(bool)
 {
     _popUpCardWidget->hideAnimation();
+    _cardPointer->hideAnimation();
 }
 
 //void The_Game::hideTheCardNearItsPosition(bool)

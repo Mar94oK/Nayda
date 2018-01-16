@@ -19,6 +19,7 @@
 #include <QDebug>
 
 #include "popupcard.h"
+#include "trianglecardpointer.h"
 
 
 #define PC_VERSION //begin with PC
@@ -292,6 +293,8 @@ private:
 private:
 
     PopUpCard* _popUpCardWidget;
+
+    TriangleCardPointer* _cardPointer;
 
 
 

@@ -61,109 +61,38 @@ void PopUpCard::paintEvent(QPaintEvent *event)
 
     // Подготавливаем фон. rect() возвращает внутреннюю геометрию виджета уведомления, по содержимому
     QRect roundedRect;
-    roundedRect.setX(rect().x() + 5);
-    roundedRect.setY(rect().y() + 5);
-    roundedRect.setWidth(rect().width() - 10);
-    roundedRect.setHeight(rect().height() - 10);
+    //roundedRect.setX(rect().x() + 5);
+    //roundedRect.setY(rect().y() + 5);
+    roundedRect.setX(rect().x());
+    roundedRect.setY(rect().y());
+
+    roundedRect.setWidth(rect().width());
+    roundedRect.setHeight(rect().height());
+    //roundedRect.setWidth(rect().width() - 10);
+    //roundedRect.setHeight(rect().height() - 10);
+
+    QRect normalRect;
+
+    normalRect.setX(rect().x());
+    normalRect.setY(rect().y());
+    normalRect.setWidth(rect().width());
+    normalRect.setHeight(rect().height());
+
+
+
 
     // Кисть настраиваем на чёрный цвет в режиме полупрозрачности 180 из 255
-    painter.setBrush(QBrush(QColor(0,0,0,180)));
+    //painter.setBrush(QBrush(QColor(0,0,0,180)));
+    //Шафраново-жёлтый	  0  30  70   0	  0  30  90   0	#F4B752	244 183  82
+    painter.setBrush(QBrush(QColor(244,183,82,150)));
+
     painter.setPen(Qt::NoPen); // Край уведомления не будет выделен
 
     // Отрисовываем фон с закруглением краёв в 10px
-    painter.drawRoundedRect(roundedRect, 10, 10);
+    //painter.drawRoundedRect(roundedRect, 10, 10);
+    //painter.drawRoundedRect(roundedRect, 5, 5);
 
-
-//    QPolygon poly;
-
-//    int yPos = 0;
-//    int xPos = 0;
-
-
-//        //Check the position!
-
-//        if (_positionTopLeft.y() - height() - 30 < 0) { //higher, than allowed
-
-//            yPos = _positionBottomRight.y() + 10;
-
-//            poly << QPoint(_positionBottomRight.x(), _positionBottomRight.y()) << QPoint(_positionTopLeft.x(), _positionBottomRight.y());
-//            qDebug() << QPoint(_positionBottomRight.x(), _positionBottomRight.y()) << QPoint(_positionTopLeft.x(), _positionBottomRight.y());
-
-//        }
-//        else {
-
-//            yPos =  _positionTopLeft.y() - height() - 10;
-
-//            poly << QPoint(_positionTopLeft.x(), _positionTopLeft.y()) << QPoint(_positionBottomRight.x(), _positionTopLeft.y());
-//            qDebug() << QPoint(_positionTopLeft.x(), _positionTopLeft.y()) << QPoint(_positionBottomRight.x(), _positionTopLeft.y());
-
-
-//        }
-
-//        if (_positionBottomRight.x() + width() + 10 > QApplication::desktop()->availableGeometry().width()) { //righter, than allowed
-
-//            xPos = QApplication::desktop()->availableGeometry().width() - width() - 10;
-
-//             if (_positionTopLeft.y() - height() - 30 < 0) {
-
-//                 poly << QPoint(xPos, yPos) << QPoint(xPos + width(), yPos);
-//                 qDebug() << QPoint(xPos, yPos) << QPoint(xPos + width(), yPos);
-
-//             }
-//             else {
-
-//                 poly << QPoint(xPos, yPos - height()) << QPoint(xPos + width(), yPos - height());
-//                 qDebug() << QPoint(xPos, yPos - height()) << QPoint(xPos + width(), yPos - height());
-//             }
-
-
-
-//        }
-//        else {
-
-//            xPos = _positionTopLeft.x();
-
-//            if (_positionTopLeft.y() - height() - 30 < 0) {
-
-//                poly << QPoint(xPos, yPos) << QPoint(xPos + width(), yPos);
-//                qDebug() << "Points: " << QPoint(xPos, yPos) << QPoint(xPos + width(), yPos);
-
-//            }
-//            else {
-
-//                poly << QPoint(xPos, yPos - height()) << QPoint(xPos + width(), yPos - height());
-//                qDebug() << QPoint(xPos, yPos - height()) << QPoint(xPos + width(), yPos - height());
-
-//            }
-
-
-
-//        }
-
-//    poly << QPoint( 0, height()) << QPoint(width(),  height())
-//         << QPoint(width(),  height() - 100) << QPoint(0, height()- 100);
-
-//    qDebug() << QPoint( 0, height()) << QPoint(width(),  height())
-//             << QPoint(width(),  height() + 100) << QPoint(0, height()+100);
-
-//    QPen pen(Qt::red, 3, Qt::DashDotLine, Qt::RoundCap, Qt::RoundJoin);
-//    painter.setPen(pen);
-
-//    QBrush brush;
-//    brush.setColor(Qt::green);
-//    brush.setStyle(Qt::SolidPattern);
-
-
-//    // Fill polygon
-
-//    QPainterPath path;
-//    path.addPolygon(poly);
-
-
-//    // Draw polygon
-//    painter.drawPolygon(poly);
-//    painter.fillPath(path, brush);
-
+    painter.drawRect(normalRect);
 
 
 
@@ -191,12 +120,7 @@ void PopUpCard::show()
                 QApplication::desktop()->availableGeometry().height() / 2  - height() /2 + QApplication::desktop() -> availableGeometry().y(),
                 width(),
                 height());
-//    qDebug() << "Available Geometry Width" << QApplication::desktop()->availableGeometry().width();
-//    qDebug() << "Available Geometry X: " << QApplication::desktop() -> availableGeometry().x();
-//    qDebug() << "Width: " << width();
-//    qDebug() << "Available Geometry Height" << QApplication::desktop()->availableGeometry().height();
-//    qDebug() << "Available Geometry Y: " << QApplication::desktop() -> availableGeometry().y();
-//    qDebug() << "Width: " << width();
+
 
 
     QWidget::show();                // Отображаем виджет, который полностью прозрачен
