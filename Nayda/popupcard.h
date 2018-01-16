@@ -11,6 +11,12 @@
 #include <QDebug>
 #include <QPoint>
 
+
+#include <QDialog>
+#include <QPainter>
+#include <QPolygon>
+#include <QPainterPath>
+
 #define fadingTime 150
 //Not not to hide the card on timeout event.
 //#define HIDE_THE_CARD_ON_TIMEOUT
@@ -48,6 +54,7 @@ public slots:
 
     void setUpPopUpCard (SimpleCard card);
     //void setUpPopUpCard (PositionedCard card);
+    void setUpPointsForPoly(QPoint topLeft, QPoint botRight);
 
 
 
@@ -66,7 +73,9 @@ private:
     float popupOpacity;     // Свойства полупрозрачности виджета
     QTimer *timer;          // Таймер, по которому виджет будет скрыт
 
-    QPoint _position;
+    QPoint _positionBottomRight;
+    QPoint _positionTopLeft;
+
 
 
 private:

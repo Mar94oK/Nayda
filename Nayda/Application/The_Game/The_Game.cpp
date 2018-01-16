@@ -1842,7 +1842,7 @@ void The_Game::dbg_return_to_the_main_window()
 void The_Game::showTheCardInCentre(PositionedCard card)
 {
     //pass the card to PopUpWidget
-
+    _popUpCardWidget->setUpPointsForPoly(card.positionTopLeft, card.positionBottomRight);
     _popUpCardWidget->setUpPopUpCard(card.card);
     _popUpCardWidget->show(card.positionTopLeft, card.positionBottomRight);
 
