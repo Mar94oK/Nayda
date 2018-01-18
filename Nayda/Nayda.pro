@@ -62,8 +62,6 @@ HEADERS  += main_application.h \
 FORMS    += main_application.ui \
     Application/Before_The_Game/Before_The_Game.ui \
     Application/The_Game/the_game.ui \
-    form.ui \
-    form2.ui \
     gamerwidget.ui \
     gametimers.ui \
     gameinfowidget.ui \

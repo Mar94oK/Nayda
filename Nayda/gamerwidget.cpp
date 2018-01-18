@@ -99,6 +99,7 @@ GamerWidget::GamerWidget(QWidget *parent) :
 
     connect(ui->btn_Test, &QPushButton::clicked, this, &GamerWidget::_slotStartTestCards);
     connect(_testTimer, &QTimer::timeout, this, &GamerWidget::_slotTestGamerLevels);
+    connect(_testTimer, &QTimer::timeout, this, &GamerWidget::_slotTestGamerBattlePower);
 
 #endif
 
@@ -118,7 +119,15 @@ GamerWidget::GamerWidget(QWidget *parent) :
                                                _race_class_btn_size_height*HW_Screen_Size_Height,
                                                Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 
+    //set The BattlePower Picture and Digit Lables;
+    QPixmap battlePowerImage(_battlePowerPictures[0]);
+    ui->lbl_BattlePowerPicture->setPixmap(battlePowerImage.scaled(_race_class_btn_size_width*HW_Screen_Size_Width / 2,
+                                                            _race_class_btn_size_height*HW_Screen_Size_Height / 2,
+                                                            Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 
+    ui->lbl_BattlePowerDigit->setStyleSheet("{color: #FAAB21}");
+    ui->lbl_BattlePowerDigit->setText(QString::number(_battlePower));
+    ui->lbl_BattlePowerDigit->setStyleSheet("font: 28pt;");
 
 
 
@@ -368,6 +377,77 @@ void GamerWidget::_slotStartTestCards()
     else {
         if (_testTimer->isActive()) _testTimer->stop();
     }
+
+}
+
+void GamerWidget::_changeTheGamerBattlePower(int battlePowerDelta)
+{
+
+    _battlePower += battlePowerDelta;
+
+    ui->lbl_BattlePowerDigit->setText(QString::number(_battlePower));
+
+    unsigned int pictureToShow = 0;
+
+    if (_battlePower < 4) {
+
+        pictureToShow = 0;
+
+    }
+    else if ((_battlePower > 3) && (_battlePower < 7)) {
+
+        pictureToShow = 1;
+
+    }
+    else if ((_battlePower > 6) && (_battlePower < 10)) {
+
+        pictureToShow = 2;
+
+    }
+    else if ((_battlePower > 9) && (_battlePower < 13)) {
+
+        pictureToShow = 3;
+
+    }
+    else if ((_battlePower > 12) && (_battlePower < 16)) {
+
+        pictureToShow = 4;
+
+    }
+    else if ((_battlePower) > 15 && (_battlePower < 19)) {
+
+             pictureToShow = 5;
+
+    }
+    else if (_battlePower > 19) {
+
+             pictureToShow = 6;
+
+    }
+
+    QRect HW_Screen_Size = QApplication::desktop()->screenGeometry();
+    int HW_Screen_Size_Width = HW_Screen_Size.width();
+    int HW_Screen_Size_Height = HW_Screen_Size.height();
+
+    QPixmap battlePowerImage(_battlePowerPictures[pictureToShow]);
+    ui->lbl_BattlePowerPicture->setPixmap(battlePowerImage.scaled(_race_class_btn_size_width*HW_Screen_Size_Width / 2,
+                                                            _race_class_btn_size_height*HW_Screen_Size_Height / 2,
+                                                            Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+
+
+}
+
+
+//This slot doesn't imply current Level of the Gamer!
+
+void GamerWidget::_slotTestGamerBattlePower()
+{
+    ++_currentDeltaToBattlePower;
+    if (_currentDeltaToBattlePower > 20) {
+        _battlePower = 1;
+        _currentDeltaToBattlePower = 0;
+    }
+    _changeTheGamerBattlePower(1);
 
 }
 

@@ -164,6 +164,29 @@ private slots:
     void _slotTestGamerLevels();
     void _slotStartTestCards();
 
+private:
+
+    int _battlePower = 1;
+
+    std::vector<QString> _battlePowerPictures = {{"Pictures/battlePowers/BattlePower_1.png"},
+                                                 {"Pictures/battlePowers/BattlePower_2.png"},
+                                                 {"Pictures/battlePowers/BattlePower_3.png"},
+                                                 {"Pictures/battlePowers/BattlePower_4.png"},
+                                                 {"Pictures/battlePowers/BattlePower_5.png"},
+                                                 {"Pictures/battlePowers/BattlePower_6.png"},
+                                                 {"Pictures/battlePowers/BattlePower_7.png"}};
+
+public slots:
+
+    void _changeTheGamerBattlePower(int battlePowerDelta);
+
+private slots:
+
+    void _slotTestGamerBattlePower();
+
+private:
+
+    unsigned int _currentDeltaToBattlePower = 0;
 
 
 };
