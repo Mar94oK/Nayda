@@ -27,6 +27,7 @@
 #define DEBUG_NO_SERVER
 
 
+//This definitions are ruling the Widgets of Gamers (the areas for them)
 
 #define MainGamerWidgetWidthExpansion 0.2
 #define SecondaryGamerWidgetWidthExpansion 0.05
