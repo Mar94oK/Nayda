@@ -26,6 +26,10 @@
 #define DEBUG_MESSAGES //start with debug enabled
 #define DEBUG_NO_SERVER
 
+
+
+#define MainGamerWidgetWidthExpansion 0.2
+
 namespace Ui {
 class The_Game;
 }

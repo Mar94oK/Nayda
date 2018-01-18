@@ -20,21 +20,17 @@ GamerWidget::GamerWidget(QWidget *parent) :
     ui->btn_class_2->hide();
     ui->lbl_supermunchkin->hide();
 
-    //setup the koefficients;
-    const float race_class_btn_size_geometric_width_to_height_ratio = 2.71f;
-    const float race_class_btn_size_width = 0.035f;
-    const float race_class_btn_size_height = race_class_btn_size_geometric_width_to_height_ratio*race_class_btn_size_width;
 
     //setup the "card"-race and "card"-class size
-    ui->btn_race_1->setMaximumWidth(race_class_btn_size_width*HW_Screen_Size_Width);
-    ui->btn_race_1->setMaximumHeight(race_class_btn_size_height*HW_Screen_Size_Height);
-    ui->btn_race_1->setMinimumWidth(race_class_btn_size_width*HW_Screen_Size_Width);
-    ui->btn_race_1->setMinimumHeight(race_class_btn_size_height*HW_Screen_Size_Height);
+    ui->btn_race_1->setMaximumWidth(_race_class_btn_size_width*HW_Screen_Size_Width);
+    ui->btn_race_1->setMaximumHeight(_race_class_btn_size_height*HW_Screen_Size_Height);
+    ui->btn_race_1->setMinimumWidth(_race_class_btn_size_width*HW_Screen_Size_Width);
+    ui->btn_race_1->setMinimumHeight(_race_class_btn_size_height*HW_Screen_Size_Height);
 
-    ui->btn_class_1->setMaximumWidth(race_class_btn_size_width*HW_Screen_Size_Width);
-    ui->btn_class_1->setMaximumHeight(race_class_btn_size_height*HW_Screen_Size_Height);
-    ui->btn_class_1->setMinimumWidth(race_class_btn_size_width*HW_Screen_Size_Width);
-    ui->btn_class_1->setMinimumHeight(race_class_btn_size_height*HW_Screen_Size_Height);
+    ui->btn_class_1->setMaximumWidth(_race_class_btn_size_width*HW_Screen_Size_Width);
+    ui->btn_class_1->setMaximumHeight(_race_class_btn_size_height*HW_Screen_Size_Height);
+    ui->btn_class_1->setMinimumWidth(_race_class_btn_size_width*HW_Screen_Size_Width);
+    ui->btn_class_1->setMinimumHeight(_race_class_btn_size_height*HW_Screen_Size_Height);
 
     //http://www.prog.org.ru/topic_7215_0.html
 
@@ -44,14 +40,14 @@ GamerWidget::GamerWidget(QWidget *parent) :
     QPixmap pxmp_icon_race_1("Pictures/No_Race_dbg.png");
     QPalette plte_icon_race_1;
     plte_icon_race_1.setBrush(ui->btn_race_1->backgroundRole(),
-    QBrush(pxmp_icon_race_1.scaled(race_class_btn_size_width*HW_Screen_Size_Width,
-                                                             race_class_btn_size_height*HW_Screen_Size_Height,
+    QBrush(pxmp_icon_race_1.scaled(_race_class_btn_size_width*HW_Screen_Size_Width,
+                                                             _race_class_btn_size_height*HW_Screen_Size_Height,
                                                              Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
     QPixmap pxmp_icon_class_1("Pictures/No_Class_dbg.png");
     QPalette plte_icon_class_1;
     plte_icon_class_1.setBrush(ui->btn_class_1->backgroundRole(),
-    QBrush(pxmp_icon_class_1.scaled(race_class_btn_size_width*HW_Screen_Size_Width,
-                                                             race_class_btn_size_height*HW_Screen_Size_Height,
+    QBrush(pxmp_icon_class_1.scaled(_race_class_btn_size_width*HW_Screen_Size_Width,
+                                                             _race_class_btn_size_height*HW_Screen_Size_Height,
                                                              Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
 
 
@@ -81,8 +77,8 @@ GamerWidget::GamerWidget(QWidget *parent) :
     qDebug() << "Size of the pixmap.scaled, Height: " << pxmp_icon_race_1.scaled(118,180,
                                                                                Qt::IgnoreAspectRatio, Qt::SmoothTransformation).size().height();
 
-    qDebug() << "Size of the button, Width: " << race_class_btn_size_width*HW_Screen_Size_Width;
-    qDebug() << "Size of the button, Height: " << race_class_btn_size_height*HW_Screen_Size_Height;
+    qDebug() << "Size of the button, Width: " << _race_class_btn_size_width*HW_Screen_Size_Width;
+    qDebug() << "Size of the button, Height: " << _race_class_btn_size_height*HW_Screen_Size_Height;
 
 
 
@@ -95,6 +91,18 @@ GamerWidget::GamerWidget(QWidget *parent) :
     connect(ui->widget, &Hand::_hideTheCard, this, &GamerWidget::_hideTheCardInCentreSlot);
 
 
+#ifdef DEBUG_GAMER_WIDGET
+
+    _testTimer = new QTimer();
+    _testTimer->setInterval(1000);
+    _testTimer->setSingleShot(false);
+
+    connect(ui->btn_Test, &QPushButton::clicked, this, &GamerWidget::_slotStartTestCards);
+    connect(_testTimer, &QTimer::timeout, this, &GamerWidget::_slotTestGamerLevels);
+
+#endif
+
+
 
     //forming the vector of pictures;
 
@@ -105,10 +113,12 @@ GamerWidget::GamerWidget(QWidget *parent) :
 
     //set the initial levelel's pictures.
 
-    QPixmap levelImage(_levelsPictures[0]);
-    ui->lbl_Level->setPixmap(levelImage.scaled(race_class_btn_size_width*HW_Screen_Size_Width,
-                                               race_class_btn_size_height*HW_Screen_Size_Height,
+    QPixmap levelImage(_levelsPictures[_gamerLevel-1]);
+    ui->lbl_Level->setPixmap(levelImage.scaled(_race_class_btn_size_width*HW_Screen_Size_Width,
+                                               _race_class_btn_size_height*HW_Screen_Size_Height,
                                                Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+
+
 
 
 
@@ -134,6 +144,7 @@ void GamerWidget::redraw_as_a_secondary_player()
     ui->btn_auto_advice->hide();
     ui->btn_diplomacy->hide();
     ui->btn_fast_action->hide();
+    ui->btn_Test->hide();
 
 }
 
@@ -307,20 +318,57 @@ void GamerWidget::_hideTheCardInCentreSlot(bool)
     emit _hideTheCardInCentre(true);
 }
 
-//void GamerWidget::_representTheCardNearItsPositionSlot()
-//{
-//    emit _representTheCardNearItsPosition(_currentCardToShowNearItsPosition);
-//}
+
+//Attention!!!
+//Bad Code!!! To change these coeffisients to be built-int in the class;
+void GamerWidget::_changeTheGamerLevel(int levelDelta)
+{
+    _gamerLevel = _gamerLevel + levelDelta;
+
+    if (_gamerLevel < 1) {
+        _gamerLevel = 1;
+    }
+    else if (_gamerLevel > 10) {
+        _gamerLevel = 10; //Win!
+
+#ifdef DEBUG_GAMER_WIDGET
+        _gamerLevel = 1;
+#endif
+
+    }
 
 
-//void GamerWidget::_representTheCardFromHandsNearItsPosition(PositionedCard card)
-//{
-//    emit _representTheCardNearItsPosition(card);
-//}
 
-//void GamerWidget::_hideTheCardNearItsPositionSlot(bool)
-//{
-//    emit _hideTheCardNearItsPosition(true);
-//}
+
+
+
+    QRect HW_Screen_Size = QApplication::desktop()->screenGeometry();
+    int HW_Screen_Size_Width = HW_Screen_Size.width();
+    int HW_Screen_Size_Height = HW_Screen_Size.height();
+
+
+
+    QPixmap levelImage(_levelsPictures[_gamerLevel-1]);
+    ui->lbl_Level->setPixmap(levelImage.scaled(_race_class_btn_size_width*HW_Screen_Size_Width,
+                                               _race_class_btn_size_height*HW_Screen_Size_Height,
+                                               Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+}
+
+void GamerWidget::_slotTestGamerLevels()
+{
+    _changeTheGamerLevel(1);
+
+
+}
+
+void GamerWidget::_slotStartTestCards()
+{
+    _testBtnIsPressed = !_testBtnIsPressed;
+    if (_testBtnIsPressed) _testTimer->start();
+    else {
+        if (_testTimer->isActive()) _testTimer->stop();
+    }
+
+}
 
 

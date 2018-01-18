@@ -8,6 +8,9 @@
 #include "Application/card.h"
 #include <QTimer>
 
+
+#define DEBUG_GAMER_WIDGET
+
 namespace Ui {
 class GamerWidget;
 }
@@ -113,8 +116,7 @@ signals:
     void _representTheCardInCentre(PositionedCard);
     void _hideTheCardInCentre(bool);
 
-//    void _representTheCardNearItsPosition(PositionedCard);
-//    void _hideTheCardNearItsPosition(bool);
+
 
 public slots:
 
@@ -123,9 +125,6 @@ public slots:
     void _hideTheCardInCentreSlot(bool);
 
 
-//    void _representTheCardNearItsPositionSlot();
-//    void _representTheCardFromHandsNearItsPosition(PositionedCard);
-//    void _hideTheCardNearItsPositionSlot(bool);
 
 private:
 
@@ -139,6 +138,32 @@ private:
                                             {"Pictures/levels/match8_transparent.png"},
                                             {"Pictures/levels/match9_transparent.png"},
                                             {"Pictures/levels/match10_transparent.png"}};
+
+    unsigned int _gamerLevel = 1;
+
+public slots:
+
+    void _changeTheGamerLevel(int levelDelta);
+
+
+private:
+
+    //setup the koefficients;
+    const float _race_class_btn_size_geometric_width_to_height_ratio = 2.71f;
+    const float _race_class_btn_size_width = 0.035f;
+    const float _race_class_btn_size_height = _race_class_btn_size_geometric_width_to_height_ratio*_race_class_btn_size_width;
+
+
+private:
+
+    QTimer* _testTimer;
+    bool _testBtnIsPressed = false;
+
+private slots:
+
+    void _slotTestGamerLevels();
+    void _slotStartTestCards();
+
 
 
 };
