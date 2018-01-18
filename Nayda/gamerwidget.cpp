@@ -98,7 +98,12 @@ GamerWidget::GamerWidget(QWidget *parent) :
 //    connect(ui->widget, &Hand::_showTheCard, this, &GamerWidget::_representTheCardFromHandsNearItsPosition);
 //    connect(ui->widget, &Hand::_hideTheCard, this, &GamerWidget::_hideTheCardNearItsPosition);
 
+    //set the initial levelel's pictures.
 
+    QPixmap levelImage("Pictures/levels/match1_transparent.png");
+    ui->lbl_Level->setPixmap(levelImage.scaled(race_class_btn_size_width*HW_Screen_Size_Width,
+                                               race_class_btn_size_height*HW_Screen_Size_Height,
+                                               Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 
 
 
