@@ -121,7 +121,7 @@ GamerWidget::GamerWidget(QWidget *parent) :
 
     //set The BattlePower Picture and Digit Lables;
     QPixmap battlePowerImage(_battlePowerPictures[0]);
-    ui->lbl_BattlePowerPicture->setPixmap(battlePowerImage.scaled(_race_class_btn_size_width*HW_Screen_Size_Width / 2,
+    ui->lbl_BattlePowerPicture->setPixmap(battlePowerImage.scaled(_race_class_btn_size_width*HW_Screen_Size_Width,
                                                             _race_class_btn_size_height*HW_Screen_Size_Height / 2,
                                                             Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 
@@ -419,7 +419,7 @@ void GamerWidget::_changeTheGamerBattlePower(int battlePowerDelta)
              pictureToShow = 5;
 
     }
-    else if (_battlePower > 19) {
+    else if (_battlePower > 18) {
 
              pictureToShow = 6;
 
@@ -430,7 +430,7 @@ void GamerWidget::_changeTheGamerBattlePower(int battlePowerDelta)
     int HW_Screen_Size_Height = HW_Screen_Size.height();
 
     QPixmap battlePowerImage(_battlePowerPictures[pictureToShow]);
-    ui->lbl_BattlePowerPicture->setPixmap(battlePowerImage.scaled(_race_class_btn_size_width*HW_Screen_Size_Width / 2,
+    ui->lbl_BattlePowerPicture->setPixmap(battlePowerImage.scaled(_race_class_btn_size_width*HW_Screen_Size_Width,
                                                             _race_class_btn_size_height*HW_Screen_Size_Height / 2,
                                                             Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 

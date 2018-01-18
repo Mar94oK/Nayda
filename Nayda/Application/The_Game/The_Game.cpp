@@ -198,7 +198,7 @@ The_Game::The_Game(QWidget *parent) :
 
         _widgets4Opponents[j]->setMinimumHeight(koeff_GamerWidget_size_Height*HW_Screen_Size_Heigh);
         _widgets4Opponents[j]->setMaximumHeight(koeff_GamerWidget_size_Height*HW_Screen_Size_Heigh);
-        _widgets4Opponents[j]->setMaximumWidth(koeff_GamerWidget_size_Width*HW_Screen_Size_Width);
+        _widgets4Opponents[j]->setMaximumWidth((koeff_GamerWidget_size_Width+SecondaryGamerWidgetWidthExpansion)*HW_Screen_Size_Width);
 
     }
 

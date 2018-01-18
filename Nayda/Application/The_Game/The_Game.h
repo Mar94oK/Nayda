@@ -29,6 +29,7 @@
 
 
 #define MainGamerWidgetWidthExpansion 0.2
+#define SecondaryGamerWidgetWidthExpansion 0.05
 
 namespace Ui {
 class The_Game;
