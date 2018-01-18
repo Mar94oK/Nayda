@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>605</width>
-    <height>423</height>
+    <width>693</width>
+    <height>422</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -133,37 +133,37 @@
          </item>
         </layout>
        </item>
-       <item>
-        <layout class="QVBoxLayout" name="verticalLayout_4">
-         <item>
-          <widget class="QPushButton" name="btn_diplomacy">
-           <property name="text">
-            <string>Дипломатия</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="btn_fast_action">
-           <property name="text">
-            <string>Быстрое действие</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="btn_auto_advice">
-           <property name="text">
-            <string>Автосовет</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
       </layout>
      </item>
     </layout>
    </item>
    <item row="0" column="0">
     <widget class="Hand" name="widget" native="true"/>
+   </item>
+   <item row="1" column="1">
+    <layout class="QVBoxLayout" name="verticalLayout_4">
+     <item>
+      <widget class="QPushButton" name="btn_diplomacy">
+       <property name="text">
+        <string>Дипломатия</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_fast_action">
+       <property name="text">
+        <string>Быстрое действие</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_auto_advice">
+       <property name="text">
+        <string>Автосовет</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>

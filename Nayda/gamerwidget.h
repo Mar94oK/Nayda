@@ -85,6 +85,9 @@ private:
 
 
 
+
+
+
 public:
 
     void passCardsDecksToHandsWidget();
@@ -123,6 +126,19 @@ public slots:
 //    void _representTheCardNearItsPositionSlot();
 //    void _representTheCardFromHandsNearItsPosition(PositionedCard);
 //    void _hideTheCardNearItsPositionSlot(bool);
+
+private:
+
+    std::vector<QString> _levelsPictures = {{"Pictures/levels/match1_transparent.png"},
+                                            {"Pictures/levels/match2_transparent.png"},
+                                            {"Pictures/levels/match3_transparent.png"},
+                                            {"Pictures/levels/match4_transparent.png"},
+                                            {"Pictures/levels/match5_transparent.png"},
+                                            {"Pictures/levels/match6_transparent.png"},
+                                            {"Pictures/levels/match7_transparent.png"},
+                                            {"Pictures/levels/match8_transparent.png"},
+                                            {"Pictures/levels/match9_transparent.png"},
+                                            {"Pictures/levels/match10_transparent.png"}};
 
 
 };

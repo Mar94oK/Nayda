@@ -106,7 +106,10 @@ The_Game::The_Game(QWidget *parent) :
     //with respect to the MainGamer, the height size won't be larger then allowed,
     //but may take all the availible space if the width is concerned; Why not?
     //ui->MainGamer->setMinimumWidth(koeff_GamerWidget_size_Width*HW_Screen_Size_Width);
-    ui->MainGamer->setMaximumWidth(koeff_GamerWidget_size_Width*HW_Screen_Size_Width);
+    ui->MainGamer->setMaximumWidth((koeff_GamerWidget_size_Width+0.2)*HW_Screen_Size_Width);
+
+
+
 
     ui->TimersWidget->setMinimumHeight(koeff_GameTimers_size_Height*HW_Screen_Size_Heigh);
     ui->TimersWidget->setMaximumHeight(koeff_GameTimers_size_Height*HW_Screen_Size_Heigh);
