@@ -12,13 +12,22 @@ CardStacks::CardStacks(QWidget *parent) :
     int HW_Screen_Size_Height = HW_Screen_Size.height();
 
     //set-up the initial Stacks
+    //_race_class_btn_size_geometric_width_to_height_ratio*_race_class_btn_size_width
 
     QPixmap doorsStackImage(_doorsStackLevelsPictures[0]);
     QPalette plte_doorStack;
     plte_doorStack.setBrush(ui->btn_DoorsStack->backgroundRole(),
-    QBrush(doorsStackImage.scaled(_race_class_btn_size_width*HW_Screen_Size_Width,
-                                    _race_class_btn_size_height*HW_Screen_Size_Height,
-                                    Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
+    QBrush(doorsStackImage.scaled((_race_class_btn_size_width + increasingStacksSizeDeltaWidth )*HW_Screen_Size_Width,
+                                  (_race_class_btn_size_height + increasingStacksSizeDeltaHeight )*HW_Screen_Size_Height,
+                                  Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
+
+
+
+
+    ui->btn_DoorsStack->setMinimumHeight((_race_class_btn_size_height + increasingStacksSizeDeltaHeight )*HW_Screen_Size_Height);
+    ui->btn_DoorsStack->setMaximumHeight((_race_class_btn_size_height + increasingStacksSizeDeltaHeight)*HW_Screen_Size_Height);
+    ui->btn_DoorsStack->setMinimumWidth((_race_class_btn_size_width + increasingStacksSizeDeltaWidth)*HW_Screen_Size_Width);
+    ui->btn_DoorsStack->setMaximumWidth((_race_class_btn_size_width + increasingStacksSizeDeltaWidth)*HW_Screen_Size_Width);
 
 
     ui->btn_DoorsStack->setFlat(true);
@@ -33,10 +42,17 @@ CardStacks::CardStacks(QWidget *parent) :
 
     QPixmap treasuresStackImage(_treasuresStackLevelPictures[0]);
     QPalette plte_treasureStack;
-    plte_doorStack.setBrush(ui->btn_TreasuresStack->backgroundRole(),
-    QBrush(treasuresStackImage.scaled(_race_class_btn_size_width*HW_Screen_Size_Width,
-                                    _race_class_btn_size_height*HW_Screen_Size_Height,
-                                    Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
+    plte_treasureStack.setBrush(ui->btn_TreasuresStack->backgroundRole(),
+    QBrush(treasuresStackImage.scaled((_race_class_btn_size_width + increasingStacksSizeDeltaWidth )*HW_Screen_Size_Width,
+                                      (_race_class_btn_size_height + increasingStacksSizeDeltaHeight )*HW_Screen_Size_Height,
+                                      Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
+
+
+
+    ui->btn_TreasuresStack->setMinimumHeight((_race_class_btn_size_height + increasingStacksSizeDeltaHeight )*HW_Screen_Size_Height);
+    ui->btn_TreasuresStack->setMaximumHeight((_race_class_btn_size_height + increasingStacksSizeDeltaHeight)*HW_Screen_Size_Height);
+    ui->btn_TreasuresStack->setMinimumWidth((_race_class_btn_size_width + increasingStacksSizeDeltaWidth)*HW_Screen_Size_Width);
+    ui->btn_TreasuresStack->setMaximumWidth((_race_class_btn_size_width + increasingStacksSizeDeltaWidth)*HW_Screen_Size_Width);
 
 
     ui->btn_TreasuresStack->setFlat(true);
@@ -48,6 +64,49 @@ CardStacks::CardStacks(QWidget *parent) :
     if (_showTheNumberOfCardsLeft) {
         ui->lbl_TreasuresStack->setText(QString::number(_treasuresLeft));
     }
+
+
+
+    //set Folds
+
+
+
+
+
+
+    ui->btn_DoorsFold->setMinimumHeight((_race_class_btn_size_height + increasingStacksSizeDeltaHeight )*HW_Screen_Size_Height);
+    ui->btn_DoorsFold->setMaximumHeight((_race_class_btn_size_height + increasingStacksSizeDeltaHeight)*HW_Screen_Size_Height);
+    ui->btn_DoorsFold->setMinimumWidth((_race_class_btn_size_width + increasingStacksSizeDeltaWidth)*HW_Screen_Size_Width);
+    ui->btn_DoorsFold->setMaximumWidth((_race_class_btn_size_width + increasingStacksSizeDeltaWidth)*HW_Screen_Size_Width);
+
+    ui->btn_TreasuresFold->setMinimumHeight((_race_class_btn_size_height + increasingStacksSizeDeltaHeight )*HW_Screen_Size_Height);
+    ui->btn_TreasuresFold->setMaximumHeight((_race_class_btn_size_height + increasingStacksSizeDeltaHeight)*HW_Screen_Size_Height);
+    ui->btn_TreasuresFold->setMinimumWidth((_race_class_btn_size_width + increasingStacksSizeDeltaWidth)*HW_Screen_Size_Width);
+    ui->btn_TreasuresFold->setMaximumWidth((_race_class_btn_size_width + increasingStacksSizeDeltaWidth)*HW_Screen_Size_Width);
+
+
+    QPixmap doorsFoldImage("Pictures/doorsAreOpened.jpg");
+    QPalette plte_doorFold;
+    plte_doorFold.setBrush(ui->btn_DoorsFold->backgroundRole(),
+    QBrush(doorsFoldImage.scaled((_race_class_btn_size_width + increasingStacksSizeDeltaWidth )*HW_Screen_Size_Width,
+                                  (_race_class_btn_size_height + increasingStacksSizeDeltaHeight )*HW_Screen_Size_Height,
+                                  Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
+    ui->btn_DoorsFold->setFlat(true);
+    ui->btn_DoorsFold->setAutoFillBackground(true);
+    ui->btn_DoorsFold->setPalette(plte_doorFold);
+    ui->btn_DoorsFold->setText("");
+
+
+    QPixmap treasureFoldImage("Pictures/TreasuresCard.png");
+    QPalette plte_treasureFold;
+    plte_treasureFold.setBrush(ui->btn_TreasuresFold->backgroundRole(),
+    QBrush(treasureFoldImage.scaled((_race_class_btn_size_width + increasingStacksSizeDeltaWidth )*HW_Screen_Size_Width,
+                                  (_race_class_btn_size_height + increasingStacksSizeDeltaHeight )*HW_Screen_Size_Height,
+                                  Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
+    ui->btn_TreasuresFold->setFlat(true);
+    ui->btn_TreasuresFold->setAutoFillBackground(true);
+    ui->btn_TreasuresFold->setPalette(plte_treasureFold);
+    ui->btn_TreasuresFold->setText("");
 
 
 }

@@ -1707,7 +1707,8 @@ void The_Game::givingCardsToPlayers()
 
         }
     }
-    ui->CardStacksWidget->setDoorsLeft(initialSizeDoors - cardsToGive*m_number_of_players);
+
+    ui->CardStacksWidget->updateDoorsLeft(initialSizeDoors - cardsToGive*m_number_of_players);
     qDebug() << "Doors are given to the players!";
 
     //treasures..
@@ -1731,8 +1732,8 @@ void The_Game::givingCardsToPlayers()
         }
     }
     qDebug() << "Treasures are given to the players!";
-    ui->CardStacksWidget->setTreasuresLeft(initialSizeTreasures - cardsToGive*m_number_of_players);
 
+    ui->CardStacksWidget->updateTreasuresLeft(initialSizeTreasures - cardsToGive*m_number_of_players);
 
 
 

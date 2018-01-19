@@ -13,7 +13,8 @@
 
 //#defin_showTheNumberOfCardsLeftft true
 
-
+#define increasingStacksSizeDeltaWidth 0.015
+#define increasingStacksSizeDeltaHeight 0.015*2.71
 
 namespace Ui {
 class CardStacks;
