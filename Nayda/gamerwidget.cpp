@@ -443,7 +443,7 @@ void GamerWidget::_changeTheGamerBattlePower(int battlePowerDelta)
 void GamerWidget::_slotTestGamerBattlePower()
 {
     ++_currentDeltaToBattlePower;
-    if (_currentDeltaToBattlePower > 20) {
+    if (_currentDeltaToBattlePower > 50) {
         _battlePower = 1;
         _currentDeltaToBattlePower = 0;
     }
