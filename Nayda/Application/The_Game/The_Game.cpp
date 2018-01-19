@@ -296,6 +296,9 @@ The_Game::The_Game(QWidget *parent) :
     passDecksToPopUpCardWidget();
 
 
+    //pass the Cards to CardsStacks Widget
+    passDecksToCardsStacksWidget();
+
 
 
 
@@ -1576,6 +1579,27 @@ void The_Game::passDecksToPopUpCardWidget()
 
 }
 
+void The_Game::passDecksToCardsStacksWidget()
+{
+    ui->CardStacksWidget->setMonsersDeck(monstersDeck());
+    ui->CardStacksWidget->setAmplifiersDeck(amplifiersDeck());
+    ui->CardStacksWidget->setArmorAmplifiersDeck(armorAmplifiersDeck());
+    ui->CardStacksWidget->setArmorDeck(armorDeck());
+    ui->CardStacksWidget->setBattleAmplifiersDeck(battleAmplifiersDeck());
+    ui->CardStacksWidget->setCursesDeck(cursesDeck());
+    ui->CardStacksWidget->setLevelUpDeck(levelUpDeck());
+    ui->CardStacksWidget->setProfessionsDeck(professionsDeck());
+    ui->CardStacksWidget->setRacesDeck(racesDeck());
+    ui->CardStacksWidget->setSpecialMechanicsDeck(specialMechanicsDeck());
+    ui->CardStacksWidget->setSpecialMechanicsTreasureDeck(specialMechanicsTreasureDeck());
+    ui->CardStacksWidget->setThingsAmplifiersDeck(thingsAmplifiersDeck());
+    ui->CardStacksWidget->setWeaponsDeck(weaponsDeck());
+
+    ui->CardStacksWidget->setTotalTreasures(_monstersDeck.size());
+    ui->CardStacksWidget->setTotalDoors(_treasuresDeck.size());
+
+}
+
 
 const std::map<int, gameCardDoorMonster> *The_Game::monstersDeck()
 {
@@ -1663,6 +1687,9 @@ void The_Game::givingCardsToPlayers()
 
     //start with the main player... (giving cards from the top)
 
+    unsigned int initialSizeDoors = _doorsDeck.size();
+    unsigned int initialSizeTreasures = _treasuresDeck.size();
+
     for (unsigned int var = 0; var < cardsToGive; ++var) {
 
         _main_player.addCardToHands(_doorsDeck.front());
@@ -1680,6 +1707,7 @@ void The_Game::givingCardsToPlayers()
 
         }
     }
+    ui->CardStacksWidget->setDoorsLeft(initialSizeDoors - cardsToGive*m_number_of_players);
     qDebug() << "Doors are given to the players!";
 
     //treasures..
@@ -1703,6 +1731,10 @@ void The_Game::givingCardsToPlayers()
         }
     }
     qDebug() << "Treasures are given to the players!";
+    ui->CardStacksWidget->setTreasuresLeft(initialSizeTreasures - cardsToGive*m_number_of_players);
+
+
+
 
 
 
@@ -1872,6 +1904,26 @@ void The_Game::hideTheCardInCentre(bool)
 {
     _popUpCardWidget->hideAnimation();
     _cardPointer->hideAnimation();
+}
+
+unsigned int The_Game::doorsLeft() const
+{
+    return _doorsLeft;
+}
+
+void The_Game::setDoorsLeft(unsigned int doorsLeft)
+{
+    _doorsLeft = doorsLeft;
+}
+
+unsigned int The_Game::treasuresLeft() const
+{
+    return _treasuresLeft;
+}
+
+void The_Game::setTreasuresLeft(unsigned int treasuresLeft)
+{
+    _treasuresLeft = treasuresLeft;
 }
 
 //void The_Game::hideTheCardNearItsPosition(bool)

@@ -125,7 +125,7 @@ GamerWidget::GamerWidget(QWidget *parent) :
                                                             _race_class_btn_size_height*HW_Screen_Size_Height / 2,
                                                             Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 
-    ui->lbl_BattlePowerDigit->setStyleSheet("{color: #FAAB21}");
+    ui->lbl_BattlePowerDigit->setStyleSheet("QLabel {color: #FAAB21; }");
     ui->lbl_BattlePowerDigit->setText(QString::number(_battlePower));
     ui->lbl_BattlePowerDigit->setStyleSheet("font: 28pt;");
 

@@ -40,7 +40,8 @@ SOURCES += main.cpp\
     battlefield.cpp \
     hand.cpp \
     popupcard.cpp \
-    trianglecardpointer.cpp
+    trianglecardpointer.cpp \
+    cardstacks.cpp
 
 HEADERS  += main_application.h \
     Application/Before_The_Game/Before_The_Game.h \
@@ -57,7 +58,8 @@ HEADERS  += main_application.h \
     cardsborderdefines.h \
     hand.h \
     popupcard.h \
-    trianglecardpointer.h
+    trianglecardpointer.h \
+    cardstacks.h
 
 FORMS    += main_application.ui \
     Application/Before_The_Game/Before_The_Game.ui \
@@ -69,4 +71,5 @@ FORMS    += main_application.ui \
     battlefield.ui \
     hand.ui \
     popupcard.ui \
-    trianglecardpointer.ui
+    trianglecardpointer.ui \
+    cardstacks.ui

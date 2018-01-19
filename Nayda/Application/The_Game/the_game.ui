@@ -29,7 +29,14 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_5">
         <item>
-         <widget class="GameTimers" name="TimersWidget" native="true"/>
+         <widget class="CardStacks" name="CardStacksWidget" native="true">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
@@ -52,6 +59,16 @@
        <layout class="QVBoxLayout" name="verticalLayout_6">
         <item>
          <widget class="GameInfoWidget" name="GameInfoBox" native="true"/>
+        </item>
+        <item>
+         <widget class="GameTimers" name="TimersWidget" native="true">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
@@ -129,6 +146,12 @@
    <class>battleField</class>
    <extends>QWidget</extends>
    <header location="global">battlefield.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>CardStacks</class>
+   <extends>QWidget</extends>
+   <header location="global">cardstacks.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

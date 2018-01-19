@@ -177,6 +177,7 @@ public:
     void passDecksToBattleField();
     void passDecksToPlayerWidgets();
     void passDecksToPopUpCardWidget();
+    void passDecksToCardsStacksWidget();
 
 
     const std::map<int, gameCardDoorMonster> * monstersDeck();
@@ -223,10 +224,17 @@ public:
     unsigned int randUnsignedInt(unsigned int low, unsigned int high);
 
     //SERVREW
+    //this method also sets the cards values (how many left in the deck)
     void givingCardsToPlayers();
 
     void showInitialCardsOnHands();
 
+
+    unsigned int treasuresLeft() const;
+    void setTreasuresLeft(unsigned int treasuresLeft);
+
+    unsigned int doorsLeft() const;
+    void setDoorsLeft(unsigned int doorsLeft);
 
 signals:
     void dbg_to_be_shown(bool);
@@ -301,6 +309,11 @@ private:
     PopUpCard* _popUpCardWidget;
 
     TriangleCardPointer* _cardPointer;
+
+private:
+
+    unsigned int _treasuresLeft;
+    unsigned int _doorsLeft;
 
 
 

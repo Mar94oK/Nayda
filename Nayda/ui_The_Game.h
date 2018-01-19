@@ -24,6 +24,7 @@
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 #include <battlefield.h>
+#include <cardstacks.h>
 #include <gameinfowidget.h>
 #include <gamerwidget.h>
 #include <gametimers.h>
@@ -38,12 +39,13 @@ public:
     QVBoxLayout *verticalLayout_3;
     QVBoxLayout *right_side_opponents_layout;
     QVBoxLayout *verticalLayout_5;
-    GameTimers *TimersWidget;
+    CardStacks *CardStacksWidget;
     QVBoxLayout *verticalLayout_2;
     QVBoxLayout *verticalLayout_7;
     QPushButton *btn_switch_back;
     QVBoxLayout *verticalLayout_6;
     GameInfoWidget *GameInfoBox;
+    GameTimers *TimersWidget;
     QHBoxLayout *horizontalLayout_5;
     battleField *GameField;
     QHBoxLayout *horizontalLayout;
@@ -78,10 +80,15 @@ public:
 
         verticalLayout_5 = new QVBoxLayout();
         verticalLayout_5->setObjectName(QStringLiteral("verticalLayout_5"));
-        TimersWidget = new GameTimers(centralwidget);
-        TimersWidget->setObjectName(QStringLiteral("TimersWidget"));
+        CardStacksWidget = new CardStacks(centralwidget);
+        CardStacksWidget->setObjectName(QStringLiteral("CardStacksWidget"));
+        QSizePolicy sizePolicy1(QSizePolicy::Preferred, QSizePolicy::Minimum);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(CardStacksWidget->sizePolicy().hasHeightForWidth());
+        CardStacksWidget->setSizePolicy(sizePolicy1);
 
-        verticalLayout_5->addWidget(TimersWidget);
+        verticalLayout_5->addWidget(CardStacksWidget);
 
 
         verticalLayout_3->addLayout(verticalLayout_5);
@@ -107,6 +114,13 @@ public:
         GameInfoBox->setObjectName(QStringLiteral("GameInfoBox"));
 
         verticalLayout_6->addWidget(GameInfoBox);
+
+        TimersWidget = new GameTimers(centralwidget);
+        TimersWidget->setObjectName(QStringLiteral("TimersWidget"));
+        sizePolicy1.setHeightForWidth(TimersWidget->sizePolicy().hasHeightForWidth());
+        TimersWidget->setSizePolicy(sizePolicy1);
+
+        verticalLayout_6->addWidget(TimersWidget);
 
 
         verticalLayout_2->addLayout(verticalLayout_6);
