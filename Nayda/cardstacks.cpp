@@ -109,6 +109,45 @@ CardStacks::CardStacks(QWidget *parent) :
     ui->btn_TreasuresFold->setText("");
 
 
+
+
+
+    //set-up the Iterators (for test)
+
+//    _monstersIterator = _monstersDeck->begin();
+//    _amplifiersIterator = _amplifiersDeck->begin();
+//    _cursesIterator = _cursesDeck->begin();
+//    _professionsIterator = _professionsDeck->begin();
+//    _racesIterator = _racesDeck->begin();
+//    _specialMechanicsIterator = _specialMechanicsDeck->begin();
+
+//    _armorIterator = _armorDeck->begin();
+//    _armorAmplifiersIterator = _armorAmplifiersDeck->begin();
+//    _battleAmplifiersIterator = _battleAmplifiersDeck->begin();
+//    _levelUpIterator = _levelUpDeck->begin();
+//    _specialMechanicsTreasureIterator = _specialMechanicsTreasureDeck->begin();
+//    _thingsAmplifiersIterator = _thingsAmplifiersDeck->begin();
+//    _weaponsIterator = _weaponsDeck->begin();
+
+
+
+
+#ifdef DEBUG_CARDSTACKS_WIDGET
+
+    _testTimer = new QTimer();
+    _testTimer->setInterval(250);
+    _testTimer->setSingleShot(false);
+
+    connect(ui->btn_Test, &QPushButton::clicked, this, &CardStacks::startTheTest);
+    connect(_testTimer, &QTimer::timeout, this, &CardStacks::testTheFoldProcess);
+
+
+
+#endif
+
+
+
+
 }
 
 CardStacks::~CardStacks()
@@ -356,16 +395,16 @@ void CardStacks::passTheCardToFoldStack(SimpleCard card)
 
         QPixmap docksFoldImage(currentPictureAddress);
         QPalette plte_doorsFoldStack;
-        plte_doorsFoldStack.setBrush(ui->btn_TreasuresStack->backgroundRole(),
-                                         QBrush(docksFoldImage.scaled(_race_class_btn_size_width*HW_Screen_Size_Width,
-                                                                          _race_class_btn_size_height*HW_Screen_Size_Height / 2,
-                                                                          Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
+        plte_doorsFoldStack.setBrush(ui->btn_DoorsFold->backgroundRole(),
+                                         QBrush(docksFoldImage.scaled((_race_class_btn_size_width + increasingStacksSizeDeltaWidth )*HW_Screen_Size_Width,
+                                                                      (_race_class_btn_size_height + increasingStacksSizeDeltaHeight )*HW_Screen_Size_Height,
+                                                                      Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
 
 
-        ui->btn_TreasuresFold->setFlat(true);
-        ui->btn_TreasuresFold->setAutoFillBackground(true);
-        ui->btn_TreasuresFold->setPalette(plte_doorsFoldStack);
-        ui->btn_TreasuresFold->setText("");
+        ui->btn_DoorsFold->setFlat(true);
+        ui->btn_DoorsFold->setAutoFillBackground(true);
+        ui->btn_DoorsFold->setPalette(plte_doorsFoldStack);
+        ui->btn_DoorsFold->setText("");
         //ui->btn_DoorsStack->installEventFilter(this);
 
         //set the Value
@@ -379,9 +418,9 @@ void CardStacks::passTheCardToFoldStack(SimpleCard card)
 
         QPixmap treasuresFoldImage(currentPictureAddress);
         QPalette plte_treasuresFoldStack;
-        plte_treasuresFoldStack.setBrush(ui->btn_TreasuresStack->backgroundRole(),
-                                         QBrush(treasuresFoldImage.scaled(_race_class_btn_size_width*HW_Screen_Size_Width,
-                                                                          _race_class_btn_size_height*HW_Screen_Size_Height / 2,
+        plte_treasuresFoldStack.setBrush(ui->btn_TreasuresFold->backgroundRole(),
+                                         QBrush(treasuresFoldImage.scaled((_race_class_btn_size_width + increasingStacksSizeDeltaWidth )*HW_Screen_Size_Width,
+                                                                          (_race_class_btn_size_height + increasingStacksSizeDeltaHeight )*HW_Screen_Size_Height,
                                                                           Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
 
 
@@ -454,6 +493,214 @@ void CardStacks::updateDoorsLeft(unsigned int doorsLeft)
 {
     _doorsLeft = doorsLeft;
     ui->lbl_DoorsStack->setText(QString::number(doorsLeft));
+}
+
+void CardStacks::testTheFoldProcess()
+{
+    QRect HW_Screen_Size = QApplication::desktop()->screenGeometry();
+    int HW_Screen_Size_Width = HW_Screen_Size.width();
+    int HW_Screen_Size_Height = HW_Screen_Size.height();
+
+
+    SimpleCard currentCard;
+    if (!_currCardsArrayRepresentationStep) {
+
+        _monstersIterator = _monstersDeck->begin();
+        _amplifiersIterator = _amplifiersDeck->begin();
+        _cursesIterator = _cursesDeck->begin();
+        _professionsIterator = _professionsDeck->begin();
+        _racesIterator = _racesDeck->begin();
+        _specialMechanicsIterator = _specialMechanicsDeck->begin();
+
+        _armorIterator = _armorDeck->begin();
+        _armorAmplifiersIterator = _armorAmplifiersDeck->begin();
+        _battleAmplifiersIterator = _battleAmplifiersDeck->begin();
+        _levelUpIterator = _levelUpDeck->begin();
+        _specialMechanicsTreasureIterator = _specialMechanicsTreasureDeck->begin();
+        _thingsAmplifiersIterator = _thingsAmplifiersDeck->begin();
+        _weaponsIterator = _weaponsDeck->begin();
+
+
+    }
+
+
+    if (_currCardsArrayRepresentationStep < _monstersDeck->size()) {
+        currentCard.first = false;
+        currentCard.second = _monstersIterator->second.cardID();
+
+        _monstersIterator++;
+        _currCardsArrayRepresentationStep++;
+    }
+    else if (_currCardsArrayRepresentationStep < (_monstersDeck->size()
+             + _amplifiersDeck->size())){
+        currentCard.first = false;
+        currentCard.second = _amplifiersIterator->second.cardID();
+        _amplifiersIterator++;
+        _currCardsArrayRepresentationStep++;
+    }
+    else if (_currCardsArrayRepresentationStep < (_monstersDeck->size()
+             + _amplifiersDeck->size() + _cursesDeck->size())){
+        currentCard.first = false;
+        currentCard.second = _cursesIterator->second.cardID();
+        _cursesIterator++;
+        _currCardsArrayRepresentationStep++;
+    }
+    else if (_currCardsArrayRepresentationStep < (_monstersDeck->size()
+             + _amplifiersDeck->size() + _cursesDeck->size() + _professionsDeck->size())){
+        currentCard.first = false;
+        currentCard.second = _professionsIterator->second.cardID();
+        _professionsIterator++;
+        _currCardsArrayRepresentationStep++;
+    }
+    else if (_currCardsArrayRepresentationStep < (_monstersDeck->size()
+             + _amplifiersDeck->size() + _cursesDeck->size() + _professionsDeck->size() +
+                                                  _racesDeck->size())){
+        currentCard.first = false;
+        currentCard.second = _racesIterator->second.cardID();
+        _racesIterator++;
+        _currCardsArrayRepresentationStep++;
+    }
+    else if (_currCardsArrayRepresentationStep < (_monstersDeck->size()
+             + _amplifiersDeck->size() + _cursesDeck->size() + _professionsDeck->size() +
+                                                  _racesDeck->size() + _specialMechanicsDeck->size())){
+        currentCard.first = false;
+        currentCard.second = _specialMechanicsIterator->second.cardID();
+        _specialMechanicsIterator++;
+        _currCardsArrayRepresentationStep++;
+    }
+
+    else if (_currCardsArrayRepresentationStep < (_monstersDeck->size()
+                                                   + _amplifiersDeck->size() + _cursesDeck->size()
+                                                   + _professionsDeck->size() + _racesDeck->size()
+                                                   + _specialMechanicsDeck->size()
+                                                   + _armorDeck->size())){
+        currentCard.first = true;
+        currentCard.second = _armorIterator->second.cardID();
+        _armorIterator++;
+        _currCardsArrayRepresentationStep++;
+    }
+    else if (_currCardsArrayRepresentationStep < (_monstersDeck->size()
+                                                   + _amplifiersDeck->size() + _cursesDeck->size()
+                                                   + _professionsDeck->size() + _racesDeck->size()
+                                                   + _specialMechanicsDeck->size()
+                                                   + _armorDeck->size() + _armorAmplifiersDeck->size())){
+        currentCard.first = true;
+        currentCard.second = _armorAmplifiersIterator->second.cardID();
+        _armorAmplifiersIterator++;
+        _currCardsArrayRepresentationStep++;
+    }
+    else if (_currCardsArrayRepresentationStep < (_monstersDeck->size()
+                                                   + _amplifiersDeck->size() + _cursesDeck->size()
+                                                   + _professionsDeck->size() + _racesDeck->size()
+                                                   + _specialMechanicsDeck->size()
+                                                   + _armorDeck->size() + _armorAmplifiersDeck->size()
+                                                   + _battleAmplifiersDeck->size())){
+        currentCard.first = true;
+        currentCard.second = _battleAmplifiersIterator->second.cardID();
+        _battleAmplifiersIterator++;
+        _currCardsArrayRepresentationStep++;
+    }
+    else if (_currCardsArrayRepresentationStep < (_monstersDeck->size()
+                                                   + _amplifiersDeck->size() + _cursesDeck->size()
+                                                   + _professionsDeck->size() + _racesDeck->size()
+                                                   + _specialMechanicsDeck->size()
+                                                   + _armorDeck->size() + _armorAmplifiersDeck->size()
+                                                   + _battleAmplifiersDeck->size() + _levelUpDeck->size())){
+        currentCard.first = true;
+        currentCard.second = _levelUpIterator->second.cardID();
+        _levelUpIterator++;
+        _currCardsArrayRepresentationStep++;
+    }
+    else if (_currCardsArrayRepresentationStep < (_monstersDeck->size()
+                                                   + _amplifiersDeck->size() + _cursesDeck->size()
+                                                   + _professionsDeck->size() + _racesDeck->size()
+                                                   + _specialMechanicsDeck->size()
+                                                   + _armorDeck->size() + _armorAmplifiersDeck->size()
+                                                   + _battleAmplifiersDeck->size() + _levelUpDeck->size()
+                                                   + _specialMechanicsTreasureDeck->size())){
+        currentCard.first = true;
+        currentCard.second = _specialMechanicsTreasureIterator->second.cardID();
+        _specialMechanicsTreasureIterator++;
+        _currCardsArrayRepresentationStep++;
+    }
+    else if (_currCardsArrayRepresentationStep < (_monstersDeck->size()
+                                                   + _amplifiersDeck->size() + _cursesDeck->size()
+                                                   + _professionsDeck->size() + _racesDeck->size()
+                                                   + _specialMechanicsDeck->size()
+                                                   + _armorDeck->size() + _armorAmplifiersDeck->size()
+                                                   + _battleAmplifiersDeck->size() + _levelUpDeck->size()
+                                                   + _specialMechanicsTreasureDeck->size() + _thingsAmplifiersDeck->size())){
+        currentCard.first = true;
+        currentCard.second = _thingsAmplifiersIterator->second.cardID();
+        _thingsAmplifiersIterator++;
+        _currCardsArrayRepresentationStep++;
+    }
+    else if (_currCardsArrayRepresentationStep < (_monstersDeck->size()
+                                                   + _amplifiersDeck->size() + _cursesDeck->size()
+                                                   + _professionsDeck->size() + _racesDeck->size()
+                                                   + _specialMechanicsDeck->size()
+                                                   + _armorDeck->size() + _armorAmplifiersDeck->size()
+                                                   + _battleAmplifiersDeck->size() + _levelUpDeck->size()
+                                                   + _specialMechanicsTreasureDeck->size() + _thingsAmplifiersDeck->size()
+                                                   + _weaponsDeck->size())){
+        currentCard.first = true;
+        currentCard.second = _weaponsIterator->second.cardID();
+        _weaponsIterator++;
+        _currCardsArrayRepresentationStep++;
+    }
+    else {
+
+        _monstersIterator = _monstersDeck->begin();
+        _amplifiersIterator = _amplifiersDeck->begin();
+        _cursesIterator = _cursesDeck->begin();
+        _professionsIterator = _professionsDeck->begin();
+        _racesIterator = _racesDeck->begin();
+        _specialMechanicsIterator = _specialMechanicsDeck->begin();
+
+        _armorIterator = _armorDeck->begin();
+        _armorAmplifiersIterator = _armorAmplifiersDeck->begin();
+        _battleAmplifiersIterator = _battleAmplifiersDeck->begin();
+        _levelUpIterator = _levelUpDeck->begin();
+        _specialMechanicsTreasureIterator = _specialMechanicsTreasureDeck->begin();
+        _thingsAmplifiersIterator = _thingsAmplifiersDeck->begin();
+        _weaponsIterator = _weaponsDeck->begin();
+
+
+
+        currentCard.first = true;
+        currentCard.second = _monstersIterator->second.cardID();
+        _currCardsArrayRepresentationStep = 0;
+
+        _doorsFold.clear();
+        _treasuresFold.clear();
+        ui->lbl_TreasuresFold->setText(QString::number(_treasuresFold.size()));
+        ui->lbl_DoorsFold->setText(QString::number(_doorsFold.size()));
+    }
+
+
+
+
+//pass the Card;
+    passTheCardToFoldStack(currentCard);
+
+
+}
+
+void CardStacks::startTheTest()
+{
+
+    if (!_testIsRunning) {
+
+        _testTimer->start();
+        _testIsRunning = true;
+
+    }
+    else {
+
+        _testTimer->stop();
+        _testIsRunning = false;
+    }
+
 }
 
 

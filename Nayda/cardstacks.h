@@ -11,6 +11,9 @@
 #include <QDebug>
 
 
+
+#define DEBUG_CARDSTACKS_WIDGET
+
 //#defin_showTheNumberOfCardsLeftft true
 
 #define increasingStacksSizeDeltaWidth 0.015
@@ -155,6 +158,18 @@ public slots:
     void updateDoorsLeft(unsigned int doorsLeft);
 
 
+public slots:
+
+    void testTheFoldProcess();
+    void startTheTest();
+
+private:
+
+    unsigned int _currCardsArrayRepresentationStep = 0;
+
+    QTimer* _testTimer;
+
+    bool _testIsRunning = false;
 
 };
 
