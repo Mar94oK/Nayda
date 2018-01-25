@@ -22,8 +22,8 @@ HandSecondaryPlayer::HandSecondaryPlayer(QWidget *parent) :
     setAutoFillBackground(true);
 
 
-    ui->btn_Doors->setStyleSheet("QPushButton{background:transparent;}");
-    ui->btn_Treasures->setStyleSheet("QPushButton{background:transparent;}");
+    ui->btn_Doors->setStyleSheet("QPushButton{background:transparent;color:#0011FF;font:18pt;font:bold;}");
+    ui->btn_Treasures->setStyleSheet("QPushButton{background:transparent;color:#0011FF;font:18pt;font:bold;}");
 
     ui->btn_Doors->setAttribute(Qt::WA_TranslucentBackground, true);
     ui->btn_Treasures->setAttribute(Qt::WA_TranslucentBackground, true);
@@ -40,6 +40,18 @@ HandSecondaryPlayer::HandSecondaryPlayer(QWidget *parent) :
     connect(ui->btn_Treasures, &QPushButton::clicked, this, &HandSecondaryPlayer::_slotTestHandButtons);
 
 #endif
+
+
+    //setting-up the Text Style of PushButtons;
+
+    //ui->btn_Doors->setStyleSheet("QPushButton{color:#FAAB21;}");
+    ui->btn_Doors->setText(QString::number(0));
+//    ui->btn_Doors->setStyleSheet("font:28pt;");
+
+
+//    //ui->btn_Treasures->setStyleSheet("QPushButton{color:#FAAB21;}");
+    ui->btn_Treasures->setText(QString::number(0));
+//    ui->btn_Treasures->setStyleSheet("font:28pt;");
 
 
 }
