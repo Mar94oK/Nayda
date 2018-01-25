@@ -155,6 +155,9 @@ void GamerWidget::redraw_as_a_secondary_player()
     ui->btn_fast_action->hide();
     ui->btn_Test->hide();
 
+    //hide if secondary!
+    ui->widget->hide();
+
 }
 
 
