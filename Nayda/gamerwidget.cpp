@@ -150,6 +150,7 @@ void GamerWidget::setIs_MainPlayer(bool is_MainPlayer)
 
 void GamerWidget::redraw_as_a_secondary_player()
 {
+
     ui->btn_auto_advice->hide();
     ui->btn_diplomacy->hide();
     ui->btn_fast_action->hide();
@@ -253,6 +254,15 @@ void GamerWidget::addTheCardToHandsWidget(SimpleCard card)
 {
     ui->widget->addNewCardToHands(card);
     _cardsOnHandsGamerWidgetProperty.push_back(card);
+
+    //changing the values for Secondary players:
+
+    if (!card.first) ui->wt_CardsOnHandsSecondary->_slot_updateCardsOnHandsDoors(++_totalDoorsOnHands);
+    else ui->wt_CardsOnHandsSecondary->_slot_updateCardsOnHandsTreasures(++_totalTreasuresOnHands);
+
+
+
+
 }
 
 bool GamerWidget::eventFilter(QObject *o, QEvent *e)

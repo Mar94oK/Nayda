@@ -29,8 +29,8 @@ Hand::Hand(QWidget *parent) :
                                                              handCard_btn_size_height*HW_Screen_Size_Height,
                                                              Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
 
-
-    setAutoFillBackground(true);
+    //do not fill the background to make it transparent
+    setAutoFillBackground(false);
     //setPalette(plte_HandCover);
 
 
@@ -179,6 +179,9 @@ void Hand::addNewCardToHands(SimpleCard card)
         }
 
 
+
+
+
     }
     else { //treasure
 
@@ -233,6 +236,7 @@ void Hand::addNewCardToHands(SimpleCard card)
 
 
 
+
     }
 
     if (!isFound) qDebug() << "Error during passing Cards to the Hands Shower! Check the number passed! " << card.second;
@@ -276,6 +280,8 @@ void Hand::addNewCardToHands(SimpleCard card)
 
     _cardsVector.push_back(newCard);
     _cardsOnHandsHandsWidgetProperty.push_back(card);
+
+
 
 
 

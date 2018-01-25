@@ -123,6 +123,10 @@ public:
 
     bool eventFilter(QObject *o, QEvent *e);
 
+
+
+
+
 };
 
 #endif // HAND_H

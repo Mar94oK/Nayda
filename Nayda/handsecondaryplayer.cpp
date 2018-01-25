@@ -65,3 +65,15 @@ void HandSecondaryPlayer::_slotTestHandButtons()
 {
     qDebug() << "The Button is pressed!" ;
 }
+
+void HandSecondaryPlayer::_slot_updateCardsOnHandsTreasures(unsigned int var)
+{
+
+    ui->btn_Treasures->setText(QString::number(var));
+
+}
+
+void HandSecondaryPlayer::_slot_updateCardsOnHandsDoors(unsigned int var)
+{
+    ui->btn_Doors->setText(QString::number(var));
+}

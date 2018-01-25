@@ -101,6 +101,12 @@ public:
 
 private:
 
+    unsigned int _totalDoorsOnHands = 0;
+    unsigned int _totalTreasuresOnHands = 0;
+
+
+private:
+
     QTimer *_showCardsTimer;
     unsigned int _timeToShowTheCard = 100; //ms
     SimpleCard _currentCardToShowInCentre;
@@ -192,6 +198,7 @@ private:
 public slots:
 
     void _hideHandSecondaryPlayerWidget();
+
 
 
 };
