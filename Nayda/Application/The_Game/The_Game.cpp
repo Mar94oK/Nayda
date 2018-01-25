@@ -318,6 +318,11 @@ The_Game::The_Game(QWidget *parent) :
     //hide the Dialog
     ui->GameInfoBox->hide();
 
+#endif
+
+#ifdef DEBUG_NO_RETURN_TO_MENU
+
+    ui->btn_switch_back->hide();
 
 #endif
 

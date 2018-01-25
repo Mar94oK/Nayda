@@ -26,6 +26,7 @@
 #define DEBUG_MESSAGES //start with debug enabled
 #define DEBUG_NO_SERVER
 #define DEBUG_NO_DIALOG
+#define DEBUG_NO_RETURN_TO_MENU
 
 
 //This definitions are ruling the Widgets of Gamers (the areas for them)
