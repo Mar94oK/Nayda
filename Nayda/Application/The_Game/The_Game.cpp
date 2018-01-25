@@ -313,6 +313,15 @@ The_Game::The_Game(QWidget *parent) :
     setAutoFillBackground(true);
 
 
+#ifdef DEBUG_NO_DIALOG
+
+    //hide the Dialog
+    ui->GameInfoBox->hide();
+
+
+#endif
+
+
 
 }
 

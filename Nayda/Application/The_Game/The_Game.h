@@ -25,6 +25,7 @@
 #define PC_VERSION //begin with PC
 #define DEBUG_MESSAGES //start with debug enabled
 #define DEBUG_NO_SERVER
+#define DEBUG_NO_DIALOG
 
 
 //This definitions are ruling the Widgets of Gamers (the areas for them)
