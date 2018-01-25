@@ -6,6 +6,11 @@
 #include <QRect>
 #include <QDebug>
 
+
+#define DEBUG_HANDSECONDARY_PLAYER_WIDGET
+
+
+
 namespace Ui {
 class HandSecondaryPlayer;
 }
@@ -27,6 +32,10 @@ private:
     const float _race_class_btn_size_geometric_width_to_height_ratio = 2.71f;
     const float _race_class_btn_size_width = 0.035f;
     const float _race_class_btn_size_height = _race_class_btn_size_geometric_width_to_height_ratio*_race_class_btn_size_width;
+
+private slots:
+
+    void _slotTestHandButtons();
 
 };
 
