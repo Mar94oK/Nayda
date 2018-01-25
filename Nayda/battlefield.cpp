@@ -10,6 +10,9 @@ battleField::battleField(QWidget *parent) :
 
     QObject::connect(ui->btnStartTestCards, SIGNAL(clicked()), this, SLOT(startCardsRepresentation()));
 
+    //disable the button for cards' testing.
+    ui->btnStartTestCards->hide();
+
 
 }
 

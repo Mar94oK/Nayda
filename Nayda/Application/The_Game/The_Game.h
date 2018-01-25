@@ -173,7 +173,7 @@ public:
     gameCardTreasureWeapon WeaponStringParser (const QString& weapons_string);
 
 
-    void showTheCards();
+    void _debugShowAllTheCards();
     void passDecksToBattleField();
     void passDecksToPlayerWidgets();
     void passDecksToPopUpCardWidget();

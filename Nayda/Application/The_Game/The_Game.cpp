@@ -280,7 +280,9 @@ The_Game::The_Game(QWidget *parent) :
     givingCardsToPlayers();
     showInitialCardsOnHands();
 
-    showTheCards();
+
+    //disbale CardRepresenter
+    //_debugShowAllTheCards();
 
 
     //create popUpCard Widget
@@ -1494,7 +1496,7 @@ gameCardTreasureWeapon The_Game::WeaponStringParser(const QString &weapons_strin
 
 }
 
-void The_Game::showTheCards()
+void The_Game::_debugShowAllTheCards()
 {
     ui->GameField->cardsRepresenter();
 }
