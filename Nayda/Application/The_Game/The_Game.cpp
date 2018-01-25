@@ -302,6 +302,13 @@ The_Game::The_Game(QWidget *parent) :
     passDecksToCardsStacksWidget();
 
 
+    QPixmap pxmpBattleField("Pictures/JorneyCover.png");
+    QPalette plte_battleField;
+    qDebug () << "Size: " << size();
+    plte_battleField.setBrush(QPalette::Background, QBrush(pxmpBattleField.scaled(HW_Screen_Size.width(),HW_Screen_Size.height(), Qt::KeepAspectRatio, Qt::SmoothTransformation)));
+    setPalette(plte_battleField);
+    setAutoFillBackground(true);
+
 
 
 }

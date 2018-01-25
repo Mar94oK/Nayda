@@ -19,9 +19,9 @@ battleField::battleField(QWidget *parent) :
     //treeCover.jpg
     QPixmap pxmpBattleField("Pictures/treeCover.jpg");
     QPalette plte_battleField;
-    plte_battleField.setBrush(QPalette::Background, QBrush(pxmpBattleField.scaled(size(), Qt::KeepAspectRatio, Qt::SmoothTransformation)));
-    setPalette(plte_battleField);
-    setAutoFillBackground(true);
+    plte_battleField.setBrush(QPalette::Background, QBrush(pxmpBattleField.scaled(size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
+    //setPalette(plte_battleField);
+    //setAutoFillBackground(true);
 
     //setStyleSheet("background-image: url(Pictures/TreasuresCard.png)");
 
