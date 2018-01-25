@@ -451,4 +451,9 @@ void GamerWidget::_slotTestGamerBattlePower()
 
 }
 
+void GamerWidget::_hideHandSecondaryPlayerWidget()
+{
+    ui->wt_CardsOnHandsSecondary->hide();
+}
+
 

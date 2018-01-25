@@ -189,6 +189,11 @@ private:
     unsigned int _currentDeltaToBattlePower = 0;
 
 
+public slots:
+
+    void _hideHandSecondaryPlayerWidget();
+
+
 };
 
 #endif // GAMERWIDGET_H

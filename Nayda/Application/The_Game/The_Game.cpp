@@ -151,6 +151,9 @@ The_Game::The_Game(QWidget *parent) :
     //setting MainGamer
     ui->MainGamer->setIs_MainPlayer(true);
 
+    //hide Secondary Hand Widget;
+    ui->MainGamer->_hideHandSecondaryPlayerWidget();
+
 
     //creating opponents
     //remember, opponents less by 1 than total amount of players
