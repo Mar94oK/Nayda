@@ -99,7 +99,7 @@ The_Game::The_Game(QWidget *parent) :
 
 
     ui->GameField->setMinimumWidth(koeff_GameField_size*HW_Screen_Size_Width);
-    ui->GameField->setMinimumHeight(koeff_GameField_size*HW_Screen_Size_Heigh);
+    //ui->GameField->setMinimumHeight(koeff_GameField_size*HW_Screen_Size_Heigh);
 
 
 
@@ -107,12 +107,12 @@ The_Game::The_Game(QWidget *parent) :
     ui->MainGamer->setMinimumHeight(koeff_GamerWidget_size_Height*HW_Screen_Size_Heigh);
 
     //trying to disable the maximum size of the MainGamerHeight
-    ui->MainGamer->setMaximumHeight(koeff_GamerWidget_size_Height*HW_Screen_Size_Heigh);
+    //ui->MainGamer->setMaximumHeight(koeff_GamerWidget_size_Height*HW_Screen_Size_Heigh);
 
 
     //with respect to the MainGamer, the height size won't be larger then allowed,
     //but may take all the availible space if the width is concerned; Why not?
-    //ui->MainGamer->setMinimumWidth(koeff_GamerWidget_size_Width*HW_Screen_Size_Width);
+    ui->MainGamer->setMinimumWidth(koeff_GamerWidget_size_Width*HW_Screen_Size_Width);
     ui->MainGamer->setMaximumWidth((koeff_GamerWidget_size_Width+MainGamerWidgetWidthExpansion)*HW_Screen_Size_Width);
 
 

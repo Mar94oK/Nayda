@@ -481,7 +481,8 @@ void GamerWidget::_hideHandSecondaryPlayerWidget()
 
 void GamerWidget::_adjustSizeSlot()
 {
-    //QWidget::adjustSize();
+    QWidget::adjustSize();
+    //ui->widget->adjustSize(true);
     emit _signalAdjustSize(true);
 }
 
