@@ -335,6 +335,13 @@ The_Game::The_Game(QWidget *parent) :
 
 
 
+    //change the Game Phase:
+
+    //DEBUG!!!!
+    _currentGamePhase = GamePhase::StartOfTheMove;
+
+
+
 }
 
 The_Game::~The_Game()

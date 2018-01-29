@@ -16,6 +16,13 @@
 //defines of how many pixels to move the card on Hand upper to be ready for being played.
 #define movingUpCardDelta 10
 
+
+struct CardIsReadyToBePlayed {
+    unsigned int cardID;
+    SimpleCard card;
+
+};
+
 namespace Ui {
 class Hand;
 }
@@ -132,6 +139,10 @@ public slots:
 signals:
 
     void _cardIsPreparedToBePlayed(unsigned int);
+
+private:
+
+    CardIsReadyToBePlayed _cardIsReadyToBePlayed;
 
 
 

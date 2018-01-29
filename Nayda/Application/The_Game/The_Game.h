@@ -34,6 +34,16 @@
 #define MainGamerWidgetWidthExpansion 0.2
 #define SecondaryGamerWidgetWidthExpansion 0.05
 
+
+enum class GamePhase {StartOfTheMove,
+                      AfterOpenDoorNoMonster,
+                      Battle,
+                      WaitingForAnOpponentToMove,
+                      Theft,
+                      HandAlignment,
+                      GameInitialization};
+
+
 namespace Ui {
 class The_Game;
 }
@@ -316,6 +326,10 @@ private:
 
     unsigned int _treasuresLeft;
     unsigned int _doorsLeft;
+
+private:
+
+    GamePhase _currentGamePhase = GamePhase::GameInitialization;
 
 
 
