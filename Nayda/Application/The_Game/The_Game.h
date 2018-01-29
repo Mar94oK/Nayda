@@ -331,6 +331,10 @@ private:
 
     GamePhase _currentGamePhase = GamePhase::GameInitialization;
 
+public slots:
+
+    void _adjustSizeOfTheGamerWidgetToMakeCardsToBeInPlace();
+
 
 
 };

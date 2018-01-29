@@ -360,13 +360,13 @@ void Hand::_slotCardIsPreparedToBePlayedFromHand(unsigned int cardId)
 {
     //this is not work.
     //size().setHeight(size().height() + movingUpCardDelta *2);
-    //qDebug() << "The Size Of Cards On Hands, Height: " << size().height();
+    qDebug() << "The Size Of Cards On Hands, Height: " << size().height();
 
 
     QPoint currPos = _cardsVector[cardId]->pos();
-    qDebug() << "Current Postion of the button: " << currPos;
-    qDebug() << "Current Postion of the button X: " << currPos.x();
-    qDebug() << "Current Postion of the button X: " << currPos.y();
+    qDebug() << "Current Position of the button: " << currPos;
+    qDebug() << "Current Position of the button X: " << currPos.x();
+    qDebug() << "Current Position of the button X: " << currPos.y();
     _cardsVector[cardId]->move(currPos.x(), currPos.y() - movingUpCardDelta);
 
     //setting the cardToBeChecked;
@@ -375,6 +375,8 @@ void Hand::_slotCardIsPreparedToBePlayedFromHand(unsigned int cardId)
     _cardIsReadyToBePlayed.card = _cardsOnHandsHandsWidgetProperty[cardId];
     _cardIsReadyToBePlayed.cardID = cardId;
 
+    QWidget::adjustSize();
+    emit adjustSize(true);
 
 
 }

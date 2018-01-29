@@ -199,6 +199,11 @@ public slots:
 
     void _hideHandSecondaryPlayerWidget();
 
+    void _adjustSizeSlot();
+
+signals:
+
+    void _signalAdjustSize(bool);
 
 
 };

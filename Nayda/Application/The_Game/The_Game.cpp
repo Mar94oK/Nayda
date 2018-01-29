@@ -98,8 +98,8 @@ The_Game::The_Game(QWidget *parent) :
 
 
 
-    //ui->GameField->setMinimumWidth(koeff_GameField_size*HW_Screen_Size_Width);
-    //ui->GameField->setMinimumHeight(koeff_GameField_size*HW_Screen_Size_Heigh);
+    ui->GameField->setMinimumWidth(koeff_GameField_size*HW_Screen_Size_Width);
+    ui->GameField->setMinimumHeight(koeff_GameField_size*HW_Screen_Size_Heigh);
 
 
 
@@ -107,7 +107,7 @@ The_Game::The_Game(QWidget *parent) :
     ui->MainGamer->setMinimumHeight(koeff_GamerWidget_size_Height*HW_Screen_Size_Heigh);
 
     //trying to disable the maximum size of the MainGamerHeight
-    //ui->MainGamer->setMaximumHeight(koeff_GamerWidget_size_Height*HW_Screen_Size_Heigh);
+    ui->MainGamer->setMaximumHeight(koeff_GamerWidget_size_Height*HW_Screen_Size_Heigh);
 
 
     //with respect to the MainGamer, the height size won't be larger then allowed,
@@ -339,6 +339,10 @@ The_Game::The_Game(QWidget *parent) :
 
     //DEBUG!!!!
     _currentGamePhase = GamePhase::StartOfTheMove;
+
+
+
+    connect(ui->MainGamer, &GamerWidget::_signalAdjustSize, this, &The_Game::_adjustSizeOfTheGamerWidgetToMakeCardsToBeInPlace);
 
 
 
@@ -1947,6 +1951,12 @@ void The_Game::hideTheCardInCentre(bool)
 {
     _popUpCardWidget->hideAnimation();
     _cardPointer->hideAnimation();
+}
+
+void The_Game::_adjustSizeOfTheGamerWidgetToMakeCardsToBeInPlace()
+{
+    ui->MainGamer->adjustSize();
+
 }
 
 unsigned int The_Game::doorsLeft() const

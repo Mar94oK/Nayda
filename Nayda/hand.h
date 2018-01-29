@@ -145,6 +145,11 @@ private:
     CardIsReadyToBePlayed _cardIsReadyToBePlayed;
 
 
+signals:
+
+    void adjustSize(bool);
+
+
 
 };
 

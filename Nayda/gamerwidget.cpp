@@ -136,6 +136,11 @@ GamerWidget::GamerWidget(QWidget *parent) :
 //    qDebug() << "New Size of The Hand, H:" << ui->widget->size().height();
 
 
+    qDebug() << "The Size of The Gamer Widget " << size();
+
+    connect(ui->widget, &Hand::adjustSize, this, &GamerWidget::_adjustSizeSlot);
+
+
 }
 
 GamerWidget::~GamerWidget()
@@ -472,6 +477,12 @@ void GamerWidget::_slotTestGamerBattlePower()
 void GamerWidget::_hideHandSecondaryPlayerWidget()
 {
     ui->wt_CardsOnHandsSecondary->hide();
+}
+
+void GamerWidget::_adjustSizeSlot()
+{
+    //QWidget::adjustSize();
+    emit _signalAdjustSize(true);
 }
 
 
