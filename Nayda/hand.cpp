@@ -361,7 +361,7 @@ void Hand::_slotCardIsPreparedToBePlayedFromHand(unsigned int cardId)
     qDebug() << "Current Postion of the button: " << currPos;
     qDebug() << "Current Postion of the button X: " << currPos.x();
     qDebug() << "Current Postion of the button X: " << currPos.y();
-    _cardsVector[cardId]->move(currPos.x(), currPos.y() - 10);
+    _cardsVector[cardId]->move(currPos.x(), currPos.y() - movingUpCardDelta);
 
 
 }

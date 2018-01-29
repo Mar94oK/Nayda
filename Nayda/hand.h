@@ -12,6 +12,10 @@
 #include <QPoint>
 //#include <QApllication>
 
+
+//defines of how many pixels to move the card on Hand upper to be ready for being played.
+#define movingUpCardDelta 10
+
 namespace Ui {
 class Hand;
 }
