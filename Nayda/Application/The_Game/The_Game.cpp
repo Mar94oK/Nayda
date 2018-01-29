@@ -99,7 +99,7 @@ The_Game::The_Game(QWidget *parent) :
 
 
     ui->GameField->setMinimumWidth(koeff_GameField_size*HW_Screen_Size_Width);
-    //ui->GameField->setMinimumHeight(koeff_GameField_size*HW_Screen_Size_Heigh);
+    ui->GameField->setMinimumHeight(koeff_GameField_size*HW_Screen_Size_Heigh);
 
 
 

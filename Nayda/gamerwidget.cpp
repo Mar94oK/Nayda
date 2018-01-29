@@ -138,8 +138,14 @@ GamerWidget::GamerWidget(QWidget *parent) :
 
     qDebug() << "The Size of The Gamer Widget " << size();
 
+
+
     connect(ui->widget, &Hand::adjustSize, this, &GamerWidget::_adjustSizeSlot);
 
+    //ui->widget->setMinimumHeight(0.45*size().height());
+    //ui->widget->setMaximumHeight(0.45*size().height());
+    //ui->btn_class_1->setMinimumHeight(0.45*size().height());
+    //ui->btn_class_1->setMaximumHeight(0.45*size().height());
 
 }
 

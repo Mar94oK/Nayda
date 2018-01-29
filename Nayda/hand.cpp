@@ -377,8 +377,8 @@ void Hand::_slotCardIsPreparedToBePlayedFromHand(unsigned int cardId)
     _cardIsReadyToBePlayed.card = _cardsOnHandsHandsWidgetProperty[cardId];
     _cardIsReadyToBePlayed.cardID = cardId;
 
-    QWidget::adjustSize();
-    emit adjustSize(true);
+    //QWidget::adjustSize();
+    //emit adjustSize(true);
 
 
 }
