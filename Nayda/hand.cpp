@@ -42,6 +42,8 @@ Hand::Hand(QWidget *parent) :
 
     connect(this, &Hand::_cardIsPreparedToBePlayed, this, &Hand::_slotCardIsPreparedToBePlayedFromHand);
 
+//    qDebug() << "The Size Of Cards On Hands, Height: " << size().height();
+
 
 }
 
@@ -356,6 +358,10 @@ bool Hand::eventFilter(QObject *o, QEvent *e)
 
 void Hand::_slotCardIsPreparedToBePlayedFromHand(unsigned int cardId)
 {
+    //this is not work.
+    //size().setHeight(size().height() + movingUpCardDelta *2);
+    //qDebug() << "The Size Of Cards On Hands, Height: " << size().height();
+
 
     QPoint currPos = _cardsVector[cardId]->pos();
     qDebug() << "Current Postion of the button: " << currPos;

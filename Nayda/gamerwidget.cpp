@@ -130,6 +130,11 @@ GamerWidget::GamerWidget(QWidget *parent) :
     ui->lbl_BattlePowerDigit->setStyleSheet("font: 28pt;");
 
 
+    //this is not work
+//    qDebug() << "Current Size of The Hand, H:" << ui->widget->size().height();
+//    ui->widget->size().setHeight( ui->widget->size().height() + 10);
+//    qDebug() << "New Size of The Hand, H:" << ui->widget->size().height();
+
 
 }
 
