@@ -70,8 +70,8 @@ void TriangleCardPointer::paintEvent(QPaintEvent *event)
 
     normalRect.setHeight(15);
 
-    qDebug() <<"The height of Triangle Pointer: " << rect().height();
-    qDebug() <<"The width of Triangle Pointer: " << rect().width();
+//    qDebug() <<"The height of Triangle Pointer: " << rect().height();
+//    qDebug() <<"The width of Triangle Pointer: " << rect().width();
     // Кисть настраиваем на чёрный цвет в режиме полупрозрачности 180 из 255
     //RAL 1017
     //Шафраново-жёлтый	  0  30  70   0	  0  30  90   0	#F4B752	244 183  82
@@ -111,102 +111,6 @@ void TriangleCardPointer::paintEvent(QPaintEvent *event)
 
 
     painter.fillPath(path, QBrush(QColor(244,183,82,150)));
-
-    //painter.drawRect(normalRect);
-
-
-
-//    QPolygon poly;
-
-//    int yPos = 0;
-//    int xPos = 0;
-
-
-//        //Check the position!
-
-//        if (_positionTopLeft.y() - height() - 30 < 0) { //higher, than allowed
-
-//            yPos = _positionBottomRight.y() + 10;
-
-//            poly << QPoint(_positionBottomRight.x(), _positionBottomRight.y()) << QPoint(_positionTopLeft.x(), _positionBottomRight.y());
-//            qDebug() << QPoint(_positionBottomRight.x(), _positionBottomRight.y()) << QPoint(_positionTopLeft.x(), _positionBottomRight.y());
-
-//        }
-//        else {
-
-//            yPos =  _positionTopLeft.y() - height() - 10;
-
-//            poly << QPoint(_positionTopLeft.x(), _positionTopLeft.y()) << QPoint(_positionBottomRight.x(), _positionTopLeft.y());
-//            qDebug() << QPoint(_positionTopLeft.x(), _positionTopLeft.y()) << QPoint(_positionBottomRight.x(), _positionTopLeft.y());
-
-
-//        }
-
-//        if (_positionBottomRight.x() + width() + 10 > QApplication::desktop()->availableGeometry().width()) { //righter, than allowed
-
-//            xPos = QApplication::desktop()->availableGeometry().width() - width() - 10;
-
-//             if (_positionTopLeft.y() - height() - 30 < 0) {
-
-//                 poly << QPoint(xPos, yPos) << QPoint(xPos + width(), yPos);
-//                 qDebug() << QPoint(xPos, yPos) << QPoint(xPos + width(), yPos);
-
-//             }
-//             else {
-
-//                 poly << QPoint(xPos, yPos - height()) << QPoint(xPos + width(), yPos - height());
-//                 qDebug() << QPoint(xPos, yPos - height()) << QPoint(xPos + width(), yPos - height());
-//             }
-
-
-
-//        }
-//        else {
-
-//            xPos = _positionTopLeft.x();
-
-//            if (_positionTopLeft.y() - height() - 30 < 0) {
-
-//                poly << QPoint(xPos, yPos) << QPoint(xPos + width(), yPos);
-//                qDebug() << "Points: " << QPoint(xPos, yPos) << QPoint(xPos + width(), yPos);
-
-//            }
-//            else {
-
-//                poly << QPoint(xPos, yPos - height()) << QPoint(xPos + width(), yPos - height());
-//                qDebug() << QPoint(xPos, yPos - height()) << QPoint(xPos + width(), yPos - height());
-
-//            }
-
-
-
-//        }
-
-//    poly << QPoint( 0, height()) << QPoint(width(),  height())
-//         << QPoint(width(),  height() - 100) << QPoint(0, height()- 100);
-
-//    qDebug() << QPoint( 0, height()) << QPoint(width(),  height())
-//             << QPoint(width(),  height() + 100) << QPoint(0, height()+100);
-
-//    QPen pen(Qt::red, 3, Qt::DashDotLine, Qt::RoundCap, Qt::RoundJoin);
-//    painter.setPen(pen);
-
-//    QBrush brush;
-//    brush.setColor(Qt::green);
-//    brush.setStyle(Qt::SolidPattern);
-
-
-//    // Fill polygon
-
-//    QPainterPath path;
-//    path.addPolygon(poly);
-
-
-//    // Draw polygon
-//    painter.drawPolygon(poly);
-//    painter.fillPath(path, brush);
-
-
 
 
 
@@ -320,8 +224,8 @@ void TriangleCardPointer::setUpTriangleCardPointer(QPoint positionTopLeft, QPoin
 
     //resize the Widget
     this->resize((handCardSizeWidht*HW_Screen_Size_Width + 20)*0.5, 10); //height is fixed and is related to card!
-    qDebug() <<"The Height of Triangle Pointer After Resize: " << this->size().height();
-    qDebug() <<"The Width of Triangle Pointer After Resize: " << this->size().width();
+//    qDebug() <<"The Height of Triangle Pointer After Resize: " << this->size().height();
+//    qDebug() <<"The Width of Triangle Pointer After Resize: " << this->size().width();
 
     _actualCardSize.setHeight(handCardSizeHeight*HW_Screen_Size_Height + 20);
     _actualCardSize.setWidth(handCardSizeWidht*HW_Screen_Size_Width + 20);
@@ -332,7 +236,7 @@ void TriangleCardPointer::setUpTriangleCardPointer(QPoint positionTopLeft, QPoin
     _positionBottomRight = positionBottomRight;
     _positionTopLeft = positionTopLeft;
 
-    qDebug() << "Delta: " << _positionBottomRight.x() - positionTopLeft.x();
+//    qDebug() << "Delta: " << _positionBottomRight.x() - positionTopLeft.x();
 
 
 }

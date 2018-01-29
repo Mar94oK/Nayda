@@ -10,6 +10,7 @@
 #include <QDebug>
 #include <QTimer>
 #include <QPoint>
+//#include <QApllication>
 
 namespace Ui {
 class Hand;
@@ -109,21 +110,24 @@ private:
 
 signals:
 
-//    void _showTheCard(SimpleCard card);
     void _showTheCard(PositionedCard card);
-//    void _showTheCardNearItsPosition(PositionedCard card);
     void _hideTheCard(bool);
 
 public slots:
 
     void _showTheCardInCentreSlot();
-//    void _showTheCardNearItsPositionSlot();
 
 public:
 
     bool eventFilter(QObject *o, QEvent *e);
 
+public slots:
 
+    void _slotCardIsPreparedToBePlayedFromHand(unsigned int cardId);
+
+signals:
+
+    void _cardIsPreparedToBePlayed(unsigned int);
 
 
 

@@ -40,6 +40,8 @@ Hand::Hand(QWidget *parent) :
     connect(_showCardsTimer, &QTimer::timeout, this, &Hand::_showTheCardInCentreSlot);
 //    connect(_showCardsTimer, &QTimer::timeout ,this, &Hand::_showTheCardNearItsPositionSlot);
 
+    connect(this, &Hand::_cardIsPreparedToBePlayed, this, &Hand::_slotCardIsPreparedToBePlayedFromHand);
+
 
 }
 
@@ -309,10 +311,10 @@ bool Hand::eventFilter(QObject *o, QEvent *e)
             if (e->type() == QEvent::Enter) {
                 qDebug() << "Mouse Enters Area!";
                 _currentCardToShowInCentre = _cardsOnHandsHandsWidgetProperty[var]; //no Class
-                qDebug() << "Size of the card, X: " << QWidget::mapToGlobal(_cardsVector[var]->pos()).x();
-                qDebug() << "Size of the card, Y: " <<  QWidget::mapToGlobal(_cardsVector[var]->pos()).y();
-                qDebug() << "Size of the card, H: " << _cardsVector[var]->height();
-                qDebug() << "Size of the card, W: " << _cardsVector[var]->width();
+//                qDebug() << "Size of the card, X: " << QWidget::mapToGlobal(_cardsVector[var]->pos()).x();
+//                qDebug() << "Size of the card, Y: " <<  QWidget::mapToGlobal(_cardsVector[var]->pos()).y();
+//                qDebug() << "Size of the card, H: " << _cardsVector[var]->height();
+//                qDebug() << "Size of the card, W: " << _cardsVector[var]->width();
                 _currentCardToShowNearItsPosition.card = _cardsOnHandsHandsWidgetProperty[var];
                 _currentCardToShowNearItsPosition.positionTopLeft = { QWidget::mapToGlobal(_cardsVector[var]->pos()).x(),
                                                                       QWidget::mapToGlobal(_cardsVector[var]->pos()).y()};
@@ -330,15 +332,33 @@ bool Hand::eventFilter(QObject *o, QEvent *e)
                 emit _hideTheCard(true);
                 return true;
             }
+            else if (e->type() == QEvent::MouseButtonPress) {
+
+                qDebug() << "Button Pressed " << var;
+                emit _cardIsPreparedToBePlayed(var);
+                emit _hideTheCard(true);
+
+            }
             else {
                 return QWidget::eventFilter(o, e);
             }
+
+
 
         }
 
     }
 
     return QWidget::eventFilter(o, e);
+
+
+}
+
+void Hand::_slotCardIsPreparedToBePlayedFromHand(unsigned int cardId)
+{
+
+    QPoint currPos = _cardsVector[cardId]->pos();
+    qDebug() << "Current Postion of the button: " << currPos;
 
 
 }
