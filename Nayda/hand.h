@@ -150,6 +150,12 @@ signals:
 
     void adjustSize(bool);
 
+    void _cardIsSendedToTheGameCheck(SimpleCard card);
+
+public slots:
+
+    void _slotCardIsRejectedToBePlayed(bool rejected);
+
 
 
 };

@@ -206,6 +206,23 @@ signals:
     void _signalAdjustSize(bool);
 
 
+public slots:
+
+    void _slotSendTheCardToTheGameCheck(SimpleCard card);
+
+signals:
+
+    void _signalSendTheCardToTheGameCheck(SimpleCard);
+
+public slots:
+
+    void _slotCardIsRejectedToBePlayed(bool);
+
+signals:
+
+    void _signalCardIsRejectedToBePlayed(bool);
+
+
 };
 
 #endif // GAMERWIDGET_H

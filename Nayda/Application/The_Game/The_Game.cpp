@@ -341,9 +341,18 @@ The_Game::The_Game(QWidget *parent) :
     _currentGamePhase = GamePhase::StartOfTheMove;
 
 
-
+    //trying to adjust the size of...
     connect(ui->MainGamer, &GamerWidget::_signalAdjustSize, this, &The_Game::_adjustSizeOfTheGamerWidgetToMakeCardsToBeInPlace);
 
+
+
+    //connect theHand with checking the card slot;
+
+    connect(ui->MainGamer, &GamerWidget::_signalSendTheCardToTheGameCheck,
+            this, &The_Game::_slotCheckThePossibilityForTheCardToBePlayed);
+
+    //pass the answer form The_Game card check back to the Hand
+    connect(this, &The_Game::_signalCardIsRejectedToBePlayed, ui->MainGamer, &GamerWidget::_slotCardIsRejectedToBePlayed);
 
 
 }
@@ -1956,6 +1965,24 @@ void The_Game::hideTheCardInCentre(bool)
 void The_Game::_adjustSizeOfTheGamerWidgetToMakeCardsToBeInPlace()
 {
     ui->MainGamer->adjustSize();
+
+}
+
+void The_Game::_slotCheckThePossibilityForTheCardToBePlayed(SimpleCard card)
+{
+    qDebug() << "The Card is checking!!!";
+
+    //check, first of all, what is the phase of the Game;
+    //If the Phase is "WaitingForAnOpponentToMove", it is not possible to use any cards;
+    //Even "Annihilation"
+
+    if ((_currentGamePhase == GamePhase::GameInitialization) || (_currentGamePhase == GamePhase::WaitingForAnOpponentToMove)) {
+        qDebug() << "The Game is in the GameInitialization or WaitingForAnOpponentToMove Phase. "
+                    "Not possible to use cards!";
+
+        emit _signalCardIsRejectedToBePlayed(true);
+
+    }
 
 }
 

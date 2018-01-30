@@ -368,6 +368,10 @@ void Hand::_slotCardIsPreparedToBePlayedFromHand(unsigned int cardId)
         {
             qDebug() << "Trying to play the card! Send the card to The_Game check. ";
 
+            //send the card to the Game check;
+            emit _cardIsSendedToTheGameCheck(_cardIsReadyToBePlayed.card);
+
+            //Debug only...
             //returning the card to previous position!
             QPoint currPos = _cardsVector[cardId]->pos();
             _cardsVector[cardId]->move(currPos.x(), currPos.y() + movingUpCardDelta);
@@ -414,4 +418,10 @@ void Hand::_slotCardIsPreparedToBePlayedFromHand(unsigned int cardId)
 
 
 
+}
+
+void Hand::_slotCardIsRejectedToBePlayed(bool rejected)
+{
+    qDebug() << "Is card rejected to be Played? " <<
+                (rejected ? "Yes, it was! " : "Not, it wasn't");
 }

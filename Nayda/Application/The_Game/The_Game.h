@@ -335,6 +335,18 @@ public slots:
 
     void _adjustSizeOfTheGamerWidgetToMakeCardsToBeInPlace();
 
+public slots:
+
+    void _slotCheckThePossibilityForTheCardToBePlayed(SimpleCard card);
+
+signals:
+
+    //looks like it is only the Hand from where the card can be played
+    //there are some sepecial functions, like Theft or upcoming fron the cards,
+    //but all of them are targeted the cards to be fold or to be given to another Players.
+    //Not To Be Played! (at least, as how it looks for me now, this moment)
+    void _signalCardIsRejectedToBePlayed(bool); //not necessary to send the card back;
+                                            //the Hand property "CardIsReadyToBePlayed" is saving the current card;
 
 
 };

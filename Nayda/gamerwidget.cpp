@@ -149,6 +149,12 @@ GamerWidget::GamerWidget(QWidget *parent) :
     //ui->btn_class_1->setMinimumHeight(0.45*size().height());
     //ui->btn_class_1->setMaximumHeight(0.45*size().height());
 
+    //connect the Hand with the Game... (checking the possibility for the Card to be played)
+    connect(ui->widget, &Hand::_cardIsSendedToTheGameCheck, this, &GamerWidget::_slotSendTheCardToTheGameCheck);
+
+    //connect the Hand with the answer from The_Game Crad check slot;
+    connect(this, &GamerWidget::_signalCardIsRejectedToBePlayed, ui->widget, &Hand::_slotCardIsRejectedToBePlayed);
+
 }
 
 GamerWidget::~GamerWidget()
@@ -492,6 +498,16 @@ void GamerWidget::_adjustSizeSlot()
     QWidget::adjustSize();
     //ui->widget->adjustSize(true);
     emit _signalAdjustSize(true);
+}
+
+void GamerWidget::_slotSendTheCardToTheGameCheck(SimpleCard card)
+{
+    emit _signalSendTheCardToTheGameCheck(card);
+}
+
+void GamerWidget::_slotCardIsRejectedToBePlayed(bool rejected)
+{
+    emit _signalCardIsRejectedToBePlayed(rejected);
 }
 
 
