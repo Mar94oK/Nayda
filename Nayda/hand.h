@@ -20,6 +20,7 @@
 struct CardIsReadyToBePlayed {
     unsigned int cardID;
     SimpleCard card;
+    bool thereIsCardToBePulledDown = false;
 
 };
 

@@ -360,25 +360,58 @@ void Hand::_slotCardIsPreparedToBePlayedFromHand(unsigned int cardId)
 {
     //this is not work.
     //size().setHeight(size().height() + movingUpCardDelta *2);
-    qDebug() << "The Size Of Cards On Hands, Height: " << size().height();
+    //qDebug() << "The Size Of Cards On Hands, Height: " << size().height();
+
+    if (_cardIsReadyToBePlayed.thereIsCardToBePulledDown == true) {
+
+        if (_cardIsReadyToBePlayed.cardID == cardId) // Gamer pressed the same card for the second time! Play it, if possible!
+        {
+            qDebug() << "Trying to play the card! Send the card to The_Game check. ";
+
+            //returning the card to previous position!
+            QPoint currPos = _cardsVector[cardId]->pos();
+            _cardsVector[cardId]->move(currPos.x(), currPos.y() + movingUpCardDelta);
+
+            _cardIsReadyToBePlayed.thereIsCardToBePulledDown = false;
+        }
+        else {
+
+            //returning the previous card to previous position!
+            QPoint currPos = _cardsVector[_cardIsReadyToBePlayed.cardID]->pos();
+            _cardsVector[_cardIsReadyToBePlayed.cardID]->move(currPos.x(), currPos.y() + movingUpCardDelta); //returning the card to previous position!
+
+            //changing the new card's position! (debug). In real - to send the card to The_Game check;
+            currPos = _cardsVector[cardId]->pos();
+            _cardsVector[cardId]->move(currPos.x(), currPos.y() - movingUpCardDelta);
+
+            //rewrite the card to the special property
+            _cardIsReadyToBePlayed.card = _cardsOnHandsHandsWidgetProperty[cardId];
+            _cardIsReadyToBePlayed.cardID = cardId;
+            _cardIsReadyToBePlayed.thereIsCardToBePulledDown = true;
+
+        }
+
+    }
+    else {
+
+        QPoint currPos = _cardsVector[cardId]->pos();
+        _cardsVector[cardId]->move(currPos.x(), currPos.y() - movingUpCardDelta);
 
 
-    QPoint currPos = _cardsVector[cardId]->pos();
-    qDebug() << "Current Position of the button: " << currPos;
-    qDebug() << "Current Position of the button X: " << currPos.x();
-    qDebug() << "Current Position of the button X: " << currPos.y();
-    _cardsVector[cardId]->move(currPos.x(), currPos.y() - movingUpCardDelta);
+
+        //setting the cardToBeChecked;
+
+
+        _cardIsReadyToBePlayed.card = _cardsOnHandsHandsWidgetProperty[cardId];
+        _cardIsReadyToBePlayed.cardID = cardId;
+        _cardIsReadyToBePlayed.thereIsCardToBePulledDown = true;
+
+
+    }
 
 
 
-    //setting the cardToBeChecked;
 
-
-    _cardIsReadyToBePlayed.card = _cardsOnHandsHandsWidgetProperty[cardId];
-    _cardIsReadyToBePlayed.cardID = cardId;
-
-    //QWidget::adjustSize();
-    //emit adjustSize(true);
 
 
 }
