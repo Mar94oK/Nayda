@@ -338,7 +338,7 @@ The_Game::The_Game(QWidget *parent) :
     //change the Game Phase:
 
     //DEBUG!!!!
-    //_currentGamePhase = GamePhase::StartOfTheMove;
+    _currentGamePhase = GamePhase::StartOfTheMove;
 
 
     //trying to adjust the size of...
@@ -1983,6 +1983,7 @@ void The_Game::_slotCheckThePossibilityForTheCardToBePlayed(SimpleCard card)
         emit _signalCardIsRejectedToBePlayed(true);
 
     }
+    emit _signalCardIsRejectedToBePlayed(false);
 
 }
 
