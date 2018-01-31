@@ -357,6 +357,7 @@ The_Game::The_Game(QWidget *parent) :
     //create RejectedCard Message
 
     _rejectionCardMessage = new RejectedCardMessage();
+    _handCardPointer = new HandCardPointer();
 
 
 
@@ -2012,6 +2013,8 @@ void The_Game::_slotShowTheRejectedCardMessage(PositionedCard card)
     _rejectionCardMessage->setPopupText("Сейчас нельзя сыграть \n"
                                         "эту карту!");
     _rejectionCardMessage->show(card.positionTopLeft, card.positionBottomRight);
+    _handCardPointer->setUpHandCardPointer(card.positionTopLeft, card.positionBottomRight);
+    _handCardPointer->show(card.positionTopLeft, card.positionBottomRight);
 
 }
 

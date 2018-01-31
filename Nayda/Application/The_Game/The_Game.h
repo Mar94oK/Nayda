@@ -21,6 +21,7 @@
 #include "popupcard.h"
 #include "trianglecardpointer.h"
 #include "rejectedcardmessage.h"
+#include "handcardpointer.h"
 
 
 #define PC_VERSION //begin with PC
@@ -354,6 +355,7 @@ signals:
 private:
 
     RejectedCardMessage* _rejectionCardMessage;
+    HandCardPointer* _handCardPointer;
 
 private slots:
 

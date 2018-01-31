@@ -43,7 +43,8 @@ SOURCES += main.cpp\
     trianglecardpointer.cpp \
     cardstacks.cpp \
     handsecondaryplayer.cpp \
-    rejectedcardmessage.cpp
+    rejectedcardmessage.cpp \
+    handcardpointer.cpp
 
 HEADERS  += main_application.h \
     Application/Before_The_Game/Before_The_Game.h \
@@ -63,7 +64,8 @@ HEADERS  += main_application.h \
     trianglecardpointer.h \
     cardstacks.h \
     handsecondaryplayer.h \
-    rejectedcardmessage.h
+    rejectedcardmessage.h \
+    handcardpointer.h
 
 FORMS    += main_application.ui \
     Application/Before_The_Game/Before_The_Game.ui \
@@ -78,4 +80,5 @@ FORMS    += main_application.ui \
     trianglecardpointer.ui \
     cardstacks.ui \
     handsecondaryplayer.ui \
-    rejectedcardmessage.ui
+    rejectedcardmessage.ui \
+    handcardpointer.ui
