@@ -46,7 +46,13 @@ RejectedCardMessage::RejectedCardMessage(QWidget *parent) :
 
     connect(timer, &QTimer::timeout, this, &RejectedCardMessage::hideAnimation);
 
+    label.setStyleSheet("QLabel{background:transparent;"
+                        "color:#0000FF;"
+                        "font:15pt;"
+                        "font:bold;"
+                        "font:Courier;}");
 
+    //FF0033
 }
 
 
@@ -85,7 +91,7 @@ void RejectedCardMessage::paintEvent(QPaintEvent *event)
     // Кисть настраиваем на чёрный цвет в режиме полупрозрачности 180 из 255
     //painter.setBrush(QBrush(QColor(0,0,0,180)));
     //Шафраново-жёлтый	  0  30  70   0	  0  30  90   0	#F4B752	244 183  82
-    painter.setBrush(QBrush(QColor(244,183,82,150)));
+    painter.setBrush(QBrush(QColor(244,183,82,100)));
 
     painter.setPen(Qt::NoPen); // Край уведомления не будет выделен
 
@@ -104,6 +110,7 @@ void RejectedCardMessage::paintEvent(QPaintEvent *event)
 
 void RejectedCardMessage::setPopupText(const QString &text)
 {
+    label.setWordWrap(true);
     label.setText(text);    // Устанавливаем текст в Label
     adjustSize();           // С пересчётом размеров уведомления
 }

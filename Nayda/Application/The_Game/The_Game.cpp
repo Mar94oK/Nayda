@@ -349,7 +349,8 @@ The_Game::The_Game(QWidget *parent) :
             this, &The_Game::_slotCheckThePossibilityForTheCardToBePlayed);
 
     //pass the answer form The_Game card check back to the Hand
-    connect(this, &The_Game::_signalCardIsRejectedToBePlayed, ui->MainGamer, &GamerWidget::_slotCardIsRejectedToBePlayed);
+    connect(this, &The_Game::_signalCardIsRejectedToBePlayed,
+            ui->MainGamer, &GamerWidget::_slotCardIsRejectedToBePlayed);
 
 
 
@@ -1994,13 +1995,22 @@ void The_Game::_slotCheckThePossibilityForTheCardToBePlayed(PositionedCard card)
 
 
     }
-    emit _signalCardIsRejectedToBePlayed(false);
+    else {
+
+        emit _signalCardIsRejectedToBePlayed(false);
+
+    }
+
 
 }
 
 void The_Game::_slotShowTheRejectedCardMessage(PositionedCard card)
 {
-    _rejectionCardMessage->setPopupText("Sorry! The Card Can not be played Now!");
+//    _rejectionCardMessage->setPopupText("The Card Can not be played \n"
+//                                        "Now!");
+
+    _rejectionCardMessage->setPopupText("Сейчас нельзя сыграть \n"
+                                        "эту карту!");
     _rejectionCardMessage->show(card.positionTopLeft, card.positionBottomRight);
 
 }
