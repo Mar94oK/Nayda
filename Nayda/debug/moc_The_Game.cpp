@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_The_Game_t {
-    QByteArrayData data[13];
-    char stringdata0[301];
+    QByteArrayData data[14];
+    char stringdata0[333];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -43,7 +43,8 @@ QT_MOC_LITERAL(8, 166, 14), // "PositionedCard"
 QT_MOC_LITERAL(9, 181, 4), // "card"
 QT_MOC_LITERAL(10, 186, 19), // "hideTheCardInCentre"
 QT_MOC_LITERAL(11, 206, 49), // "_adjustSizeOfTheGamerWidgetTo..."
-QT_MOC_LITERAL(12, 256, 44) // "_slotCheckThePossibilityForTh..."
+QT_MOC_LITERAL(12, 256, 44), // "_slotCheckThePossibilityForTh..."
+QT_MOC_LITERAL(13, 301, 31) // "_slotShowTheRejectedCardMessage"
 
     },
     "The_Game\0dbg_to_be_shown\0\0"
@@ -54,7 +55,8 @@ QT_MOC_LITERAL(12, 256, 44) // "_slotCheckThePossibilityForTh..."
     "showTheCardInCentre\0PositionedCard\0"
     "card\0hideTheCardInCentre\0"
     "_adjustSizeOfTheGamerWidgetToMakeCardsToBeInPlace\0"
-    "_slotCheckThePossibilityForTheCardToBePlayed"
+    "_slotCheckThePossibilityForTheCardToBePlayed\0"
+    "_slotShowTheRejectedCardMessage"
 };
 #undef QT_MOC_LITERAL
 
@@ -64,7 +66,7 @@ static const uint qt_meta_data_The_Game[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-       9,   14, // methods
+      10,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -72,17 +74,18 @@ static const uint qt_meta_data_The_Game[] = {
        3,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    1,   59,    2, 0x06 /* Public */,
-       3,    1,   62,    2, 0x06 /* Public */,
-       4,    1,   65,    2, 0x06 /* Public */,
+       1,    1,   64,    2, 0x06 /* Public */,
+       3,    1,   67,    2, 0x06 /* Public */,
+       4,    1,   70,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-       5,    0,   68,    2, 0x0a /* Public */,
-       6,    0,   69,    2, 0x0a /* Public */,
-       7,    1,   70,    2, 0x0a /* Public */,
-      10,    1,   73,    2, 0x0a /* Public */,
-      11,    0,   76,    2, 0x0a /* Public */,
-      12,    1,   77,    2, 0x0a /* Public */,
+       5,    0,   73,    2, 0x0a /* Public */,
+       6,    0,   74,    2, 0x0a /* Public */,
+       7,    1,   75,    2, 0x0a /* Public */,
+      10,    1,   78,    2, 0x0a /* Public */,
+      11,    0,   81,    2, 0x0a /* Public */,
+      12,    1,   82,    2, 0x0a /* Public */,
+      13,    1,   85,    2, 0x08 /* Private */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::Bool,    2,
@@ -96,6 +99,7 @@ static const uint qt_meta_data_The_Game[] = {
     QMetaType::Void, QMetaType::Bool,    2,
     QMetaType::Void,
     QMetaType::Void, 0x80000000 | 8,    9,
+    QMetaType::Void, 0x80000000 | 8,    2,
 
        0        // eod
 };
@@ -115,6 +119,7 @@ void The_Game::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, vo
         case 6: _t->hideTheCardInCentre((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 7: _t->_adjustSizeOfTheGamerWidgetToMakeCardsToBeInPlace(); break;
         case 8: _t->_slotCheckThePossibilityForTheCardToBePlayed((*reinterpret_cast< PositionedCard(*)>(_a[1]))); break;
+        case 9: _t->_slotShowTheRejectedCardMessage((*reinterpret_cast< PositionedCard(*)>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -169,13 +174,13 @@ int The_Game::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 9)
+        if (_id < 10)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 9;
+        _id -= 10;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 9)
+        if (_id < 10)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 9;
+        _id -= 10;
     }
     return _id;
 }

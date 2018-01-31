@@ -62,15 +62,15 @@ void RejectedCardMessage::paintEvent(QPaintEvent *event)
 
     // Подготавливаем фон. rect() возвращает внутреннюю геометрию виджета уведомления, по содержимому
     QRect roundedRect;
-    //roundedRect.setX(rect().x() + 5);
-    //roundedRect.setY(rect().y() + 5);
-    roundedRect.setX(rect().x());
-    roundedRect.setY(rect().y());
+    roundedRect.setX(rect().x() + 5);
+    roundedRect.setY(rect().y() + 5);
+//    roundedRect.setX(rect().x());
+//    roundedRect.setY(rect().y());
 
-    roundedRect.setWidth(rect().width());
-    roundedRect.setHeight(rect().height());
-    //roundedRect.setWidth(rect().width() - 10);
-    //roundedRect.setHeight(rect().height() - 10);
+//    roundedRect.setWidth(rect().width());
+//    roundedRect.setHeight(rect().height());
+    roundedRect.setWidth(rect().width() - 10);
+    roundedRect.setHeight(rect().height() - 10);
 
     QRect normalRect;
 
@@ -93,8 +93,8 @@ void RejectedCardMessage::paintEvent(QPaintEvent *event)
     //painter.drawRoundedRect(roundedRect, 10, 10);
     //painter.drawRoundedRect(roundedRect, 5, 5);
 
-    painter.drawRect(normalRect);
-
+    //painter.drawRect(normalRect);
+    painter.drawRoundedRect(roundedRect, 10, 10);
 
 
 
@@ -128,7 +128,7 @@ void RejectedCardMessage::show()
     animation.start();              // И запускаем анимацию
 
 #ifdef HIDE_THE_CARD_REJECTED_MESSAGE_ON_TIMEOUT
-    timer->start(5000);             // А также стартуем таймер, который запустит скрытие уведомления через 3 секунды
+    timer->start(1500);             // А также стартуем таймер, который запустит скрытие уведомления через 3 секунды
 #endif
 
 
@@ -186,7 +186,7 @@ void RejectedCardMessage::show(QPoint positionTopLeft, QPoint positionBottomRigh
     animation.start();              // И запускаем анимацию
 
 #ifdef HIDE_THE_CARD_REJECTED_MESSAGE_ON_TIMEOUT
-    timer->start(5000);             // А также стартуем таймер, который запустит скрытие уведомления через 3 секунды
+    timer->start(1500);             // А также стартуем таймер, который запустит скрытие уведомления через 3 секунды
 #endif
 
 

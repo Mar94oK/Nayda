@@ -355,6 +355,10 @@ private:
 
     RejectedCardMessage* _rejectionCardMessage;
 
+private slots:
+
+    void _slotShowTheRejectedCardMessage(PositionedCard);
+
 };
 
 

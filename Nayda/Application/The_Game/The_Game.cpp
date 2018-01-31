@@ -335,10 +335,7 @@ The_Game::The_Game(QWidget *parent) :
 
 
 
-    //change the Game Phase:
 
-    //DEBUG!!!!
-    _currentGamePhase = GamePhase::StartOfTheMove;
 
 
     //trying to adjust the size of...
@@ -353,6 +350,20 @@ The_Game::The_Game(QWidget *parent) :
 
     //pass the answer form The_Game card check back to the Hand
     connect(this, &The_Game::_signalCardIsRejectedToBePlayed, ui->MainGamer, &GamerWidget::_slotCardIsRejectedToBePlayed);
+
+
+
+    //create RejectedCard Message
+
+    _rejectionCardMessage = new RejectedCardMessage();
+
+
+
+
+    //change the Game Phase:
+
+    //DEBUG!!!!
+    _currentGamePhase = GamePhase::GameInitialization;
 
 
 }
@@ -1950,11 +1961,7 @@ void The_Game::showTheCardInCentre(PositionedCard card)
 
 }
 
-//void The_Game::showTheCardNearItsPosition(PositionedCard card)
-//{
-//    _popUpCardWidget->setUpPopUpCard(card.card);
-//    _popUpCardWidget->show(card.positionTopLeft, card.positionBottomRight);
-//}
+
 
 void The_Game::hideTheCardInCentre(bool)
 {
@@ -1982,8 +1989,19 @@ void The_Game::_slotCheckThePossibilityForTheCardToBePlayed(PositionedCard card)
 
         emit _signalCardIsRejectedToBePlayed(true);
 
+        //show the Rejection Message for the Card
+        _slotShowTheRejectedCardMessage(card);
+
+
     }
     emit _signalCardIsRejectedToBePlayed(false);
+
+}
+
+void The_Game::_slotShowTheRejectedCardMessage(PositionedCard card)
+{
+    _rejectionCardMessage->setPopupText("Sorry! The Card Can not be played Now!");
+    _rejectionCardMessage->show(card.positionTopLeft, card.positionBottomRight);
 
 }
 
@@ -2007,9 +2025,5 @@ void The_Game::setTreasuresLeft(unsigned int treasuresLeft)
     _treasuresLeft = treasuresLeft;
 }
 
-//void The_Game::hideTheCardNearItsPosition(bool)
-//{
-//    _popUpCardWidget->hideAnimation();
-//}
 
 
