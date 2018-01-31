@@ -299,10 +299,7 @@ void Hand::_showTheCardInCentreSlot()
     emit _showTheCard(_currentCardToShowNearItsPosition);
 }
 
-//void Hand::_showTheCardNearItsPositionSlot()
-//{
-//    emit _showTheCardNearItsPosition(_currentCardToShowNearItsPosition);
-//}
+
 
 bool Hand::eventFilter(QObject *o, QEvent *e)
 {
