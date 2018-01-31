@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_The_Game_t {
-    QByteArrayData data[14];
-    char stringdata0[312];
+    QByteArrayData data[13];
+    char stringdata0[301];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -43,8 +43,7 @@ QT_MOC_LITERAL(8, 166, 14), // "PositionedCard"
 QT_MOC_LITERAL(9, 181, 4), // "card"
 QT_MOC_LITERAL(10, 186, 19), // "hideTheCardInCentre"
 QT_MOC_LITERAL(11, 206, 49), // "_adjustSizeOfTheGamerWidgetTo..."
-QT_MOC_LITERAL(12, 256, 44), // "_slotCheckThePossibilityForTh..."
-QT_MOC_LITERAL(13, 301, 10) // "SimpleCard"
+QT_MOC_LITERAL(12, 256, 44) // "_slotCheckThePossibilityForTh..."
 
     },
     "The_Game\0dbg_to_be_shown\0\0"
@@ -55,8 +54,7 @@ QT_MOC_LITERAL(13, 301, 10) // "SimpleCard"
     "showTheCardInCentre\0PositionedCard\0"
     "card\0hideTheCardInCentre\0"
     "_adjustSizeOfTheGamerWidgetToMakeCardsToBeInPlace\0"
-    "_slotCheckThePossibilityForTheCardToBePlayed\0"
-    "SimpleCard"
+    "_slotCheckThePossibilityForTheCardToBePlayed"
 };
 #undef QT_MOC_LITERAL
 
@@ -97,7 +95,7 @@ static const uint qt_meta_data_The_Game[] = {
     QMetaType::Void, 0x80000000 | 8,    9,
     QMetaType::Void, QMetaType::Bool,    2,
     QMetaType::Void,
-    QMetaType::Void, 0x80000000 | 13,    9,
+    QMetaType::Void, 0x80000000 | 8,    9,
 
        0        // eod
 };
@@ -116,7 +114,7 @@ void The_Game::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, vo
         case 5: _t->showTheCardInCentre((*reinterpret_cast< PositionedCard(*)>(_a[1]))); break;
         case 6: _t->hideTheCardInCentre((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 7: _t->_adjustSizeOfTheGamerWidgetToMakeCardsToBeInPlace(); break;
-        case 8: _t->_slotCheckThePossibilityForTheCardToBePlayed((*reinterpret_cast< SimpleCard(*)>(_a[1]))); break;
+        case 8: _t->_slotCheckThePossibilityForTheCardToBePlayed((*reinterpret_cast< PositionedCard(*)>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {

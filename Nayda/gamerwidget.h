@@ -208,11 +208,11 @@ signals:
 
 public slots:
 
-    void _slotSendTheCardToTheGameCheck(SimpleCard card);
+    void _slotSendTheCardToTheGameCheck(PositionedCard card);
 
 signals:
 
-    void _signalSendTheCardToTheGameCheck(SimpleCard);
+    void _signalSendTheCardToTheGameCheck(PositionedCard);
 
 public slots:
 

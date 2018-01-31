@@ -366,7 +366,16 @@ void Hand::_slotCardIsPreparedToBePlayedFromHand(unsigned int cardId)
             qDebug() << "Trying to play the card! Send the card to The_Game check. ";
 
             //send the card to the Game check;
-            emit _cardIsSendedToTheGameCheck(_cardIsReadyToBePlayed.card);
+
+            PositionedCard cardToBeSendForTheCheck;
+            cardToBeSendForTheCheck.card = _cardIsReadyToBePlayed.card;
+
+            cardToBeSendForTheCheck.positionTopLeft = { QWidget::mapToGlobal(_cardsVector[cardId]->pos()).x(),
+                                         QWidget::mapToGlobal(_cardsVector[cardId]->pos()).y()};
+            cardToBeSendForTheCheck.positionBottomRight = { QWidget::mapToGlobal(_cardsVector[cardId]->pos()).x() + _cardsVector[cardId]->width(),
+                                             QWidget::mapToGlobal(_cardsVector[cardId]->pos()).y() + _cardsVector[cardId]->height()};
+
+            emit _cardIsSendedToTheGameCheck(cardToBeSendForTheCheck);
 
             //Debug only...
             //returning the card to previous position!
@@ -421,4 +430,9 @@ void Hand::_slotCardIsRejectedToBePlayed(bool rejected)
 {
     qDebug() << "Is card rejected to be Played? " <<
                 (rejected ? "Yes, it was! " : "Not, it wasn't");
+
+    //if we are here, we can be sure that there's card in the
+    // "_cardIsReadyToBePlayed"
+
+
 }

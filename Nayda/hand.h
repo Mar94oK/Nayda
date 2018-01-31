@@ -10,7 +10,7 @@
 #include <QDebug>
 #include <QTimer>
 #include <QPoint>
-//#include <QApllication>
+#include <rejectedcardmessage.h>
 
 
 //defines of how many pixels to move the card on Hand upper to be ready for being played.
@@ -150,7 +150,7 @@ signals:
 
     void adjustSize(bool);
 
-    void _cardIsSendedToTheGameCheck(SimpleCard card);
+    void _cardIsSendedToTheGameCheck(PositionedCard card);
 
 public slots:
 

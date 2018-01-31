@@ -500,7 +500,7 @@ void GamerWidget::_adjustSizeSlot()
     emit _signalAdjustSize(true);
 }
 
-void GamerWidget::_slotSendTheCardToTheGameCheck(SimpleCard card)
+void GamerWidget::_slotSendTheCardToTheGameCheck(PositionedCard card)
 {
     emit _signalSendTheCardToTheGameCheck(card);
 }

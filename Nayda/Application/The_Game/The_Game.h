@@ -20,6 +20,7 @@
 
 #include "popupcard.h"
 #include "trianglecardpointer.h"
+#include "rejectedcardmessage.h"
 
 
 #define PC_VERSION //begin with PC
@@ -337,7 +338,7 @@ public slots:
 
 public slots:
 
-    void _slotCheckThePossibilityForTheCardToBePlayed(SimpleCard card);
+    void _slotCheckThePossibilityForTheCardToBePlayed(PositionedCard card);
 
 signals:
 
@@ -348,6 +349,11 @@ signals:
     void _signalCardIsRejectedToBePlayed(bool); //not necessary to send the card back;
                                             //the Hand property "CardIsReadyToBePlayed" is saving the current card;
 
+
+
+private:
+
+    RejectedCardMessage* _rejectionCardMessage;
 
 };
 

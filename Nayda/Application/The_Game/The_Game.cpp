@@ -1968,7 +1968,7 @@ void The_Game::_adjustSizeOfTheGamerWidgetToMakeCardsToBeInPlace()
 
 }
 
-void The_Game::_slotCheckThePossibilityForTheCardToBePlayed(SimpleCard card)
+void The_Game::_slotCheckThePossibilityForTheCardToBePlayed(PositionedCard card)
 {
     qDebug() << "The Card is checking!!!";
 
