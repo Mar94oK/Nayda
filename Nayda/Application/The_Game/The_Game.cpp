@@ -2016,6 +2016,185 @@ void The_Game::_slotShowTheRejectedCardMessage(PositionedCard card)
     _handCardPointer->setUpHandCardPointer(card.positionTopLeft, card.positionBottomRight);
     _handCardPointer->show(card.positionTopLeft, card.positionBottomRight);
 
+    //testing
+
+    _passTheCardToTheBattleField(card);
+
+}
+
+void The_Game::_passTheCardToTheBattleField(PositionedCard card)
+{
+    _movingCard = new QPushButton();
+    _movingCard->move(card.positionTopLeft.x(), card.positionTopLeft.y());
+     int sizeX = card.positionBottomRight.x() - card.positionTopLeft.x() ;
+     int sizeY = card.positionBottomRight.y() - card.positionTopLeft.y();
+
+    qDebug() << "Size of the Card during moving: X: " << sizeX;
+    qDebug() << "Size of the Card during moving: Y: " << sizeY;
+
+    QString picture = findTheCardPicture(card.card);
+
+    QPixmap pxmp_movingCard(picture);
+    QPalette plte_movingCard;
+    plte_movingCard.setBrush(_movingCard->backgroundRole(),
+    QBrush(pxmp_movingCard.scaled(sizeX, sizeY, Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
+
+    _movingCard->setMaximumWidth(sizeX);
+    _movingCard->setMaximumHeight(sizeY);
+    _movingCard->setMinimumWidth(sizeX);
+    _movingCard->setMinimumHeight(sizeY);
+
+    //http://www.prog.org.ru/topic_7215_0.html
+
+
+    _movingCard->setFlat(true);
+    _movingCard->setAutoFillBackground(true);
+    _movingCard->setPalette(plte_movingCard);
+    _movingCard->setText("");
+    //_movingCard->installEventFilter(this);
+
+    _movingCard->show();
+
+
+    QPropertyAnimation *animation = new QPropertyAnimation(_movingCard, "geometry");
+    animation->setDuration(10000);
+    animation->setStartValue(QRect(card.positionTopLeft.x(), card.positionTopLeft.y(), sizeX, sizeY));
+    animation->setEndValue(QRect(width()/2, height()/2, sizeX, sizeY));
+
+
+    animation->start();
+
+
+
+
+
+}
+
+QString The_Game::findTheCardPicture(SimpleCard card)
+{
+    std::map<int, gameCardDoorMonster> :: const_iterator  _monstersIterator;
+    std::map<int, gameCardDoorAmplifier> :: const_iterator _amplifiersIterator;
+    std::map<int, gameCardDoorCurse> :: const_iterator _cursesIterator;
+    std::map<int, gameCardDoorProfession> :: const_iterator _professionsIterator;
+    std::map<int, gameCardDoorRace> :: const_iterator _racesIterator;
+    std::map<int, gameCardDoorSpecialMechanic> :: const_iterator _specialMechanicsIterator;
+
+    std::map<int, gameCardTreasureArmor> :: const_iterator _armorIterator;
+    std::map<int, gameCardTreasureArmorAmplifier> :: const_iterator _armorAmplifiersIterator;
+    std::map<int, gameCardTreasureBattleAmplifier> :: const_iterator _battleAmplifiersIterator;
+    std::map<int, gameCardTreasureLevelUp> :: const_iterator _levelUpIterator;
+    std::map<int, gameCardTreasureSpecialMechanic> :: const_iterator _specialMechanicsTreasureIterator;
+    std::map<int, gameCardTreasureThingsAmplifiers> :: const_iterator _thingsAmplifiersIterator;
+    std::map<int, gameCardTreasureWeapon> :: const_iterator _weaponsIterator;
+
+    QString currentPictureAddress;
+    bool isFound = false;
+    if (!card.first) { //door
+
+        _monstersIterator = _monstersDeck.find(static_cast <int> (card.second));
+        if (_monstersIterator != _monstersDeck.end()) {
+            currentPictureAddress = (*_monstersIterator).second.pictureAddress();
+            isFound = true;
+        }
+        if (!isFound) {
+            _amplifiersIterator = _amplifiersDeck.find(static_cast <int> (card.second));
+            if (_amplifiersIterator != _amplifiersDeck.end()) {
+                currentPictureAddress = (*_amplifiersIterator).second.pictureAddress();
+                isFound = true;
+            }
+        }
+        if (!isFound) {
+            _cursesIterator = _cursesDeck.find(static_cast <int> (card.second));
+            if (_cursesIterator != _cursesDeck.end()) {
+                currentPictureAddress = (*_cursesIterator).second.pictureAddress();
+                isFound = true;
+            }
+        }
+        if (!isFound) {
+            _professionsIterator = _professionsDeck.find(static_cast <int> (card.second));
+            if (_professionsIterator != _professionsDeck.end()) {
+                currentPictureAddress = (*_professionsIterator).second.pictureAddress();
+                isFound = true;
+            }
+        }
+        if (!isFound) {
+            _racesIterator = _racesDeck.find(static_cast <int> (card.second));
+            if (_racesIterator != _racesDeck.end()) {
+                currentPictureAddress = (*_racesIterator).second.pictureAddress();
+                isFound = true;
+            }
+        }
+        if (!isFound) {
+            _specialMechanicsIterator = _specialMechanicsDeck.find(static_cast <int> (card.second));
+            if (_specialMechanicsIterator != _specialMechanicsDeck.end()) {
+                currentPictureAddress = (*_specialMechanicsIterator).second.pictureAddress();
+                isFound = true;
+            }
+        }
+
+
+
+
+
+    }
+    else { //treasure
+
+
+        _armorIterator = _armorDeck.find(static_cast <int> (card.second));
+        if (_armorIterator != _armorDeck.end()) {
+            currentPictureAddress = (*_armorIterator).second.pictureAddress();
+            isFound = true;
+        }
+        if (!isFound) {
+            _armorAmplifiersIterator = _armorAmplifiersDeck.find(static_cast <int> (card.second));
+            if (_armorAmplifiersIterator != _armorAmplifiersDeck.end()) {
+                currentPictureAddress = (*_armorAmplifiersIterator).second.pictureAddress();
+                isFound = true;
+            }
+        }
+        if (!isFound) {
+            _battleAmplifiersIterator = _battleAmplifiersDeck.find(static_cast <int> (card.second));
+            if (_battleAmplifiersIterator != _battleAmplifiersDeck.end()) {
+                currentPictureAddress = (*_battleAmplifiersIterator).second.pictureAddress();
+                isFound = true;
+            }
+        }
+        if (!isFound) {
+            _levelUpIterator = _levelUpDeck.find(static_cast <int> (card.second));
+            if (_levelUpIterator != _levelUpDeck.end()) {
+                currentPictureAddress = (*_levelUpIterator).second.pictureAddress();
+                isFound = true;
+            }
+        }
+        if (!isFound) {
+            _specialMechanicsTreasureIterator = _specialMechanicsTreasureDeck.find(static_cast <int> (card.second));
+            if (_specialMechanicsTreasureIterator != _specialMechanicsTreasureDeck.end()) {
+                currentPictureAddress = (*_specialMechanicsTreasureIterator).second.pictureAddress();
+                isFound = true;
+            }
+        }
+        if (!isFound) {
+            _thingsAmplifiersIterator = _thingsAmplifiersDeck.find(static_cast <int> (card.second));
+            if (_thingsAmplifiersIterator != _thingsAmplifiersDeck.end()) {
+                currentPictureAddress = (*_thingsAmplifiersIterator).second.pictureAddress();
+                isFound = true;
+            }
+        }
+        if (!isFound) {
+            _weaponsIterator = _weaponsDeck.find(static_cast <int> (card.second));
+            if (_weaponsIterator != _weaponsDeck.end()) {
+                currentPictureAddress = (*_weaponsIterator).second.pictureAddress();
+                isFound = true;
+            }
+        }
+
+
+
+
+    }
+
+
+    return currentPictureAddress;
 }
 
 unsigned int The_Game::doorsLeft() const

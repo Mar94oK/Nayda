@@ -23,6 +23,8 @@
 #include "rejectedcardmessage.h"
 #include "handcardpointer.h"
 
+#include <QPropertyAnimation>
+
 
 #define PC_VERSION //begin with PC
 #define DEBUG_MESSAGES //start with debug enabled
@@ -360,6 +362,17 @@ private:
 private slots:
 
     void _slotShowTheRejectedCardMessage(PositionedCard);
+
+private:
+
+    QPushButton* _movingCard;
+
+    void _passTheCardToTheBattleField(PositionedCard);
+
+public:
+
+    QString findTheCardPicture(SimpleCard);
+
 
 };
 
