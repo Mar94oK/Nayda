@@ -379,8 +379,8 @@ void Hand::_slotCardIsPreparedToBePlayedFromHand(unsigned int cardId)
 
             //Debug only...
             //returning the card to previous position!
-            QPoint currPos = _cardsVector[cardId]->pos();
-            _cardsVector[cardId]->move(currPos.x(), currPos.y() + movingUpCardDelta);
+//            QPoint currPos = _cardsVector[cardId]->pos();
+//            _cardsVector[cardId]->move(currPos.x(), currPos.y() + movingUpCardDelta);
 
             _cardIsReadyToBePlayed.thereIsCardToBePulledDown = false;
         }
@@ -435,4 +435,37 @@ void Hand::_slotCardIsRejectedToBePlayed(bool rejected)
     // "_cardIsReadyToBePlayed"
 
 
+    //up to be debugged!
+    if (rejected) {
+        //_removeCardFromHand(_cardIsReadyToBePlayed.card);
+        //_cardIsReadyToBePlayed.thereIsCardToBePulledDown = false;
+
+    }
+
+
+}
+
+void Hand::_removeCardFromHand(SimpleCard card)
+{
+    int position = 0;
+    for (int var = 0; var < _cardsOnHandsHandsWidgetProperty.size(); ++var) {
+
+        if (((_cardsOnHandsHandsWidgetProperty[var]).first == card.first)
+                && ((_cardsOnHandsHandsWidgetProperty[var]).first == card.first)) {
+        position = var;
+        _cardsOnHandsHandsWidgetProperty.erase(_cardsOnHandsHandsWidgetProperty.begin() + var);
+        _cardsOnHandsHandsWidgetProperty.shrink_to_fit();
+
+     }
+
+
+    }
+
+    _cardsVector[position]->deleteLater();
+
+    _cardsVector.erase(_cardsVector.begin() + position);
+    _cardsVector.shrink_to_fit();
+
+
+    qDebug() << "The card is removed from Hands!" ;
 }

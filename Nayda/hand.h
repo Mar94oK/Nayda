@@ -157,6 +157,11 @@ public slots:
     void _slotCardIsRejectedToBePlayed(bool rejected);
 
 
+public slots:
+
+    void _removeCardFromHand(SimpleCard card);
+
+
 
 };
 
