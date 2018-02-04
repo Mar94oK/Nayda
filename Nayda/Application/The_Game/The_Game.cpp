@@ -367,6 +367,9 @@ The_Game::The_Game(QWidget *parent) :
     //DEBUG!!!!
     _currentGamePhase = GamePhase::GameInitialization;
 
+    //DEBUG!!!!
+    _currentGamePhase = GamePhase::StartOfTheMove;
+
 
 }
 
@@ -1998,6 +2001,9 @@ void The_Game::_slotCheckThePossibilityForTheCardToBePlayed(PositionedCard card)
     }
     else {
 
+        //testing
+
+        _passTheCardToTheBattleField(card);
         emit _signalCardIsRejectedToBePlayed(false);
 
     }
@@ -2016,9 +2022,7 @@ void The_Game::_slotShowTheRejectedCardMessage(PositionedCard card)
     _handCardPointer->setUpHandCardPointer(card.positionTopLeft, card.positionBottomRight);
     _handCardPointer->show(card.positionTopLeft, card.positionBottomRight);
 
-    //testing
 
-    _passTheCardToTheBattleField(card);
 
 }
 

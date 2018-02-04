@@ -375,14 +375,19 @@ void Hand::_slotCardIsPreparedToBePlayedFromHand(unsigned int cardId)
             cardToBeSendForTheCheck.positionBottomRight = { QWidget::mapToGlobal(_cardsVector[cardId]->pos()).x() + _cardsVector[cardId]->width(),
                                              QWidget::mapToGlobal(_cardsVector[cardId]->pos()).y() + _cardsVector[cardId]->height()};
 
-            emit _cardIsSendedToTheGameCheck(cardToBeSendForTheCheck);
+
 
             //Debug only...
             //returning the card to previous position!
-//            QPoint currPos = _cardsVector[cardId]->pos();
-//            _cardsVector[cardId]->move(currPos.x(), currPos.y() + movingUpCardDelta);
+            QPoint currPos = _cardsVector[cardId]->pos();
+            _cardsVector[cardId]->move(currPos.x(), currPos.y() + movingUpCardDelta);
 
             _cardIsReadyToBePlayed.thereIsCardToBePulledDown = false;
+
+
+            emit _cardIsSendedToTheGameCheck(cardToBeSendForTheCheck);
+
+
         }
         else {
 
@@ -436,9 +441,9 @@ void Hand::_slotCardIsRejectedToBePlayed(bool rejected)
 
 
     //up to be debugged!
-    if (rejected) {
-        //_removeCardFromHand(_cardIsReadyToBePlayed.card);
-        //_cardIsReadyToBePlayed.thereIsCardToBePulledDown = false;
+    if (!rejected) {
+        _removeCardFromHand(_cardIsReadyToBePlayed.card);
+        _cardIsReadyToBePlayed.thereIsCardToBePulledDown = false;
 
     }
 
