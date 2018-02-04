@@ -2024,7 +2024,7 @@ void The_Game::_slotShowTheRejectedCardMessage(PositionedCard card)
 
 void The_Game::_passTheCardToTheBattleField(PositionedCard card)
 {
-    _movingCard = new QPushButton();
+    QPushButton* _movingCard = new QPushButton("Animated Button", this);
     _movingCard->move(card.positionTopLeft.x(), card.positionTopLeft.y());
      int sizeX = card.positionBottomRight.x() - card.positionTopLeft.x() ;
      int sizeY = card.positionBottomRight.y() - card.positionTopLeft.y();
@@ -2037,7 +2037,7 @@ void The_Game::_passTheCardToTheBattleField(PositionedCard card)
     QPixmap pxmp_movingCard(picture);
     QPalette plte_movingCard;
     plte_movingCard.setBrush(_movingCard->backgroundRole(),
-    QBrush(pxmp_movingCard.scaled(sizeX, sizeY, Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
+    QBrush(pxmp_movingCard.scaled(sizeX, sizeY, Qt::KeepAspectRatio, Qt::SmoothTransformation)));
 
     _movingCard->setMaximumWidth(sizeX);
     _movingCard->setMaximumHeight(sizeY);
@@ -2057,12 +2057,14 @@ void The_Game::_passTheCardToTheBattleField(PositionedCard card)
 
 
     QPropertyAnimation *animation = new QPropertyAnimation(_movingCard, "geometry");
-    animation->setDuration(10000);
+    animation->setDuration(1000);
     animation->setStartValue(QRect(card.positionTopLeft.x(), card.positionTopLeft.y(), sizeX, sizeY));
     animation->setEndValue(QRect(width()/2, height()/2, sizeX, sizeY));
+    animation->setEasingCurve(QEasingCurve::Linear);
 
+    //setWindowFlags(Qt::CustomizeWindowHint);
 
-    animation->start();
+    animation->start(QAbstractAnimation::DeleteWhenStopped);
 
 
 

@@ -24,7 +24,7 @@
 #include "handcardpointer.h"
 
 #include <QPropertyAnimation>
-
+#include <QAbstractAnimation>
 
 #define PC_VERSION //begin with PC
 #define DEBUG_MESSAGES //start with debug enabled
@@ -365,7 +365,7 @@ private slots:
 
 private:
 
-    QPushButton* _movingCard;
+    //QPushButton* _movingCard;
 
     void _passTheCardToTheBattleField(PositionedCard);
 
