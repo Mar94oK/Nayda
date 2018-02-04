@@ -2057,14 +2057,18 @@ void The_Game::_passTheCardToTheBattleField(PositionedCard card)
 
 
     QPropertyAnimation *animation = new QPropertyAnimation(_movingCard, "geometry");
-    animation->setDuration(1000);
+    animation->setDuration(3000);
     animation->setStartValue(QRect(card.positionTopLeft.x(), card.positionTopLeft.y(), sizeX, sizeY));
     animation->setEndValue(QRect(width()/2, height()/2, sizeX, sizeY));
-    animation->setEasingCurve(QEasingCurve::Linear);
+    animation->setEasingCurve(QEasingCurve::OutCubic);
 
     //setWindowFlags(Qt::CustomizeWindowHint);
 
     animation->start(QAbstractAnimation::DeleteWhenStopped);
+
+    connect(animation, &QPropertyAnimation::finished,
+            _movingCard, &QPushButton::deleteLater);
+    //_movingCard->deleteLater();
 
 
 
