@@ -2041,10 +2041,10 @@ void The_Game::_passTheCardToTheBattleField(PositionedCard card)
     QPixmap pxmp_movingCard(picture);
     QPalette plte_movingCard;
     plte_movingCard.setBrush(_movingCard->backgroundRole(),
-    QBrush(pxmp_movingCard.scaled(sizeX, sizeY, Qt::KeepAspectRatio, Qt::SmoothTransformation)));
+    QBrush(pxmp_movingCard.scaled(sizeX*2, sizeY*2, Qt::KeepAspectRatio, Qt::SmoothTransformation)));
 
-    _movingCard->setMaximumWidth(sizeX);
-    _movingCard->setMaximumHeight(sizeY);
+    _movingCard->setMaximumWidth(sizeX*2);
+    _movingCard->setMaximumHeight(sizeY*2);
     _movingCard->setMinimumWidth(sizeX);
     _movingCard->setMinimumHeight(sizeY);
 
@@ -2061,9 +2061,9 @@ void The_Game::_passTheCardToTheBattleField(PositionedCard card)
 
 
     QPropertyAnimation *animation = new QPropertyAnimation(_movingCard, "geometry");
-    animation->setDuration(3000);
+    animation->setDuration(1000);
     animation->setStartValue(QRect(card.positionTopLeft.x(), card.positionTopLeft.y(), sizeX, sizeY));
-    animation->setEndValue(QRect(width()/2, height()/2, sizeX, sizeY));
+    animation->setEndValue(QRect(width()/2 - sizeX, height()/2 - sizeY, sizeX*2, sizeY*2));
     animation->setEasingCurve(QEasingCurve::OutCubic);
 
     //setWindowFlags(Qt::CustomizeWindowHint);
