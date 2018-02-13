@@ -452,16 +452,20 @@ void Hand::_slotCardIsRejectedToBePlayed(bool rejected)
 
 void Hand::_removeCardFromHand(SimpleCard card)
 {
-    int position = 0;
-    for (int var = 0; var < _cardsOnHandsHandsWidgetProperty.size(); ++var) {
+    unsigned int position = 0;
+    for (unsigned int var = 0; var < _cardsOnHandsHandsWidgetProperty.size(); ++var) {
 
         if (((_cardsOnHandsHandsWidgetProperty[var]).first == card.first)
-                && ((_cardsOnHandsHandsWidgetProperty[var]).first == card.first)) {
-        position = var;
-        _cardsOnHandsHandsWidgetProperty.erase(_cardsOnHandsHandsWidgetProperty.begin() + var);
-        _cardsOnHandsHandsWidgetProperty.shrink_to_fit();
+                && ((_cardsOnHandsHandsWidgetProperty[var]).second == card.second)) {
 
-     }
+            qDebug() << "The Card with ID: " << _cardsOnHandsHandsWidgetProperty[var].first << ";"
+                     << _cardsOnHandsHandsWidgetProperty[var].second
+                     << "is deleted from Hand!";
+            position = var;
+            _cardsOnHandsHandsWidgetProperty.erase(_cardsOnHandsHandsWidgetProperty.begin() + var);
+            _cardsOnHandsHandsWidgetProperty.shrink_to_fit();
+
+        }
 
 
     }

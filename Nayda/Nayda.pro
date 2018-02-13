@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui
+QT       += network widgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -25,7 +26,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += main.cpp\
-        main_application.cpp \
+    main_application.cpp \
     Application/Before_The_Game/Before_The_Game.cpp \
     Application/The_Game/The_Game.cpp \
     Logs/errors.cpp \
