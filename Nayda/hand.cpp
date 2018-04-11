@@ -1,5 +1,6 @@
 #include "hand.h"
 #include "ui_hand.h"
+#define USE_RESOURCES
 
 Hand::Hand(QWidget *parent) :
     QWidget(parent),
@@ -20,9 +21,13 @@ Hand::Hand(QWidget *parent) :
     //set the maximum Height of the "Hand" Widget
     setMaximumHeight(HW_Screen_Size_Height*handCard_btn_size_height);
 
-
     //place picture
+#ifndef USE_RESOURCES
     QPixmap pxmp_HandCover("Pictures/Hand/sunRiseMiddle.png");
+#else
+    QPixmap pxmp_HandCover(":/Pictures/Hand/sunRiseMiddle.png");
+#endif
+
     QPalette plte_HandCover;
     plte_HandCover.setBrush(backgroundRole(),
     QBrush(pxmp_HandCover.scaled(handCard_btn_size_width*HW_Screen_Size_Width,

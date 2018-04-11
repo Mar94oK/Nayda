@@ -1,5 +1,6 @@
 #include "handsecondaryplayer.h"
 #include "ui_handsecondaryplayer.h"
+#define USE_RESOURCES
 
 HandSecondaryPlayer::HandSecondaryPlayer(QWidget *parent) :
     QWidget(parent),
@@ -12,7 +13,14 @@ HandSecondaryPlayer::HandSecondaryPlayer(QWidget *parent) :
     int HW_Screen_Size_Width = HW_Screen_Size.width();
     int HW_Screen_Size_Height = HW_Screen_Size.height();
 
+    //place picture
+#ifndef USE_RESOURCES
     QPixmap pxmpHandSecondaryPlayer("Pictures/handCover/HandCover.png");
+#else
+    QPixmap pxmpHandSecondaryPlayer(":/Pictures/handCover/HandCover.png");
+#endif
+
+
     QPalette plte_handSecondaryPlayer;
     qDebug () << "Size: " << size();
     plte_handSecondaryPlayer.setBrush(QPalette::Background, QBrush(pxmpHandSecondaryPlayer.scaled(_race_class_btn_size_width*HW_Screen_Size_Width,

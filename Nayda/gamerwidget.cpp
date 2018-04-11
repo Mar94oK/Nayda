@@ -1,5 +1,7 @@
 #include "gamerwidget.h"
 #include "ui_gamerwidget.h"
+#define USE_RESOURCES
+
 
 GamerWidget::GamerWidget(QWidget *parent) :
     QWidget(parent),
@@ -35,21 +37,29 @@ GamerWidget::GamerWidget(QWidget *parent) :
     //http://www.prog.org.ru/topic_7215_0.html
 
 
-
-
+#ifndef USE_RESOURCES
     QPixmap pxmp_icon_race_1("Pictures/No_Race_dbg.png");
+#else
+    QPixmap pxmp_icon_race_1(":/Pictures/No_Race_dbg.png");
+#endif
+
     QPalette plte_icon_race_1;
     plte_icon_race_1.setBrush(ui->btn_race_1->backgroundRole(),
     QBrush(pxmp_icon_race_1.scaled(_race_class_btn_size_width*HW_Screen_Size_Width,
                                                              _race_class_btn_size_height*HW_Screen_Size_Height,
                                                              Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
+
+#ifndef USE_RESOURCES
     QPixmap pxmp_icon_class_1("Pictures/No_Class_dbg.png");
+#else
+    QPixmap pxmp_icon_class_1(":/Pictures/No_Class_dbg.png");
+#endif
+
     QPalette plte_icon_class_1;
     plte_icon_class_1.setBrush(ui->btn_class_1->backgroundRole(),
     QBrush(pxmp_icon_class_1.scaled(_race_class_btn_size_width*HW_Screen_Size_Width,
                                                              _race_class_btn_size_height*HW_Screen_Size_Height,
                                                              Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
-
 
     ui->btn_race_1->setFlat(true);
     ui->btn_race_1->setAutoFillBackground(true);
@@ -102,16 +112,7 @@ GamerWidget::GamerWidget(QWidget *parent) :
     connect(_testTimer, &QTimer::timeout, this, &GamerWidget::_slotTestGamerBattlePower);
 
 #endif
-
-
-
     //forming the vector of pictures;
-
-
-
-
-
-
     //set the initial levelel's pictures.
 
     QPixmap levelImage(_levelsPictures[_gamerLevel-1]);
@@ -129,7 +130,6 @@ GamerWidget::GamerWidget(QWidget *parent) :
     ui->lbl_BattlePowerDigit->setText(QString::number(_battlePower));
     ui->lbl_BattlePowerDigit->setStyleSheet("font: 28pt;");
 
-
     //this is not work
 //    qDebug() << "Current Size of The Hand, H:" << ui->widget->size().height();
 //    ui->widget->size().setHeight( ui->widget->size().height() + 10);
@@ -137,8 +137,6 @@ GamerWidget::GamerWidget(QWidget *parent) :
 
 
     qDebug() << "The Size of The Gamer Widget " << size();
-
-
 
     connect(ui->widget, &Hand::adjustSize, this, &GamerWidget::_adjustSizeSlot);
 

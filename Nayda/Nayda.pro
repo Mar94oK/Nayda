@@ -7,6 +7,8 @@
 QT       += core gui
 QT       += network widgets
 
+#RESOURCES += tables.qrc
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = Nayda
@@ -83,3 +85,10 @@ FORMS    += main_application.ui \
     handsecondaryplayer.ui \
     rejectedcardmessage.ui \
     handcardpointer.ui
+
+RESOURCES += \
+    tables.qrc \
+    pictures.qrc
+
+DISTFILES += \
+    Pictures/doorsAreOpened.jpg

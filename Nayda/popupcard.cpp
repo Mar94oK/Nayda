@@ -1,5 +1,6 @@
 #include "popupcard.h"
 #include "ui_popupcard.h"
+#define USE_RESOURCES
 
 
 #include <QPainter>
@@ -236,13 +237,17 @@ void PopUpCard::setUpPopUpCard(SimpleCard card)
 
     if ((!card.first) && (!card.second)) { //the card is Card_No_Race
 
-        QPixmap pxmp_icon_race_1("Pictures/No_Race_dbg.png");
+#ifndef USE_RESOURCES
+    QPixmap pxmp_icon_race_1("Pictures/No_Race_dbg.png");
+#else
+    QPixmap pxmp_icon_race_1(":/Pictures/No_Race_dbg.png");
+#endif
+
         QPalette plte_icon_race_1;
         plte_icon_race_1.setBrush(ui->theCard->backgroundRole(),
         QBrush(pxmp_icon_race_1.scaled(handCardSizeWidht*HW_Screen_Size_Width,
                                                                  handCardSizeHeight*HW_Screen_Size_Height,
                                                                  Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
-
         ui->theCard->setFlat(true);
         ui->theCard->setAutoFillBackground(true);
         ui->theCard->setPalette(plte_icon_race_1);
@@ -252,13 +257,18 @@ void PopUpCard::setUpPopUpCard(SimpleCard card)
         isNoClassNoRace = true;
     }
     else if ((!card.first) && (card.second == 1777)) {
-        QPixmap pxmp_icon_class_1("Pictures/No_Class_dbg.png");
+
+#ifndef USE_RESOURCES
+    QPixmap pxmp_icon_class_1("Pictures/No_Class_dbg.png");
+#else
+   QPixmap pxmp_icon_class_1(":/Pictures/No_Class_dbg.png");
+#endif
+
         QPalette plte_icon_class_1;
         plte_icon_class_1.setBrush(ui->theCard->backgroundRole(),
                                    QBrush(pxmp_icon_class_1.scaled(handCardSizeWidht*HW_Screen_Size_Width,
                                                                    handCardSizeHeight*HW_Screen_Size_Height,
                                                                    Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
-
 
         ui->theCard->setFlat(true);
         ui->theCard->setAutoFillBackground(true);
@@ -269,7 +279,6 @@ void PopUpCard::setUpPopUpCard(SimpleCard card)
         isNoClassNoRace = true;
 
     }
-
 
     else if (!card.first) { //door
 

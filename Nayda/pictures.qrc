@@ -1,0 +1,444 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Pictures/treasures_Weapon/Vorpal Blade.jpg</file>
+        <file>Pictures/treasures_Weapon/Unnatural Axe.jpg</file>
+        <file>Pictures/treasures_Weapon/Two-Handed Sword.jpg</file>
+        <file>Pictures/treasures_Weapon/Tweezers of Terror.jpg</file>
+        <file>Pictures/treasures_Weapon/Tuba of Charm.jpg</file>
+        <file>Pictures/treasures_Weapon/Sword of Slaying Everything Except Squid.jpg</file>
+        <file>Pictures/treasures_Weapon/Swiss Army Polearm.jpg</file>
+        <file>Pictures/treasures_Weapon/Staff of Napalm.jpg</file>
+        <file>Pictures/treasures_Weapon/Stab-A-Matic.jpg</file>
+        <file>Pictures/treasures_Weapon/Sneaky Bastard Sword.jpg</file>
+        <file>Pictures/treasures_Weapon/Slug Thrower.jpg</file>
+        <file>Pictures/treasures_Weapon/Slay Bells.jpg</file>
+        <file>Pictures/treasures_Weapon/Siege Engine.jpg</file>
+        <file>Pictures/treasures_Weapon/Shield of Ubiquity.jpg</file>
+        <file>Pictures/treasures_Weapon/Rat on a Stick.jpg</file>
+        <file>Pictures/treasures_Weapon/Rapier of Unfairness.jpg</file>
+        <file>Pictures/treasures_Weapon/Mace of Sharpness.jpg</file>
+        <file>Pictures/treasures_Weapon/Lawn Roller.jpg</file>
+        <file>Pictures/treasures_Weapon/Joy Buzzer.jpg</file>
+        <file>Pictures/treasures_Weapon/Huge Rock.jpg</file>
+        <file>Pictures/treasures_Weapon/Hammer of Kneecapping.jpg</file>
+        <file>Pictures/treasures_Weapon/Ghoul Lash.jpg</file>
+        <file>Pictures/treasures_Weapon/Gentlemen's Club.jpg</file>
+        <file>Pictures/treasures_Weapon/Funny-Looking Sword.jpg</file>
+        <file>Pictures/treasures_Weapon/Eleven-Foot Pole.jpg</file>
+        <file>Pictures/treasures_Weapon/Dagger of Treachery.jpg</file>
+        <file>Pictures/treasures_Weapon/Cheese Grater of Peace.jpg</file>
+        <file>Pictures/treasures_Weapon/Chainsaw of Bloody Dismemberment.jpg</file>
+        <file>Pictures/treasures_Weapon/Buckler of Swashing.jpg</file>
+        <file>Pictures/treasures_Weapon/Broad Sword.jpg</file>
+        <file>Pictures/treasures_Weapon/Bow With Ribbons.jpg</file>
+        <file>Pictures/treasures_Weapon/Boomdagger.jpg</file>
+        <file>Pictures/treasures_Weapon/Blessed Mallet of St. Eeeeeeuuuuuuuuw.jpg</file>
+        <file>Pictures/treasures_Weapon/Big Fat Lyre.jpg</file>
+        <file>Pictures/treasures_Weapon/Barbecue Fork.jpg</file>
+        <file>Pictures/treasures_thingsAmplifiers/Very Holy Book.jpg</file>
+        <file>Pictures/treasures_thingsAmplifiers/The Other Ring.jpg</file>
+        <file>Pictures/treasures_thingsAmplifiers/The Occasionally Reliable Amulet.jpg</file>
+        <file>Pictures/treasures_thingsAmplifiers/Stepladder.jpg</file>
+        <file>Pictures/treasures_thingsAmplifiers/Spiky Knees.jpg</file>
+        <file>Pictures/treasures_thingsAmplifiers/Spiked Codpiece.jpg</file>
+        <file>Pictures/treasures_thingsAmplifiers/Singing &amp; Dancing Sword.jpg</file>
+        <file>Pictures/treasures_thingsAmplifiers/Scary False Teeth.jpg</file>
+        <file>Pictures/treasures_thingsAmplifiers/Really Imressive Title.jpg</file>
+        <file>Pictures/treasures_thingsAmplifiers/Pantyhose of Giant Strength.jpg</file>
+        <file>Pictures/treasures_thingsAmplifiers/Limburger and Anchovy Sandwich.jpg</file>
+        <file>Pictures/treasures_thingsAmplifiers/Kneepads of Allure.jpg</file>
+        <file>Pictures/treasures_thingsAmplifiers/Foot-Mounted Mace.jpg</file>
+        <file>Pictures/treasures_thingsAmplifiers/Familiar.jpg</file>
+        <file>Pictures/treasures_thingsAmplifiers/Fake Ears.jpg</file>
+        <file>Pictures/treasures_thingsAmplifiers/Fake Beard.jpg</file>
+        <file>Pictures/treasures_thingsAmplifiers/Cute Shoulder Dragon.jpg</file>
+        <file>Pictures/treasures_thingsAmplifiers/Coat of Arms.jpg</file>
+        <file>Pictures/treasures_thingsAmplifiers/Cloack of Obscurity.jpg</file>
+        <file>Pictures/treasures_thingsAmplifiers/Castig Couch.jpg</file>
+        <file>Pictures/treasures_thingsAmplifiers/Bag of Caltrops.jpg</file>
+        <file>Pictures/treasures_specialMechanics/Wishing Ring_4.jpg</file>
+        <file>Pictures/treasures_specialMechanics/Wishing Ring_3.jpg</file>
+        <file>Pictures/treasures_specialMechanics/Wishing Ring_2.jpg</file>
+        <file>Pictures/treasures_specialMechanics/Wishing Ring_1.jpg</file>
+        <file>Pictures/treasures_specialMechanics/Wand of Dowsing.jpg</file>
+        <file>Pictures/treasures_specialMechanics/Trojan Horse.jpg</file>
+        <file>Pictures/treasures_specialMechanics/Transferral Potion.jpg</file>
+        <file>Pictures/treasures_specialMechanics/The Dungeon Casino.jpg</file>
+        <file>Pictures/treasures_specialMechanics/TakeMeTakeMe.jpg</file>
+        <file>Pictures/treasures_specialMechanics/Steal a Level.jpg</file>
+        <file>Pictures/treasures_specialMechanics/Semi-Final Strike.jpg</file>
+        <file>Pictures/treasures_specialMechanics/Restraining Order.jpg</file>
+        <file>Pictures/treasures_specialMechanics/Potion of Disbelief.jpg</file>
+        <file>Pictures/treasures_specialMechanics/Potion of Cowardice.jpg</file>
+        <file>Pictures/treasures_specialMechanics/Potion of Apathy.jpg</file>
+        <file>Pictures/treasures_specialMechanics/Pollymorph Potion.jpg</file>
+        <file>Pictures/treasures_specialMechanics/One Size Fits All.jpg</file>
+        <file>Pictures/treasures_specialMechanics/Magic Lamp.jpg</file>
+        <file>Pictures/treasures_specialMechanics/Loaded Die_4.jpg</file>
+        <file>Pictures/treasures_specialMechanics/Loaded Die_3.jpg</file>
+        <file>Pictures/treasures_specialMechanics/Loaded Die_2.jpg</file>
+        <file>Pictures/treasures_specialMechanics/Loaded Die_1.jpg</file>
+        <file>Pictures/treasures_specialMechanics/Itching Powder.jpg</file>
+        <file>Pictures/treasures_specialMechanics/Invisibility Potion.jpg</file>
+        <file>Pictures/treasures_specialMechanics/Instant Wall.jpg</file>
+        <file>Pictures/treasures_specialMechanics/Hoard.jpg</file>
+        <file>Pictures/treasures_specialMechanics/Hireling_2.jpg</file>
+        <file>Pictures/treasures_specialMechanics/Hireling_1.jpg</file>
+        <file>Pictures/treasures_specialMechanics/Garage Sale.jpg</file>
+        <file>Pictures/treasures_specialMechanics/Friendship Potion.jpg</file>
+        <file>Pictures/treasures_specialMechanics/Flask of Glue.jpg</file>
+        <file>Pictures/treasures_specialMechanics/Feline Intervention.jpg</file>
+        <file>Pictures/treasures_specialMechanics/Dwarf Tossing.jpg</file>
+        <file>Pictures/treasures_specialMechanics/Duck of Many Things.jpg</file>
+        <file>Pictures/treasures_specialMechanics/Doppleganger.jpg</file>
+        <file>Pictures/treasures_specialMechanics/Deus Ex Machinegun.jpg</file>
+        <file>Pictures/treasures_specialMechanics/Baby Oil.jpg</file>
+        <file>Pictures/treasures_levelUp/Whine at the GM.jpg</file>
+        <file>Pictures/treasures_levelUp/Wash The GM's Car.jpg</file>
+        <file>Pictures/treasures_levelUp/Unnecessary Roughness.jpg</file>
+        <file>Pictures/treasures_levelUp/Threaten To Switch Systems.jpg</file>
+        <file>Pictures/treasures_levelUp/Switch Character Sheets.jpg</file>
+        <file>Pictures/treasures_levelUp/Steal The Credit.jpg</file>
+        <file>Pictures/treasures_levelUp/Shiny Dice_Spinning_Spinning.jpg</file>
+        <file>Pictures/treasures_levelUp/Senseless Act Of Kindness.jpg</file>
+        <file>Pictures/treasures_levelUp/Rewrite That Dirty Old Character Sheet.jpg</file>
+        <file>Pictures/treasures_levelUp/Remember The GM's Birthday.jpg</file>
+        <file>Pictures/treasures_levelUp/Promise the GM You'll Stop Telling Him About Your Character.jpg</file>
+        <file>Pictures/treasures_levelUp/Potion of General Studliness.jpg</file>
+        <file>Pictures/treasures_levelUp/Pay For The Pizza.jpg</file>
+        <file>Pictures/treasures_levelUp/Mutilate the Bodies.jpg</file>
+        <file>Pictures/treasures_levelUp/Kill the Hireling.jpg</file>
+        <file>Pictures/treasures_levelUp/Invoke Obscure Rules.jpg</file>
+        <file>Pictures/treasures_levelUp/Illustrate Your Character.jpg</file>
+        <file>Pictures/treasures_levelUp/Fold, Spindle, and Mutilate.jpg</file>
+        <file>Pictures/treasures_levelUp/Convenient Addition Error.jpg</file>
+        <file>Pictures/treasures_levelUp/Contemplate Your Navel.jpg</file>
+        <file>Pictures/treasures_levelUp/Bribe GM With Food.jpg</file>
+        <file>Pictures/treasures_levelUp/Boil an Anthill.jpg</file>
+        <file>Pictures/treasures_levelUp/1,000 Gold Pieces.jpg</file>
+        <file>Pictures/treasures_battleAmplifiers/Yuppie Water.jpg</file>
+        <file>Pictures/treasures_battleAmplifiers/Your Shoe's Untied!.jpg</file>
+        <file>Pictures/treasures_battleAmplifiers/Tasty Pie.jpg</file>
+        <file>Pictures/treasures_battleAmplifiers/Sleep Potion.jpg</file>
+        <file>Pictures/treasures_battleAmplifiers/Royal Oil.jpg</file>
+        <file>Pictures/treasures_battleAmplifiers/Pretty Balloons.jpg</file>
+        <file>Pictures/treasures_battleAmplifiers/Potion of Idiotic Bravery.jpg</file>
+        <file>Pictures/treasures_battleAmplifiers/Potion of Halitosis.jpg</file>
+        <file>Pictures/treasures_battleAmplifiers/Potion of Flight.jpg</file>
+        <file>Pictures/treasures_battleAmplifiers/Oil of Boiling.jpg</file>
+        <file>Pictures/treasures_battleAmplifiers/Nasty-Tasting Sports Drink.jpg</file>
+        <file>Pictures/treasures_battleAmplifiers/Monster Chow.jpg</file>
+        <file>Pictures/treasures_battleAmplifiers/Magic Missile.jpg</file>
+        <file>Pictures/treasures_battleAmplifiers/Liquid Wench.jpg</file>
+        <file>Pictures/treasures_battleAmplifiers/Lemming Juice.jpg</file>
+        <file>Pictures/treasures_battleAmplifiers/Hot Pepper Sauce.jpg</file>
+        <file>Pictures/treasures_battleAmplifiers/Freezing Explosive Potion.jpg</file>
+        <file>Pictures/treasures_battleAmplifiers/Flaming Poison Potion.jpg</file>
+        <file>Pictures/treasures_battleAmplifiers/Electric Radioactive Acid Potion.jpg</file>
+        <file>Pictures/treasures_battleAmplifiers/Druid Fluid.jpg</file>
+        <file>Pictures/treasures_battleAmplifiers/Cotion Ponfusion.jpg</file>
+        <file>Pictures/treasures_armorAmplifiers/Poisoned.jpg</file>
+        <file>Pictures/treasures_armorAmplifiers/Of Doom.jpg</file>
+        <file>Pictures/treasures_armorAmplifiers/Convenient Handles.jpg</file>
+        <file>Pictures/treasures_armorAmplifiers/Blessed.jpg</file>
+        <file>Pictures/treasures_armor/Tinfoil Hat.jpg</file>
+        <file>Pictures/treasures_armor/Slimy Armor.jpg</file>
+        <file>Pictures/treasures_armor/Skull Helmet.jpg</file>
+        <file>Pictures/treasures_armor/Short Wide Armor.jpg</file>
+        <file>Pictures/treasures_armor/Sandals of Protection.jpg</file>
+        <file>Pictures/treasures_armor/Raincoat.jpg</file>
+        <file>Pictures/treasures_armor/Pointy Hat of Power.jpg</file>
+        <file>Pictures/treasures_armor/Mithril Armor.jpg</file>
+        <file>Pictures/treasures_armor/Magnificent Hat.jpg</file>
+        <file>Pictures/treasures_armor/Leather Armor.jpg</file>
+        <file>Pictures/treasures_armor/Knight Light.jpg</file>
+        <file>Pictures/treasures_armor/Horny Helmet.jpg</file>
+        <file>Pictures/treasures_armor/Helm of Peripheral Vision.jpg</file>
+        <file>Pictures/treasures_armor/Helm of Courage.jpg</file>
+        <file>Pictures/treasures_armor/Gnomex Suit.jpg</file>
+        <file>Pictures/treasures_armor/Freudian Slippers.jpg</file>
+        <file>Pictures/treasures_armor/Flaming Armor.jpg</file>
+        <file>Pictures/treasures_armor/Chainmail Bikini.jpg</file>
+        <file>Pictures/treasures_armor/Boots of Running Really Fast.jpg</file>
+        <file>Pictures/treasures_armor/Boots of Butt-Kicking.jpg</file>
+        <file>Pictures/treasures_armor/Bad-Ass Bandana.jpg</file>
+        <file>Pictures/treasures_armor/Awful Socks.jpg</file>
+        <file>Pictures/doors_specialMechanics/Wandering Monster_7.jpg</file>
+        <file>Pictures/doors_specialMechanics/Wandering Monster_6.jpg</file>
+        <file>Pictures/doors_specialMechanics/Wandering Monster_5.jpg</file>
+        <file>Pictures/doors_specialMechanics/Wandering Monster_4.jpg</file>
+        <file>Pictures/doors_specialMechanics/Wandering Monster_3.jpg</file>
+        <file>Pictures/doors_specialMechanics/Wandering Monster_2.jpg</file>
+        <file>Pictures/doors_specialMechanics/Wandering Monster_1.jpg</file>
+        <file>Pictures/doors_specialMechanics/Typographical Error.jpg</file>
+        <file>Pictures/doors_specialMechanics/Super Munchkin_4.jpg</file>
+        <file>Pictures/doors_specialMechanics/Super Munchkin_3.jpg</file>
+        <file>Pictures/doors_specialMechanics/Super Munchkin_2.jpg</file>
+        <file>Pictures/doors_specialMechanics/Super Munchkin_1.jpg</file>
+        <file>Pictures/doors_specialMechanics/Out to Lunch.jpg</file>
+        <file>Pictures/doors_specialMechanics/Monsters Are Busy.jpg</file>
+        <file>Pictures/doors_specialMechanics/Mommy.jpg</file>
+        <file>Pictures/doors_specialMechanics/Mate.jpg</file>
+        <file>Pictures/doors_specialMechanics/Illusion.jpg</file>
+        <file>Pictures/doors_specialMechanics/Help Me Out Here.jpg</file>
+        <file>Pictures/doors_specialMechanics/Half-Breed_4.jpg</file>
+        <file>Pictures/doors_specialMechanics/Half-Breed_3.jpg</file>
+        <file>Pictures/doors_specialMechanics/Half-Breed_2.jpg</file>
+        <file>Pictures/doors_specialMechanics/Half-Breed_1.jpg</file>
+        <file>Pictures/doors_specialMechanics/Friendly.jpg</file>
+        <file>Pictures/doors_specialMechanics/Find a Map.jpg</file>
+        <file>Pictures/doors_specialMechanics/Filthy Rich.jpg</file>
+        <file>Pictures/doors_specialMechanics/Divine Interdiction.jpg</file>
+        <file>Pictures/doors_specialMechanics/Deck of Too Many Things.jpg</file>
+        <file>Pictures/doors_specialMechanics/Dead Broke.jpg</file>
+        <file>Pictures/doors_specialMechanics/Dead.jpg</file>
+        <file>Pictures/doors_specialMechanics/Cheat_3.jpg</file>
+        <file>Pictures/doors_specialMechanics/Cheat_2.jpg</file>
+        <file>Pictures/doors_specialMechanics/Cheat_1.jpg</file>
+        <file>Pictures/doors_specialMechanics/Annihilation.jpg</file>
+        <file>Pictures/doors_races/Ork_5.jpg</file>
+        <file>Pictures/doors_races/Ork_4.jpg</file>
+        <file>Pictures/doors_races/Ork_3.jpg</file>
+        <file>Pictures/doors_races/Ork_2.jpg</file>
+        <file>Pictures/doors_races/Orc_1.jpg</file>
+        <file>Pictures/doors_races/Halfling_5.jpg</file>
+        <file>Pictures/doors_races/Halfling_4.jpg</file>
+        <file>Pictures/doors_races/Halfling_3.jpg</file>
+        <file>Pictures/doors_races/Halfling_2.jpg</file>
+        <file>Pictures/doors_races/Halfling_1.jpg</file>
+        <file>Pictures/doors_races/Gnome_5.jpg</file>
+        <file>Pictures/doors_races/Gnome_4.jpg</file>
+        <file>Pictures/doors_races/Gnome_3.jpg</file>
+        <file>Pictures/doors_races/Gnome_2.jpg</file>
+        <file>Pictures/doors_races/Gnome_1.jpg</file>
+        <file>Pictures/doors_races/Elf_5.jpg</file>
+        <file>Pictures/doors_races/Elf_4.jpg</file>
+        <file>Pictures/doors_races/Elf_3.jpg</file>
+        <file>Pictures/doors_races/Elf_2.jpg</file>
+        <file>Pictures/doors_races/Elf_1.jpg</file>
+        <file>Pictures/doors_races/Dwarf_5.jpg</file>
+        <file>Pictures/doors_races/Dwarf_4.jpg</file>
+        <file>Pictures/doors_races/Dwarf_3.jpg</file>
+        <file>Pictures/doors_races/Dwarf_2.jpg</file>
+        <file>Pictures/doors_races/Dwarf_1.jpg</file>
+        <file>Pictures/doors_professions/Wizard_5.jpg</file>
+        <file>Pictures/doors_professions/Wizard_4.jpg</file>
+        <file>Pictures/doors_professions/Wizard_3.jpg</file>
+        <file>Pictures/doors_professions/Wizard_2.jpg</file>
+        <file>Pictures/doors_professions/Wizard_1.jpg</file>
+        <file>Pictures/doors_professions/Warrior_5.jpg</file>
+        <file>Pictures/doors_professions/Warrior_4.jpg</file>
+        <file>Pictures/doors_professions/Warrior_3.jpg</file>
+        <file>Pictures/doors_professions/Warrior_2.jpg</file>
+        <file>Pictures/doors_professions/Warrior_1.jpg</file>
+        <file>Pictures/doors_professions/Thief_5.jpg</file>
+        <file>Pictures/doors_professions/Thief_4.jpg</file>
+        <file>Pictures/doors_professions/Thief_3.jpg</file>
+        <file>Pictures/doors_professions/Thief_2.jpg</file>
+        <file>Pictures/doors_professions/Thief_1.jpg</file>
+        <file>Pictures/doors_professions/Cleric_5.jpg</file>
+        <file>Pictures/doors_professions/Cleric_4.jpg</file>
+        <file>Pictures/doors_professions/Cleric_3.jpg</file>
+        <file>Pictures/doors_professions/Cleric_2.jpg</file>
+        <file>Pictures/doors_professions/Cleric_1.jpg</file>
+        <file>Pictures/doors_professions/Bard_5.jpg</file>
+        <file>Pictures/doors_professions/Bard_4.jpg</file>
+        <file>Pictures/doors_professions/Bard_3.jpg</file>
+        <file>Pictures/doors_professions/Bard_2.jpg</file>
+        <file>Pictures/doors_professions/Bard_1.jpg</file>
+        <file>Pictures/doors_monsters/WightBrothers.jpg</file>
+        <file>Pictures/doors_monsters/Were-Turtle.jpg</file>
+        <file>Pictures/doors_monsters/Wannabe Vampire.jpg</file>
+        <file>Pictures/doors_monsters/Unspeakably Awful Indescribable Horror.jpg</file>
+        <file>Pictures/doors_monsters/Undead Horse.jpg</file>
+        <file>Pictures/doors_monsters/Tongue Demon.jpg</file>
+        <file>Pictures/doors_monsters/Thing With A Name So Long There's No Room For A Picture On the Card.jpg</file>
+        <file>Pictures/doors_monsters/The Shadow Nose.jpg</file>
+        <file>Pictures/doors_monsters/The Mighty Germ.jpg</file>
+        <file>Pictures/doors_monsters/The Dead Sea Trolls.jpg</file>
+        <file>Pictures/doors_monsters/Tequila Mockingbird.jpg</file>
+        <file>Pictures/doors_monsters/Tentacle Demon.jpg</file>
+        <file>Pictures/doors_monsters/Teddy Bear.jpg</file>
+        <file>Pictures/doors_monsters/Stoned Golem.jpg</file>
+        <file>Pictures/doors_monsters/Stick Figure.jpg</file>
+        <file>Pictures/doors_monsters/Squidzilla.jpg</file>
+        <file>Pictures/doors_monsters/Snot Elemental.jpg</file>
+        <file>Pictures/doors_monsters/Snails on Speed.jpg</file>
+        <file>Pictures/doors_monsters/ShriekingGeek.jpg</file>
+        <file>Pictures/doors_monsters/Seven Year Lich.jpg</file>
+        <file>Pictures/doors_monsters/Scary Clowns.jpg</file>
+        <file>Pictures/doors_monsters/Santa.jpg</file>
+        <file>Pictures/doors_monsters/Resident Weevil.jpg</file>
+        <file>Pictures/doors_monsters/Redneck Tree.jpg</file>
+        <file>Pictures/doors_monsters/Rapier Twit.jpg</file>
+        <file>Pictures/doors_monsters/Pukachu.jpg</file>
+        <file>Pictures/doors_monsters/Pterodactyl.jpg</file>
+        <file>Pictures/doors_monsters/Psycho Squirrel.jpg</file>
+        <file>Pictures/doors_monsters/Potted Plant.jpg</file>
+        <file>Pictures/doors_monsters/Poison Ivy Kudzu Flytrap.jpg</file>
+        <file>Pictures/doors_monsters/Plutonium Dragon.jpg</file>
+        <file>Pictures/doors_monsters/Platycore.jpg</file>
+        <file>Pictures/doors_monsters/Plague Rats.jpg</file>
+        <file>Pictures/doors_monsters/Pit Bull.jpg</file>
+        <file>Pictures/doors_monsters/Pinata.jpg</file>
+        <file>Pictures/doors_monsters/Perfectly Ordinary Bunny Rabbit.jpg</file>
+        <file>Pictures/doors_monsters/Pack Rat.jpg</file>
+        <file>Pictures/doors_monsters/Over Bear.jpg</file>
+        <file>Pictures/doors_monsters/Net Troll.jpg</file>
+        <file>Pictures/doors_monsters/Mr. Bones.jpg</file>
+        <file>Pictures/doors_monsters/Moon Maidens.jpg</file>
+        <file>Pictures/doors_monsters/Monster The GM Made Up Himself.jpg</file>
+        <file>Pictures/doors_monsters/Medusa.jpg</file>
+        <file>Pictures/doors_monsters/Maul Rat.jpg</file>
+        <file>Pictures/doors_monsters/Male Chauvinist Pig.jpg</file>
+        <file>Pictures/doors_monsters/M.T. Suit.jpg</file>
+        <file>Pictures/doors_monsters/Lust Monster.jpg</file>
+        <file>Pictures/doors_monsters/Lord Yahoo.jpg</file>
+        <file>Pictures/doors_monsters/Leperchaun.jpg</file>
+        <file>Pictures/doors_monsters/Lawyers.jpg</file>
+        <file>Pictures/doors_monsters/Large Angry Chiken.jpg</file>
+        <file>Pictures/doors_monsters/Lame Goblin.jpg</file>
+        <file>Pictures/doors_monsters/King Tut.jpg</file>
+        <file>Pictures/doors_monsters/Kamikaze Kobolds.jpg</file>
+        <file>Pictures/doors_monsters/Kali.jpg</file>
+        <file>Pictures/doors_monsters/Judge Fredd.jpg</file>
+        <file>Pictures/doors_monsters/Jabberwock.jpg</file>
+        <file>Pictures/doors_monsters/Insurance Salesman.jpg</file>
+        <file>Pictures/doors_monsters/Hyppogriff.jpg</file>
+        <file>Pictures/doors_monsters/Hydrant.jpg</file>
+        <file>Pictures/doors_monsters/Harpies.jpg</file>
+        <file>Pictures/doors_monsters/Gummi Golem.jpg</file>
+        <file>Pictures/doors_monsters/Grassy Gnoll.jpg</file>
+        <file>Pictures/doors_monsters/Gothyanki.jpg</file>
+        <file>Pictures/doors_monsters/Goldfish.jpg</file>
+        <file>Pictures/doors_monsters/Giant Skunk.jpg</file>
+        <file>Pictures/doors_monsters/Giant Cockroach.jpg</file>
+        <file>Pictures/doors_monsters/Ghoulfiends.jpg</file>
+        <file>Pictures/doors_monsters/Gelatinous Octahedron.jpg</file>
+        <file>Pictures/doors_monsters/Gazebo.jpg</file>
+        <file>Pictures/doors_monsters/Fungus.jpg</file>
+        <file>Pictures/doors_monsters/Frost Giant.jpg</file>
+        <file>Pictures/doors_monsters/Fowl Fiend.jpg</file>
+        <file>Pictures/doors_monsters/Flying Frogs.jpg</file>
+        <file>Pictures/doors_monsters/Floating Nose.jpg</file>
+        <file>Pictures/doors_monsters/Filthy Geats.jpg</file>
+        <file>Pictures/doors_monsters/FaceSucker.jpg</file>
+        <file>Pictures/doors_monsters/Dryad.jpg</file>
+        <file>Pictures/doors_monsters/Drooling Slime.jpg</file>
+        <file>Pictures/doors_monsters/Dopplegangsters.jpg</file>
+        <file>Pictures/doors_monsters/Crawling Hand.jpg</file>
+        <file>Pictures/doors_monsters/Crabs.jpg</file>
+        <file>Pictures/doors_monsters/Cat Girl.jpg</file>
+        <file>Pictures/doors_monsters/Bulrog.jpg</file>
+        <file>Pictures/doors_monsters/Bobble-Head.jpg</file>
+        <file>Pictures/doors_monsters/Bigfoot.jpg</file>
+        <file>Pictures/doors_monsters/Barrel of Monkeys.jpg</file>
+        <file>Pictures/doors_monsters/Bad Ass.jpg</file>
+        <file>Pictures/doors_monsters/Auntie Paladin.jpg</file>
+        <file>Pictures/doors_monsters/Amazon.jpg</file>
+        <file>Pictures/doors_monsters/3872 Orcs.jpg</file>
+        <file>Pictures/doors_curses/Truly Obnoxious Curse.jpg</file>
+        <file>Pictures/doors_curses/Tourist Trap.jpg</file>
+        <file>Pictures/doors_curses/Tip Over Your Own Chest.jpg</file>
+        <file>Pictures/doors_curses/Tiny Hands.jpg</file>
+        <file>Pictures/doors_curses/Temporary Amnesia.jpg</file>
+        <file>Pictures/doors_curses/New Adition Rules.jpg</file>
+        <file>Pictures/doors_curses/Necrophobia.jpg</file>
+        <file>Pictures/doors_curses/Malign Mirror.jpg</file>
+        <file>Pictures/doors_curses/Lose Your Race.jpg</file>
+        <file>Pictures/doors_curses/Lose 1 Small Item_3.jpg</file>
+        <file>Pictures/doors_curses/Loose your class.jpg</file>
+        <file>Pictures/doors_curses/Loose Two Cards.jpg</file>
+        <file>Pictures/doors_curses/Loose the Footgear You Are Wearing.jpg</file>
+        <file>Pictures/doors_curses/Loose the Armor You Are Wearing.jpg</file>
+        <file>Pictures/doors_curses/Loose a Level_2.jpg</file>
+        <file>Pictures/doors_curses/Loose a Level_1.jpg</file>
+        <file>Pictures/doors_curses/Loose a Headgear You Are Wearing.jpg</file>
+        <file>Pictures/doors_curses/Loose 1 small Item_2.jpg</file>
+        <file>Pictures/doors_curses/Loose 1 small Item_1.jpg</file>
+        <file>Pictures/doors_curses/Loose 1 Big Item_1.jpg</file>
+        <file>Pictures/doors_curses/Income Tax.jpg</file>
+        <file>Pictures/doors_curses/Hungry Backpack.jpg</file>
+        <file>Pictures/doors_curses/Generosity.jpg</file>
+        <file>Pictures/doors_curses/Fool's Gold.jpg</file>
+        <file>Pictures/doors_curses/Exploding Kneecaps.jpg</file>
+        <file>Pictures/doors_curses/Dying Curse.jpg</file>
+        <file>Pictures/doors_curses/Dwarven Ale.jpg</file>
+        <file>Pictures/doors_curses/Duck of Doom.jpg</file>
+        <file>Pictures/doors_curses/Cursed Thingy_2.jpg</file>
+        <file>Pictures/doors_curses/Clerical Error.jpg</file>
+        <file>Pictures/doors_curses/Chicken on Your Head.jpg</file>
+        <file>Pictures/doors_curses/Change Sex.jpg</file>
+        <file>Pictures/doors_curses/Change Race.jpg</file>
+        <file>Pictures/doors_curses/Change Class.jpg</file>
+        <file>Pictures/doors_curses/Big Feet.jpg</file>
+        <file>Pictures/doors_curses/B.O..jpg</file>
+        <file>Pictures/doors_amplifiers/Very Depressed.jpg</file>
+        <file>Pictures/doors_amplifiers/Undressed.jpg</file>
+        <file>Pictures/doors_amplifiers/Undead_2.jpg</file>
+        <file>Pictures/doors_amplifiers/Undead_1.jpg</file>
+        <file>Pictures/doors_amplifiers/Sleeping.jpg</file>
+        <file>Pictures/doors_amplifiers/Intelligent.jpg</file>
+        <file>Pictures/doors_amplifiers/Humongous.jpg</file>
+        <file>Pictures/doors_amplifiers/From Hell_1.jpg</file>
+        <file>Pictures/doors_amplifiers/Enraged.jpg</file>
+        <file>Pictures/doors_amplifiers/Brood.jpg</file>
+        <file>Pictures/doors_amplifiers/Big Honking Sword of Character Whupping.jpg</file>
+        <file>Pictures/doors_amplifiers/Baby.jpg</file>
+        <file>Pictures/doors_amplifiers/Ancient.jpg</file>
+        <file>Pictures/treeCover.jpg</file>
+        <file>Pictures/TreasuresCard.png</file>
+        <file>Pictures/No_Race_dbg.png</file>
+        <file>Pictures/No_Race.png</file>
+        <file>Pictures/No_Race.jpg</file>
+        <file>Pictures/No_Class_dbg.png</file>
+        <file>Pictures/No_Class.png</file>
+        <file>Pictures/No_Class.jpg</file>
+        <file>Pictures/Munchkin_game_cover.jpg</file>
+        <file>Pictures/mathc5_transparent.png</file>
+        <file>Pictures/match10_transparent.png</file>
+        <file>Pictures/match9_transparent.png</file>
+        <file>Pictures/match8_transparent.png</file>
+        <file>Pictures/match7_transparent.png</file>
+        <file>Pictures/match6_transparent.png</file>
+        <file>Pictures/match4_transparent.png</file>
+        <file>Pictures/match3_transparent.png</file>
+        <file>Pictures/match2_transparent.png</file>
+        <file>Pictures/match1_transparent.png</file>
+        <file>Pictures/JorneyCover.png</file>
+        <file>Pictures/Hand/Замерзшая-капля.jpg</file>
+        <file>Pictures/Hand/TheShip.jpg</file>
+        <file>Pictures/Hand/sunRiseSmall.png</file>
+        <file>Pictures/Hand/sunRiseMiddle.png</file>
+        <file>Pictures/Hand/sunRise.png</file>
+        <file>Pictures/Hand/greenDragon.png</file>
+        <file>Pictures/Hand/fire-dragon-color.jpg</file>
+        <file>Pictures/Hand/easter-goblin.png</file>
+        <file>Pictures/Hand/drakon-2012-04.jpg</file>
+        <file>Pictures/Hand/737666515.png</file>
+        <file>Pictures/Hand/18020064.png</file>
+        <file>Pictures/handCover/HandCover.png</file>
+        <file>Pictures/levels/match10_transparent.png</file>
+        <file>Pictures/levels/match9_transparent.png</file>
+        <file>Pictures/levels/match8_transparent.png</file>
+        <file>Pictures/levels/match7_transparent.png</file>
+        <file>Pictures/levels/match6_transparent.png</file>
+        <file>Pictures/levels/match5_transparent.png</file>
+        <file>Pictures/levels/match4_transparent.png</file>
+        <file>Pictures/levels/match3_transparent.png</file>
+        <file>Pictures/levels/match2_transparent.png</file>
+        <file>Pictures/levels/match1_transparent.png</file>
+        <file>Pictures/stacksLevels/AllTreasuresAreFound.jpg</file>
+        <file>Pictures/stacksLevels/doorsAreOpened.jpg</file>
+        <file>Pictures/stacksLevels/DoorsStack1.png</file>
+        <file>Pictures/stacksLevels/DoorsStack2.png</file>
+        <file>Pictures/stacksLevels/DoorsStack3.png</file>
+        <file>Pictures/stacksLevels/DoorsStack4.png</file>
+        <file>Pictures/stacksLevels/DoorsStack5_SingleCard.png</file>
+        <file>Pictures/stacksLevels/TreasureStack1.png</file>
+        <file>Pictures/stacksLevels/TreasureStack2.png</file>
+        <file>Pictures/stacksLevels/TreasureStack3.png</file>
+        <file>Pictures/stacksLevels/TreasureStack4.png</file>
+        <file>Pictures/stacksLevels/TreasureStack5_SingleCard.png</file>
+    </qresource>
+</RCC>

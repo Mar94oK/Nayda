@@ -1,0 +1,17 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Tables/cards_treasures_Weapon.csv</file>
+        <file>Tables/cards_treasures_thingsAmplifiers.csv</file>
+        <file>Tables/cards_treasures_specialMechanics.csv</file>
+        <file>Tables/cards_treasures_levelUp.csv</file>
+        <file>Tables/cards_treasures_battleAmplifiers.csv</file>
+        <file>Tables/cards_treasures_armorAmplifiers.csv</file>
+        <file>Tables/cards_treasures_armor.csv</file>
+        <file>Tables/cards_doors_specialmechanics.csv</file>
+        <file>Tables/cards_doors_races.csv</file>
+        <file>Tables/cards_doors_professions.csv</file>
+        <file>Tables/cards_doors_monsters.csv</file>
+        <file>Tables/cards_doors_curses.csv</file>
+        <file>Tables/cards_doors_amplifiers.csv</file>
+    </qresource>
+</RCC>

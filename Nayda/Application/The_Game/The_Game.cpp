@@ -4,6 +4,8 @@
 #include <QTime>
 #include "popupcard.h"
 
+#define USE_RESOURCES
+
 The_Game::The_Game(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::The_Game)
@@ -241,43 +243,43 @@ The_Game::The_Game(QWidget *parent) :
 
     //filling up the monsters' stock!
 
-    theMonstersParser("Tables/cards_doors_monsters.csv");
+    theMonstersParser(":/Tables/cards_doors_monsters.csv");
     qDebug() << "Monsters parsing complete!";
 
-    theAmplifiersParser("Tables/cards_doors_amplifiers.csv");
+    theAmplifiersParser(":/Tables/cards_doors_amplifiers.csv");
     qDebug() << "Amplifiers parsing complete!";
 
-    theCursesParser("Tables/cards_doors_curses.csv");
+    theCursesParser(":/Tables/cards_doors_curses.csv");
     qDebug() << "Curses parsing complete!";
 
-    theProfessionsParser("Tables/cards_doors_professions.csv");
+    theProfessionsParser(":/Tables/cards_doors_professions.csv");
     qDebug() << "Professions parsing complete!";
 
-    theRacesParser("Tables/cards_doors_races.csv");
+    theRacesParser(":/Tables/cards_doors_races.csv");
     qDebug() << "Races parsing complete!";
 
-    theSpecialMechanicsParser("Tables/cards_doors_specialmechanics.csv");
+    theSpecialMechanicsParser(":/Tables/cards_doors_specialmechanics.csv");
     qDebug() << "Special mechanics parsing complete!";
 
-    theArmorsParser("Tables/cards_treasures_armor.csv");
+    theArmorsParser(":/Tables/cards_treasures_armor.csv");
     qDebug() << "Armor parsing complete!";
 
-    theArmorAmplifiersParser("Tables/cards_treasures_armorAmplifiers.csv");
+    theArmorAmplifiersParser(":/Tables/cards_treasures_armorAmplifiers.csv");
     qDebug() << "ArmorAmplifiers parsing complete!";
 
-    theBattleAmplifiersParser("Tables/cards_treasures_battleAmplifiers.csv");
+    theBattleAmplifiersParser(":/Tables/cards_treasures_battleAmplifiers.csv");
     qDebug() << "BattleAmplifiers parsing complete!";
 
-    theLevelUpParser("Tables/cards_treasures_levelUp.csv");
+    theLevelUpParser(":/Tables/cards_treasures_levelUp.csv");
     qDebug() << "LevelUps parsing complete!";
 
-    theSpecialMechanicTreasureParser("Tables/cards_treasures_specialMechanics.csv");
+    theSpecialMechanicTreasureParser(":/Tables/cards_treasures_specialMechanics.csv");
     qDebug() << "SpecialMechanicsTreasures parsing complete!";
 
-    theThingsAmplifiersParser("Tables/cards_treasures_thingsAmplifiers.csv");
+    theThingsAmplifiersParser(":/Tables/cards_treasures_thingsAmplifiers.csv");
     qDebug() << "ThingsAmplifiers parsing complete!";
 
-    theWeaponParser("Tables/cards_treasures_Weapon.csv");
+    theWeaponParser(":/Tables/cards_treasures_Weapon.csv");
     qDebug() << "Weapons parsing complete!";
 
 
@@ -312,7 +314,13 @@ The_Game::The_Game(QWidget *parent) :
     passDecksToCardsStacksWidget();
 
 
+
+#ifndef USE_RESOURCES
     QPixmap pxmpBattleField("Pictures/JorneyCover.png");
+#else
+    QPixmap pxmpBattleField(":/Pictures/JorneyCover.png");
+#endif
+
     QPalette plte_battleField;
     qDebug () << "Size: " << size();
     plte_battleField.setBrush(QPalette::Background, QBrush(pxmpBattleField.scaled(HW_Screen_Size.width(),HW_Screen_Size.height(), Qt::KeepAspectRatio, Qt::SmoothTransformation)));
@@ -387,7 +395,11 @@ gameCardDoorMonster The_Game::monsterStringParser(const QString &monster_string)
     QStringList lst = monster_string.split(";");
     theMonster.setCardID((lst.first()).toInt());
     lst.removeFirst();
+#ifndef USE_RESOURCES
     theMonster.setPictureAddress(lst.first());
+#else
+    theMonster.setPictureAddress(":/" + lst.first());
+#endif
     lst.removeFirst();
     theMonster.setCardName(lst.first());
     theMonster.setMonsterName(lst.first());
@@ -538,13 +550,25 @@ void The_Game::theAmplifiersParser(const QString &filename)
 
 }
 
+#ifndef USE_RESOURCES
+
+#else
+
+#endif
+
 gameCardDoorAmplifier The_Game::amplifierStringParser(const QString &amplifier_string)
 {
     gameCardDoorAmplifier theAmplifier;
     QStringList lst = amplifier_string.split(";");
     theAmplifier.setCardID((lst.first()).toInt());
     lst.removeFirst();
+
+#ifndef USE_RESOURCES
     theAmplifier.setPictureAddress(lst.first());
+#else
+    theAmplifier.setPictureAddress(":/" + lst.first());
+#endif
+
     lst.removeFirst();
     theAmplifier.setCardName(lst.first());
     //setting specifiers
@@ -577,12 +601,7 @@ gameCardDoorAmplifier The_Game::amplifierStringParser(const QString &amplifier_s
 
     theAmplifier.setAdditionalTreasures(lst.first().toInt());
 
-
     return theAmplifier;
-
-
-
-
 }
 
 void The_Game::theCursesParser(const QString &filename)
@@ -615,7 +634,13 @@ gameCardDoorCurse The_Game::curseStringParser(const QString &curse_string)
     QStringList lst = curse_string.split(";");
     theCurse.setCardID((lst.first()).toInt());
     lst.removeFirst();
+
+#ifndef USE_RESOURCES
     theCurse.setPictureAddress(lst.first());
+#else
+    theCurse.setPictureAddress(":/" + lst.first());
+#endif
+
     lst.removeFirst();
     theCurse.setCardName(lst.first());
     lst.removeFirst();
@@ -630,7 +655,6 @@ gameCardDoorCurse The_Game::curseStringParser(const QString &curse_string)
     theCurse.setCurseMechanicID(lst.first().toInt());
 
     return theCurse;
-
 }
 
 void The_Game::theProfessionsParser(const QString &filename)
@@ -642,15 +666,11 @@ void The_Game::theProfessionsParser(const QString &filename)
     {
         while(!file.atEnd())
         {
-
             QString str = file.readLine();
             QStringList lst = str.split(";");
-
-            _professionsDeck.insert({(lst.first()).toInt(), professionStringParser(str)});
-
+           _professionsDeck.insert({(lst.first()).toInt(), professionStringParser(str)});
         }
     }
-
     else
     {
         qDebug()<< "Cannot open this file!";
@@ -663,7 +683,13 @@ gameCardDoorProfession The_Game::professionStringParser(const QString &professio
     QStringList lst = profession_string.split(";");
     theProfession.setCardID((lst.first()).toInt());
     lst.removeFirst();
+
+#ifndef USE_RESOURCES
     theProfession.setPictureAddress(lst.first());
+#else
+    theProfession.setPictureAddress(":/" + lst.first());
+#endif
+
     lst.removeFirst();
     theProfession.setCardName(lst.first());
     QStringList newLst = lst.first().split("_");
@@ -681,8 +707,6 @@ gameCardDoorProfession The_Game::professionStringParser(const QString &professio
     theProfession.setType(doorType::Profession);
 
     return theProfession;
-
-
 }
 
 void The_Game::theRacesParser(const QString &filename)
@@ -694,15 +718,11 @@ void The_Game::theRacesParser(const QString &filename)
     {
         while(!file.atEnd())
         {
-
             QString str = file.readLine();
             QStringList lst = str.split(";");
-
             _racesDeck.insert({(lst.first()).toInt(), racesStringParser(str)});
-
         }
     }
-
     else
     {
         qDebug()<< "Cannot open this file!";
@@ -716,6 +736,13 @@ gameCardDoorRace The_Game::racesStringParser(const QString &race_string)
     theRace.setCardID((lst.first()).toInt());
     lst.removeFirst();
     theRace.setPictureAddress(lst.first());
+
+#ifndef USE_RESOURCES
+    theRace.setPictureAddress(lst.first());
+#else
+    theRace.setPictureAddress(":/" + lst.first());
+#endif
+
     lst.removeFirst();
     theRace.setCardName(lst.first());
     QStringList newLst = lst.first().split("_");
@@ -745,15 +772,11 @@ void The_Game::theSpecialMechanicsParser(const QString &filename)
     {
         while(!file.atEnd())
         {
-
             QString str = file.readLine();
             QStringList lst = str.split(";");
-
             _specialMechanicsDeck.insert({(lst.first()).toInt(), specialMechanicStringParser(str)});
-
         }
     }
-
     else
     {
         qDebug()<< "Cannot open this file!";
@@ -766,7 +789,13 @@ gameCardDoorSpecialMechanic The_Game::specialMechanicStringParser(const QString 
     QStringList lst = specialMechanic_string.split(";");
     theSpecialMechanic.setCardID((lst.first()).toInt());
     lst.removeFirst();
+
+#ifndef USE_RESOURCES
     theSpecialMechanic.setPictureAddress(lst.first());
+#else
+    theSpecialMechanic.setPictureAddress(":/" + lst.first());
+#endif
+
     lst.removeFirst();
     theSpecialMechanic.setCardName(lst.first());
     lst.removeFirst();
@@ -817,9 +846,13 @@ gameCardTreasureArmor The_Game::armorsStringParser(const QString &armor_string)
     theArmor.setCardID((lst.first()).toInt());
     lst.removeFirst();
 
+#ifndef USE_RESOURCES
     theArmor.setPictureAddress(lst.first());
-    lst.removeFirst();
+#else
+    theArmor.setPictureAddress(":/" + lst.first());
+#endif
 
+    lst.removeFirst();
     theArmor.setCardName(lst.first());
     lst.removeFirst();
 
@@ -878,8 +911,6 @@ gameCardTreasureArmor The_Game::armorsStringParser(const QString &armor_string)
     };
 
     return theArmor;
-
-
 }
 
 isOnlyFor The_Game::TheArmorIsForParser(const QString &isFor_string)
@@ -943,8 +974,6 @@ void The_Game::theArmorAmplifiersParser(const QString &filename)
     {
         qDebug()<< "Cannot open this file!";
     }
-
-
 }
 
 gameCardTreasureArmorAmplifier The_Game::armorAmplifierStringParser(const QString &armorAmplifier_string)
@@ -955,7 +984,12 @@ gameCardTreasureArmorAmplifier The_Game::armorAmplifierStringParser(const QStrin
     theArmorAmplifier.setCardID((lst.first()).toInt());
     lst.removeFirst();
 
-    theArmorAmplifier.setPictureAddress(lst.first());
+#ifndef USE_RESOURCES
+     theArmorAmplifier.setPictureAddress(lst.first());
+#else
+    theArmorAmplifier.setPictureAddress(":/" + lst.first());
+#endif
+
     lst.removeFirst();
 
     theArmorAmplifier.setCardName(lst.first());
@@ -972,7 +1006,6 @@ gameCardTreasureArmorAmplifier The_Game::armorAmplifierStringParser(const QStrin
     theArmorAmplifier.setBonus(lst.first().toInt());
 
     return theArmorAmplifier;
-
 }
 
 void The_Game::theBattleAmplifiersParser(const QString &filename)
@@ -992,13 +1025,10 @@ void The_Game::theBattleAmplifiersParser(const QString &filename)
 
         }
     }
-
     else
     {
         qDebug()<< "Cannot open this file!";
     }
-
-
 }
 
 gameCardTreasureBattleAmplifier The_Game::battleAmplifierStringParser(const QString &battleAmplifier_string)
@@ -1009,7 +1039,12 @@ gameCardTreasureBattleAmplifier The_Game::battleAmplifierStringParser(const QStr
     theBattleAmplifier.setCardID((lst.first()).toInt());
     lst.removeFirst();
 
+#ifndef USE_RESOURCES
     theBattleAmplifier.setPictureAddress(lst.first());
+#else
+    theBattleAmplifier.setPictureAddress(":/" + lst.first());
+#endif
+
     lst.removeFirst();
 
     theBattleAmplifier.setCardName(lst.first());
@@ -1054,15 +1089,11 @@ void The_Game::theLevelUpParser(const QString &filename)
     {
         while(!file.atEnd())
         {
-
             QString str = file.readLine();
             QStringList lst = str.split(";");
-
             _levelUpDeck.insert({(lst.first()).toInt(),levelUpStringParser(str)});
-
         }
     }
-
     else
     {
         qDebug()<< "Cannot open this file!";
@@ -1077,7 +1108,12 @@ gameCardTreasureLevelUp The_Game::levelUpStringParser(const QString &levelUp_str
     theLevelUp.setCardID((lst.first()).toInt());
     lst.removeFirst();
 
-    theLevelUp.setPictureAddress(lst.first());
+#ifndef USE_RESOURCES
+   theLevelUp.setPictureAddress(lst.first());
+#else
+    theLevelUp.setPictureAddress(":/" + lst.first());
+#endif
+
     lst.removeFirst();
 
     theLevelUp.setCardName(lst.first());
@@ -1095,9 +1131,7 @@ gameCardTreasureLevelUp The_Game::levelUpStringParser(const QString &levelUp_str
     if (lst.first().toInt()) {
         theLevelUp.setHasSpecialMechanic(true);
     }
-
     return theLevelUp;
-
 }
 
 
@@ -1130,7 +1164,6 @@ Additional_Request The_Game::theAdditionalRequestParser(const QString &additiona
     if (additionalRequest_string == "thereIsDwarf\n") {
         request = Additional_Request::thereIsDwarf;
     }
-
     return request;
 }
 
@@ -1185,7 +1218,6 @@ void The_Game::theSpecialMechanicTreasureParser(const QString &filename)
 
         }
     }
-
     else
     {
         qDebug()<< "Cannot open this file!";
@@ -1200,7 +1232,12 @@ gameCardTreasureSpecialMechanic The_Game::SpecialMechanicTreasureStringParser(co
     theSpecialMechanic.setCardID((lst.first()).toInt());
     lst.removeFirst();
 
+#ifndef USE_RESOURCES
     theSpecialMechanic.setPictureAddress(lst.first());
+#else
+    theSpecialMechanic.setPictureAddress(":/" + lst.first());
+#endif
+
     lst.removeFirst();
 
     theSpecialMechanic.setCardName(lst.first());
@@ -1283,15 +1320,12 @@ void The_Game::theThingsAmplifiersParser(const QString &filename)
     {
         while(!file.atEnd())
         {
-
             QString str = file.readLine();
             QStringList lst = str.split(";");
 
             _thingsAmplifiersDeck.insert({(lst.first()).toInt(),ThingsAmplifiersStringParser(str)});
-
         }
     }
-
     else
     {
         qDebug()<< "Cannot open this file!";
@@ -1306,7 +1340,12 @@ gameCardTreasureThingsAmplifiers The_Game::ThingsAmplifiersStringParser(const QS
     theThingAmplifier.setCardID((lst.first()).toInt());
     lst.removeFirst();
 
+#ifndef USE_RESOURCES
     theThingAmplifier.setPictureAddress(lst.first());
+#else
+    theThingAmplifier.setPictureAddress(":/" + lst.first());
+#endif
+
     lst.removeFirst();
 
     theThingAmplifier.setCardName(lst.first());
@@ -1381,8 +1420,6 @@ gameCardTreasureThingsAmplifiers The_Game::ThingsAmplifiersStringParser(const QS
         theThingAmplifier.setAllowedToWearElven(true);
     }
 
-
-
     return theThingAmplifier;
 }
 
@@ -1403,7 +1440,6 @@ isOnlyFor_Weapon The_Game::TheWeaponIsForParser(const QString &isFor_string)
     restrictions.isOnlyForWizard = false;
     restrictions.isOnlyForWoman = false;
     restrictions.isOnlyForCleric = false;
-
 
     if (isFor_string == "Elf") {
         restrictions.isOnlyForElf = true;
@@ -1444,7 +1480,6 @@ isOnlyFor_Weapon The_Game::TheWeaponIsForParser(const QString &isFor_string)
     if (isFor_string == "Bard") {
         restrictions.isOnlyForBard = true;
     };
-
     return restrictions;
 }
 
@@ -1457,12 +1492,9 @@ void The_Game::theWeaponParser(const QString &filename)
     {
         while(!file.atEnd())
         {
-
             QString str = file.readLine();
             QStringList lst = str.split(";");
-
             _weaponsDeck.insert({(lst.first()).toInt(),WeaponStringParser(str)});
-
         }
     }
 
@@ -1480,7 +1512,12 @@ gameCardTreasureWeapon The_Game::WeaponStringParser(const QString &weapons_strin
     theWeapon.setCardID((lst.first()).toInt());
     lst.removeFirst();
 
+#ifndef USE_RESOURCES
     theWeapon.setPictureAddress(lst.first());
+#else
+    theWeapon.setPictureAddress(":/" + lst.first());
+#endif
+
     lst.removeFirst();
 
     theWeapon.setCardName(lst.first());
@@ -1505,7 +1542,6 @@ gameCardTreasureWeapon The_Game::WeaponStringParser(const QString &weapons_strin
 
     theWeapon.setBonus(lst.first().toInt());
     lst.removeFirst();
-
 
     isOnlyFor_Weapon restrictions = TheWeaponIsForParser(lst.first());
     theWeapon.setIsOnlyForBard(restrictions.isOnlyForBard);
@@ -1583,8 +1619,6 @@ void The_Game::passDecksToBattleField()
     ui->GameField->setSpecialMechanicsTreasureDeck(specialMechanicsTreasureDeck());
     ui->GameField->setThingsAmplifiersDeck(thingsAmplifiersDeck());
     ui->GameField->setWeaponsDeck(weaponsDeck());
-
-
 }
 
 void The_Game::passDecksToPlayerWidgets()
@@ -1605,10 +1639,8 @@ void The_Game::passDecksToPlayerWidgets()
 
     ui->MainGamer->passCardsDecksToHandsWidget();
 
-
-    for (unsigned int var = 0; var < _widgets4Opponents.size(); ++var) {
-
-
+    for (unsigned int var = 0; var < _widgets4Opponents.size(); ++var)
+    {
         (_widgets4Opponents[var])->setMonsersDeck(monstersDeck());
         (_widgets4Opponents[var])->setAmplifiersDeck(amplifiersDeck());
         (_widgets4Opponents[var])->setArmorAmplifiersDeck(armorAmplifiersDeck());
@@ -1623,10 +1655,7 @@ void The_Game::passDecksToPlayerWidgets()
         (_widgets4Opponents[var])->setThingsAmplifiersDeck(thingsAmplifiersDeck());
         (_widgets4Opponents[var])->setWeaponsDeck(weaponsDeck());
         (_widgets4Opponents[var])->passCardsDecksToHandsWidget();
-
     }
-
-
 }
 
 void The_Game::passDecksToPopUpCardWidget()
@@ -1644,8 +1673,6 @@ void The_Game::passDecksToPopUpCardWidget()
     _popUpCardWidget->setSpecialMechanicsTreasureDeck(specialMechanicsTreasureDeck());
     _popUpCardWidget->setThingsAmplifiersDeck(thingsAmplifiersDeck());
     _popUpCardWidget->setWeaponsDeck(weaponsDeck());
-
-
 }
 
 void The_Game::passDecksToCardsStacksWidget()
@@ -1666,7 +1693,6 @@ void The_Game::passDecksToCardsStacksWidget()
 
     ui->CardStacksWidget->setTotalTreasures(_monstersDeck.size());
     ui->CardStacksWidget->setTotalDoors(_treasuresDeck.size());
-
 }
 
 
@@ -1735,8 +1761,6 @@ const std::map<int, gameCardTreasureWeapon> *The_Game::weaponsDeck()
     return &_weaponsDeck;
 }
 
-
-
 //This procedure is responsible for giving initial 8 cards to players.
 //If the Server is Working, it is resposible for providing this info for the end-client.
 //For the DEBUG version, it will give the numbers (cardIDs) to end-gamers directly.
@@ -1773,7 +1797,6 @@ void The_Game::givingCardsToPlayers()
 
             _players_opponents[var].addCardToHands(_doorsDeck.front());
             _doorsDeck.erase(_doorsDeck.begin());
-
         }
     }
 
@@ -1781,7 +1804,6 @@ void The_Game::givingCardsToPlayers()
     qDebug() << "Doors are given to the players!";
 
     //treasures..
-
     for (unsigned int var = 0; var < cardsToGive; ++var) {
 
         _main_player.addCardToHands(_treasuresDeck.front());
@@ -1789,32 +1811,18 @@ void The_Game::givingCardsToPlayers()
     }
 
     //giving cards to the other players...
-
-
     for (unsigned int var = 0; var < m_number_of_players-1; ++var) {
 
         for (unsigned int j = 0; j < cardsToGive; ++j ) {
 
             _players_opponents[var].addCardToHands(_treasuresDeck.front());
             _treasuresDeck.erase(_treasuresDeck.begin());
-
         }
     }
     qDebug() << "Treasures are given to the players!";
 
     ui->CardStacksWidget->updateTreasuresLeft(initialSizeTreasures - cardsToGive*m_number_of_players);
-
-
-
-
-    //
-
-
-
 #endif
-
-
-
 }
 
 void The_Game::showInitialCardsOnHands()
@@ -1832,14 +1840,11 @@ void The_Game::showInitialCardsOnHands()
 
             _widgets4Opponents[var]->addTheCardToHandsWidget(*((_players_opponents[var].cardsOnHandsVector())->begin() + static_cast<int>(j)));
         }
-
     }
-
 }
 
 
-
-//this function might only be cold after the cards stacks are initialized.
+//this function might only be called after the cards stacks are initialized.
 //If this rule is note completed, the sizes will be empty!
 void The_Game::formingInitialDecks()
 {
@@ -1851,16 +1856,11 @@ void The_Game::formingInitialDecks()
     //continue with doors...
     std::vector<unsigned int> valuesDoors;
 
-
-
-
     unsigned int totalTreasures = _armorDeck.size() + _armorAmplifiersDeck.size() + _battleAmplifiersDeck.size() + _levelUpDeck.size() +
             _specialMechanicsTreasureDeck.size() + _thingsAmplifiersDeck.size() + _weaponsDeck.size();
 
-
     unsigned int totalDoors = _monstersDeck.size() + _amplifiersDeck.size() + _cursesDeck.size() + _professionsDeck.size() +
             _racesDeck.size() + _specialMechanicsDeck.size();
-
 
    if (!totalTreasures)  qDebug() << "Error during Treasures Stack Initialization. Stack is Empty! ";
    qDebug() << "Size of Treasures Stack Report: " << totalTreasures;
@@ -1869,18 +1869,11 @@ void The_Game::formingInitialDecks()
 
     //the server knows exact values of sizes of arrays
     for (unsigned int var = 1; var < totalTreasures+1; ++var) {
-
         valuesTreasures.push_back(var);
-
     }
     for (unsigned int var = 1; var < totalDoors+1; ++var) {
-
         valuesDoors.push_back(var);
-
     }
-
-
-
     for (unsigned int var = 0; var < totalTreasures; ++var) {
 
         unsigned int valuesLeft = valuesTreasures.size();
@@ -1891,7 +1884,6 @@ void The_Game::formingInitialDecks()
     }
 
     qDebug() << "Treasures Stack is Filled Now!";
-
 
     for (unsigned int var = 0; var < totalDoors; ++var) {
 
@@ -1913,11 +1905,6 @@ unsigned int The_Game::randUnsignedInt(unsigned int low, unsigned int high)
     // Random number between low and high
     return static_cast<unsigned int>(qrand() % ((high + 1) - low) + low);
 }
-
-
-
-
-
 
 void The_Game::theMonstersParser(const QString &filename)
 {
@@ -1960,10 +1947,8 @@ void The_Game::showTheCardInCentre(PositionedCard card)
     _popUpCardWidget->setUpPointsForPoly(card.positionTopLeft, card.positionBottomRight);
     _popUpCardWidget->setUpPopUpCard(card.card);
     _popUpCardWidget->show(card.positionTopLeft, card.positionBottomRight);
-
     _cardPointer->setUpTriangleCardPointer(card.positionTopLeft, card.positionBottomRight);
     _cardPointer->show(card.positionTopLeft, card.positionBottomRight);
-
 }
 
 
@@ -1977,7 +1962,6 @@ void The_Game::hideTheCardInCentre(bool)
 void The_Game::_adjustSizeOfTheGamerWidgetToMakeCardsToBeInPlace()
 {
     ui->MainGamer->adjustSize();
-
 }
 
 void The_Game::_slotCheckThePossibilityForTheCardToBePlayed(PositionedCard card)
@@ -1996,8 +1980,6 @@ void The_Game::_slotCheckThePossibilityForTheCardToBePlayed(PositionedCard card)
 
         //show the Rejection Message for the Card
         _slotShowTheRejectedCardMessage(card);
-
-
     }
     else {
 
@@ -2005,24 +1987,18 @@ void The_Game::_slotCheckThePossibilityForTheCardToBePlayed(PositionedCard card)
 
         _passTheCardToTheBattleField(card);
         emit _signalCardIsRejectedToBePlayed(false);
-
     }
-
-
 }
 
 void The_Game::_slotShowTheRejectedCardMessage(PositionedCard card)
 {
 //    _rejectionCardMessage->setPopupText("The Card Can not be played \n"
 //                                        "Now!");
-
     _rejectionCardMessage->setPopupText("Сейчас нельзя сыграть \n"
                                         "эту карту!");
     _rejectionCardMessage->show(card.positionTopLeft, card.positionBottomRight);
     _handCardPointer->setUpHandCardPointer(card.positionTopLeft, card.positionBottomRight);
     _handCardPointer->show(card.positionTopLeft, card.positionBottomRight);
-
-
 
 }
 
@@ -2049,14 +2025,11 @@ void The_Game::_passTheCardToTheBattleField(PositionedCard card)
     _movingCard->setMinimumHeight(sizeY);
 
     //http://www.prog.org.ru/topic_7215_0.html
-
-
     _movingCard->setFlat(true);
     _movingCard->setAutoFillBackground(true);
     _movingCard->setPalette(plte_movingCard);
     _movingCard->setText("");
     //_movingCard->installEventFilter(this);
-
     _movingCard->show();
 
 
@@ -2073,11 +2046,6 @@ void The_Game::_passTheCardToTheBattleField(PositionedCard card)
     connect(animation, &QPropertyAnimation::finished,
             _movingCard, &QPushButton::deleteLater);
     //_movingCard->deleteLater();
-
-
-
-
-
 }
 
 QString The_Game::findTheCardPicture(SimpleCard card)
@@ -2141,11 +2109,6 @@ QString The_Game::findTheCardPicture(SimpleCard card)
                 isFound = true;
             }
         }
-
-
-
-
-
     }
     else { //treasure
 
@@ -2197,13 +2160,7 @@ QString The_Game::findTheCardPicture(SimpleCard card)
                 isFound = true;
             }
         }
-
-
-
-
     }
-
-
     return currentPictureAddress;
 }
 

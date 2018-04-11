@@ -13,7 +13,7 @@
 
 
 #define DEBUG_CARDSTACKS_WIDGET
-
+#define USE_RESOURCES
 //#defin_showTheNumberOfCardsLeftft true
 
 #define increasingStacksSizeDeltaWidth 0.015
@@ -36,19 +36,40 @@ private:
 
 private:
 
+#ifndef USE_RESOURCES
     std::vector<QString> _doorsStackLevelsPictures = {{"Pictures/stacksLevels/DoorsStack1.png"},
                                                       {"Pictures/stacksLevels/DoorsStack2.png"},
                                                       {"Pictures/stacksLevels/DoorsStack3.png"},
                                                       {"Pictures/stacksLevels/DoorsStack4.png"},
                                                       {"Pictures/stacksLevels/DoorsStack5_SingleCard.png"},
                                                       {"Pictures/stacksLevels/doorsAreOpened.jpg"}};
+#else
+    std::vector<QString> _doorsStackLevelsPictures = {{":/Pictures/stacksLevels/DoorsStack1.png"},
+                                                      {":/Pictures/stacksLevels/DoorsStack2.png"},
+                                                      {":/Pictures/stacksLevels/DoorsStack3.png"},
+                                                      {":/Pictures/stacksLevels/DoorsStack4.png"},
+                                                      {":/Pictures/stacksLevels/DoorsStack5_SingleCard.png"},
+                                                      {":/Pictures/stacksLevels/doorsAreOpened.jpg"}};
+#endif
 
+#ifndef USE_RESOURCES
     std::vector<QString> _treasuresStackLevelPictures = {{"Pictures/stacksLevels/TreasureStack1.png"},
                                                          {"Pictures/stacksLevels/TreasureStack2.png"},
                                                          {"Pictures/stacksLevels/TreasureStack3.png"},
                                                          {"Pictures/stacksLevels/TreasureStack4.png"},
                                                          {"Pictures/stacksLevels/TreasureStack5_SingleCard.png"},
                                                          {"Pictures/stacksLevels/AllTreasuresAreFound.jpg"}};
+#else
+    std::vector<QString> _treasuresStackLevelPictures = {{":/Pictures/stacksLevels/TreasureStack1.png"},
+                                                         {":/Pictures/stacksLevels/TreasureStack2.png"},
+                                                         {":/Pictures/stacksLevels/TreasureStack3.png"},
+                                                         {":/Pictures/stacksLevels/TreasureStack4.png"},
+                                                         {":/Pictures/stacksLevels/TreasureStack5_SingleCard.png"},
+                                                         {":/Pictures/stacksLevels/AllTreasuresAreFound.jpg"}};
+#endif
+
+
+
 public slots:
 
     void changeTheDoorsStackView(unsigned int cardsLeft);
@@ -133,9 +154,6 @@ public:
 
     unsigned int doorsLeft() const;
     void setDoorsLeft(unsigned int doorsLeft);
-
-
-
 
     unsigned int totalDoors() const;
     void setTotalDoors(unsigned int totalDoors);

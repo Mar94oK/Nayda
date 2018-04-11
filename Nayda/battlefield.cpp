@@ -1,5 +1,6 @@
 #include "battlefield.h"
 #include "ui_battlefield.h"
+#define USE_RESOURCES
 
 battleField::battleField(QWidget *parent) :
     QWidget(parent),
@@ -17,7 +18,12 @@ battleField::battleField(QWidget *parent) :
     //set the Cover-Picture
 
     //treeCover.jpg
+#ifndef USE_RESOURCES
     QPixmap pxmpBattleField("Pictures/treeCover.jpg");
+#else
+    QPixmap pxmpBattleField(":/Pictures/treeCover.jpg");
+#endif
+
     QPalette plte_battleField;
     plte_battleField.setBrush(QPalette::Background, QBrush(pxmpBattleField.scaled(size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
     //setPalette(plte_battleField);
@@ -90,9 +96,6 @@ void battleField::cardsRepresenter()
         representersVector[var]->setText("Hello!");
         ui->horizontalLayout_2->addWidget(representersVector[var]);
 
-
-
-        //QPixmap pxmp_btn("Pictures/No_Race_dbg.png");
         QPixmap pxmp_btn(iter->second.pictureAddress());
         if (iter != _monstersDeck->end()) iter++;
         QPalette plte_btn;

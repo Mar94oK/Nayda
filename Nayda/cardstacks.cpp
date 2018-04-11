@@ -1,5 +1,6 @@
 #include "cardstacks.h"
 #include "ui_cardstacks.h"
+#define USE_RESOURCES
 
 CardStacks::CardStacks(QWidget *parent) :
     QWidget(parent),
@@ -84,8 +85,12 @@ CardStacks::CardStacks(QWidget *parent) :
     ui->btn_TreasuresFold->setMinimumWidth((_race_class_btn_size_width + increasingStacksSizeDeltaWidth)*HW_Screen_Size_Width);
     ui->btn_TreasuresFold->setMaximumWidth((_race_class_btn_size_width + increasingStacksSizeDeltaWidth)*HW_Screen_Size_Width);
 
-
+#ifndef USE_RESOURCES
     QPixmap doorsFoldImage("Pictures/doorsAreOpened.jpg");
+#else
+    QPixmap doorsFoldImage(":/Pictures/doorsAreOpened.jpg");
+#endif
+
     QPalette plte_doorFold;
     plte_doorFold.setBrush(ui->btn_DoorsFold->backgroundRole(),
     QBrush(doorsFoldImage.scaled((_race_class_btn_size_width + increasingStacksSizeDeltaWidth )*HW_Screen_Size_Width,
@@ -96,8 +101,12 @@ CardStacks::CardStacks(QWidget *parent) :
     ui->btn_DoorsFold->setPalette(plte_doorFold);
     ui->btn_DoorsFold->setText("");
 
-
+#ifndef USE_RESOURCES
     QPixmap treasureFoldImage("Pictures/TreasuresCard.png");
+#else
+    QPixmap treasureFoldImage(":/Pictures/TreasuresCard.png");
+#endif
+
     QPalette plte_treasureFold;
     plte_treasureFold.setBrush(ui->btn_TreasuresFold->backgroundRole(),
     QBrush(treasureFoldImage.scaled((_race_class_btn_size_width + increasingStacksSizeDeltaWidth )*HW_Screen_Size_Width,
@@ -108,46 +117,14 @@ CardStacks::CardStacks(QWidget *parent) :
     ui->btn_TreasuresFold->setPalette(plte_treasureFold);
     ui->btn_TreasuresFold->setText("");
 
-
-
-
-
-    //set-up the Iterators (for test)
-
-//    _monstersIterator = _monstersDeck->begin();
-//    _amplifiersIterator = _amplifiersDeck->begin();
-//    _cursesIterator = _cursesDeck->begin();
-//    _professionsIterator = _professionsDeck->begin();
-//    _racesIterator = _racesDeck->begin();
-//    _specialMechanicsIterator = _specialMechanicsDeck->begin();
-
-//    _armorIterator = _armorDeck->begin();
-//    _armorAmplifiersIterator = _armorAmplifiersDeck->begin();
-//    _battleAmplifiersIterator = _battleAmplifiersDeck->begin();
-//    _levelUpIterator = _levelUpDeck->begin();
-//    _specialMechanicsTreasureIterator = _specialMechanicsTreasureDeck->begin();
-//    _thingsAmplifiersIterator = _thingsAmplifiersDeck->begin();
-//    _weaponsIterator = _weaponsDeck->begin();
-
-
-
-
 #ifdef DEBUG_CARDSTACKS_WIDGET
-
     _testTimer = new QTimer();
     _testTimer->setInterval(250);
     _testTimer->setSingleShot(false);
 
     connect(ui->btn_Test, &QPushButton::clicked, this, &CardStacks::startTheTest);
     connect(_testTimer, &QTimer::timeout, this, &CardStacks::testTheFoldProcess);
-
-
-
 #endif
-
-
-
-
 }
 
 CardStacks::~CardStacks()
@@ -181,14 +158,12 @@ void CardStacks::changeTheDoorsStackView(unsigned int cardsLeft)
         stage = 5; //clear the stack!
     }
 
-
     QPixmap doorsStackImage(_doorsStackLevelsPictures[stage]);
     QPalette plte_doorStack;
     plte_doorStack.setBrush(ui->btn_DoorsStack->backgroundRole(),
     QBrush(doorsStackImage.scaled(_race_class_btn_size_width*HW_Screen_Size_Width,
                                     _race_class_btn_size_height*HW_Screen_Size_Height / 2,
                                     Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
-
 
     ui->btn_DoorsStack->setFlat(true);
     ui->btn_DoorsStack->setAutoFillBackground(true);

@@ -10,6 +10,7 @@
 
 
 #define DEBUG_GAMER_WIDGET
+#define USE_RESOURCES
 
 namespace Ui {
 class GamerWidget;
@@ -23,12 +24,9 @@ public:
     explicit GamerWidget(QWidget *parent = 0);
     ~GamerWidget();
 
-
-
     bool is_MainPlayer() const;
     void setIs_MainPlayer(bool is_MainPlayer);
     void redraw_as_a_secondary_player();
-
 
     void setMonsersDeck(const std::map<int, gameCardDoorMonster> *monsersDeck);
     void setAmplifiersDeck(const std::map<int, gameCardDoorAmplifier> *amplifiersDeck);
@@ -44,12 +42,7 @@ public:
     void setThingsAmplifiersDeck(const std::map<int, gameCardTreasureThingsAmplifiers> *thingsAmplifiersDeck);
     void setWeaponsDeck(const std::map<int, gameCardTreasureWeapon> *weaponsDeck);
 
-
-
-
-
 private:
-
 
     Ui::GamerWidget *ui;
     bool _is_MainPlayer;
@@ -69,8 +62,6 @@ private:
     const std::map<int, gameCardTreasureThingsAmplifiers> *_thingsAmplifiersDeck;
     const std::map<int, gameCardTreasureWeapon> *_weaponsDeck;
 
-
-
     std::map<int, gameCardDoorMonster> :: const_iterator  _monstersIterator;
     std::map<int, gameCardDoorAmplifier> :: const_iterator _amplifiersIterator;
     std::map<int, gameCardDoorCurse> :: const_iterator _cursesIterator;
@@ -85,11 +76,6 @@ private:
     std::map<int, gameCardTreasureSpecialMechanic> :: const_iterator _specialMechanicsTreasureIterator;
     std::map<int, gameCardTreasureThingsAmplifiers> :: const_iterator _thingsAmplifiersIterator;
     std::map<int, gameCardTreasureWeapon> :: const_iterator _weaponsIterator;
-
-
-
-
-
 
 public:
 
@@ -133,7 +119,7 @@ public slots:
 
 
 private:
-
+#ifndef USE_RESOURCES
     std::vector<QString> _levelsPictures = {{"Pictures/levels/match1_transparent.png"},
                                             {"Pictures/levels/match2_transparent.png"},
                                             {"Pictures/levels/match3_transparent.png"},
@@ -144,6 +130,19 @@ private:
                                             {"Pictures/levels/match8_transparent.png"},
                                             {"Pictures/levels/match9_transparent.png"},
                                             {"Pictures/levels/match10_transparent.png"}};
+#else
+    std::vector<QString> _levelsPictures = {{":/Pictures/levels/match1_transparent.png"},
+                                            {":/Pictures/levels/match2_transparent.png"},
+                                            {":/Pictures/levels/match3_transparent.png"},
+                                            {":/Pictures/levels/match4_transparent.png"},
+                                            {":/Pictures/levels/match5_transparent.png"},
+                                            {":/Pictures/levels/match6_transparent.png"},
+                                            {":/Pictures/levels/match7_transparent.png"},
+                                            {":/Pictures/levels/match8_transparent.png"},
+                                            {":/Pictures/levels/match9_transparent.png"},
+                                            {":/Pictures/levels/match10_transparent.png"}};
+#endif
+
 
     unsigned int _gamerLevel = 1;
 
@@ -174,6 +173,7 @@ private:
 
     int _battlePower = 1;
 
+#ifndef USE_RESOURCES
     std::vector<QString> _battlePowerPictures = {{"Pictures/battlePowers/BattlePower_1.png"},
                                                  {"Pictures/battlePowers/BattlePower_2.png"},
                                                  {"Pictures/battlePowers/BattlePower_3.png"},
@@ -181,6 +181,15 @@ private:
                                                  {"Pictures/battlePowers/BattlePower_5.png"},
                                                  {"Pictures/battlePowers/BattlePower_6.png"},
                                                  {"Pictures/battlePowers/BattlePower_7.png"}};
+#else
+    std::vector<QString> _battlePowerPictures = {{":/Pictures/battlePowers/BattlePower_1.png"},
+                                                 {":/Pictures/battlePowers/BattlePower_2.png"},
+                                                 {":/Pictures/battlePowers/BattlePower_3.png"},
+                                                 {":/Pictures/battlePowers/BattlePower_4.png"},
+                                                 {":/Pictures/battlePowers/BattlePower_5.png"},
+                                                 {":/Pictures/battlePowers/BattlePower_6.png"},
+                                                 {":/Pictures/battlePowers/BattlePower_7.png"}};
+#endif
 
 public slots:
 

@@ -104,8 +104,3 @@ void Before_The_Game::dbg_start_the_game_with_default_settings()
     qDebug() << "Start with debug button. DEFAULT SETTING ARE PROVIDED!!!!";
 }
 
-
-//void Before_The_Game::setUi(Ui::Before_The_Game *value)
-//{
-//    ui = value;
-//}
