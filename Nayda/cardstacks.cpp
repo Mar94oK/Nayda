@@ -430,7 +430,6 @@ void CardStacks::testTheFoldProcess()
     int HW_Screen_Size_Width = HW_Screen_Size.width();
     int HW_Screen_Size_Height = HW_Screen_Size.height();
 
-
     SimpleCard currentCard;
     if (!_currCardsArrayRepresentationStep) {
 
@@ -616,7 +615,6 @@ void CardStacks::startTheTest()
         _testIsRunning = false;
     }
 }
-
 
 void CardStacks::setMonsersDeck(const std::map<int, gameCardDoorMonster> *monsersDeck)
 {
