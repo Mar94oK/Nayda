@@ -1,6 +1,6 @@
 #include "battlefield.h"
 #include "ui_battlefield.h"
-//#define USE_RESOURCES
+#include "munchkinglobaldefines.h"
 
 battleField::battleField(QWidget *parent) :
     QWidget(parent),

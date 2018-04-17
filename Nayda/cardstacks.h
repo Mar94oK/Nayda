@@ -9,11 +9,11 @@
 #include <QDesktopWidget>
 #include <Application/card.h>
 #include <QDebug>
-
+#include "munchkinglobaldefines.h"
 
 
 #define DEBUG_CARDSTACKS_WIDGET
-//#define USE_RESOURCES
+
 
 //#defin_showTheNumberOfCardsLeftft true
 

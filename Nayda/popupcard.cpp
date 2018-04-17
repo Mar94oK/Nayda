@@ -1,6 +1,6 @@
 #include "popupcard.h"
 #include "ui_popupcard.h"
-//#define USE_RESOURCES
+#include "munchkinglobaldefines.h"
 
 
 #include <QPainter>

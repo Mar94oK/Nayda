@@ -1,6 +1,6 @@
 #include "hand.h"
 #include "ui_hand.h"
-//#define USE_RESOURCES
+#include "munchkinglobaldefines.h"
 
 Hand::Hand(QWidget *parent) :
     QWidget(parent),

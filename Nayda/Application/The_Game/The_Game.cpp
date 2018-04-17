@@ -4,7 +4,9 @@
 #include <QTime>
 #include "popupcard.h"
 
-//#define USE_RESOURCES
+#include "munchkinglobaldefines.h"
+
+
 
 The_Game::The_Game(QWidget *parent) :
     QMainWindow(parent),

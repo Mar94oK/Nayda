@@ -68,7 +68,8 @@ HEADERS  += main_application.h \
     cardstacks.h \
     handsecondaryplayer.h \
     rejectedcardmessage.h \
-    handcardpointer.h
+    handcardpointer.h \
+    munchkinglobaldefines.h
 
 FORMS    += main_application.ui \
     Application/Before_The_Game/Before_The_Game.ui \
