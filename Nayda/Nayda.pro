@@ -92,4 +92,5 @@ RESOURCES += \
     pictures.qrc
 
 DISTFILES += \
-    Pictures/doorsAreOpened.jpg
+    Pictures/doorsAreOpened.jpg \
+    ToDoList
