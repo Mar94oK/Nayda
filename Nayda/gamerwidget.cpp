@@ -1,6 +1,6 @@
 #include "gamerwidget.h"
 #include "ui_gamerwidget.h"
-#define USE_RESOURCES
+//#define USE_RESOURCES
 
 
 GamerWidget::GamerWidget(QWidget *parent) :

@@ -1,6 +1,6 @@
 #include "battlefield.h"
 #include "ui_battlefield.h"
-#define USE_RESOURCES
+//#define USE_RESOURCES
 
 battleField::battleField(QWidget *parent) :
     QWidget(parent),

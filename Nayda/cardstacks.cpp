@@ -1,6 +1,6 @@
 #include "cardstacks.h"
 #include "ui_cardstacks.h"
-#define USE_RESOURCES
+//#define USE_RESOURCES
 
 CardStacks::CardStacks(QWidget *parent) :
     QWidget(parent),

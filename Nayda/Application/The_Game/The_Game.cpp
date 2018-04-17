@@ -4,14 +4,13 @@
 #include <QTime>
 #include "popupcard.h"
 
-#define USE_RESOURCES
+//#define USE_RESOURCES
 
 The_Game::The_Game(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::The_Game)
 {
     ui->setupUi(this);
-
 
     //Algorithm:
     //1. Receive the size of the screen;
@@ -51,8 +50,6 @@ The_Game::The_Game(QWidget *parent) :
     //qsrand((uint)time.msec());
 
 
-
-
     //Setting-up button's connections.
 
     //QObject::connect( ui->btnHide, SIGNAL(clicked()), this, SLOT(hide()));
@@ -68,8 +65,6 @@ The_Game::The_Game(QWidget *parent) :
 
 //    connect(ui->MainGamer, &GamerWidget::_representTheCardNearItsPosition, this, &The_Game::showTheCardNearItsPosition);
 //    connect(ui->MainGamer, &GamerWidget::_hideTheCardNearItsPosition, this, &The_Game::hideTheCardInCentre);
-
-
 
     //setting-up main Game Ico
 
@@ -97,14 +92,8 @@ The_Game::The_Game(QWidget *parent) :
     //setting up the GUI staff
     //Defining its coefficients with respect to the total size of availible field;
 
-
-
-
     ui->GameField->setMinimumWidth(koeff_GameField_size*HW_Screen_Size_Width);
     ui->GameField->setMinimumHeight(koeff_GameField_size*HW_Screen_Size_Heigh);
-
-
-
 
     ui->MainGamer->setMinimumHeight(koeff_GamerWidget_size_Height*HW_Screen_Size_Heigh);
 
@@ -116,9 +105,6 @@ The_Game::The_Game(QWidget *parent) :
     //but may take all the availible space if the width is concerned; Why not?
     ui->MainGamer->setMinimumWidth(koeff_GamerWidget_size_Width*HW_Screen_Size_Width);
     ui->MainGamer->setMaximumWidth((koeff_GamerWidget_size_Width+MainGamerWidgetWidthExpansion)*HW_Screen_Size_Width);
-
-
-
 
     ui->TimersWidget->setMinimumHeight(koeff_GameTimers_size_Height*HW_Screen_Size_Heigh);
     ui->TimersWidget->setMaximumHeight(koeff_GameTimers_size_Height*HW_Screen_Size_Heigh);
@@ -154,9 +140,6 @@ The_Game::The_Game(QWidget *parent) :
 
 #endif
 
-
-
-
     //setting MainGamer
     ui->MainGamer->setIs_MainPlayer(true);
 
@@ -184,14 +167,10 @@ The_Game::The_Game(QWidget *parent) :
 
     }
 
-
-
     //first two of them to the top layout
     //fixed numbers, they are allways there
     ui->top_opponents_layout->addWidget(_widgets4Opponents[0]);
     ui->top_opponents_layout->addWidget(_widgets4Opponents[1]);
-
-
 
     //this->opponent[0]->
 
@@ -225,24 +204,52 @@ The_Game::The_Game(QWidget *parent) :
         connect(_widgets4Opponents[var], &GamerWidget::_hideTheCardInCentre, this, &The_Game::hideTheCardInCentre);
     }
 
-
-//    for (unsigned int var = 0; var < _widgets4Opponents.size(); ++var) {
-//        connect(_widgets4Opponents[var], &GamerWidget::_representTheCardNearItsPosition, this, &The_Game::showTheCardNearItsPosition);
-//        connect(_widgets4Opponents[var], &GamerWidget::_hideTheCardNearItsPosition, this, &The_Game::hideTheCardNearItsPosition);
-//    }
-
 #endif
-
-
-    //Game_Card kamikazeKobolds(1,"Pictures/No_Class_dbg.png","Kamikaze Kobolds",cardAddon::ClirickalMistakes);
-    //_basisStock.insert({1, kamikazeKobolds});
-
-
-    //gameCardDoorMonster monster;
-    //_monstersDeck.insert({1, monster});
 
     //filling up the monsters' stock!
 
+#ifndef USE_RESOURCES
+
+    theMonstersParser("Tables/cards_doors_monsters.csv");
+    qDebug() << "Monsters parsing complete!";
+
+    theAmplifiersParser("Tables/cards_doors_amplifiers.csv");
+    qDebug() << "Amplifiers parsing complete!";
+
+    theCursesParser("Tables/cards_doors_curses.csv");
+    qDebug() << "Curses parsing complete!";
+
+    theProfessionsParser("Tables/cards_doors_professions.csv");
+    qDebug() << "Professions parsing complete!";
+
+    theRacesParser("Tables/cards_doors_races.csv");
+    qDebug() << "Races parsing complete!";
+
+    theSpecialMechanicsParser("Tables/cards_doors_specialmechanics.csv");
+    qDebug() << "Special mechanics parsing complete!";
+
+    theArmorsParser("Tables/cards_treasures_armor.csv");
+    qDebug() << "Armor parsing complete!";
+
+    theArmorAmplifiersParser("Tables/cards_treasures_armorAmplifiers.csv");
+    qDebug() << "ArmorAmplifiers parsing complete!";
+
+    theBattleAmplifiersParser("Tables/cards_treasures_battleAmplifiers.csv");
+    qDebug() << "BattleAmplifiers parsing complete!";
+
+    theLevelUpParser("Tables/cards_treasures_levelUp.csv");
+    qDebug() << "LevelUps parsing complete!";
+
+    theSpecialMechanicTreasureParser("Tables/cards_treasures_specialMechanics.csv");
+    qDebug() << "SpecialMechanicsTreasures parsing complete!";
+
+    theThingsAmplifiersParser("Tables/cards_treasures_thingsAmplifiers.csv");
+    qDebug() << "ThingsAmplifiers parsing complete!";
+
+    theWeaponParser("Tables/cards_treasures_Weapon.csv");
+    qDebug() << "Weapons parsing complete!";
+
+#else
     theMonstersParser(":/Tables/cards_doors_monsters.csv");
     qDebug() << "Monsters parsing complete!";
 
@@ -281,6 +288,13 @@ The_Game::The_Game(QWidget *parent) :
 
     theWeaponParser(":/Tables/cards_treasures_Weapon.csv");
     qDebug() << "Weapons parsing complete!";
+#endif
+
+
+
+
+
+
 
 
     //first pass there the Cards (after receiving them from server);
@@ -820,12 +834,10 @@ void The_Game::theArmorsParser(const QString &filename)
     {
         while(!file.atEnd())
         {
-
             QString str = file.readLine();
             QStringList lst = str.split(";");
 
             _armorDeck.insert({(lst.first()).toInt(), armorsStringParser(str)});
-
         }
     }
 

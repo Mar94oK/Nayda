@@ -1,6 +1,6 @@
 #include "handsecondaryplayer.h"
 #include "ui_handsecondaryplayer.h"
-#define USE_RESOURCES
+//#define USE_RESOURCES
 
 HandSecondaryPlayer::HandSecondaryPlayer(QWidget *parent) :
     QWidget(parent),

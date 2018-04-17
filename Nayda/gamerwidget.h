@@ -10,7 +10,7 @@
 
 
 #define DEBUG_GAMER_WIDGET
-#define USE_RESOURCES
+//#define USE_RESOURCES
 
 namespace Ui {
 class GamerWidget;

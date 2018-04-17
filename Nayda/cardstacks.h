@@ -13,7 +13,8 @@
 
 
 #define DEBUG_CARDSTACKS_WIDGET
-#define USE_RESOURCES
+//#define USE_RESOURCES
+
 //#defin_showTheNumberOfCardsLeftft true
 
 #define increasingStacksSizeDeltaWidth 0.015
