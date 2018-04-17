@@ -2,7 +2,6 @@
 #include "ui_gamerwidget.h"
 #include "munchkinglobaldefines.h"
 
-
 GamerWidget::GamerWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::GamerWidget)

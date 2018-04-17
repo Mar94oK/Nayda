@@ -7,7 +7,6 @@ HandCardPointer::HandCardPointer(QWidget *parent) :
 {
     ui->setupUi(this);
 
-
     setWindowFlags(Qt::FramelessWindowHint |        // Отключаем оформление окна
                    Qt::Tool |                       // Отменяем показ в качестве отдельного окна
                    Qt::WindowStaysOnTopHint);       // Устанавливаем поверх всех окон
@@ -19,7 +18,6 @@ HandCardPointer::HandCardPointer(QWidget *parent) :
     connect(&animation, &QAbstractAnimation::finished, this, &HandCardPointer::hide); /* Подключаем сигнал окончания
                                                                                 * анимации к слоты скрытия
                                                                                 * */
-
     // Настройка текста уведомления
     label.setAlignment(Qt::AlignHCenter | Qt::AlignVCenter); // Устанавливаем по центру
     // И настраиваем стили

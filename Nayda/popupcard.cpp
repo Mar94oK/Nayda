@@ -2,7 +2,6 @@
 #include "ui_popupcard.h"
 #include "munchkinglobaldefines.h"
 
-
 #include <QPainter>
 #include <QApplication>
 #include <QDesktopWidget>

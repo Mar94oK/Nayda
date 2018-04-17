@@ -11,9 +11,7 @@
 #include <QDebug>
 #include "munchkinglobaldefines.h"
 
-
 #define DEBUG_CARDSTACKS_WIDGET
-
 
 //#defin_showTheNumberOfCardsLeftft true
 

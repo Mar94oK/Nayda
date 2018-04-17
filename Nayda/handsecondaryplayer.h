@@ -6,10 +6,7 @@
 #include <QRect>
 #include <QDebug>
 
-
 #define DEBUG_HANDSECONDARY_PLAYER_WIDGET
-
-
 
 namespace Ui {
 class HandSecondaryPlayer;

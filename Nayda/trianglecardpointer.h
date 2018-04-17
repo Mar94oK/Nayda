@@ -7,11 +7,8 @@
 #include <QPropertyAnimation>
 #include <QTimer>
 #include "Application/card.h"
-
 #include <QDebug>
 #include <QPoint>
-
-
 #include <QDialog>
 #include <QPainter>
 #include <QPolygon>
@@ -19,7 +16,6 @@
 #include <QDesktopWidget>
 
 #include <popupcard.h>
-
 
 namespace Ui {
 class TriangleCardPointer;

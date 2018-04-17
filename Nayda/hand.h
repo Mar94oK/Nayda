@@ -12,7 +12,6 @@
 #include <QPoint>
 #include <rejectedcardmessage.h>
 
-
 //defines of how many pixels to move the card on Hand upper to be ready for being played.
 #define movingUpCardDelta 10
 

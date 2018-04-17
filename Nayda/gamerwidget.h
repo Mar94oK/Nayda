@@ -12,7 +12,6 @@
 
 #define DEBUG_GAMER_WIDGET
 
-
 namespace Ui {
 class GamerWidget;
 }

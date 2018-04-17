@@ -7,7 +7,6 @@
 #include "munchkinglobaldefines.h"
 
 
-
 The_Game::The_Game(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::The_Game)

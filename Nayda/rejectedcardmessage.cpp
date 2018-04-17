@@ -1,9 +1,6 @@
 #include "rejectedcardmessage.h"
 #include "ui_rejectedcardmessage.h"
 
-
-
-
 #include <QPainter>
 #include <QApplication>
 #include <QDesktopWidget>

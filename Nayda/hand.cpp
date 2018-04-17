@@ -8,7 +8,6 @@ Hand::Hand(QWidget *parent) :
 {
     ui->setupUi(this);
 
-
     QRect HW_Screen_Size = QApplication::desktop()->screenGeometry();
     int HW_Screen_Size_Width = HW_Screen_Size.width();
     int HW_Screen_Size_Height = HW_Screen_Size.height();

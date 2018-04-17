@@ -8,16 +8,12 @@ battleField::battleField(QWidget *parent) :
 {
     ui->setupUi(this);
 
-
     QObject::connect(ui->btnStartTestCards, SIGNAL(clicked()), this, SLOT(startCardsRepresentation()));
 
     //disable the button for cards' testing.
     ui->btnStartTestCards->hide();
-
-
     //set the Cover-Picture
 
-    //treeCover.jpg
 #ifndef USE_RESOURCES
     QPixmap pxmpBattleField("Pictures/treeCover.jpg");
 #else
@@ -28,10 +24,7 @@ battleField::battleField(QWidget *parent) :
     plte_battleField.setBrush(QPalette::Background, QBrush(pxmpBattleField.scaled(size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
     //setPalette(plte_battleField);
     //setAutoFillBackground(true);
-
     //setStyleSheet("background-image: url(Pictures/TreasuresCard.png)");
-
-
 }
 
 battleField::~battleField()
@@ -71,17 +64,12 @@ void battleField::cardsRepresenter()
     _theBtnMainRepresenter->setAutoFillBackground(true);
     _theBtnMainRepresenter->setPalette(plteBtnMainRepresenter);
 
-
-
-
     //setting the other(bottom) representers
     _theBtnRepresenter1 = new QPushButton (this);
     _theBtnRepresenter2 = new QPushButton (this);
     _theBtnRepresenter3 = new QPushButton (this);
     _theBtnRepresenter4 = new QPushButton (this);
     _theBtnRepresenter5 = new QPushButton (this);
-
-
 
     std::vector<QPushButton*> representersVector = {_theBtnRepresenter1, _theBtnRepresenter2,
                                                    _theBtnRepresenter3,_theBtnRepresenter4,
@@ -116,7 +104,6 @@ void battleField::cardsRepresenter()
     _continueToRepresentCards = false;
     _showCardsTimer->setSingleShot(true);
 
-
 //    std::map<int, gameCardDoorMonster> :: const_iterator  _monstersIterator;
 //    std::map<int, gameCardDoorAmplifier> :: const_iterator _amplifiersIterator;
 //    std::map<int, gameCardDoorCurse> :: const_iterator _cursesIterator;
@@ -147,9 +134,6 @@ void battleField::cardsRepresenter()
     _specialMechanicsTreasureIterator = _specialMechanicsTreasureDeck->begin();
     _thingsAmplifiersIterator = _thingsAmplifiersDeck->begin();
     _weaponsIterator = _weaponsDeck->begin();
-
-
-
 }
 
 void battleField::setMonsersDeck(const std::map<int, gameCardDoorMonster> *monsersDeck)
@@ -350,15 +334,9 @@ void battleField::continueCardRepresentation()
         _thingsAmplifiersIterator = _thingsAmplifiersDeck->begin();
         _weaponsIterator = _weaponsDeck->begin();
 
-
-
         pxmpMainBtn.load(_monstersIterator->second.pictureAddress());
         _currCardsArrayRepresentationStep = 0;
     }
-
-
-
-
 
     QPalette plte_btn;
     plte_btn.setBrush(_theBtnMainRepresenter->backgroundRole(),
@@ -368,8 +346,6 @@ void battleField::continueCardRepresentation()
     _theBtnMainRepresenter->setPalette(plte_btn);
 
     _showCardsTimer->start(_timerCount);
-
-
 }
 
 void battleField::startCardsRepresentation()

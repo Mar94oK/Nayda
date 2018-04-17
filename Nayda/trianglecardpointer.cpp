@@ -38,9 +38,6 @@ TriangleCardPointer::TriangleCardPointer(QWidget *parent) :
 #ifdef HIDE_THE_CARD_ON_TIMEOUT
     connect(timer, &QTimer::timeout, this, &PopUpCard::hideAnimation);
 #endif
-
-
-
 }
 
 
@@ -60,7 +57,6 @@ void TriangleCardPointer::paintEvent(QPaintEvent *event)
     roundedRect.setY(rect().y() + 5);
     roundedRect.setWidth(rect().width() - 10);
     roundedRect.setHeight(rect().height() - 10);
-
 
     QRect normalRect;
     normalRect.setX(rect().x());
@@ -82,11 +78,7 @@ void TriangleCardPointer::paintEvent(QPaintEvent *event)
     // Отрисовываем фон с закруглением краёв в 10px
     //painter.drawRoundedRect(roundedRect, 10, 10);
 
-
-
     QPainterPath path;
-
-
 
     if (_positionTopLeft.y() - _actualCardSize.height() - 30 < 0) { //higher, than allowed
 
@@ -107,14 +99,7 @@ void TriangleCardPointer::paintEvent(QPaintEvent *event)
 
     }
 
-
-
-
     painter.fillPath(path, QBrush(QColor(244,183,82,150)));
-
-
-
-
 
 }
 
@@ -230,14 +215,11 @@ void TriangleCardPointer::setUpTriangleCardPointer(QPoint positionTopLeft, QPoin
     _actualCardSize.setHeight(handCardSizeHeight*HW_Screen_Size_Height + 20);
     _actualCardSize.setWidth(handCardSizeWidht*HW_Screen_Size_Width + 20);
 
-
-
     //pass the Points value to the TriangleCardPointer
     _positionBottomRight = positionBottomRight;
     _positionTopLeft = positionTopLeft;
 
 //    qDebug() << "Delta: " << _positionBottomRight.x() - positionTopLeft.x();
-
 
 }
 
@@ -250,7 +232,6 @@ void TriangleCardPointer::hideAnimation()
     animation.setEndValue(0.0);     // Конечное - полностью прозрачный виджет
     animation.start();              // И запускаем анимацию
 }
-
 
 void TriangleCardPointer::hide()
 {
@@ -271,8 +252,6 @@ float TriangleCardPointer::getPopupOpacity() const
 {
     return popupOpacity;
 }
-
-
 
 TriangleCardPointer::~TriangleCardPointer()
 {

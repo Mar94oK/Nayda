@@ -1,10 +1,6 @@
 #ifndef CARDSBORDERDEFINES_H
 #define CARDSBORDERDEFINES_H
 
-
-
-
-
 #define lowerBorder_Basic_doorsAmplifier 1
 #define upperBorder_Basic_doorsAmplifier 5
 #define lowerBorder_WildAxe_doorsAmplifier 96

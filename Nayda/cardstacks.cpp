@@ -22,14 +22,10 @@ CardStacks::CardStacks(QWidget *parent) :
                                   (_race_class_btn_size_height + increasingStacksSizeDeltaHeight )*HW_Screen_Size_Height,
                                   Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
 
-
-
-
     ui->btn_DoorsStack->setMinimumHeight((_race_class_btn_size_height + increasingStacksSizeDeltaHeight )*HW_Screen_Size_Height);
     ui->btn_DoorsStack->setMaximumHeight((_race_class_btn_size_height + increasingStacksSizeDeltaHeight)*HW_Screen_Size_Height);
     ui->btn_DoorsStack->setMinimumWidth((_race_class_btn_size_width + increasingStacksSizeDeltaWidth)*HW_Screen_Size_Width);
     ui->btn_DoorsStack->setMaximumWidth((_race_class_btn_size_width + increasingStacksSizeDeltaWidth)*HW_Screen_Size_Width);
-
 
     ui->btn_DoorsStack->setFlat(true);
     ui->btn_DoorsStack->setAutoFillBackground(true);
@@ -48,13 +44,10 @@ CardStacks::CardStacks(QWidget *parent) :
                                       (_race_class_btn_size_height + increasingStacksSizeDeltaHeight )*HW_Screen_Size_Height,
                                       Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
 
-
-
     ui->btn_TreasuresStack->setMinimumHeight((_race_class_btn_size_height + increasingStacksSizeDeltaHeight )*HW_Screen_Size_Height);
     ui->btn_TreasuresStack->setMaximumHeight((_race_class_btn_size_height + increasingStacksSizeDeltaHeight)*HW_Screen_Size_Height);
     ui->btn_TreasuresStack->setMinimumWidth((_race_class_btn_size_width + increasingStacksSizeDeltaWidth)*HW_Screen_Size_Width);
     ui->btn_TreasuresStack->setMaximumWidth((_race_class_btn_size_width + increasingStacksSizeDeltaWidth)*HW_Screen_Size_Width);
-
 
     ui->btn_TreasuresStack->setFlat(true);
     ui->btn_TreasuresStack->setAutoFillBackground(true);
@@ -66,14 +59,7 @@ CardStacks::CardStacks(QWidget *parent) :
         ui->lbl_TreasuresStack->setText(QString::number(_treasuresLeft));
     }
 
-
-
     //set Folds
-
-
-
-
-
 
     ui->btn_DoorsFold->setMinimumHeight((_race_class_btn_size_height + increasingStacksSizeDeltaHeight )*HW_Screen_Size_Height);
     ui->btn_DoorsFold->setMaximumHeight((_race_class_btn_size_height + increasingStacksSizeDeltaHeight)*HW_Screen_Size_Height);
@@ -174,10 +160,6 @@ void CardStacks::changeTheDoorsStackView(unsigned int cardsLeft)
     if (_showTheNumberOfCardsLeft) {
         ui->lbl_DoorsStack->setText(QString::number(cardsLeft));
     }
-
-
-
-
 }
 
 void CardStacks::changeTheTreasureStackView(unsigned int cardsLeft)
@@ -206,7 +188,6 @@ void CardStacks::changeTheTreasureStackView(unsigned int cardsLeft)
         stage = 5; //clear the stack!
     }
 
-
     QPixmap treasuresStackImage(_treasuresStackLevelPictures[stage]);
     QPalette plte_treasuresStack;
     plte_treasuresStack.setBrush(ui->btn_TreasuresStack->backgroundRole(),
@@ -214,19 +195,15 @@ void CardStacks::changeTheTreasureStackView(unsigned int cardsLeft)
                                     _race_class_btn_size_height*HW_Screen_Size_Height / 2,
                                     Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
 
-
     ui->btn_TreasuresStack->setFlat(true);
     ui->btn_TreasuresStack->setAutoFillBackground(true);
     ui->btn_TreasuresStack->setPalette(plte_treasuresStack);
     ui->btn_TreasuresStack->setText("");
-    //ui->btn_DoorsStack->installEventFilter(this);
 
     //Show the Number of Cards Left
     if (_showTheNumberOfCardsLeft) {
         ui->lbl_TreasuresStack->setText(QString::number(cardsLeft));
     }
-
-
 }
 
 void CardStacks::passTheCardToFoldStack(SimpleCard card)
@@ -238,13 +215,11 @@ void CardStacks::passTheCardToFoldStack(SimpleCard card)
         _doorsFold.push_back(card);
     }
 
-
     //and redraw the Picture!
 
     QRect HW_Screen_Size = QApplication::desktop()->screenGeometry();
     int HW_Screen_Size_Width = HW_Screen_Size.width();
     int HW_Screen_Size_Height = HW_Screen_Size.height();
-
 
     std::map<int, gameCardDoorMonster> :: const_iterator  _monstersIterator;
     std::map<int, gameCardDoorAmplifier> :: const_iterator _amplifiersIterator;
@@ -305,8 +280,6 @@ void CardStacks::passTheCardToFoldStack(SimpleCard card)
                 isFound = true;
             }
         }
-
-
     }
     else { //treasure
 
@@ -358,13 +331,9 @@ void CardStacks::passTheCardToFoldStack(SimpleCard card)
                 isFound = true;
             }
         }
-
-
-
     }
 
     if (!isFound) qDebug() << "Error during passing Cards to the Hands Shower! Check the number passed! " << card.second;
-
 
     if (!card.first) {
 
@@ -375,46 +344,31 @@ void CardStacks::passTheCardToFoldStack(SimpleCard card)
                                                                       (_race_class_btn_size_height + increasingStacksSizeDeltaHeight )*HW_Screen_Size_Height,
                                                                       Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
 
-
         ui->btn_DoorsFold->setFlat(true);
         ui->btn_DoorsFold->setAutoFillBackground(true);
         ui->btn_DoorsFold->setPalette(plte_doorsFoldStack);
         ui->btn_DoorsFold->setText("");
         //ui->btn_DoorsStack->installEventFilter(this);
-
         //set the Value
         ui->lbl_DoorsFold->setText(QString::number(_doorsFold.size()));
-
-
-
     }
     else {
-
 
         QPixmap treasuresFoldImage(currentPictureAddress);
         QPalette plte_treasuresFoldStack;
         plte_treasuresFoldStack.setBrush(ui->btn_TreasuresFold->backgroundRole(),
                                          QBrush(treasuresFoldImage.scaled((_race_class_btn_size_width + increasingStacksSizeDeltaWidth )*HW_Screen_Size_Width,
                                                                           (_race_class_btn_size_height + increasingStacksSizeDeltaHeight )*HW_Screen_Size_Height,
-                                                                          Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
-
+                                                                           Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
 
         ui->btn_TreasuresFold->setFlat(true);
         ui->btn_TreasuresFold->setAutoFillBackground(true);
         ui->btn_TreasuresFold->setPalette(plte_treasuresFoldStack);
         ui->btn_TreasuresFold->setText("");
         //ui->btn_DoorsStack->installEventFilter(this);
-
-
         //set the Value
         ui->lbl_TreasuresFold->setText(QString::number(_treasuresFold.size()));
     }
-
-
-
-
-
-
 }
 
 unsigned int CardStacks::treasuresLeft() const
@@ -461,7 +415,6 @@ void CardStacks::updateTreasuresLeft(unsigned int treasuresLeft)
 {
     _treasuresLeft = treasuresLeft;
     ui->lbl_TreasuresStack->setText(QString::number(treasuresLeft));
-
 }
 
 void CardStacks::updateDoorsLeft(unsigned int doorsLeft)
@@ -494,11 +447,7 @@ void CardStacks::testTheFoldProcess()
         _specialMechanicsTreasureIterator = _specialMechanicsTreasureDeck->begin();
         _thingsAmplifiersIterator = _thingsAmplifiersDeck->begin();
         _weaponsIterator = _weaponsDeck->begin();
-
-
     }
-
-
     if (_currCardsArrayRepresentationStep < _monstersDeck->size()) {
         currentCard.first = false;
         currentCard.second = _monstersIterator->second.cardID();
@@ -651,31 +600,22 @@ void CardStacks::testTheFoldProcess()
         ui->lbl_TreasuresFold->setText(QString::number(_treasuresFold.size()));
         ui->lbl_DoorsFold->setText(QString::number(_doorsFold.size()));
     }
-
-
-
-
 //pass the Card;
     passTheCardToFoldStack(currentCard);
-
-
 }
 
 void CardStacks::startTheTest()
 {
-
-    if (!_testIsRunning) {
-
+    if (!_testIsRunning)
+    {
         _testTimer->start();
         _testIsRunning = true;
-
     }
-    else {
-
+    else
+    {
         _testTimer->stop();
         _testIsRunning = false;
     }
-
 }
 
 
