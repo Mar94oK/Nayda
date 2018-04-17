@@ -157,7 +157,8 @@ void CardStacks::changeTheDoorsStackView(unsigned int cardsLeft)
     ui->btn_DoorsStack->setText("");
     //ui->btn_DoorsStack->installEventFilter(this);
 
-    if (_showTheNumberOfCardsLeft) {
+    if (_showTheNumberOfCardsLeft)
+    {
         ui->lbl_DoorsStack->setText(QString::number(cardsLeft));
     }
 }
@@ -588,8 +589,6 @@ void CardStacks::testTheFoldProcess()
         _specialMechanicsTreasureIterator = _specialMechanicsTreasureDeck->begin();
         _thingsAmplifiersIterator = _thingsAmplifiersDeck->begin();
         _weaponsIterator = _weaponsDeck->begin();
-
-
 
         currentCard.first = true;
         currentCard.second = _monstersIterator->second.cardID();
