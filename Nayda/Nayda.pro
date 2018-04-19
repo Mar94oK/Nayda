@@ -89,7 +89,7 @@ FORMS    += main_application.ui \
 
 RESOURCES += \
     tables.qrc \
-    pictures.qrc
+    #pictures.qrc
 
 DISTFILES += \
     Pictures/doorsAreOpened.jpg \
