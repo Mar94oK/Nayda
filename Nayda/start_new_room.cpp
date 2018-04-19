@@ -9,8 +9,6 @@ start_new_room::start_new_room(QWidget *parent) :
 
     QObject::connect(ui->pushButton, SIGNAL(clicked(bool)),this,SLOT(start_game_with_defaults()));
 
-
-
 }
 
 start_new_room::~start_new_room()
@@ -22,4 +20,9 @@ void start_new_room::start_game_with_defaults()
 {
     emit dbg_btn_play_with_defaults_pressed(true);
     qDebug() << "pressed!";
+}
+
+void start_new_room::closeEvent(QCloseEvent *event)
+{
+    emit userIsClosingStartNewRoomWindow(true);
 }

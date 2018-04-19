@@ -13,19 +13,29 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QPushButton" name="pushButton">
-   <property name="geometry">
-    <rect>
-     <x>50</x>
-     <y>80</y>
-     <width>281</width>
-     <height>71</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Начать игру (с настройками по умолчанию)</string>
-   </property>
-  </widget>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QPushButton" name="pushButton">
+     <property name="text">
+      <string>Начать игру (с настройками по умолчанию) - отладка</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QPushButton" name="btn_Settings">
+     <property name="text">
+      <string>Настройки Игры</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QPushButton" name="btn_StartTheGame">
+     <property name="text">
+      <string>Начать игру! </string>
+     </property>
+    </widget>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>

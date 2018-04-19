@@ -19,6 +19,7 @@ public:
 signals:
 
     void dbg_btn_play_with_defaults_pressed(bool);
+    void userIsClosingStartNewRoomWindow(bool);
 
 public slots:
 
@@ -27,6 +28,8 @@ public slots:
 
 private:
     Ui::start_new_room *ui;
+
+    void closeEvent(QCloseEvent *event);
 };
 
 #endif // START_NEW_ROOM_H

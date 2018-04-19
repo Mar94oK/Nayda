@@ -22,7 +22,6 @@
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
-#include <start_new_room.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -38,8 +37,6 @@ public:
     QPushButton *About_Authors;
     QPushButton *pushButton;
     QPushButton *btnHide;
-    QGridLayout *gridLayout_2;
-    start_new_room *Strt_New_Room;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -90,17 +87,6 @@ public:
 
 
         gridLayout_3->addLayout(verticalLayout, 0, 0, 1, 1);
-
-        gridLayout_2 = new QGridLayout();
-        gridLayout_2->setSpacing(6);
-        gridLayout_2->setObjectName(QStringLiteral("gridLayout_2"));
-        Strt_New_Room = new start_new_room(centralWidget);
-        Strt_New_Room->setObjectName(QStringLiteral("Strt_New_Room"));
-
-        gridLayout_2->addWidget(Strt_New_Room, 0, 0, 1, 1);
-
-
-        gridLayout_3->addLayout(gridLayout_2, 0, 1, 1, 1);
 
         Before_The_Game->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(Before_The_Game);
