@@ -16,9 +16,6 @@ Before_The_Game::Before_The_Game(QWidget *parent) :
     //Might be useful to move them later to the system_manager
     QObject::connect( ui->btnHide, SIGNAL(clicked()), this, SLOT(hide()));
     QObject::connect (ui->btnHide, SIGNAL(clicked(bool)), this, SLOT(dbg_switch_to_game_mode_button_pressed()));
-    //QObject::connect(ui->Create_Lobby, SIGNAL(clicked(bool)),ui->Strt_New_Room, SLOT(show()));
-
-    //QObject::connect(ui->Strt_New_Room, SIGNAL(), this, SLOT(dbg_start_the_game_with_default_settings()));
 
     newRoomDialog = new start_new_room;
     newRoomDialog->hide();
@@ -34,7 +31,6 @@ Before_The_Game::Before_The_Game(QWidget *parent) :
     number_of_players = 3;
     time_for_move = 30;
     time_to_think = 30;
-
 
     //configure_initial_widgets
     //find the HW size of the window
@@ -55,20 +51,6 @@ Before_The_Game::Before_The_Game(QWidget *parent) :
     ui->Settings->setMaximumWidth(koeff_Dialog_size*HW_Screen_Size_Width);
     ui->Find_Lobby->setMaximumWidth(koeff_Dialog_size*HW_Screen_Size_Width);
     ui->btnHide->setMaximumWidth(koeff_Dialog_size*HW_Screen_Size_Width);
-
-
-//    ui->Strt_New_Room->setMinimumHeight(koeff_Create_Room_size*HW_Screen_Size_Heigh);
-//    ui->Strt_New_Room->setMinimumWidth(koeff_Create_Room_size*HW_Screen_Size_Width);
-//    ui->Strt_New_Room->setMaximumHeight(koeff_Create_Room_size*HW_Screen_Size_Heigh);
-//    ui->Strt_New_Room->setMaximumWidth(koeff_Create_Room_size*HW_Screen_Size_Width);
-
-
-//    ui->Strt_New_Room->hide();
-//    //ui->Strt_New_Room->show();
-
-    //after the creation, connect the buttons;
-
-
 }
 
 
