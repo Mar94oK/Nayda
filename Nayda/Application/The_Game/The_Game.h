@@ -97,11 +97,9 @@ struct isOnlyFor_ThingsAmplifiers {
     bool isOnlyForCleric;
     bool isOnlyForWizard;
     bool isOnlyForThief;
-
     bool isRestrictedToWarrior;
     bool isRestrictedToCleric;
     bool isRestrictedtoThief;
-
 
 };
 
@@ -122,13 +120,7 @@ struct isOnlyFor_Weapon {
     bool isOnlyForBard;
     bool isOnlyForCleric;
 
-
 };
-
-
-
-
-
 
 
 class The_Game :  public QMainWindow
