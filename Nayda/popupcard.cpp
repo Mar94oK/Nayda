@@ -234,14 +234,14 @@ void PopUpCard::setUpPopUpCard(SimpleCard card)
     this->resize(handCardSizeWidht*HW_Screen_Size_Width + 20, handCardSizeHeight*HW_Screen_Size_Height + 20);
 
 
-    if ((!card.first) && (!card.second)) { //the card is Card_No_Race
+    if ((!card.first) && (!card.second))
+    { //the card is Card_No_Race
 
 #ifndef USE_RESOURCES
     QPixmap pxmp_icon_race_1("Pictures/No_Race_dbg.png");
 #else
-    QPixmap pxmp_icon_race_1(":/Pictures/No_Race_dbg.png");
+        QPixmap pxmp_icon_race_1(":/Pictures/No_Race_dbg.png");
 #endif
-
         QPalette plte_icon_race_1;
         plte_icon_race_1.setBrush(ui->theCard->backgroundRole(),
         QBrush(pxmp_icon_race_1.scaled(handCardSizeWidht*HW_Screen_Size_Width,
@@ -268,15 +268,12 @@ void PopUpCard::setUpPopUpCard(SimpleCard card)
                                    QBrush(pxmp_icon_class_1.scaled(handCardSizeWidht*HW_Screen_Size_Width,
                                                                    handCardSizeHeight*HW_Screen_Size_Height,
                                                                    Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
-
         ui->theCard->setFlat(true);
         ui->theCard->setAutoFillBackground(true);
         ui->theCard->setPalette(plte_icon_class_1);
         ui->theCard->setText("");
-
         isFound = true;
         isNoClassNoRace = true;
-
     }
 
     else if (!card.first) { //door
@@ -372,15 +369,12 @@ void PopUpCard::setUpPopUpCard(SimpleCard card)
                 isFound = true;
             }
         }
-
-
-
     }
 
     if (!isFound) qDebug() << "Error during passing Cards to the Hands Shower! Check the number passed! " << card.second;
 
-    if ((isFound) && (!isNoClassNoRace)) {
-
+    if ((isFound) && (!isNoClassNoRace))
+    {
         //setUpTheCard
         QPixmap pxmp_theCard(currentPictureAddress);
         QPalette plte_theCard;
@@ -393,22 +387,14 @@ void PopUpCard::setUpPopUpCard(SimpleCard card)
         ui->theCard->setAutoFillBackground(true);
         ui->theCard->setPalette(plte_theCard);
         ui->theCard->setText("");
-
     }
-
-
-
-
 }
 
 void PopUpCard::setUpPointsForPoly(QPoint topLeft, QPoint botRight)
 {
     _positionBottomRight = botRight;
     _positionTopLeft = topLeft;
-
 }
-
-
 
 void PopUpCard::hideAnimation()
 {
