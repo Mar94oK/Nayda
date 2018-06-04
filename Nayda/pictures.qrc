@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>Pictures/treasures_Weapon/Vorpal Blade.jpg</file>
         <file>Pictures/treasures_Weapon/Unnatural Axe.jpg</file>
         <file>Pictures/treasures_Weapon/Two-Handed Sword.jpg</file>
         <file>Pictures/treasures_Weapon/Tweezers of Terror.jpg</file>
@@ -163,6 +162,29 @@
         <file>Pictures/treasures_armor/Boots of Butt-Kicking.jpg</file>
         <file>Pictures/treasures_armor/Bad-Ass Bandana.jpg</file>
         <file>Pictures/treasures_armor/Awful Socks.jpg</file>
+        <file>Pictures/stacksLevels/TreasureStack5_SingleCard.png</file>
+        <file>Pictures/stacksLevels/TreasureStack4.png</file>
+        <file>Pictures/stacksLevels/TreasureStack3.png</file>
+        <file>Pictures/stacksLevels/TreasureStack2.png</file>
+        <file>Pictures/stacksLevels/TreasureStack1.png</file>
+        <file>Pictures/stacksLevels/DoorsStack5_SingleCard.png</file>
+        <file>Pictures/stacksLevels/DoorsStack4.png</file>
+        <file>Pictures/stacksLevels/DoorsStack3.png</file>
+        <file>Pictures/stacksLevels/DoorsStack2.png</file>
+        <file>Pictures/stacksLevels/DoorsStack1.png</file>
+        <file>Pictures/stacksLevels/doorsAreOpened.jpg</file>
+        <file>Pictures/stacksLevels/AllTreasuresAreFound.jpg</file>
+        <file>Pictures/levels/match10_transparent.png</file>
+        <file>Pictures/levels/match9_transparent.png</file>
+        <file>Pictures/levels/match8_transparent.png</file>
+        <file>Pictures/levels/match7_transparent.png</file>
+        <file>Pictures/levels/match6_transparent.png</file>
+        <file>Pictures/levels/match5_transparent.png</file>
+        <file>Pictures/levels/match4_transparent.png</file>
+        <file>Pictures/levels/match3_transparent.png</file>
+        <file>Pictures/levels/match2_transparent.png</file>
+        <file>Pictures/levels/match1_transparent.png</file>
+        <file>Pictures/handCover/HandCover.png</file>
         <file>Pictures/doors_specialMechanics/Wandering Monster_7.jpg</file>
         <file>Pictures/doors_specialMechanics/Wandering Monster_6.jpg</file>
         <file>Pictures/doors_specialMechanics/Wandering Monster_5.jpg</file>
@@ -386,26 +408,19 @@
         <file>Pictures/doors_amplifiers/Big Honking Sword of Character Whupping.jpg</file>
         <file>Pictures/doors_amplifiers/Baby.jpg</file>
         <file>Pictures/doors_amplifiers/Ancient.jpg</file>
+        <file>Pictures/battlePowers/BattlePower_7.png</file>
+        <file>Pictures/battlePowers/BattlePower_6.png</file>
+        <file>Pictures/battlePowers/BattlePower_5.png</file>
+        <file>Pictures/battlePowers/BattlePower_4.png</file>
+        <file>Pictures/battlePowers/BattlePower_3.png</file>
+        <file>Pictures/battlePowers/BattlePower_2.png</file>
+        <file>Pictures/battlePowers/BattlePower_1.png</file>
         <file>Pictures/treeCover.jpg</file>
-        <file>Pictures/TreasuresCard.png</file>
-        <file>Pictures/No_Race_dbg.png</file>
-        <file>Pictures/No_Race.png</file>
-        <file>Pictures/No_Race.jpg</file>
-        <file>Pictures/No_Class_dbg.png</file>
-        <file>Pictures/No_Class.png</file>
-        <file>Pictures/No_Class.jpg</file>
-        <file>Pictures/Munchkin_game_cover.jpg</file>
-        <file>Pictures/mathc5_transparent.png</file>
-        <file>Pictures/match10_transparent.png</file>
-        <file>Pictures/match9_transparent.png</file>
-        <file>Pictures/match8_transparent.png</file>
-        <file>Pictures/match7_transparent.png</file>
-        <file>Pictures/match6_transparent.png</file>
-        <file>Pictures/match4_transparent.png</file>
-        <file>Pictures/match3_transparent.png</file>
-        <file>Pictures/match2_transparent.png</file>
-        <file>Pictures/match1_transparent.png</file>
         <file>Pictures/JorneyCover.png</file>
+        <file>Pictures/TreasuresCard.png</file>
+        <file>Pictures/doorsAreOpened.jpg</file>
+        <file>Pictures/No_Race_dbg.png</file>
+        <file>Pictures/No_Class_dbg.png</file>
         <file>Pictures/Hand/Замерзшая-капля.jpg</file>
         <file>Pictures/Hand/TheShip.jpg</file>
         <file>Pictures/Hand/sunRiseSmall.png</file>
@@ -417,28 +432,5 @@
         <file>Pictures/Hand/drakon-2012-04.jpg</file>
         <file>Pictures/Hand/737666515.png</file>
         <file>Pictures/Hand/18020064.png</file>
-        <file>Pictures/handCover/HandCover.png</file>
-        <file>Pictures/levels/match10_transparent.png</file>
-        <file>Pictures/levels/match9_transparent.png</file>
-        <file>Pictures/levels/match8_transparent.png</file>
-        <file>Pictures/levels/match7_transparent.png</file>
-        <file>Pictures/levels/match6_transparent.png</file>
-        <file>Pictures/levels/match5_transparent.png</file>
-        <file>Pictures/levels/match4_transparent.png</file>
-        <file>Pictures/levels/match3_transparent.png</file>
-        <file>Pictures/levels/match2_transparent.png</file>
-        <file>Pictures/levels/match1_transparent.png</file>
-        <file>Pictures/stacksLevels/AllTreasuresAreFound.jpg</file>
-        <file>Pictures/stacksLevels/doorsAreOpened.jpg</file>
-        <file>Pictures/stacksLevels/DoorsStack1.png</file>
-        <file>Pictures/stacksLevels/DoorsStack2.png</file>
-        <file>Pictures/stacksLevels/DoorsStack3.png</file>
-        <file>Pictures/stacksLevels/DoorsStack4.png</file>
-        <file>Pictures/stacksLevels/DoorsStack5_SingleCard.png</file>
-        <file>Pictures/stacksLevels/TreasureStack1.png</file>
-        <file>Pictures/stacksLevels/TreasureStack2.png</file>
-        <file>Pictures/stacksLevels/TreasureStack3.png</file>
-        <file>Pictures/stacksLevels/TreasureStack4.png</file>
-        <file>Pictures/stacksLevels/TreasureStack5_SingleCard.png</file>
     </qresource>
 </RCC>

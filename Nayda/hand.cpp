@@ -185,11 +185,6 @@ void Hand::addNewCardToHands(SimpleCard card)
                 isFound = true;
             }
         }
-
-
-
-
-
     }
     else { //treasure
 
@@ -241,10 +236,6 @@ void Hand::addNewCardToHands(SimpleCard card)
                 isFound = true;
             }
         }
-
-
-
-
     }
 
     if (!isFound) qDebug() << "Error during passing Cards to the Hands Shower! Check the number passed! " << card.second;
@@ -268,6 +259,7 @@ void Hand::addNewCardToHands(SimpleCard card)
     newCard->setMinimumWidth(handCardSizeWidht*HW_Screen_Size_Width*2);
     newCard->setMinimumHeight(handCardSizeHeight*HW_Screen_Size_Height*2);
 
+    qDebug() << "Current Picture Address: " << currentPictureAddress;
     QPixmap pxmpBtnMainRepresenter(currentPictureAddress);
     QPalette plteBtnMainRepresenter;
     plteBtnMainRepresenter.setBrush(newCard->backgroundRole(),

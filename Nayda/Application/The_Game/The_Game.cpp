@@ -292,12 +292,6 @@ The_Game::The_Game(QWidget *parent) :
 #endif
 
 
-
-
-
-
-
-
     //first pass there the Cards (after receiving them from server);
     passDecksToBattleField();
     passDecksToPlayerWidgets();
@@ -1840,20 +1834,21 @@ void The_Game::givingCardsToPlayers()
 
 void The_Game::showInitialCardsOnHands()
 {
-    for (unsigned int var = 0; var < _main_player.cardsOnHandsVector()->size(); ++var) {
-
+    qDebug() << "showInitialCardsOnHands:: Started";
+    for (unsigned int var = 0; var < _main_player.cardsOnHandsVector()->size(); ++var)
+    {
         ui->MainGamer->addTheCardToHandsWidget(*((_main_player.cardsOnHandsVector())->begin() + static_cast<int>(var)));
-
     }
 
-    for (unsigned int var = 0; var < _players_opponents.size(); ++var) {
-
+    for (unsigned int var = 0; var < _players_opponents.size(); ++var)
+    {
         unsigned int totalCardsToShow = (_players_opponents[var].cardsOnHandsVector())->size();
-        for (unsigned int j = 0; j < totalCardsToShow; ++j) {
-
+        for (unsigned int j = 0; j < totalCardsToShow; ++j)
+        {
             _widgets4Opponents[var]->addTheCardToHandsWidget(*((_players_opponents[var].cardsOnHandsVector())->begin() + static_cast<int>(j)));
         }
     }
+    qDebug() << "showInitialCardsOnHands:: Completed";
 }
 
 
@@ -2044,7 +2039,6 @@ void The_Game::_passTheCardToTheBattleField(PositionedCard card)
     _movingCard->setText("");
     //_movingCard->installEventFilter(this);
     _movingCard->show();
-
 
     QPropertyAnimation *animation = new QPropertyAnimation(_movingCard, "geometry");
     animation->setDuration(1000);

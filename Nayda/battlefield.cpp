@@ -1,6 +1,7 @@
 #include "battlefield.h"
 #include "ui_battlefield.h"
 #include "munchkinglobaldefines.h"
+#include <QDebug>
 
 battleField::battleField(QWidget *parent) :
     QWidget(parent),
@@ -17,6 +18,7 @@ battleField::battleField(QWidget *parent) :
 #ifndef USE_RESOURCES
     QPixmap pxmpBattleField("Pictures/treeCover.jpg");
 #else
+    qDebug() << "BattleField cover picture processing";
     QPixmap pxmpBattleField(":/Pictures/treeCover.jpg");
 #endif
 

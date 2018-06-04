@@ -89,8 +89,10 @@ FORMS    += main_application.ui \
 
 RESOURCES += \
     tables.qrc \
+    pictures.qrc
     #pictures.qrc
 
 DISTFILES += \
     Pictures/doorsAreOpened.jpg \
-    ToDoList
+    ToDoList \
+    Pictures/treasures_Weapon/Vorpal Blade.jpg

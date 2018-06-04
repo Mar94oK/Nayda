@@ -129,22 +129,8 @@ GamerWidget::GamerWidget(QWidget *parent) :
     ui->lbl_BattlePowerDigit->setText(QString::number(_battlePower));
     ui->lbl_BattlePowerDigit->setStyleSheet("font: 28pt;");
 
-    //this is not work
-//    qDebug() << "Current Size of The Hand, H:" << ui->widget->size().height();
-//    ui->widget->size().setHeight( ui->widget->size().height() + 10);
-//    qDebug() << "New Size of The Hand, H:" << ui->widget->size().height();
-
-
     qDebug() << "The Size of The Gamer Widget " << size();
-
     connect(ui->widget, &Hand::adjustSize, this, &GamerWidget::_adjustSizeSlot);
-
-    //trying to resize manually - failed.
-
-    //ui->widget->setMinimumHeight(0.45*size().height());
-    //ui->widget->setMaximumHeight(0.45*size().height());
-    //ui->btn_class_1->setMinimumHeight(0.45*size().height());
-    //ui->btn_class_1->setMaximumHeight(0.45*size().height());
 
     //connect the Hand with the Game... (checking the possibility for the Card to be played)
     connect(ui->widget, &Hand::_cardIsSendedToTheGameCheck, this, &GamerWidget::_slotSendTheCardToTheGameCheck);
@@ -277,12 +263,8 @@ void GamerWidget::addTheCardToHandsWidget(SimpleCard card)
     _cardsOnHandsGamerWidgetProperty.push_back(card);
 
     //changing the values for Secondary players:
-
     if (!card.first) ui->wt_CardsOnHandsSecondary->_slot_updateCardsOnHandsDoors(++_totalDoorsOnHands);
     else ui->wt_CardsOnHandsSecondary->_slot_updateCardsOnHandsTreasures(++_totalTreasuresOnHands);
-
-
-
 
 }
 
@@ -380,16 +362,9 @@ void GamerWidget::_changeTheGamerLevel(int levelDelta)
 
     }
 
-
-
-
-
-
     QRect HW_Screen_Size = QApplication::desktop()->screenGeometry();
     int HW_Screen_Size_Width = HW_Screen_Size.width();
     int HW_Screen_Size_Height = HW_Screen_Size.height();
-
-
 
     QPixmap levelImage(_levelsPictures[_gamerLevel-1]);
     ui->lbl_Level->setPixmap(levelImage.scaled(_race_class_btn_size_width*HW_Screen_Size_Width,
@@ -400,8 +375,6 @@ void GamerWidget::_changeTheGamerLevel(int levelDelta)
 void GamerWidget::_slotTestGamerLevels()
 {
     _changeTheGamerLevel(1);
-
-
 }
 
 void GamerWidget::_slotStartTestCards()

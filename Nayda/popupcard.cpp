@@ -321,10 +321,6 @@ void PopUpCard::setUpPopUpCard(SimpleCard card)
                 isFound = true;
             }
         }
-
-
-
-
     }
     else { //treasure
 
