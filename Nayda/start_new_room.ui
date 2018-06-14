@@ -14,6 +14,13 @@
    <string>Настройка зала</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <item row="4" column="0">
+    <widget class="QPushButton" name="btn_DebugStart">
+     <property name="text">
+      <string>Начать игру (с настройками по умолчанию) - отладка</string>
+     </property>
+    </widget>
+   </item>
    <item row="1" column="0">
     <widget class="QPushButton" name="btn_GameSettings">
      <property name="text">
@@ -29,13 +36,6 @@
     </widget>
    </item>
    <item row="3" column="0">
-    <widget class="QPushButton" name="btn_DebugStart">
-     <property name="text">
-      <string>Начать игру (с настройками по умолчанию) - отладка</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="0">
     <widget class="QPushButton" name="btn_ServerSettings">
      <property name="text">
       <string>Настройки сервера</string>
