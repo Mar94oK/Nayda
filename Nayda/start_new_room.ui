@@ -15,7 +15,7 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="1" column="0">
-    <widget class="QPushButton" name="btn_Settings">
+    <widget class="QPushButton" name="btn_GameSettings">
      <property name="text">
       <string>Настройки Игры</string>
      </property>
@@ -36,9 +36,9 @@
     </widget>
    </item>
    <item row="0" column="0">
-    <widget class="QPushButton" name="pushButton_2">
+    <widget class="QPushButton" name="btn_ServerSettings">
      <property name="text">
-      <string>PushButton</string>
+      <string>Настройки сервера</string>
      </property>
     </widget>
    </item>
