@@ -24,7 +24,9 @@ void startNewRoom::startGameWithDefaults()
 
 void startNewRoom::showServerSettings()
 {
-    qDebug() << "Show server settings";
+   serverSettings = new ServerSettings();
+   serverSettings->setModal(true);
+   serverSettings->show();
 }
 
 void startNewRoom::closeEvent(QCloseEvent *event)
