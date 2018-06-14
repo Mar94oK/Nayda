@@ -23,6 +23,7 @@ signals:
 public slots:
 
     void startGameWithDefaults(void);
+    void showServerSettings(void);
 
 
 private:

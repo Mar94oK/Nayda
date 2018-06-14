@@ -19,7 +19,11 @@ start_new_room::~start_new_room()
 void start_new_room::startGameWithDefaults()
 {
     emit dbgBtnPlayWithDefaultsPressed(true);
-    qDebug() << "pressed!";
+}
+
+void start_new_room::showServerSettings()
+{
+
 }
 
 void start_new_room::closeEvent(QCloseEvent *event)
