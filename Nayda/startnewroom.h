@@ -3,9 +3,10 @@
 
 #include <QWidget>
 #include <QDebug>
+#include <serversettings.h>
 
 namespace Ui {
-class start_new_room;
+class startNewRoom;
 }
 
 class start_new_room : public QWidget
@@ -27,7 +28,8 @@ public slots:
 
 
 private:
-    Ui::start_new_room *ui;
+    Ui::startNewRoom *ui;
+    //ServerSettings*
 
     void closeEvent(QCloseEvent *event);
 };

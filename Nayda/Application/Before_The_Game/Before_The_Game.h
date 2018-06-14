@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include "Server/server.h"
 #include <QDebug>
-#include "start_new_room.h"
+#include "startnewroom.h"
 #define DEBUG_MESSAGES
 
 

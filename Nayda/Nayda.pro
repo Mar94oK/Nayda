@@ -37,7 +37,6 @@ SOURCES += main.cpp\
     gamerwidget.cpp \
     gametimers.cpp \
     gameinfowidget.cpp \
-    start_new_room.cpp \
     Application/card.cpp \
     Application/player.cpp \
     battlefield.cpp \
@@ -48,7 +47,8 @@ SOURCES += main.cpp\
     handsecondaryplayer.cpp \
     rejectedcardmessage.cpp \
     handcardpointer.cpp \
-    serversettings.cpp
+    serversettings.cpp \
+    startnewroom.cpp
 
 HEADERS  += main_application.h \
     Application/Before_The_Game/Before_The_Game.h \
@@ -58,7 +58,6 @@ HEADERS  += main_application.h \
     gamerwidget.h \
     gametimers.h \
     gameinfowidget.h \
-    start_new_room.h \
     Application/card.h \
     Application/player.h \
     battlefield.h \
@@ -71,7 +70,8 @@ HEADERS  += main_application.h \
     rejectedcardmessage.h \
     handcardpointer.h \
     munchkinglobaldefines.h \
-    serversettings.h
+    serversettings.h \
+    startnewroom.h
 
 FORMS    += main_application.ui \
     Application/Before_The_Game/Before_The_Game.ui \
