@@ -6,21 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>401</width>
     <height>300</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Настройка зала</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
-    <widget class="QPushButton" name="pushButton">
-     <property name="text">
-      <string>Начать игру (с настройками по умолчанию) - отладка</string>
-     </property>
-    </widget>
-   </item>
    <item row="1" column="0">
     <widget class="QPushButton" name="btn_Settings">
      <property name="text">
@@ -31,7 +24,21 @@
    <item row="2" column="0">
     <widget class="QPushButton" name="btn_StartTheGame">
      <property name="text">
-      <string>Начать игру! </string>
+      <string>Открыть зал для входа игроков</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QPushButton" name="btn_DebugStart">
+     <property name="text">
+      <string>Начать игру (с настройками по умолчанию) - отладка</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QPushButton" name="pushButton_2">
+     <property name="text">
+      <string>PushButton</string>
      </property>
     </widget>
    </item>

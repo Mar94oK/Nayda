@@ -7,7 +7,7 @@ start_new_room::start_new_room(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    QObject::connect(ui->pushButton, SIGNAL(clicked(bool)),this,SLOT(start_game_with_defaults()));
+    QObject::connect(ui->btn_DebugStart, SIGNAL(clicked(bool)),this,SLOT(start_game_with_defaults()));
 
 }
 
