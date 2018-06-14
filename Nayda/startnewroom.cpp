@@ -1,32 +1,33 @@
 #include "startnewroom.h"
 #include "ui_start_new_room.h"
 
-start_new_room::start_new_room(QWidget *parent) :
+startNewRoom::startNewRoom(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::startNewRoom)
 {
     ui->setupUi(this);
 
-    QObject::connect(ui->btn_DebugStart, SIGNAL(clicked(bool)),this,SLOT(startGameWithDefaults()));
+    QObject::connect(ui->btn_DebugStart, SIGNAL(clicked(bool)), this, SLOT(startGameWithDefaults()));
+    QObject::connect(ui->btn_ServerSettings, &QPushButton::clicked, this, &startNewRoom::showServerSettings);
 
 }
 
-start_new_room::~start_new_room()
+startNewRoom::~startNewRoom()
 {
     delete ui;
 }
 
-void start_new_room::startGameWithDefaults()
+void startNewRoom::startGameWithDefaults()
 {
     emit dbgBtnPlayWithDefaultsPressed(true);
 }
 
-void start_new_room::showServerSettings()
+void startNewRoom::showServerSettings()
 {
-
+    qDebug() << "Show server settings";
 }
 
-void start_new_room::closeEvent(QCloseEvent *event)
+void startNewRoom::closeEvent(QCloseEvent *event)
 {
     emit userIsClosingStartNewRoomWindow(true);
 }

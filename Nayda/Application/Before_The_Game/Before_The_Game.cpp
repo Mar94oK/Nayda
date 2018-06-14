@@ -17,15 +17,15 @@ Before_The_Game::Before_The_Game(QWidget *parent) :
     QObject::connect( ui->btnHide, SIGNAL(clicked()), this, SLOT(hide()));
     QObject::connect (ui->btnHide, SIGNAL(clicked(bool)), this, SLOT(dbg_switch_to_game_mode_button_pressed()));
 
-    newRoomDialog = new start_new_room;
+    newRoomDialog = new startNewRoom;
     newRoomDialog->hide();
 
-    QObject::connect(ui->Create_Lobby, &QPushButton::clicked, newRoomDialog, &start_new_room::show);
+    QObject::connect(ui->Create_Lobby, &QPushButton::clicked, newRoomDialog, &startNewRoom::show);
     QObject::connect(ui->Create_Lobby, &QPushButton::clicked, this, &Before_The_Game::hide);
-    QObject::connect(newRoomDialog, &start_new_room::userIsClosingStartNewRoomWindow, this, &Before_The_Game::show);
+    QObject::connect(newRoomDialog, &startNewRoom::userIsClosingStartNewRoomWindow, this, &Before_The_Game::show);
 
-    connect(newRoomDialog, &start_new_room::dbgBtnPlayWithDefaultsPressed,this, &Before_The_Game::dbg_start_the_game_with_default_settings);
-    connect(newRoomDialog, &start_new_room::dbgBtnPlayWithDefaultsPressed, this, &Before_The_Game::hide);
+    connect(newRoomDialog, &startNewRoom::dbgBtnPlayWithDefaultsPressed,this, &Before_The_Game::dbg_start_the_game_with_default_settings);
+    connect(newRoomDialog, &startNewRoom::dbgBtnPlayWithDefaultsPressed, this, &Before_The_Game::hide);
 
     //configure_with_default_settings;
     number_of_players = 3;

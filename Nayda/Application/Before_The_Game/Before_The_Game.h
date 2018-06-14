@@ -49,7 +49,7 @@ private:
     int time_for_move; //time to make first step (seconds) - may be do define strategy
     int time_to_think; //time to think before next step
 
-    start_new_room* newRoomDialog;
+    startNewRoom* newRoomDialog;
 };
 
 #endif // BEFORE_THE_GAME_H

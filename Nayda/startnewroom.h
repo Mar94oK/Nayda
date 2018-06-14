@@ -9,13 +9,20 @@ namespace Ui {
 class startNewRoom;
 }
 
-class start_new_room : public QWidget
+class startNewRoom : public QWidget
 {
     Q_OBJECT
 
+private:
+
+    Ui::startNewRoom *ui;
+    ServerSettings* serverSettings = nullptr;
+
+    void closeEvent(QCloseEvent *event);
+
 public:
-    explicit start_new_room(QWidget *parent = 0);
-    ~start_new_room();
+    explicit startNewRoom(QWidget *parent = 0);
+    ~startNewRoom();
 
 signals:
     void dbgBtnPlayWithDefaultsPressed(bool);
@@ -26,12 +33,6 @@ public slots:
     void startGameWithDefaults(void);
     void showServerSettings(void);
 
-
-private:
-    Ui::startNewRoom *ui;
-    //ServerSettings*
-
-    void closeEvent(QCloseEvent *event);
 };
 
 #endif // START_NEW_ROOM_H
