@@ -7,7 +7,7 @@ start_new_room::start_new_room(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    QObject::connect(ui->btn_DebugStart, SIGNAL(clicked(bool)),this,SLOT(start_game_with_defaults()));
+    QObject::connect(ui->btn_DebugStart, SIGNAL(clicked(bool)),this,SLOT(startGameWithDefaults()));
 
 }
 
@@ -16,9 +16,9 @@ start_new_room::~start_new_room()
     delete ui;
 }
 
-void start_new_room::start_game_with_defaults()
+void start_new_room::startGameWithDefaults()
 {
-    emit dbg_btn_play_with_defaults_pressed(true);
+    emit dbgBtnPlayWithDefaultsPressed(true);
     qDebug() << "pressed!";
 }
 

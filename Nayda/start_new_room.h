@@ -17,13 +17,12 @@ public:
     ~start_new_room();
 
 signals:
-
-    void dbg_btn_play_with_defaults_pressed(bool);
+    void dbgBtnPlayWithDefaultsPressed(bool);
     void userIsClosingStartNewRoomWindow(bool);
 
 public slots:
 
-    void start_game_with_defaults(void);
+    void startGameWithDefaults(void);
 
 
 private:

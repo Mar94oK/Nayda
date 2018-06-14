@@ -24,8 +24,8 @@ Before_The_Game::Before_The_Game(QWidget *parent) :
     QObject::connect(ui->Create_Lobby, &QPushButton::clicked, this, &Before_The_Game::hide);
     QObject::connect(newRoomDialog, &start_new_room::userIsClosingStartNewRoomWindow, this, &Before_The_Game::show);
 
-    connect(newRoomDialog, &start_new_room::dbg_btn_play_with_defaults_pressed,this, &Before_The_Game::dbg_start_the_game_with_default_settings);
-    connect(newRoomDialog, &start_new_room::dbg_btn_play_with_defaults_pressed, this, &Before_The_Game::hide);
+    connect(newRoomDialog, &start_new_room::dbgBtnPlayWithDefaultsPressed,this, &Before_The_Game::dbg_start_the_game_with_default_settings);
+    connect(newRoomDialog, &start_new_room::dbgBtnPlayWithDefaultsPressed, this, &Before_The_Game::hide);
 
     //configure_with_default_settings;
     number_of_players = 3;
