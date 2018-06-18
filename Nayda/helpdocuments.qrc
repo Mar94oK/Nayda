@@ -1,5 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>HelpDocs/HelpServerSettings.rtf</file>
+        <file>HelpDocs/HelpServerSettings.html</file>
     </qresource>
 </RCC>

@@ -2,13 +2,14 @@
 #include "ui_helpserversettings.h"
 #include <QFile>
 #include <QTextStream>
+#include <QTextDocument>
 
 HelpServerSettings::HelpServerSettings(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::HelpServerSettings)
 {
     ui->setupUi(this);
-    setUpSettingsFilePath(":/HelpDocs/HelpServerSettings.rtf");
+    setUpSettingsFilePath(":/HelpDocs/HelpServerSettings.html");
     setUpSettingsTextBrowser();
 }
 
@@ -31,5 +32,9 @@ void HelpServerSettings::setUpSettingsTextBrowser()
     QTextStream stream(&file);
     QString content = stream.readAll();
     file.close();
-    ui->textBrowser->setPlainText(content);
+    //QTextDocument helpDocument(ui->textBrowser);
+
+
+    ui->textBrowser->setHtml(content);
+
 }
