@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>HelpDocs/HelpServerSettings.rtf</file>
+    </qresource>
+</RCC>

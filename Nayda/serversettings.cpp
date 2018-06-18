@@ -6,9 +6,18 @@ ServerSettings::ServerSettings(QWidget *parent) :
     ui(new Ui::ServerSettings)
 {
     ui->setupUi(this);
+    
+    //QObject::connect(ui->btbx_AcceptReject->)
 }
 
 ServerSettings::~ServerSettings()
 {
     delete ui;
+}
+
+void ServerSettings::showHelp(void)
+{
+    helpPage = new HelpServerSettings(this);
+    helpPage->setModal(true);
+    helpPage->show();
 }

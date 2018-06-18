@@ -95,7 +95,8 @@ FORMS    += main_application.ui \
 
 RESOURCES += \
     tables.qrc \
-    pictures.qrc
+    pictures.qrc \
+    helpdocuments.qrc
     #pictures.qrc
 
 DISTFILES += \

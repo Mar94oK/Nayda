@@ -14,17 +14,17 @@
  * It doesn't strore any information, but working as post system between the Lyers.
  * */
 
-class System_Manager
+class SystemManager
 {
 private:
     
     //make 'em all unique???
-    Before_The_Game* m_before_the_game_ptr;
-    The_Game* m_the_game_ptr;
-    Server* m_server_ptr;
+    Before_The_Game* m_beforeTheGamePtr;
+    The_Game* m_theGamePtr;
+    Server* m_serverPtr;
     
 public:
-    System_Manager(Before_The_Game*, Server*, The_Game*);
+    SystemManager(Before_The_Game*, Server*, The_Game*);
 };
 
 
