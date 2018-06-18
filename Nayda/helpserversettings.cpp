@@ -8,7 +8,7 @@ HelpServerSettings::HelpServerSettings(QWidget *parent) :
     ui(new Ui::HelpServerSettings)
 {
     ui->setupUi(this);
-    setUpSettingsFilePath("qrc:/HelpDocs/HelpServerSettings.rtf");
+    setUpSettingsFilePath(":/HelpDocs/HelpServerSettings.rtf");
     setUpSettingsTextBrowser();
 }
 

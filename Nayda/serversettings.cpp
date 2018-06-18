@@ -1,13 +1,15 @@
 #include "serversettings.h"
 #include "ui_serversettings.h"
 
+
 ServerSettings::ServerSettings(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ServerSettings)
 {
     ui->setupUi(this);
     
-    //QObject::connect(ui->btbx_AcceptReject->)
+    QObject::connect(ui->btn_Help, &QPushButton::clicked, this, &ServerSettings::showHelp);
+
 }
 
 ServerSettings::~ServerSettings()
