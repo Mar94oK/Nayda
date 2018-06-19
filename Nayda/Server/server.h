@@ -32,7 +32,6 @@
     QDataStream *inputStream;
     QDataStream *outputSream;
 
-
   public:
 
       explicit Server(QObject* parent =  nullptr);
@@ -42,6 +41,19 @@
   public slots:
 
       void dbgTheGameBeginsStateReceived(bool begins);
+
+  /*
+   *    These slots are only used for debug the connection.
+   *    Please, see the FortuneClient and FortuneServer examples;
+   *
+   */
+  private slots:
+
+//      void requestNewFortune();
+//      void readFortune();
+//      void displayError(QAbstractSocket::SocketError socketError);
+//      void enableGetFortuneButton();
+//      void sessionOpened();
 
   signals:
 

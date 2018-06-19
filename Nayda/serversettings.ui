@@ -40,7 +40,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QComboBox" name="cmbx_ServerPort"/>
+        <widget class="QLineEdit" name="lineEdit_ServerName"/>
        </item>
       </layout>
      </item>

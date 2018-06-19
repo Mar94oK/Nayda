@@ -24,6 +24,8 @@ private:
     
     Ui::ServerSettings *ui;
     HelpServerSettings* helpPage = nullptr;
+
+    void setServerNameComboBox();
 };
 
 #endif // SERVERSETTINGS_H
