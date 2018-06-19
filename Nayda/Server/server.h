@@ -6,43 +6,48 @@
 #include <QObject>
 #include <QString>
 #include <Application/card.h> //cards
+#include <QTcpSocket>
+#include <QDataStream>
+#include <QNetworkSession>
+
 
   class Server : public QObject
   {
       Q_OBJECT
 
-  public:
-      explicit Server(QObject* parent = 0);
+  private:
 
-      int value() const { return m_value; }
-      virtual bool something();
-  public slots:
-      void dbg_the_game_begins_state_received(bool begins);
-
-  signals:
-      void valueChanged(int newValue);
+     int m_value;
+     Game_Card_Stock _Main_Doors;
+     Game_Card_Stock _Main_Treausures;
+     Game_Card_Stock _Fold_Doors;
+     Game_Card_Stock _Fold_Treasures;
+     Game_Card_Stock _Basis_Doors;
+     Game_Card_Stock _Basis_Treasures;
 
   private:
 
-      int m_value;
-
-      Game_Card_Stock _Main_Doors;
-      Game_Card_Stock _Main_Treausures;
-      Game_Card_Stock _Fold_Doors;
-      Game_Card_Stock _Fold_Treasures;
-
-      Game_Card_Stock _Basis_Doors;
-      Game_Card_Stock _Basis_Treasures;
+    QTcpSocket *tcpSocket = nullptr;
+    QNetworkSession *networkSession = nullptr;
+    QDataStream *inputStream;
+    QDataStream *outputSream;
 
 
+  public:
 
+      explicit Server(QObject* parent =  nullptr);
+      int value() const { return m_value; }
+      virtual bool something();
 
+  public slots:
+
+      void dbgTheGameBeginsStateReceived(bool begins);
+
+  signals:
+
+      void valueChanged(int newValue);
 
   };
-
-
-
-
 
 
 

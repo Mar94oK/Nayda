@@ -16,7 +16,7 @@ bool Server::something()
     return true;
 }
 
-void Server::dbg_the_game_begins_state_received(bool begins)
+void Server::dbgTheGameBeginsStateReceived(bool begins)
 {
     if (begins)
     qDebug() << endl << "Server_received_the_game_begins_state";

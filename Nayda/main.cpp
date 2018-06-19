@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
     Server obj_Server;
     Before_The_Game obj_Before_The_Game;
     The_Game obj_The_Game;
-    SystemManager obj_System_Manager(&obj_Before_The_Game,&obj_Server, &obj_The_Game);
+    SystemManager obj_System_Manager(&obj_Before_The_Game, &obj_Server, &obj_The_Game);
     //Main_Application w;
     //w.show();
 
