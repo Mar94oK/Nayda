@@ -91,7 +91,7 @@ public:
         Before_The_Game->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(Before_The_Game);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 1244, 20));
+        menuBar->setGeometry(QRect(0, 0, 1244, 22));
         Before_The_Game->setMenuBar(menuBar);
         mainToolBar = new QToolBar(Before_The_Game);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -107,7 +107,7 @@ public:
 
     void retranslateUi(QMainWindow *Before_The_Game)
     {
-        Before_The_Game->setWindowTitle(QApplication::translate("Before_The_Game", "Main_Application", Q_NULLPTR));
+        Before_The_Game->setWindowTitle(QApplication::translate("Before_The_Game", "\320\234\320\260\320\275\321\207\320\272\320\270\320\275 0.0.1", Q_NULLPTR));
         Create_Lobby->setText(QApplication::translate("Before_The_Game", "\320\241\320\276\320\267\320\264\320\260\321\202\321\214 \320\267\320\260\320\273", Q_NULLPTR));
         Find_Lobby->setText(QApplication::translate("Before_The_Game", "\320\235\320\260\320\271\321\202\320\270 \320\267\320\260\320\273", Q_NULLPTR));
         Settings->setText(QApplication::translate("Before_The_Game", "\320\235\320\260\321\201\321\202\321\200\320\276\320\271\320\272\320\270", Q_NULLPTR));
