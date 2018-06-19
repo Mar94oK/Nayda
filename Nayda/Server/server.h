@@ -10,6 +10,8 @@
 #include <QDataStream>
 #include <QNetworkSession>
 
+typedef QPair<QString, QString> serverSettings;
+
 
   class Server : public QObject
   {
@@ -31,6 +33,7 @@
     QNetworkSession *networkSession = nullptr;
     QDataStream *inputStream;
     QDataStream *outputSream;
+    serverSettings _srvrSettings;
 
   public:
 
@@ -54,6 +57,14 @@
 //      void displayError(QAbstractSocket::SocketError socketError);
 //      void enableGetFortuneButton();
 //      void sessionOpened();
+
+  public slots:
+
+      void saveServerSettings(serverSettings settings)
+      {
+          _srvrSettings = settings;
+      }
+
 
   signals:
 

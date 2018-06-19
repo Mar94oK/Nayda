@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <helpserversettings.h>
+#include "Server/server.h"
 
 namespace Ui {
 class ServerSettings;
@@ -19,6 +20,11 @@ public:
 public slots:
 
     void showHelp(void);
+    void slotUserHasSavedServerSettings();
+
+signals:
+
+    void userHaveChangedServerSettings(serverSettings);
 
 private:
     

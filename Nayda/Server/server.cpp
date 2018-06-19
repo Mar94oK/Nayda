@@ -3,12 +3,12 @@
 
 
 
-//Before_The_Game::Before_The_Game(QWidget *parent) :
-//    QMainWindow(parent),
-//    ui(new Ui::Before_The_Game)
-//{
-
-Server::Server(QObject *parent) : QObject(parent) { m_value = 0; }
+Server::Server(QObject *parent) : QObject(parent)
+{
+    m_value = 0;
+    _srvrSettings.first = "";
+    _srvrSettings.second = "";
+}
 
 bool Server::something()
 {

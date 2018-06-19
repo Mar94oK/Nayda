@@ -1,6 +1,7 @@
 #include "serversettings.h"
 #include "ui_serversettings.h"
 #include <QtNetwork>
+#include <QDebug>
 
 
 ServerSettings::ServerSettings(QWidget *parent) :
@@ -10,6 +11,7 @@ ServerSettings::ServerSettings(QWidget *parent) :
     ui->setupUi(this);
     
     QObject::connect(ui->btn_Help, &QPushButton::clicked, this, &ServerSettings::showHelp);
+    QObject::connect(ui->btn_Save, &QPushButton::clicked, this, &ServerSettings::slotUserHasSavedServerSettings);
 
     setServerNameComboBox();
     ui->lineEdit_ServerName->setValidator(new QIntValidator(1, 65535, this));
@@ -26,6 +28,19 @@ void ServerSettings::showHelp(void)
     helpPage = new HelpServerSettings(this);
     helpPage->setModal(true);
     helpPage->show();
+}
+
+void ServerSettings::slotUserHasSavedServerSettings()
+{
+    if (!ui->cmbx_ServerName->currentText().isEmpty() && !ui->lineEdit_ServerName->text().isEmpty())
+    {
+        emit userHaveChangedServerSettings(serverSettings(ui->cmbx_ServerName->currentText(), ui->lineEdit_ServerName->text()));
+    }
+    else
+    {
+        qDebug() << "Please, set correct server settings!";
+    }
+
 }
 
 void ServerSettings::setServerNameComboBox()
