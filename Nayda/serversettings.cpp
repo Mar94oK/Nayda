@@ -39,6 +39,7 @@ void ServerSettings::slotUserHasSavedServerSettings()
     else
     {
         qDebug() << "Please, set correct server settings!";
+        ui->lbl_MessageForUser->setText("Пожалуйста, установите корректные настройки, прежде, чем сохранять.");
     }
 
 }
