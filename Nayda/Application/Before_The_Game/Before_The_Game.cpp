@@ -51,6 +51,12 @@ Before_The_Game::Before_The_Game(QWidget *parent) :
     ui->Settings->setMaximumWidth(koeff_Dialog_size*HW_Screen_Size_Width);
     ui->Find_Lobby->setMaximumWidth(koeff_Dialog_size*HW_Screen_Size_Width);
     ui->btnHide->setMaximumWidth(koeff_Dialog_size*HW_Screen_Size_Width);
+
+
+    #ifdef DEBUG_MESSAGES
+    qDebug() << "Размер окна: " ;
+    #endif
+
 }
 
 
