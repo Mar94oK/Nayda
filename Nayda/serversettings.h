@@ -24,7 +24,7 @@ public slots:
 
 signals:
 
-    void userHaveChangedServerSettings(serverSettings);
+    void sig_userHaveChangedServerSettings(serverSettings);
 
 private:
     

@@ -7,8 +7,8 @@ startNewRoom::startNewRoom(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    QObject::connect(ui->btn_DebugStart, SIGNAL(clicked(bool)), this, SLOT(startGameWithDefaults()));
-    QObject::connect(ui->btn_ServerSettings, &QPushButton::clicked, this, &startNewRoom::showServerSettings);
+    QObject::connect(ui->btn_DebugStart, SIGNAL(clicked(bool)), this, SLOT(slot_startGameWithDefaults()));
+    QObject::connect(ui->btn_ServerSettings, &QPushButton::clicked, this, &startNewRoom::slot_showServerSettings);
 
 }
 
@@ -17,19 +17,25 @@ startNewRoom::~startNewRoom()
     delete ui;
 }
 
-void startNewRoom::startGameWithDefaults()
+void startNewRoom::slot_startGameWithDefaults()
 {
-    emit dbgBtnPlayWithDefaultsPressed(true);
+    emit sig_dbgBtnPlayWithDefaultsPressed(true);
 }
 
-void startNewRoom::showServerSettings()
+void startNewRoom::slot_showServerSettings()
 {
-   serverSettings = new ServerSettings();
-   serverSettings->setModal(true);
-   serverSettings->show();
+   serverSettingsWindow = new ServerSettings();
+   QObject::connect(serverSettingsWindow, &ServerSettings::sig_userHaveChangedServerSettings, this, &startNewRoom::slot_userhaveChangedServerSetting);
+   serverSettingsWindow->setModal(true);
+   serverSettingsWindow->show();
+}
+
+void startNewRoom::slot_userhaveChangedServerSetting(serverSettings settings)
+{
+    emit sig_userHaveChangedServerSettings(settings);
 }
 
 void startNewRoom::closeEvent(QCloseEvent *event)
 {
-    emit userIsClosingStartNewRoomWindow(true);
+    emit sig_userIsClosingStartNewRoomWindow(true);
 }

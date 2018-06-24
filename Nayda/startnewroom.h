@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QDebug>
 #include <serversettings.h>
+#include <Server/server.h>
 
 namespace Ui {
 class startNewRoom;
@@ -16,7 +17,7 @@ class startNewRoom : public QWidget
 private:
 
     Ui::startNewRoom *ui;
-    ServerSettings* serverSettings = nullptr;
+    ServerSettings* serverSettingsWindow = nullptr;
 
     void closeEvent(QCloseEvent *event);
 
@@ -25,13 +26,15 @@ public:
     ~startNewRoom();
 
 signals:
-    void dbgBtnPlayWithDefaultsPressed(bool);
-    void userIsClosingStartNewRoomWindow(bool);
+    void sig_dbgBtnPlayWithDefaultsPressed(bool);
+    void sig_userIsClosingStartNewRoomWindow(bool);
+    void sig_userHaveChangedServerSettings(serverSettings settings);
 
 public slots:
 
-    void startGameWithDefaults(void);
-    void showServerSettings(void);
+    void slot_startGameWithDefaults(void);
+    void slot_showServerSettings(void);
+    void slot_userhaveChangedServerSetting(serverSettings settings);
 
 };
 

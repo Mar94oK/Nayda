@@ -33,11 +33,13 @@ signals:
     void update_game_options_card_stack_type (int card_stack_type);
 
     void start_game_with_default_settings(bool);
+    void sig_userHaveChangedServerSettings(serverSettings);
 
 public slots:
 
     void dbg_switch_to_game_mode_button_pressed(void);
     void dbg_start_the_game_with_default_settings(void);
+    void slot_userHaveChangedServerSettings(serverSettings settings);
 
 private:
 

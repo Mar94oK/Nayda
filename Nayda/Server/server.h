@@ -9,6 +9,7 @@
 #include <QTcpSocket>
 #include <QDataStream>
 #include <QNetworkSession>
+#include <QDebug>
 
 typedef QPair<QString, QString> serverSettings;
 
@@ -60,9 +61,10 @@ typedef QPair<QString, QString> serverSettings;
 
   public slots:
 
-      void saveServerSettings(serverSettings settings)
+      void slot_saveServerSettings(serverSettings settings)
       {
           _srvrSettings = settings;
+          qDebug() << "Server settings saved!";
       }
 
 

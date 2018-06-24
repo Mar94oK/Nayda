@@ -19,13 +19,14 @@ Before_The_Game::Before_The_Game(QWidget *parent) :
 
     newRoomDialog = new startNewRoom;
     newRoomDialog->hide();
+    QObject::connect(newRoomDialog, &startNewRoom::sig_userHaveChangedServerSettings, this, &Before_The_Game::slot_userHaveChangedServerSettings);
 
     QObject::connect(ui->Create_Lobby, &QPushButton::clicked, newRoomDialog, &startNewRoom::show);
     QObject::connect(ui->Create_Lobby, &QPushButton::clicked, this, &Before_The_Game::hide);
-    QObject::connect(newRoomDialog, &startNewRoom::userIsClosingStartNewRoomWindow, this, &Before_The_Game::show);
+    QObject::connect(newRoomDialog, &startNewRoom::sig_userIsClosingStartNewRoomWindow, this, &Before_The_Game::show);
 
-    connect(newRoomDialog, &startNewRoom::dbgBtnPlayWithDefaultsPressed,this, &Before_The_Game::dbg_start_the_game_with_default_settings);
-    connect(newRoomDialog, &startNewRoom::dbgBtnPlayWithDefaultsPressed, this, &Before_The_Game::hide);
+    connect(newRoomDialog, &startNewRoom::sig_dbgBtnPlayWithDefaultsPressed,this, &Before_The_Game::dbg_start_the_game_with_default_settings);
+    connect(newRoomDialog, &startNewRoom::sig_dbgBtnPlayWithDefaultsPressed, this, &Before_The_Game::hide);
 
     //configure_with_default_settings;
     number_of_players = 3;
@@ -84,5 +85,10 @@ void Before_The_Game::dbg_start_the_game_with_default_settings()
     emit dbg_the_game_begins(true);
     emit update_game_options_card_stack_type(this->card_stack_mode);
     qDebug() << "Start with debug button. DEFAULT SETTING ARE PROVIDED!!!!";
+}
+
+void Before_The_Game::slot_userHaveChangedServerSettings(serverSettings settings)
+{
+    emit sig_userHaveChangedServerSettings(settings);
 }
 
