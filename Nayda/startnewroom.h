@@ -29,12 +29,14 @@ signals:
     void sig_dbgBtnPlayWithDefaultsPressed(bool);
     void sig_userIsClosingStartNewRoomWindow(bool);
     void sig_userHaveChangedServerSettings(serverSettings settings);
+    void sig_openRoomForConnection();
 
 public slots:
 
     void slot_startGameWithDefaults(void);
     void slot_showServerSettings(void);
     void slot_userhaveChangedServerSetting(serverSettings settings);
+    void slot_openRoomForConnection();
 
 };
 

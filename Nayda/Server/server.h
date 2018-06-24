@@ -10,6 +10,13 @@
 #include <QDataStream>
 #include <QNetworkSession>
 #include <QDebug>
+#include <QTcpSocket>
+#include <QDataStream>
+
+QT_BEGIN_NAMESPACE
+class QTcpSocket;
+class QNetworkSession;
+QT_END_NAMESPACE
 
 typedef QPair<QString, QString> serverSettings;
 
@@ -28,12 +35,14 @@ typedef QPair<QString, QString> serverSettings;
      Game_Card_Stock _Basis_Doors;
      Game_Card_Stock _Basis_Treasures;
 
+     QPair<QString, QString> defaultSettings;
+
   private:
 
-    QTcpSocket *tcpSocket = nullptr;
-    QNetworkSession *networkSession = nullptr;
-    QDataStream *inputStream;
-    QDataStream *outputSream;
+    QTcpSocket* tcpSocket;
+    QNetworkSession* networkSession;
+    QDataStream inputStream;
+    QDataStream outputSream;
     serverSettings _srvrSettings;
 
   public:
@@ -41,6 +50,8 @@ typedef QPair<QString, QString> serverSettings;
       explicit Server(QObject* parent =  nullptr);
       int value() const { return m_value; }
       virtual bool something();
+
+      void setupConnection();
 
   public slots:
 
@@ -54,10 +65,11 @@ typedef QPair<QString, QString> serverSettings;
   private slots:
 
 //      void requestNewFortune();
-//      void readFortune();
+      void readFortune();
 //      void displayError(QAbstractSocket::SocketError socketError);
 //      void enableGetFortuneButton();
 //      void sessionOpened();
+      void displayError(QAbstractSocket::SocketError socketError);
 
   public slots:
 
@@ -66,6 +78,9 @@ typedef QPair<QString, QString> serverSettings;
           _srvrSettings = settings;
           qDebug() << "Server settings saved!";
       }
+
+      void slot_openConnection();
+      void slot_sessionOpened();
 
 
   signals:

@@ -20,6 +20,7 @@ Before_The_Game::Before_The_Game(QWidget *parent) :
     newRoomDialog = new startNewRoom;
     newRoomDialog->hide();
     QObject::connect(newRoomDialog, &startNewRoom::sig_userHaveChangedServerSettings, this, &Before_The_Game::slot_userHaveChangedServerSettings);
+    QObject::connect(newRoomDialog, &startNewRoom::sig_openRoomForConnection, this, &Before_The_Game::slot_openRoomForConnection);
 
     QObject::connect(ui->Create_Lobby, &QPushButton::clicked, newRoomDialog, &startNewRoom::show);
     QObject::connect(ui->Create_Lobby, &QPushButton::clicked, this, &Before_The_Game::hide);
@@ -90,5 +91,10 @@ void Before_The_Game::dbg_start_the_game_with_default_settings()
 void Before_The_Game::slot_userHaveChangedServerSettings(serverSettings settings)
 {
     emit sig_userHaveChangedServerSettings(settings);
+}
+
+void Before_The_Game::slot_openRoomForConnection()
+{
+    emit sig_openRoomForConnection();
 }
 
