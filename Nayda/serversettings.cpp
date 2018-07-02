@@ -15,7 +15,6 @@ ServerSettings::ServerSettings(QWidget *parent) :
 
     setServerNameComboBox();
     ui->lineEdit_ServerName->setValidator(new QIntValidator(1, 65535, this));
-
 }
 
 ServerSettings::~ServerSettings()

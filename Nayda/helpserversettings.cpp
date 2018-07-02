@@ -18,8 +18,6 @@ HelpServerSettings::~HelpServerSettings()
     delete ui;
 }
 
-
-
 void HelpServerSettings::setUpSettingsTextBrowser()
 {
     ui->textBrowser->openExternalLinks();
@@ -32,9 +30,5 @@ void HelpServerSettings::setUpSettingsTextBrowser()
     QTextStream stream(&file);
     QString content = stream.readAll();
     file.close();
-    //QTextDocument helpDocument(ui->textBrowser);
-
-
     ui->textBrowser->setHtml(content);
-
 }
