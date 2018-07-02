@@ -36,6 +36,7 @@ void ServerSettings::slotUserHasSavedServerSettings()
     {
         emit sig_userHaveChangedServerSettings(serverSettings(ui->cmbx_ServerName->currentText(), ui->lineEdit_ServerName->text()));
         qDebug() << "Server name: " << ui->cmbx_ServerName->currentText() << "Port: " << ui->lineEdit_ServerName->text();
+        close();
     }
     else
     {
