@@ -5,7 +5,7 @@
 
 
 
-Server::Server(QObject *parent) : QObject(parent)
+Server::Server(QObject *parent, RoomPosessionType posessionType) : QObject(parent), _roomPosessionType(posessionType)
 {
     m_value = 0;
     _srvrSettings.first = "";
@@ -48,19 +48,33 @@ void Server::setupConnection()
         networkSession->open();
     }
 
-    connect(tcpSocket, &QIODevice::readyRead, this, &Server::readFortune);
+    connect(tcpSocket, &QIODevice::readyRead, this, &Server::readIncomingData);
     typedef void (QAbstractSocket::*QAbstractSocketErrorSignal)(QAbstractSocket::SocketError);
     connect(tcpSocket, static_cast<QAbstractSocketErrorSignal>(&QAbstractSocket::error),this, &Server::displayError);
 
 }
 
-void Server::dbgTheGameBeginsStateReceived(bool begins)
+void Server::sendDataToTheConnection(const QString &dataStr)
 {
-    if (begins)
-        qDebug() << endl << "Server_received_the_game_begins_state";
+    QByteArray block;
+    QDataStream out(&block, QIODevice::WriteOnly);
+    out.setVersion(QDataStream::Qt_4_0);
+
+    out << dataStr;
+
+    if (tcpSocket->isOpen())
+    {
+       if (tcpSocket->ConnectedState == QTcpSocket::ConnectedState)
+       {
+           tcpSocket->write(block);
+       }
+    }
+
 }
 
-void Server::readFortune()
+
+
+void Server::readIncomingData()
 {
     inputStream.startTransaction();
 
@@ -105,6 +119,8 @@ void Server::slot_openConnection()
         tcpSocket->abort();
         tcpSocket->connectToHost(_srvrSettings.first, static_cast<unsigned short>(_srvrSettings.second.toInt()));
         qDebug() << "Connected!";
+        qDebug() << "Now to send data...";
+        sendDataToTheConnection("Some data");
     }
 
 }

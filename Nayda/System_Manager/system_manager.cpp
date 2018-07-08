@@ -12,8 +12,6 @@ SystemManager::SystemManager(Before_The_Game * beforeTheGame,
     QObject::connect(m_beforeTheGamePtr, SIGNAL(dbg_switch_to_game_mode(bool)),
                      m_theGamePtr, SLOT(dbg_was_pushed_to_game_mode()));
     QObject::connect(m_theGamePtr, SIGNAL(dbg_return_to_before_the_game(bool)),m_beforeTheGamePtr, SLOT(show()));
-    QObject::connect(m_beforeTheGamePtr, SIGNAL(dbg_switch_to_game_mode(bool)),
-                    m_serverPtr, SLOT(dbg_the_game_begins_state_received(bool)));
     QObject::connect(m_beforeTheGamePtr, &Before_The_Game::sig_userHaveChangedServerSettings, m_serverPtr, &Server::slot_saveServerSettings);
     QObject::connect(m_beforeTheGamePtr, &Before_The_Game::sig_openRoomForConnection, m_serverPtr, &Server::slot_openConnection);
 

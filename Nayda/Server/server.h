@@ -20,6 +20,7 @@ QT_END_NAMESPACE
 
 typedef QPair<QString, QString> serverSettings;
 
+enum class RoomPosessionType {RoomMaster, RoomGuest};
 
   class Server : public QObject
   {
@@ -45,30 +46,23 @@ typedef QPair<QString, QString> serverSettings;
     QDataStream outputSream;
     serverSettings _srvrSettings;
 
+  private:
+
+    RoomPosessionType _roomPosessionType;
+
   public:
 
-      explicit Server(QObject* parent =  nullptr);
+      explicit Server(QObject* parent =  nullptr, RoomPosessionType posessionType = RoomPosessionType::RoomMaster);
       int value() const { return m_value; }
       virtual bool something();
 
       void setupConnection();
+      void sendCreateNewRoomMessage();
+      void sendDataToTheConnection(const QString&);
 
-  public slots:
-
-      void dbgTheGameBeginsStateReceived(bool begins);
-
-  /*
-   *    These slots are only used for debug the connection.
-   *    Please, see the FortuneClient and FortuneServer examples;
-   *
-   */
   private slots:
 
-//      void requestNewFortune();
-      void readFortune();
-//      void displayError(QAbstractSocket::SocketError socketError);
-//      void enableGetFortuneButton();
-//      void sessionOpened();
+      void readIncomingData();
       void displayError(QAbstractSocket::SocketError socketError);
 
   public slots:
