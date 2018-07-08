@@ -120,7 +120,7 @@ void Server::slot_openConnection()
         tcpSocket->connectToHost(_srvrSettings.first, static_cast<unsigned short>(_srvrSettings.second.toInt()));
         qDebug() << "Connected!";
         qDebug() << "Now to send data...";
-        sendDataToTheConnection("Some data");
+        sendDataToTheConnection("Some other data");
     }
 
 }
