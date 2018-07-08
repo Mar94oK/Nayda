@@ -30,6 +30,7 @@ signals:
     void sig_userIsClosingStartNewRoomWindow(bool);
     void sig_userHaveChangedServerSettings(serverSettings settings);
     void sig_openRoomForConnection();
+    void sig_sendTestDataToServer();
 
 public slots:
 
@@ -37,6 +38,7 @@ public slots:
     void slot_showServerSettings(void);
     void slot_userhaveChangedServerSetting(serverSettings settings);
     void slot_openRoomForConnection();
+    void slot_sendTestDataToServer();
 
 };
 

@@ -35,6 +35,7 @@ signals:
     void start_game_with_default_settings(bool);
     void sig_userHaveChangedServerSettings(serverSettings);
     void sig_openRoomForConnection();
+    void sig_sendTestDataToServer();
 
 public slots:
 
@@ -42,6 +43,7 @@ public slots:
     void dbg_start_the_game_with_default_settings(void);
     void slot_userHaveChangedServerSettings(serverSettings settings);
     void slot_openRoomForConnection();
+    void slot_sendTestDataToServer();
 
 private:
 

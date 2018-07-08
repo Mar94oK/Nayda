@@ -73,6 +73,8 @@ enum class RoomPosessionType {RoomMaster, RoomGuest};
           qDebug() << "Server settings saved!";
       }
 
+      void slot_sendTestDataToServer();
+
       void slot_openConnection();
       void slot_sessionOpened();
 

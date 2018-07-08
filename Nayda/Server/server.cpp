@@ -108,6 +108,11 @@ void Server::displayError(QAbstractSocket::SocketError socketError)
     }
 }
 
+void Server::slot_sendTestDataToServer()
+{
+    sendDataToTheConnection("TestData");
+}
+
 void Server::slot_openConnection()
 {
     if (_srvrSettings == defaultSettings)

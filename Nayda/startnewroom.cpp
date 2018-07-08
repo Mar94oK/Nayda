@@ -10,6 +10,9 @@ startNewRoom::startNewRoom(QWidget *parent) :
     QObject::connect(ui->btn_DebugStart, SIGNAL(clicked(bool)), this, SLOT(slot_startGameWithDefaults()));
     QObject::connect(ui->btn_ServerSettings, &QPushButton::clicked, this, &startNewRoom::slot_showServerSettings);
     QObject::connect(ui->btn_StartTheGame, &QPushButton::clicked, this, &startNewRoom::slot_openRoomForConnection);
+    QObject::connect(ui->btn_SendTestData, &QPushButton::clicked, this, &startNewRoom::slot_sendTestDataToServer);
+
+
 
 }
 
@@ -39,6 +42,11 @@ void startNewRoom::slot_userhaveChangedServerSetting(serverSettings settings)
 void startNewRoom::slot_openRoomForConnection()
 {
     emit sig_openRoomForConnection();
+}
+
+void startNewRoom::slot_sendTestDataToServer()
+{
+    emit sig_sendTestDataToServer();
 }
 
 void startNewRoom::closeEvent(QCloseEvent *event)

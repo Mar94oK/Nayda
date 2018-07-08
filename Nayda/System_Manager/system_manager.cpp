@@ -14,5 +14,6 @@ SystemManager::SystemManager(Before_The_Game * beforeTheGame,
     QObject::connect(m_theGamePtr, SIGNAL(dbg_return_to_before_the_game(bool)),m_beforeTheGamePtr, SLOT(show()));
     QObject::connect(m_beforeTheGamePtr, &Before_The_Game::sig_userHaveChangedServerSettings, m_serverPtr, &Server::slot_saveServerSettings);
     QObject::connect(m_beforeTheGamePtr, &Before_The_Game::sig_openRoomForConnection, m_serverPtr, &Server::slot_openConnection);
+    QObject::connect(m_beforeTheGamePtr, &Before_The_Game::sig_sendTestDataToServer, m_serverPtr, &Server::slot_sendTestDataToServer);
 
 }
