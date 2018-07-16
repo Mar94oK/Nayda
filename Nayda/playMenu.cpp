@@ -13,6 +13,7 @@ playMenu::playMenu(QWidget *parent) :
     QObject::connect(ui->btn_StartTheGame, &QPushButton::clicked, this, &playMenu::slot_openRoomForConnection);
     QObject::connect(ui->btn_SendTestData, &QPushButton::clicked, this, &playMenu::slot_sendTestDataToServer);
 
+    setWindowTitle(tr("Подготовка игры"));
 }
 
 playMenu::~playMenu()
