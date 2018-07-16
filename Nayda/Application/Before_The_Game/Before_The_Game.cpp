@@ -2,7 +2,7 @@
 //#include "ui_main_application.h"
 #include "ui_Before_The_Game.h"
 #include <QDesktopWidget>
-
+#include <munchkinglobaldefines.h>
 
 
 
@@ -56,22 +56,23 @@ Before_The_Game::Before_The_Game(QWidget *parent) :
     //ui->Find_Lobby->setMaximumWidth(koeff_Dialog_size*HW_Screen_Size_Width);
     ui->btnHide->setMaximumWidth(koeff_Dialog_size*HW_Screen_Size_Width);
 
+    setGeometry(0,0,
+                static_cast<uint32_t> (QApplication::desktop()->availableGeometry().width() * GeometricLimitations::beforeTheGameWindowsSize),
+                static_cast<uint32_t> (QApplication::desktop()->availableGeometry().height() * GeometricLimitations::beforeTheGameWindowsSize));
 
-    #ifdef DEBUG_MESSAGES
-    qDebug() << "Размер окна: " ;
-    #endif
+    setGeometry(QStyle::alignedRect(Qt::LeftToRight,
+                                    Qt::AlignCenter,
+                                    size(),
+                                    QApplication::desktop()->availableGeometry()));
 
 }
-
-
-
-
 
 
 Before_The_Game::~Before_The_Game()
 {
     delete ui;
 }
+
 
 void Before_The_Game::dbg_switch_to_game_mode_button_pressed()
 {
@@ -81,6 +82,7 @@ void Before_The_Game::dbg_switch_to_game_mode_button_pressed()
     qDebug() << "Start with debug button. ONLY VIEW!!!!";
     //emit update_game
 }
+
 
 void Before_The_Game::dbg_start_the_game_with_default_settings()
 {
@@ -95,10 +97,12 @@ void Before_The_Game::slot_userHaveChangedServerSettings(serverSettings settings
     emit sig_userHaveChangedServerSettings(settings);
 }
 
+
 void Before_The_Game::slot_openRoomForConnection()
 {
     emit sig_openRoomForConnection();
 }
+
 
 void Before_The_Game::slot_sendTestDataToServer()
 {

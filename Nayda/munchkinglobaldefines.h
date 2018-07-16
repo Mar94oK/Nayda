@@ -4,4 +4,13 @@
 #define USE_RESOURCES
 //#undef USE_RESOURCES
 
+class GeometricLimitations {
+
+public:
+
+    static constexpr float beforeTheGameWindowsSize = 0.5f;
+
+};
+
+
 #endif // MUNCHKINGLOBALDEFINES_H
