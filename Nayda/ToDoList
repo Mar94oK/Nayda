@@ -26,6 +26,7 @@ Continued 16.07.2018
         0.1. Remove Create_Lobby and Find_Lobby buttons
         0.2. Replace them with Play! Button
         0.3. Rework the Play! Menu
+            0.3.1 Make it the same size as Before The Game
 
     1) To create satisfactory connection mode with server:
         1.1. During setting saving to report user that they are successfuly save
