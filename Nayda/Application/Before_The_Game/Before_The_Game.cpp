@@ -24,8 +24,8 @@ Before_The_Game::Before_The_Game(QWidget *parent) :
     QObject::connect(newRoomDialog, &startNewRoom::sig_sendTestDataToServer, this, &Before_The_Game::slot_sendTestDataToServer);
 
 
-    QObject::connect(ui->Create_Lobby, &QPushButton::clicked, newRoomDialog, &startNewRoom::show);
-    QObject::connect(ui->Create_Lobby, &QPushButton::clicked, this, &Before_The_Game::hide);
+    QObject::connect(ui->btn_Play, &QPushButton::clicked, newRoomDialog, &startNewRoom::show);
+    QObject::connect(ui->btn_Play, &QPushButton::clicked, this, &Before_The_Game::hide);
     QObject::connect(newRoomDialog, &startNewRoom::sig_userIsClosingStartNewRoomWindow, this, &Before_The_Game::show);
 
     connect(newRoomDialog, &startNewRoom::sig_dbgBtnPlayWithDefaultsPressed,this, &Before_The_Game::dbg_start_the_game_with_default_settings);
@@ -51,9 +51,9 @@ Before_The_Game::Before_The_Game(QWidget *parent) :
     #endif
 
     ui->About_Authors->setMaximumWidth(koeff_Dialog_size*HW_Screen_Size_Width);
-    ui->Create_Lobby->setMaximumWidth(koeff_Dialog_size*HW_Screen_Size_Width);
+    ui->btn_Play->setMaximumWidth(koeff_Dialog_size*HW_Screen_Size_Width);
     ui->Settings->setMaximumWidth(koeff_Dialog_size*HW_Screen_Size_Width);
-    ui->Find_Lobby->setMaximumWidth(koeff_Dialog_size*HW_Screen_Size_Width);
+    //ui->Find_Lobby->setMaximumWidth(koeff_Dialog_size*HW_Screen_Size_Width);
     ui->btnHide->setMaximumWidth(koeff_Dialog_size*HW_Screen_Size_Width);
 
 

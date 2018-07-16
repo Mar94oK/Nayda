@@ -18,16 +18,12 @@
     <item row="0" column="0">
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QPushButton" name="Create_Lobby">
-        <property name="text">
-         <string>Создать зал</string>
+       <widget class="QPushButton" name="btn_Play">
+        <property name="contextMenuPolicy">
+         <enum>Qt::DefaultContextMenu</enum>
         </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="Find_Lobby">
         <property name="text">
-         <string>Найти зал</string>
+         <string>Играть! </string>
         </property>
        </widget>
       </item>
