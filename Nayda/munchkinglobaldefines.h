@@ -9,6 +9,7 @@ class GeometricLimitations {
 public:
 
     static constexpr float beforeTheGameWindowsSize = 0.5f;
+    static constexpr float beforeTheGameButtonsSize = 0.1f;
 
 };
 

@@ -56,6 +56,12 @@ private:
     int time_to_think; //time to think before next step
 
     playMenu* newRoomDialog;
+
+private:
+
+    void setUpGeometricRelations();
+    void setUpSignalConnections();
+
 };
 
 #endif // BEFORE_THE_GAME_H

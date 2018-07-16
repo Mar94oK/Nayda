@@ -14,12 +14,12 @@ playMenu::playMenu(QWidget *parent) :
 
     ui->setupUi(this);
 
-//Signals
+//Signals-slots connections
     QObject::connect(ui->btn_DebugStart, SIGNAL(clicked(bool)), this, SLOT(slot_startGameWithDefaults()));
     QObject::connect(ui->btn_ServerSettings, &QPushButton::clicked, this, &playMenu::slot_showServerSettings);
     QObject::connect(ui->btn_StartTheGame, &QPushButton::clicked, this, &playMenu::slot_openRoomForConnection);
     QObject::connect(ui->btn_SendTestData, &QPushButton::clicked, this, &playMenu::slot_sendTestDataToServer);
-//Signals
+//Signals-slots connections
 
 //Window-settings
     setWindowTitle(tr("Подготовка игры"));
