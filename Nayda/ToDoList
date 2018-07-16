@@ -20,3 +20,39 @@ Continued 08.07.2018
    1) To Do server to accept many connections.
    http://qt-doc.ru/realizacia-servera-s-pomoschu-klassa-qtcpserver.html
 
+Continued 16.07.2018
+
+    1) To create satisfactory connection mode with server:
+        1.1. During setting saving to report user that they are successfuly save
+        1.2. Show them in the label
+
+    2) To make independent button "Connect to server"
+
+    3) Server should reply client directly after conenction whether there are some free room slots
+        or possibility to connect to some room
+
+    4) According to 3), there should be another window of the "Connected Mode"
+        4.1 "Connected" state info label with basic server info and status
+        4.2 Create room (if it is possible)
+        4.3 Observe free rooms (if it is possible)
+
+    5) If there is place for new room, there should appear room-creation dialog with settings.
+        5.1 Procedure:
+            5.1.1 User push the button to create room and reserve it on server
+            5.1.2 Server will reject connections to this room, but allowing
+            clients to see it in "connection to existing room" mode, replying:: room is creating.
+            5.1.3 User select settings. By 16.07.2018 - only default button will exist
+            5.1.4 After selecting settings (selection boxes), user will start the game pressing the button
+            5.1.5 Before sening settings and command to server, user will see the message "Are you sure?"
+
+    6) Client should be able to report user whether it was disconnected
+        6.1 To make special Icon "Connected" somewhere in all the "connected phase windows"
+        6.2 To make spceial procedure of exception if connection was closed.
+        6.3 If anyone of the clients (or all of them) will be diconnected, server should save the Game
+        on its own. Mark the Game with data and nicknames. Master will be the one who can restart (or anyone).
+
+    7) Add protobuf.
+
+
+
+
