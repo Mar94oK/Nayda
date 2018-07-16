@@ -41,6 +41,11 @@ public slots:
     void slot_openRoomForConnection();
     void slot_sendTestDataToServer();
 
+private:
+
+    void setUpGeometricRelations();
+    void setUpSignalsSlotsConnections();
+
 };
 
 #endif // START_NEW_ROOM_H

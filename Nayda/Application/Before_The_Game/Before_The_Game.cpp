@@ -20,7 +20,7 @@ Before_The_Game::Before_The_Game(QWidget *parent) :
 
     setUpGeometricRelations();
 
-    setUpSignalConnections();
+    setUpSignalsSlotsConnections();
 }
 
 
@@ -86,7 +86,7 @@ void Before_The_Game::setUpGeometricRelations()
                                     QApplication::desktop()->availableGeometry()));
 }
 
-void Before_The_Game::setUpSignalConnections()
+void Before_The_Game::setUpSignalsSlotsConnections()
 {
     QObject::connect( ui->btnHide, SIGNAL(clicked()), this, SLOT(hide()));
     QObject::connect (ui->btnHide, SIGNAL(clicked(bool)), this, SLOT(dbg_switch_to_game_mode_button_pressed()));

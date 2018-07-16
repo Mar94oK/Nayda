@@ -60,7 +60,7 @@ private:
 private:
 
     void setUpGeometricRelations();
-    void setUpSignalConnections();
+    void setUpSignalsSlotsConnections();
 
 };
 
