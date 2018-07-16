@@ -48,8 +48,8 @@ SOURCES += main.cpp\
     rejectedcardmessage.cpp \
     handcardpointer.cpp \
     serversettings.cpp \
-    startnewroom.cpp \
-    helpserversettings.cpp
+    helpserversettings.cpp \
+    playMenu.cpp
 
 HEADERS  += main_application.h \
     Application/Before_The_Game/Before_The_Game.h \
@@ -72,8 +72,8 @@ HEADERS  += main_application.h \
     handcardpointer.h \
     munchkinglobaldefines.h \
     serversettings.h \
-    startnewroom.h \
-    helpserversettings.h
+    helpserversettings.h \
+    playMenu.h
 
 FORMS    += main_application.ui \
     Application/Before_The_Game/Before_The_Game.ui \
@@ -81,7 +81,6 @@ FORMS    += main_application.ui \
     gamerwidget.ui \
     gametimers.ui \
     gameinfowidget.ui \
-    start_new_room.ui \
     battlefield.ui \
     hand.ui \
     popupcard.ui \
@@ -91,7 +90,8 @@ FORMS    += main_application.ui \
     rejectedcardmessage.ui \
     handcardpointer.ui \
     serversettings.ui \
-    helpserversettings.ui
+    helpserversettings.ui \
+    playMenu.ui
 
 RESOURCES += \
     tables.qrc \

@@ -10,7 +10,7 @@ namespace Ui {
 class startNewRoom;
 }
 
-class startNewRoom : public QWidget
+class playMenu : public QWidget
 {
     Q_OBJECT
 
@@ -18,14 +18,15 @@ private:
 
     Ui::startNewRoom *ui;
     ServerSettings* serverSettingsWindow = nullptr;
-
     void closeEvent(QCloseEvent *event);
 
 public:
-    explicit startNewRoom(QWidget *parent = 0);
-    ~startNewRoom();
+
+    explicit playMenu(QWidget *parent = 0);
+    ~playMenu();
 
 signals:
+
     void sig_dbgBtnPlayWithDefaultsPressed(bool);
     void sig_userIsClosingStartNewRoomWindow(bool);
     void sig_userHaveChangedServerSettings(serverSettings settings);

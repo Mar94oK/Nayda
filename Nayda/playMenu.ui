@@ -10,8 +10,11 @@
     <height>300</height>
    </rect>
   </property>
+  <property name="focusPolicy">
+   <enum>Qt::NoFocus</enum>
+  </property>
   <property name="windowTitle">
-   <string>Настройка зала</string>
+   <string>Подготовка игры</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="3" column="0">
