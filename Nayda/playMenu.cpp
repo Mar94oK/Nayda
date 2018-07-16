@@ -12,6 +12,7 @@ playMenu::playMenu(QWidget *parent) :
     ui(new Ui::startNewRoom)
 {
     ui->setupUi(this);
+    setWindowTitle(tr("Подготовка игры"));
 
     setUpSignalsSlotsConnections();
 
@@ -53,16 +54,38 @@ void playMenu::slot_sendTestDataToServer()
 
 void playMenu::setUpGeometricRelations()
 {
-    setWindowTitle(tr("Подготовка игры"));
+    QRect HwScreenSize = QApplication::desktop()->screenGeometry();
+    int HwScreenSizeWidth = HwScreenSize.width();
+    int HwScreenSizeHeight = HwScreenSize.height();
+
     setGeometry(0,0,
-                static_cast<uint32_t> (QApplication::desktop()->availableGeometry().width() * GeometricLimitations::beforeTheGameWindowsSize),
-                static_cast<uint32_t> (QApplication::desktop()->availableGeometry().height() * GeometricLimitations::beforeTheGameWindowsSize));
+                static_cast<uint32_t> (HwScreenSizeWidth * GeometricLimitations::beforeTheGameWindowsSize),
+                static_cast<uint32_t> (HwScreenSizeHeight * GeometricLimitations::beforeTheGameWindowsSize));
 
 
     setGeometry(QStyle::alignedRect(Qt::LeftToRight,
                                     Qt::AlignCenter,
                                     size(),
                                     QApplication::desktop()->availableGeometry()));
+
+    std::vector<QPushButton*> buttons;
+    buttons.push_back(ui->btn_DebugStart);
+    buttons.push_back(ui->btn_GameSettings);
+    buttons.push_back(ui->btn_SendTestData);
+    buttons.push_back(ui->btn_ServerSettings);
+    buttons.push_back(ui->btn_StartTheGame);
+
+    foreach (QPushButton* btn, buttons)
+    {
+        btn->setMaximumWidth(GeometricLimitations::beforeTheGameButtonsSize*HwScreenSizeWidth);
+    }
+
+//    ui->btn_DebugStart->setMaximumWidth(GeometricLimitations::beforeTheGameButtonsSize*HwScreenSizeWidth);
+//    ui->btn_GameSettings->setMaximumWidth(GeometricLimitations::beforeTheGameButtonsSize*HwScreenSizeWidth);
+//    ui->btn_SendTestData->setMaximumWidth(GeometricLimitations::beforeTheGameButtonsSize*HwScreenSizeWidth);
+//    ui->btn_ServerSettings->setMaximumWidth(GeometricLimitations::beforeTheGameButtonsSize*HwScreenSizeWidth);
+//    ui->btn_StartTheGame->setMaximumWidth(GeometricLimitations::beforeTheGameButtonsSize*HwScreenSizeWidth);
+
 }
 
 void playMenu::setUpSignalsSlotsConnections()
