@@ -80,9 +80,6 @@ void playMenu::setUpGeometricRelations()
         btn->setMaximumWidth(GeometricLimitations::beforeTheGameButtonsSize*HwScreenSizeWidth);
     }
 
-    //ui->gridLayout->setVerticalSpacing(0);
-    //ui->verticalLayout->setSpacing(0);
-
 }
 
 void playMenu::setUpSignalsSlotsConnections()

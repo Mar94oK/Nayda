@@ -32,7 +32,7 @@
      <item>
       <widget class="QPushButton" name="btn_StartTheGame">
        <property name="text">
-        <string>Открыть зал для входа игроков</string>
+        <string>Открыть зал</string>
        </property>
       </widget>
      </item>
@@ -45,7 +45,7 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>Отослать тестовые данные на сервер</string>
+        <string>Тестовые данные</string>
        </property>
       </widget>
      </item>
