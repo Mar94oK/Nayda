@@ -84,6 +84,7 @@ void Before_The_Game::setUpGeometricRelations()
                                     Qt::AlignCenter,
                                     size(),
                                     QApplication::desktop()->availableGeometry()));
+
 }
 
 void Before_The_Game::setUpSignalsSlotsConnections()

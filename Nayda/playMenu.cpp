@@ -1,5 +1,5 @@
 #include "playMenu.h"
-#include "ui_start_new_room.h"
+#include "ui_playMenu.h"
 
 #include <munchkinglobaldefines.h>
 
@@ -80,11 +80,8 @@ void playMenu::setUpGeometricRelations()
         btn->setMaximumWidth(GeometricLimitations::beforeTheGameButtonsSize*HwScreenSizeWidth);
     }
 
-//    ui->btn_DebugStart->setMaximumWidth(GeometricLimitations::beforeTheGameButtonsSize*HwScreenSizeWidth);
-//    ui->btn_GameSettings->setMaximumWidth(GeometricLimitations::beforeTheGameButtonsSize*HwScreenSizeWidth);
-//    ui->btn_SendTestData->setMaximumWidth(GeometricLimitations::beforeTheGameButtonsSize*HwScreenSizeWidth);
-//    ui->btn_ServerSettings->setMaximumWidth(GeometricLimitations::beforeTheGameButtonsSize*HwScreenSizeWidth);
-//    ui->btn_StartTheGame->setMaximumWidth(GeometricLimitations::beforeTheGameButtonsSize*HwScreenSizeWidth);
+    //ui->gridLayout->setVerticalSpacing(0);
+    //ui->verticalLayout->setSpacing(0);
 
 }
 

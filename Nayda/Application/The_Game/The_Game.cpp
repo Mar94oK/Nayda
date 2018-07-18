@@ -1,5 +1,5 @@
 #include "Application/The_Game/The_Game.h"
-#include "ui_The_Game.h"
+#include "ui_the_game.h"
 #include <ctime>
 #include <QTime>
 #include "popupcard.h"
