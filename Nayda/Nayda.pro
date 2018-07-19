@@ -49,7 +49,8 @@ SOURCES += main.cpp\
     handcardpointer.cpp \
     serversettings.cpp \
     helpserversettings.cpp \
-    playMenu.cpp
+    playMenu.cpp \
+    gamesettings.cpp
 
 HEADERS  += main_application.h \
     Application/Before_The_Game/Before_The_Game.h \
@@ -73,7 +74,8 @@ HEADERS  += main_application.h \
     munchkinglobaldefines.h \
     serversettings.h \
     helpserversettings.h \
-    playMenu.h
+    playMenu.h \
+    gamesettings.h
 
 FORMS    += main_application.ui \
     Application/Before_The_Game/Before_The_Game.ui \
