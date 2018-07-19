@@ -10,9 +10,6 @@
 #include "Application/card.h"
 #include <QFile>
 
-
-
-
 #include <QPixmap>
 #include <QPropertyAnimation>
 #include <QDesktopWidget>
@@ -33,11 +30,9 @@
 #define DEBUG_NO_RETURN_TO_MENU
 
 
-//This definitions are ruling the Widgets of Gamers (the areas for them)
-
+//These definitions are ruling the Widgets of Gamers (the areas for them)
 #define MainGamerWidgetWidthExpansion 0.2
 #define SecondaryGamerWidgetWidthExpansion 0.05
-
 
 enum class GamePhase {StartOfTheMove,
                       AfterOpenDoorNoMonster,
@@ -47,15 +42,13 @@ enum class GamePhase {StartOfTheMove,
                       HandAlignment,
                       GameInitialization};
 
-
-namespace Ui {
+namespace Ui
+{
 class The_Game;
 }
 
-
-
-struct strongAgainst {
-
+struct strongAgainst
+{
     int strongAgainstHuman;
     int strongAgainstElf;
     int strongAgainstHalfling;
@@ -72,14 +65,10 @@ struct strongAgainst {
     int strongAgainstBard;
     int strongAgainstCleric;
     int strongAgainstSaturday;
-
 };
 
-
-
-
-struct isOnlyFor {
-
+struct isOnlyFor
+{
     bool isOnlyForGnome;
     bool isOnlyForDwarf;
     bool isOnlyForHuman;
@@ -88,11 +77,10 @@ struct isOnlyFor {
     bool isRestrictedToGnome;
     bool isRestrictedToWizard;
 
-
 };
 
-struct isOnlyFor_ThingsAmplifiers {
-
+struct isOnlyFor_ThingsAmplifiers
+{
     bool isOnlyForHalfling;
     bool isOnlyForCleric;
     bool isOnlyForWizard;
@@ -100,12 +88,10 @@ struct isOnlyFor_ThingsAmplifiers {
     bool isRestrictedToWarrior;
     bool isRestrictedToCleric;
     bool isRestrictedtoThief;
-
 };
 
-
-struct isOnlyFor_Weapon {
-
+struct isOnlyFor_Weapon
+{
     bool isOnlyForElf;
     bool isOnlyForMan;
     bool isOnlyForDwarf;
@@ -119,9 +105,7 @@ struct isOnlyFor_Weapon {
     bool isOnlyForGnome;
     bool isOnlyForBard;
     bool isOnlyForCleric;
-
 };
-
 
 class The_Game :  public QMainWindow
 {
@@ -180,13 +164,11 @@ public:
     void theWeaponParser (const QString& filename);
     gameCardTreasureWeapon WeaponStringParser (const QString& weapons_string);
 
-
     void _debugShowAllTheCards();
     void passDecksToBattleField();
     void passDecksToPlayerWidgets();
     void passDecksToPopUpCardWidget();
     void passDecksToCardsStacksWidget();
-
 
     const std::map<int, gameCardDoorMonster> * monstersDeck();
     const std::map<int, gameCardDoorAmplifier> *amplifiersDeck();
@@ -219,9 +201,6 @@ public:
 
     //void initialCardsProcess();
 
-
-
-
     //This process should take place on the Server Side.
     //Instead of forming an exact array of digits here, the Server should pass them one-by-one on clients requests..
     //But for now, in Debug version, the procedure is executed on the clients' side.
@@ -236,7 +215,6 @@ public:
     void givingCardsToPlayers();
 
     void showInitialCardsOnHands();
-
 
     unsigned int treasuresLeft() const;
     void setTreasuresLeft(unsigned int treasuresLeft);
@@ -259,10 +237,8 @@ public slots:
     //void showTheCardNearItsPosition(PositionedCard card);
     void hideTheCardInCentre(bool);
     //void hideTheCardNearItsPosition(bool);
-
     
 private:
-
 
     Ui::The_Game *ui;
 
@@ -273,9 +249,6 @@ private:
 
     //special option will allow to be more than 5 opponents
     std::vector <GamerWidget*> _widgets4Opponents; //make as controlled unique_ptr;
-
-
-
 
     player _main_player;
 
@@ -311,7 +284,6 @@ private:
     std::map <int, gameCardTreasureThingsAmplifiers> _thingsAmplifiersDeck;
     std::map <int, gameCardTreasureWeapon> _weaponsDeck;
 
-
 private:
 
     PopUpCard* _popUpCardWidget;
@@ -342,10 +314,7 @@ signals:
     //but all of them are targeted the cards to be fold or to be given to another Players.
     //Not To Be Played! (at least, as how it looks for me now, this moment)
     void _signalCardIsRejectedToBePlayed(bool); //not necessary to send the card back;
-                                            //the Hand property "CardIsReadyToBePlayed" is saving the current card;
-
-
-
+                                          //the Hand property "CardIsReadyToBePlayed" is saving the current card;
 private:
 
     RejectedCardMessage* _rejectionCardMessage;
@@ -365,13 +334,6 @@ public:
 
     QString findTheCardPicture(SimpleCard);
 
-
 };
-
-
-
-
-
-
 
 #endif // THE_GAME_H
