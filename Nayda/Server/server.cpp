@@ -62,6 +62,8 @@ void Server::sendDataToTheConnection(const QString &dataStr)
 
     out << dataStr;
 
+    qDebug() << "NAY-0001: Sending data to the server!";
+
     if (tcpSocket->isOpen())
     {
        if (tcpSocket->ConnectedState == QTcpSocket::ConnectedState)

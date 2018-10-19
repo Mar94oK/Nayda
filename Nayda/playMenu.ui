@@ -21,73 +21,78 @@
     <number>6</number>
    </property>
    <item row="0" column="0">
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <widget class="QPushButton" name="btn_GameSettings">
-       <property name="text">
-        <string>Настройки Игры</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="btn_StartTheGame">
-       <property name="text">
-        <string>Открыть зал</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="btn_SendTestData">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>Тестовые данные</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="btn_ServerSettings">
-       <property name="text">
-        <string>Настройки сервера</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="btn_DebugStart">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>Начать игру (с настройками по умолчанию) - отладка</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="0" column="1">
-    <widget class="QLabel" name="label">
+    <widget class="QPushButton" name="btn_GameSettings">
      <property name="text">
-      <string>Сервер</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
+      <string>Настройки Игры</string>
      </property>
     </widget>
    </item>
-   <item row="1" column="0" colspan="2">
-    <widget class="QLabel" name="lbl_Settings">
+   <item row="4" column="0">
+    <widget class="QPushButton" name="btn_SendTestData">
      <property name="text">
-      <string>Настройки игры</string>
+      <string>Тестовые данные</string>
      </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QPushButton" name="btn_DebugStart">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="text">
+      <string>Начать игру (с настройками по умолчанию) - отладка</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QPushButton" name="btn_StartTheGame">
+     <property name="text">
+      <string>Соединение</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QLabel" name="lbl_Connection">
+     <property name="text">
+      <string>Настройки сервера: </string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <widget class="QLabel" name="lbl_TestData">
+     <property name="text">
+      <string>Тестовые данные (отладка)</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="QLabel" name="lbl_StartTheGameDefault">
+     <property name="text">
+      <string>Начать игру (отладка)</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0">
+    <widget class="QPushButton" name="btn_ServerSettings">
+     <property name="text">
+      <string>Настройки сервера</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QLabel" name="lbl_GameSettings">
+     <property name="text">
+      <string>Настройки игры: </string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="1">
+    <widget class="QLabel" name="lbl_ServerSettings">
+     <property name="text">
+      <string>Настройки сервера (отладка)</string>
      </property>
     </widget>
    </item>

@@ -432,5 +432,8 @@
         <file>Pictures/Hand/drakon-2012-04.jpg</file>
         <file>Pictures/Hand/737666515.png</file>
         <file>Pictures/Hand/18020064.png</file>
+        <file>Pictures/playMenu/playMenu_oblako_connection_blue.jpg</file>
+        <file>Pictures/playMenu/playMenu_oblako_connection_gray.jpg</file>
+        <file>Pictures/playMenu/playMenu_oblako_connection_green.jpg</file>
     </qresource>
 </RCC>

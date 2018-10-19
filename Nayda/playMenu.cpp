@@ -4,7 +4,8 @@
 #include <munchkinglobaldefines.h>
 
 #include <QDesktopWidget>
-
+#include <QStandardPaths>
+#include <QDir>
 
 
 playMenu::playMenu(QWidget *parent) :
@@ -74,6 +75,36 @@ void playMenu::setUpGeometricRelations()
     buttons.push_back(ui->btn_SendTestData);
     buttons.push_back(ui->btn_ServerSettings);
     buttons.push_back(ui->btn_StartTheGame);
+
+
+    qDebug() <<"NAY-0001: Application location: "<< QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory);
+    QString homeDirectory = QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory);
+    QString uiFilesLocation = "Munchkin/Nayda/Nayda/Pictures/playMenu";
+    QString picturesLocationBasis = homeDirectory + uiFilesLocation;
+    qDebug() <<"NAY-0001: playMenu pictures location: " << picturesLocationBasis;
+    QString fileName = "cloud_blue.png";
+
+    //qDebug() <<"NAY-0001: trying to locate picture: " = QStandardPaths::locate(picturesLocationBasis, QString("cloud_blue.png"),QStandardPaths::LocateFile);
+
+    QString fullFilePath = picturesLocationBasis + fileName;
+
+    QString gameSettingsPictureAddressDefault = ":/Pictures/playMenu/playMenu_oblako_connection_gray.jpg";
+    QString gameSettingsPictureAddressSet = fullFilePath;
+    QString gameSettingsPictureAddressConnected = ":/Pictures/playMenu/playMenu_oblako_connection_green.jpg";
+
+    QPixmap pxmpBtnMainRepresenter(gameSettingsPictureAddressSet);
+    QPalette plteBtnMainRepresenter;
+    plteBtnMainRepresenter.setBrush(ui->btn_GameSettings->backgroundRole(),
+    QBrush(pxmpBtnMainRepresenter.scaled(geometry().width()*0.33,
+                                        geometry().width()*0.33*0.66,
+                                        Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
+
+    ui->btn_GameSettings->setMinimumWidth(geometry().width()*0.33);
+    ui->btn_GameSettings->setMinimumHeight(geometry().width()*0.33*0.66);
+    ui->btn_GameSettings->setFlat(true);
+    ui->btn_GameSettings->setAutoFillBackground(true);
+    ui->btn_GameSettings->setPalette(plteBtnMainRepresenter);
+
 
     foreach (QPushButton* btn, buttons)
     {
