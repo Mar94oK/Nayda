@@ -92,15 +92,15 @@ void playMenu::setUpGeometricRelations()
     QString gameSettingsPictureAddressSet = fullFilePath;
     QString gameSettingsPictureAddressConnected = ":/Pictures/playMenu/playMenu_oblako_connection_green.jpg";
 
-    QPixmap pxmpBtnMainRepresenter(gameSettingsPictureAddressSet);
+    QPixmap pxmpBtnMainRepresenter("/home/uvarenkov/Munchkin/Nayda/Nayda/Pictures/playMenu/cloud_blue.png");
     QPalette plteBtnMainRepresenter;
     plteBtnMainRepresenter.setBrush(ui->btn_GameSettings->backgroundRole(),
-    QBrush(pxmpBtnMainRepresenter.scaled(geometry().width()*0.33,
-                                        geometry().width()*0.33*0.66,
+    QBrush(pxmpBtnMainRepresenter.scaled(geometry().width()*0.2,
+                                        geometry().width()*0.2*0.66,
                                         Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
 
-    ui->btn_GameSettings->setMinimumWidth(geometry().width()*0.33);
-    ui->btn_GameSettings->setMinimumHeight(geometry().width()*0.33*0.66);
+    ui->btn_GameSettings->setMinimumWidth(geometry().width()*0.2);
+    ui->btn_GameSettings->setMinimumHeight(geometry().width()*0.2*0.66);
     ui->btn_GameSettings->setFlat(true);
     ui->btn_GameSettings->setAutoFillBackground(true);
     ui->btn_GameSettings->setPalette(plteBtnMainRepresenter);
