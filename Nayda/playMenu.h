@@ -20,6 +20,21 @@ private:
     ServerSettings* serverSettingsWindow = nullptr;
     void closeEvent(QCloseEvent *event);
 
+    QString _gameSettingsButtonPictureAddressDefault;
+    QString _gameSettingsButtonPictureAddressSetUp;
+
+    QString _connectionButtonPictureAddressDefault;
+    QString _connectionButtonPictureAddressSetUp;
+    QString _connectionButtonPictureAddressConnected;
+
+    QString _createRoomButtonPictureAddressDefault;
+    QString _createRoomButtonPictureAddressAllowed;
+
+    QString _joinRoomButtonPictureAddressDefault;
+    QString _joinRoomButtonPictureAddressAllowed;
+
+    std::vector<QPushButton*> _uiButtons;
+
 public:
 
     explicit playMenu(QWidget *parent = 0);
@@ -43,9 +58,11 @@ public slots:
 
 private:
 
-    void setUpGeometricRelations();
+    void setUpUiGeometricRelations();
     void setUpSignalsSlotsConnections();
-
+    void setUpUiPicturesAddresses();
+    void setUpButtonPicture(QPushButton* const btn, const QString& picturePath, double widthCoeff, double heightWidthRelatio);
+    void setUpUiVisualizationParameters();
 };
 
 #endif // START_NEW_ROOM_H

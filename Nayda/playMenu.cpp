@@ -17,7 +17,13 @@ playMenu::playMenu(QWidget *parent) :
 
     setUpSignalsSlotsConnections();
 
-    setUpGeometricRelations();
+    _uiButtons.push_back(ui->btn_DebugStart);
+    _uiButtons.push_back(ui->btn_GameSettings);
+    _uiButtons.push_back(ui->btn_SendTestData);
+    _uiButtons.push_back(ui->btn_ServerSettings);
+    _uiButtons.push_back(ui->btn_StartTheGame);
+
+    setUpUiVisualizationParameters();
 }
 
 playMenu::~playMenu()
@@ -53,7 +59,7 @@ void playMenu::slot_sendTestDataToServer()
     emit sig_sendTestDataToServer();
 }
 
-void playMenu::setUpGeometricRelations()
+void playMenu::setUpUiGeometricRelations()
 {
     QRect HwScreenSize = QApplication::desktop()->screenGeometry();
     int HwScreenSizeWidth = HwScreenSize.width();
@@ -63,54 +69,13 @@ void playMenu::setUpGeometricRelations()
                 static_cast<uint32_t> (HwScreenSizeWidth * GeometricLimitations::beforeTheGameWindowsSize),
                 static_cast<uint32_t> (HwScreenSizeHeight * GeometricLimitations::beforeTheGameWindowsSize));
 
-
     setGeometry(QStyle::alignedRect(Qt::LeftToRight,
                                     Qt::AlignCenter,
                                     size(),
                                     QApplication::desktop()->availableGeometry()));
 
-    std::vector<QPushButton*> buttons;
-    buttons.push_back(ui->btn_DebugStart);
-    buttons.push_back(ui->btn_GameSettings);
-    buttons.push_back(ui->btn_SendTestData);
-    buttons.push_back(ui->btn_ServerSettings);
-    buttons.push_back(ui->btn_StartTheGame);
-
-
-    qDebug() <<"NAY-0001: Application location: "<< QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory);
-    QString homeDirectory = QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory);
-    QString uiFilesLocation = "Munchkin/Nayda/Nayda/Pictures/playMenu";
-    QString picturesLocationBasis = homeDirectory + uiFilesLocation;
-    qDebug() <<"NAY-0001: playMenu pictures location: " << picturesLocationBasis;
-    QString fileName = "cloud_blue.png";
-
-    //qDebug() <<"NAY-0001: trying to locate picture: " = QStandardPaths::locate(picturesLocationBasis, QString("cloud_blue.png"),QStandardPaths::LocateFile);
-
-    QString fullFilePath = picturesLocationBasis + fileName;
-
-    QString gameSettingsPictureAddressDefault = ":/Pictures/playMenu/playMenu_oblako_connection_gray.jpg";
-    QString gameSettingsPictureAddressSet = fullFilePath;
-    QString gameSettingsPictureAddressConnected = ":/Pictures/playMenu/playMenu_oblako_connection_green.jpg";
-
-    QPixmap pxmpBtnMainRepresenter("/home/uvarenkov/Munchkin/Nayda/Nayda/Pictures/playMenu/cloud_blue.png");
-    QPalette plteBtnMainRepresenter;
-    plteBtnMainRepresenter.setBrush(ui->btn_GameSettings->backgroundRole(),
-    QBrush(pxmpBtnMainRepresenter.scaled(geometry().width()*0.2,
-                                        geometry().width()*0.2*0.66,
-                                        Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
-
-    ui->btn_GameSettings->setMinimumWidth(geometry().width()*0.2);
-    ui->btn_GameSettings->setMinimumHeight(geometry().width()*0.2*0.66);
-    ui->btn_GameSettings->setFlat(true);
-    ui->btn_GameSettings->setAutoFillBackground(true);
-    ui->btn_GameSettings->setPalette(plteBtnMainRepresenter);
-
-
-    foreach (QPushButton* btn, buttons)
-    {
+    foreach (QPushButton* btn, _uiButtons)
         btn->setMaximumWidth(GeometricLimitations::beforeTheGameButtonsSize*HwScreenSizeWidth);
-    }
-
 }
 
 void playMenu::setUpSignalsSlotsConnections()
@@ -119,6 +84,42 @@ void playMenu::setUpSignalsSlotsConnections()
     QObject::connect(ui->btn_ServerSettings, &QPushButton::clicked, this, &playMenu::slot_showServerSettings);
     QObject::connect(ui->btn_StartTheGame, &QPushButton::clicked, this, &playMenu::slot_openRoomForConnection);
     QObject::connect(ui->btn_SendTestData, &QPushButton::clicked, this, &playMenu::slot_sendTestDataToServer);
+}
+
+void playMenu::setUpUiPicturesAddresses()
+{
+    qDebug() <<"NAY-0001: Application location: "<< QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory);
+    QString homeDirectory = QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory);
+    QString uiPlayMenuFilesLocation = "Munchkin/Nayda/Nayda/Pictures/playMenu";
+    QString picturesLocationBasis = homeDirectory + uiPlayMenuFilesLocation;
+
+    _connectionButtonPictureAddressDefault = picturesLocationBasis + "/" + "cloud_gray.png";
+    _connectionButtonPictureAddressSetUp = picturesLocationBasis + "/" + "cloud_blue.png";
+    _connectionButtonPictureAddressConnected = picturesLocationBasis + "/" + "cloud_green.png";
+}
+
+void playMenu::setUpButtonPicture(QPushButton* const btn, const QString &picturePath, double widthCoeff, double heightWidthRelatio)
+{
+    QPixmap pxmpBtnMainRepresenter(picturePath);
+    QPalette plteBtnMainRepresenter;
+    plteBtnMainRepresenter.setBrush(btn->backgroundRole(),
+    QBrush(pxmpBtnMainRepresenter.scaled(geometry().width()*widthCoeff,
+                                        geometry().width()*widthCoeff*heightWidthRelatio,
+                                        Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
+
+    btn->setMinimumWidth(geometry().width()*widthCoeff);
+    btn->setMinimumHeight(geometry().width()*widthCoeff*heightWidthRelatio);
+    btn->setFlat(true);
+    btn->setAutoFillBackground(true);
+    btn->setPalette(plteBtnMainRepresenter);
+}
+
+void playMenu::setUpUiVisualizationParameters()
+{
+    setUpUiGeometricRelations();
+    setUpUiPicturesAddresses();
+
+    setUpButtonPicture(ui->btn_GameSettings, _connectionButtonPictureAddressDefault, 0.2, 0.66);
 }
 
 void playMenu::closeEvent(QCloseEvent *event)
