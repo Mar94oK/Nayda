@@ -26,6 +26,8 @@ playMenu::playMenu(QWidget *parent) :
     _uiButtons.push_back(ui->btn_Connection);
 
     setUpUiVisualizationParameters();
+
+    _connectionState = ConnectionState::NoServerSettingsProvided;
 }
 
 playMenu::~playMenu()
@@ -42,13 +44,18 @@ void playMenu::slot_startGameWithDefaults()
 void playMenu::slot_showServerSettings()
 {
     serverSettingsWindow = new ServerSettings();
-    QObject::connect(serverSettingsWindow, &ServerSettings::sig_userHaveChangedServerSettings, this, &playMenu::slot_userhaveChangedServerSetting);
+    QObject::connect(serverSettingsWindow, &ServerSettings::sig_userHaveChangedServerSettings, this, &playMenu::slot_userHaveChangedServerSettings);
     serverSettingsWindow->setModal(true);
     serverSettingsWindow->show();
 }
 
-void playMenu::slot_userhaveChangedServerSetting(serverSettings settings)
+void playMenu::slot_userHaveChangedServerSettings(serverSettings settings)
 {
+    _connectionState = ConnectionState::CompleteServerSettings;
+    setUpButtonPicture(ui->btn_Connection, _connectionButtonPictureAddressSetUp, buttonsWidthCoefficient, buttonsHeightWidthRelatio);
+    QObject::connect(ui->btn_Connection, &QPushButton::clicked, this, &playMenu::slot_openRoomForConnection);
+    QObject::disconnect(ui->btn_Connection, &QPushButton::clicked, this, &playMenu::slot_showServerSettings);
+    ui->lbl_Connection->setText("Сервер: " + settings.first + " Порт: " + settings.second);
     emit sig_userHaveChangedServerSettings(settings);
 }
 
@@ -85,8 +92,9 @@ void playMenu::setUpSignalsSlotsConnections()
 {
     QObject::connect(ui->btn_DebugStart, SIGNAL(clicked(bool)), this, SLOT(slot_startGameWithDefaults()));
     QObject::connect(ui->btn_ServerSettings, &QPushButton::clicked, this, &playMenu::slot_showServerSettings);
-    QObject::connect(ui->btn_Connection, &QPushButton::clicked, this, &playMenu::slot_openRoomForConnection);
+    //QObject::connect(ui->btn_Connection, &QPushButton::clicked, this, &playMenu::slot_openRoomForConnection);
     QObject::connect(ui->btn_SendTestData, &QPushButton::clicked, this, &playMenu::slot_sendTestDataToServer);
+    QObject::connect(ui->btn_Connection, &QPushButton::clicked, this, &playMenu::slot_showServerSettings);
 }
 
 void playMenu::setUpUiPicturesAddresses()
@@ -106,8 +114,8 @@ void playMenu::setUpUiPicturesAddresses()
     _createRoomButtonPictureAddressDefault = picturesLocationBasis + "crown_gray.png";
     _createRoomButtonPictureAddressAllowed = picturesLocationBasis + "crown_ready.png";
 
-    _joinRoomButtonPictureAddressDefault = picturesLocationBasis + "binocular_gray";
-    _joinRoomButtonPictureAddressAllowed = picturesLocationBasis + "binocular_ready";
+    _joinRoomButtonPictureAddressDefault = picturesLocationBasis + "binocular_gray.png";
+    _joinRoomButtonPictureAddressAllowed = picturesLocationBasis + "binocular_read.png";
 }
 
 void playMenu::setUpButtonPicture(QPushButton* const btn, const QString &picturePath, double widthCoeff, double heightWidthRelatio)

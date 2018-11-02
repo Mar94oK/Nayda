@@ -12,6 +12,9 @@
 #include <QDebug>
 #include <QTcpSocket>
 #include <QDataStream>
+#include "QDebug"
+#include <QtNetwork>
+#include <QDebug>
 
 QT_BEGIN_NAMESPACE
 class QTcpSocket;
@@ -82,6 +85,8 @@ enum class RoomPosessionType {RoomMaster, RoomGuest};
   signals:
 
       void valueChanged(int newValue);
+      void socketErrorReportToGUI(QAbstractSocket::SocketError signal);
+      void socketConnectionSuccessReportToGui(bool);
 
   };
 

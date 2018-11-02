@@ -10,6 +10,11 @@ namespace Ui {
 class startNewRoom;
 }
 
+enum class ConnectionState { NoServerSettingsProvided,
+                             CompleteServerSettings,
+                             Connection,
+                             ConnectionTimeout };
+
 class playMenu : public QWidget
 {
     Q_OBJECT
@@ -40,6 +45,10 @@ private:
     const double buttonsWidthCoefficient = 0.2;
     const double buttonsHeightWidthRelatio = 0.66;
 
+private:
+
+    ConnectionState _connectionState;
+
 public:
 
     explicit playMenu(QWidget *parent = 0);
@@ -61,7 +70,7 @@ public slots:
 
     void slot_startGameWithDefaults(void);
     void slot_showServerSettings(void);
-    void slot_userhaveChangedServerSetting(serverSettings settings);
+    void slot_userHaveChangedServerSettings(serverSettings settings);
     void slot_openRoomForConnection();
     void slot_sendTestDataToServer();
 

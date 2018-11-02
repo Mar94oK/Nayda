@@ -108,6 +108,8 @@ void Server::displayError(QAbstractSocket::SocketError socketError)
     default:
         qDebug() << "The following error occurred: %1." << tcpSocket->errorString();
     }
+
+
 }
 
 void Server::slot_sendTestDataToServer()
