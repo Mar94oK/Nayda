@@ -103,8 +103,11 @@ void playMenu::setUpUiPicturesAddresses()
     _gameSettingsButtonPictureAddressDefault = picturesLocationBasis + "gears_gray.png";
     _gameSettingsButtonPictureAddressSetUp = picturesLocationBasis + "gears_green.png";
 
-    _createRoomButtonPictureAddressDefault = picturesLocationBasis + "binocular_gray.png";
-    _createRoomButtonPictureAddressAllowed = picturesLocationBasis + "binocular_ready.png";
+    _createRoomButtonPictureAddressDefault = picturesLocationBasis + "crown_gray.png";
+    _createRoomButtonPictureAddressAllowed = picturesLocationBasis + "crown_ready.png";
+
+    _joinRoomButtonPictureAddressDefault = picturesLocationBasis + "binocular_gray";
+    _joinRoomButtonPictureAddressAllowed = picturesLocationBasis + "binocular_ready";
 }
 
 void playMenu::setUpButtonPicture(QPushButton* const btn, const QString &picturePath, double widthCoeff, double heightWidthRelatio)
@@ -128,9 +131,10 @@ void playMenu::setUpUiVisualizationParameters()
     setUpUiGeometricRelations();
     setUpUiPicturesAddresses();
 
-    setUpButtonPicture(ui->btn_GameSettings, _gameSettingsButtonPictureAddressDefault, 0.2, 0.66);
-    setUpButtonPicture(ui->btn_Connection, _connectionButtonPictureAddressDefault, 0.2, 0.66);
-    setUpButtonPicture(ui->btn_JoinToExistingLobby, _createRoomButtonPictureAddressDefault, 0.2, 0.66);
+    setUpButtonPicture(ui->btn_GameSettings, _gameSettingsButtonPictureAddressDefault, buttonsWidthCoefficient, buttonsHeightWidthRelatio);
+    setUpButtonPicture(ui->btn_Connection, _connectionButtonPictureAddressDefault, buttonsWidthCoefficient, buttonsHeightWidthRelatio);
+    setUpButtonPicture(ui->btn_JoinToExistingLobby, _joinRoomButtonPictureAddressDefault, buttonsWidthCoefficient, buttonsHeightWidthRelatio);
+    setUpButtonPicture(ui->btn_CreateLobby, _createRoomButtonPictureAddressDefault, buttonsWidthCoefficient, buttonsHeightWidthRelatio);
 }
 
 void playMenu::closeEvent(QCloseEvent *event)

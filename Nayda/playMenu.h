@@ -35,6 +35,11 @@ private:
 
     std::vector<QPushButton*> _uiButtons;
 
+private:
+
+    const double buttonsWidthCoefficient = 0.2;
+    const double buttonsHeightWidthRelatio = 0.66;
+
 public:
 
     explicit playMenu(QWidget *parent = 0);
