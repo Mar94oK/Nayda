@@ -6,6 +6,8 @@
 #include <QDesktopWidget>
 #include <QStandardPaths>
 #include <QDir>
+#include <QThread>
+#include <QPaintEvent>
 
 
 playMenu::playMenu(QWidget *parent) :
@@ -21,7 +23,7 @@ playMenu::playMenu(QWidget *parent) :
     _uiButtons.push_back(ui->btn_GameSettings);
     _uiButtons.push_back(ui->btn_SendTestData);
     _uiButtons.push_back(ui->btn_ServerSettings);
-    _uiButtons.push_back(ui->btn_StartTheGame);
+    _uiButtons.push_back(ui->btn_Connection);
 
     setUpUiVisualizationParameters();
 }
@@ -30,6 +32,7 @@ playMenu::~playMenu()
 {
     delete ui;
 }
+
 
 void playMenu::slot_startGameWithDefaults()
 {
@@ -82,7 +85,7 @@ void playMenu::setUpSignalsSlotsConnections()
 {
     QObject::connect(ui->btn_DebugStart, SIGNAL(clicked(bool)), this, SLOT(slot_startGameWithDefaults()));
     QObject::connect(ui->btn_ServerSettings, &QPushButton::clicked, this, &playMenu::slot_showServerSettings);
-    QObject::connect(ui->btn_StartTheGame, &QPushButton::clicked, this, &playMenu::slot_openRoomForConnection);
+    QObject::connect(ui->btn_Connection, &QPushButton::clicked, this, &playMenu::slot_openRoomForConnection);
     QObject::connect(ui->btn_SendTestData, &QPushButton::clicked, this, &playMenu::slot_sendTestDataToServer);
 }
 
@@ -96,30 +99,34 @@ void playMenu::setUpUiPicturesAddresses()
     _connectionButtonPictureAddressDefault = picturesLocationBasis + "/" + "cloud_gray.png";
     _connectionButtonPictureAddressSetUp = picturesLocationBasis + "/" + "cloud_blue.png";
     _connectionButtonPictureAddressConnected = picturesLocationBasis + "/" + "cloud_green.png";
+
+    _gameSettingsButtonPictureAddressDefault = picturesLocationBasis + "/" + "gears_gray.png";
+    _gameSettingsButtonPictureAddressSetUp = picturesLocationBasis + "/" + "gears_green.png";
 }
 
 void playMenu::setUpButtonPicture(QPushButton* const btn, const QString &picturePath, double widthCoeff, double heightWidthRelatio)
 {
     QPixmap pxmpBtnMainRepresenter(picturePath);
-    QPalette plteBtnMainRepresenter;
-    plteBtnMainRepresenter.setBrush(btn->backgroundRole(),
-    QBrush(pxmpBtnMainRepresenter.scaled(geometry().width()*widthCoeff,
-                                        geometry().width()*widthCoeff*heightWidthRelatio,
-                                        Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
+    QPalette plteBtnMainRepresenter(btn->palette());
+    plteBtnMainRepresenter.setBrush(QPalette::Button,
+                                    QBrush(pxmpBtnMainRepresenter.scaled(geometry().width()*widthCoeff,
+                                            geometry().width()*widthCoeff*heightWidthRelatio,
+                                            Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
 
     btn->setMinimumWidth(geometry().width()*widthCoeff);
     btn->setMinimumHeight(geometry().width()*widthCoeff*heightWidthRelatio);
     btn->setFlat(true);
     btn->setAutoFillBackground(true);
     btn->setPalette(plteBtnMainRepresenter);
-}
+ }
 
 void playMenu::setUpUiVisualizationParameters()
 {
     setUpUiGeometricRelations();
     setUpUiPicturesAddresses();
 
-    setUpButtonPicture(ui->btn_GameSettings, _connectionButtonPictureAddressDefault, 0.2, 0.66);
+    setUpButtonPicture(ui->btn_GameSettings, _gameSettingsButtonPictureAddressDefault, 0.2, 0.66);
+    setUpButtonPicture(ui->btn_Connection, _connectionButtonPictureAddressDefault, 0.2, 0.66);
 }
 
 void playMenu::closeEvent(QCloseEvent *event)

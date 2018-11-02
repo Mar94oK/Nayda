@@ -48,6 +48,10 @@ signals:
     void sig_openRoomForConnection();
     void sig_sendTestDataToServer();
 
+private slots:
+
+
+
 public slots:
 
     void slot_startGameWithDefaults(void);

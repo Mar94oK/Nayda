@@ -22,19 +22,22 @@
    </property>
    <item row="0" column="0">
     <widget class="QPushButton" name="btn_GameSettings">
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
      <property name="text">
       <string>Настройки Игры</string>
      </property>
     </widget>
    </item>
-   <item row="4" column="0">
+   <item row="5" column="0">
     <widget class="QPushButton" name="btn_SendTestData">
      <property name="text">
       <string>Тестовые данные</string>
      </property>
     </widget>
    </item>
-   <item row="3" column="0">
+   <item row="4" column="0">
     <widget class="QPushButton" name="btn_DebugStart">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
@@ -48,9 +51,18 @@
     </widget>
    </item>
    <item row="1" column="0">
-    <widget class="QPushButton" name="btn_StartTheGame">
+    <widget class="QPushButton" name="btn_Connection">
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
      <property name="text">
       <string>Соединение</string>
+     </property>
+     <property name="autoDefault">
+      <bool>false</bool>
      </property>
     </widget>
    </item>
@@ -61,21 +73,21 @@
      </property>
     </widget>
    </item>
-   <item row="4" column="1">
+   <item row="5" column="1">
     <widget class="QLabel" name="lbl_TestData">
      <property name="text">
       <string>Тестовые данные (отладка)</string>
      </property>
     </widget>
    </item>
-   <item row="3" column="1">
+   <item row="4" column="1">
     <widget class="QLabel" name="lbl_StartTheGameDefault">
      <property name="text">
       <string>Начать игру (отладка)</string>
      </property>
     </widget>
    </item>
-   <item row="5" column="0">
+   <item row="6" column="0">
     <widget class="QPushButton" name="btn_ServerSettings">
      <property name="text">
       <string>Настройки сервера</string>
@@ -89,10 +101,38 @@
      </property>
     </widget>
    </item>
-   <item row="5" column="1">
+   <item row="6" column="1">
     <widget class="QLabel" name="lbl_ServerSettings">
      <property name="text">
       <string>Настройки сервера (отладка)</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QPushButton" name="btn_CreateLobby">
+     <property name="text">
+      <string>Создать зал</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QPushButton" name="btn_JoinToExistingLobby">
+     <property name="text">
+      <string>Найти зал</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QLabel" name="lbl_CreateLObby">
+     <property name="text">
+      <string>Создать зал</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>Найти зал</string>
      </property>
     </widget>
    </item>
