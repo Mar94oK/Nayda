@@ -94,14 +94,17 @@ void playMenu::setUpUiPicturesAddresses()
     qDebug() <<"NAY-0001: Application location: "<< QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory);
     QString homeDirectory = QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory);
     QString uiPlayMenuFilesLocation = "Munchkin/Nayda/Nayda/Pictures/playMenu";
-    QString picturesLocationBasis = homeDirectory + uiPlayMenuFilesLocation;
+    QString picturesLocationBasis = homeDirectory + uiPlayMenuFilesLocation + "/";
 
-    _connectionButtonPictureAddressDefault = picturesLocationBasis + "/" + "cloud_gray.png";
-    _connectionButtonPictureAddressSetUp = picturesLocationBasis + "/" + "cloud_blue.png";
-    _connectionButtonPictureAddressConnected = picturesLocationBasis + "/" + "cloud_green.png";
+    _connectionButtonPictureAddressDefault = picturesLocationBasis + "cloud_gray.png";
+    _connectionButtonPictureAddressSetUp = picturesLocationBasis + "cloud_blue.png";
+    _connectionButtonPictureAddressConnected = picturesLocationBasis + "cloud_green.png";
 
-    _gameSettingsButtonPictureAddressDefault = picturesLocationBasis + "/" + "gears_gray.png";
-    _gameSettingsButtonPictureAddressSetUp = picturesLocationBasis + "/" + "gears_green.png";
+    _gameSettingsButtonPictureAddressDefault = picturesLocationBasis + "gears_gray.png";
+    _gameSettingsButtonPictureAddressSetUp = picturesLocationBasis + "gears_green.png";
+
+    _createRoomButtonPictureAddressDefault = picturesLocationBasis + "binocular_gray.png";
+    _createRoomButtonPictureAddressAllowed = picturesLocationBasis + "binocular_ready.png";
 }
 
 void playMenu::setUpButtonPicture(QPushButton* const btn, const QString &picturePath, double widthCoeff, double heightWidthRelatio)
@@ -127,6 +130,7 @@ void playMenu::setUpUiVisualizationParameters()
 
     setUpButtonPicture(ui->btn_GameSettings, _gameSettingsButtonPictureAddressDefault, 0.2, 0.66);
     setUpButtonPicture(ui->btn_Connection, _connectionButtonPictureAddressDefault, 0.2, 0.66);
+    setUpButtonPicture(ui->btn_JoinToExistingLobby, _createRoomButtonPictureAddressDefault, 0.2, 0.66);
 }
 
 void playMenu::closeEvent(QCloseEvent *event)
