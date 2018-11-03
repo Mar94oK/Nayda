@@ -101,7 +101,15 @@ void playMenu::setUpUiPicturesAddresses()
 {
     qDebug() <<"NAY-0001: Application location: "<< QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory);
     QString homeDirectory = QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory);
-    QString uiPlayMenuFilesLocation = "Munchkin/Nayda/Nayda/Pictures/playMenu";
+
+#ifdef Q_OS_WIN
+     QString uiPlayMenuFilesLocation = "Munchkin/Nayda/Pictures/playMenu";
+     homeDirectory = "D:/";
+#elif defined Q_OS_UNIX
+     QString uiPlayMenuFilesLocation = "Munchkin/Nayda/Nayda/Pictures/playMenu";
+#endif
+
+    //QString uiPlayMenuFilesLocation = "Munchkin/Nayda/Nayda/Pictures/playMenu";
     QString picturesLocationBasis = homeDirectory + uiPlayMenuFilesLocation + "/";
 
     _connectionButtonPictureAddressDefault = picturesLocationBasis + "cloud_gray.png";
