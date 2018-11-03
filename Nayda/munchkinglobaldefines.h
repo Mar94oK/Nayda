@@ -1,8 +1,8 @@
 #ifndef MUNCHKINGLOBALDEFINES_H
 #define MUNCHKINGLOBALDEFINES_H
 
-#define USE_RESOURCES
-//#undef USE_RESOURCES
+//#define USE_RESOURCES
+#undef USE_RESOURCES
 
 class GeometricLimitations {
 
