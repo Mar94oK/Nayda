@@ -103,13 +103,13 @@ void playMenu::setUpUiPicturesAddresses()
     QString homeDirectory = QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory);
 
 #ifdef Q_OS_WIN
+//NAY-001: MARK_EXPECTED_ERROR
      QString uiPlayMenuFilesLocation = "Munchkin/Nayda/Pictures/playMenu";
      homeDirectory = "D:/";
 #elif defined Q_OS_UNIX
      QString uiPlayMenuFilesLocation = "Munchkin/Nayda/Nayda/Pictures/playMenu";
 #endif
 
-    //QString uiPlayMenuFilesLocation = "Munchkin/Nayda/Nayda/Pictures/playMenu";
     QString picturesLocationBasis = homeDirectory + uiPlayMenuFilesLocation + "/";
 
     _connectionButtonPictureAddressDefault = picturesLocationBasis + "cloud_gray.png";

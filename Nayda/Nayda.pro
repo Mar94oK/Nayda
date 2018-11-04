@@ -51,7 +51,8 @@ SOURCES += main.cpp\
     serversettings.cpp \
     helpserversettings.cpp \
     playMenu.cpp \
-    gamesettings.cpp
+    gamesettings.cpp \
+    serverMessageSystem.pb.cc
 
 HEADERS  += main_application.h \
     Application/Before_The_Game/Before_The_Game.h \
@@ -76,7 +77,8 @@ HEADERS  += main_application.h \
     serversettings.h \
     helpserversettings.h \
     playMenu.h \
-    gamesettings.h
+    gamesettings.h \
+    serverMessageSystem.pb.h
 
 FORMS    += main_application.ui \
     Application/Before_The_Game/Before_The_Game.ui \
@@ -105,4 +107,14 @@ RESOURCES += \
 DISTFILES += \
     Pictures/doorsAreOpened.jpg \
     ToDoList \
-    Pictures/treasures_Weapon/Vorpal Blade.jpg
+    Pictures/treasures_Weapon/Vorpal Blade.jpg \
+    serverMessageSystem.proto
+
+unix: LIBS += /usr/local/lib/libprotobuf.a
+win32: LIBS += $$PWD/Libs/libprotobuf.a
+
+INCLUDEPATH += $$PWD/Includes
+DEPENDPATH += $$PWD/Includes
+
+win32:!win32-g++: PRE_TARGETDEPS += $$PWD/Libs/protobuf.lib
+else:win32-g++: PRE_TARGETDEPS += $$PWD/Libs/libprotobuf.a

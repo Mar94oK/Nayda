@@ -2,8 +2,11 @@
 #include "QDebug"
 #include <QtNetwork>
 #include <QDebug>
-
-
+#include "serverMessageSystem.pb.h"
+#include <iostream>
+#include <fstream>
+#include <iosfwd>
+#include <sstream>
 
 Server::Server(QObject *parent, RoomPosessionType posessionType) : QObject(parent), _roomPosessionType(posessionType)
 {
@@ -56,11 +59,22 @@ void Server::setupConnection()
 
 void Server::sendDataToTheConnection(const QString &dataStr)
 {
+    serverMessageSystem::ClientEnteringRequest initialRequest;
+    serverMessageSystem::GameType* gameType(initialRequest.mutable_gametype());
+    gameType->set_hasaddonclericalerrors(true);
+    gameType->set_hasaddonwildaxe(true);
+    gameType->set_rulestype(::serverMessageSystem::RulesType::Automatic);
+
+    initialRequest.set_messageid(1);
+    initialRequest.set_clientname("EmpERRoR");
+    initialRequest.set_enteringrequest(::serverMessageSystem::GameCreationRequest::CreateTheGame);
+    initialRequest.PrintDebugString();
+
     QByteArray block;
     QDataStream out(&block, QIODevice::WriteOnly);
     out.setVersion(QDataStream::Qt_4_0);
-
-    out << dataStr;
+    block.resize(initialRequest.ByteSize());
+    initialRequest.SerializeToArray(block.data(), block.size());
 
     qDebug() << "NAY-0001: Sending data to the server!";
 
