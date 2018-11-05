@@ -68,7 +68,6 @@ private:
 
     QRect _actualCardSize;
 
-
 };
 
 #endif // HANDCARDPOINTER_H

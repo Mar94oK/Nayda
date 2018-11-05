@@ -13,5 +13,4 @@ public:
 
 };
 
-
 #endif // MUNCHKINGLOBALDEFINES_H

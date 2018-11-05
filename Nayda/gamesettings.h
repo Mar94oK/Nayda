@@ -19,7 +19,6 @@ private:
     QString      _clientName;
     RulesType    _rulesType;
 
-
 public:
     GameSettings();
     GameSettings(unsigned int maxNumberOfPlayers, unsigned int totaltimeToMove,

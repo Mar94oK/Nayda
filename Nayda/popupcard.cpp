@@ -93,12 +93,6 @@ void PopUpCard::paintEvent(QPaintEvent *event)
     //painter.drawRoundedRect(roundedRect, 5, 5);
 
     painter.drawRect(normalRect);
-
-
-
-
-
-
 }
 
 void PopUpCard::setPopupText(const QString &text)
@@ -178,13 +172,6 @@ void PopUpCard::show(QPoint positionTopLeft, QPoint positionBottomRight)
                 width(),
                 height());
 
-
-
-
-
-
-
-
     QWidget::show();                // Отображаем виджет, который полностью прозрачен
 
     animation.start();              // И запускаем анимацию
@@ -217,8 +204,6 @@ void PopUpCard::setUpPopUpCard(SimpleCard card)
     QString currentPictureAddress;
     bool isFound = false;
     bool isNoClassNoRace = false;
-
-
 
     //find the HW size of the window
     QRect HW_Screen_Size = QApplication::desktop()->screenGeometry();
@@ -320,7 +305,6 @@ void PopUpCard::setUpPopUpCard(SimpleCard card)
         }
     }
     else { //treasure
-
 
         _armorIterator = _armorDeck->find(static_cast <int> (card.second));
         if (_armorIterator != _armorDeck->end()) {

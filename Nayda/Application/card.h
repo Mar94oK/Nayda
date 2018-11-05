@@ -8,7 +8,6 @@
 #include <vector>
 #include <QPoint>
 
-
 /*
  * There are .csv tables of all the cards.
  * The_Game receives from Before_The_Game stock type (calculated basing on the settings selected in a
@@ -28,17 +27,11 @@
  *
 */
 
-
-
 //may be it is not neccessary to add <cardsborderdefines.h>, since keys can be received directly form formed maps.
-
-
-
 
 enum class cardAddon {Basic, WildAxe, ClericalErrors };
 enum class doorType {Monster, MonsterAmplifier, Curse, Race, Profession, SpecialMechanic };
 enum class treasureType {Armor, ArmorAmplifier, BattleAmplifier, LevelUp, SpecialMechanic, ThingsAmplifiers, Weapon };
-
 
 #define DEFAULT_GAME_STOCK
 
@@ -59,12 +52,8 @@ enum class treasureType {Armor, ArmorAmplifier, BattleAmplifier, LevelUp, Specia
 // Passive_labels == 6
 // Active_labels == 6 (will be made as buttons in a spec. menu)
 
-
-
 enum class Race { Human, Elf, Dwarf, Gnome, Halfling, Ork };
 enum class Profession {No_Profession, Warrior, Thief, Cleric, Bard, Wizard}; //using "profession instead of class
-
-
 
 enum class Race_Active_Abilities {No_Abilities, Power_of_the_Lonesome, The_Second_Chance, Rejecting};
 enum class Race_Passive_Abilities {No_Abilities, Big_Guy, Big_Hands, Escaping, Semi_Altruism,
@@ -96,8 +85,6 @@ enum class Additional_Request {noCompanion, failedToFlee,
                               succeededToFlee, win, onceReceived,
                               haveCompanion, thereIsDwarf, noRequest};
 
-
-
 #endif
 
 
@@ -105,9 +92,6 @@ struct CardsKeysBorders {
     int lowerBorder;
     int upperBorder;
 };
-
-
-
 
 
 //class-prototype (draft only)
@@ -124,7 +108,6 @@ struct PositionedCard {
     QPoint positionTopLeft;
     QPoint positionBottomRight;
 };
-
 
 class GameCard
 {
@@ -151,9 +134,6 @@ protected:
     QString _card_Picture_address;
     QString _card_Name;
     cardAddon _cardAddOn;
-
-
-
 
 };
 
@@ -209,8 +189,6 @@ public:
     //I will try default constructor with no parameters;
     //The parameters will be filled up in the Parser;
     gameCardDoorMonster() {}
-
-
 
     int cardID() const;
     void setCardID(int cardID);
@@ -307,8 +285,6 @@ class gameCardDoorAmplifier {
     int amplification;
     int additionalTreasures;
 
-
-
 public:
     int cardID() const;
     void setCardID(int cardID);
@@ -350,12 +326,10 @@ class gameCardDoorCurse {
     QString _cardName;
     cardAddon _addOn;
     doorType _type;
-
     QString _mechanic;
     int _curseMechanicID;
 
 public:
-
 
     int cardID() const;
     void setCardID(int cardID);
@@ -384,9 +358,6 @@ class gameCardDoorProfession {
 
 public:
 
-
-
-
     int cardID() const;
     void setCardID(int cardID);
     QString pictureAddress() const;
@@ -412,7 +383,6 @@ class gameCardDoorRace {
 
 public:
 
-
     int cardID() const;
     void setCardID(int cardID);
     QString pictureAddress() const;
@@ -437,9 +407,6 @@ class gameCardDoorSpecialMechanic {
     int _specialFunctionId;
 
 public:
-
-
-
 
     int cardID() const;
     void setCardID(int cardID);
@@ -489,10 +456,7 @@ class gameCardTreasureArmor {
 
     bool _isCombined;
 
-
 public:
-
-
 
     int cardID() const;
     void setCardID(int cardID);
@@ -579,8 +543,6 @@ class gameCardTreasureBattleAmplifier {
 
 public:
 
-
-
     int cardID() const;
     void setCardID(int cardID);
     QString pictureAddress() const;
@@ -610,9 +572,6 @@ class gameCardTreasureLevelUp {
     bool _hasSpecialMechanic;
 
 public:
-
-
-
 
     int cardID() const;
     void setCardID(int cardID);
@@ -644,11 +603,6 @@ class gameCardTreasureSpecialMechanic {
     Additional_Request _additionalRequest;
 
 public:
-
-
-
-
-
 
     int cardID() const;
     void setCardID(int cardID);
@@ -705,10 +659,6 @@ class gameCardTreasureThingsAmplifiers {
 
 
 public:
-
-
-
-
 
     int cardID() const;
     void setCardID(int cardID);
@@ -802,13 +752,6 @@ class gameCardTreasureWeapon {
 
 public:
 
-
-
-
-
-
-
-
     int cardID() const;
     void setCardID(int cardID);
     QString pictureAddress() const;
@@ -875,8 +818,9 @@ class Game_Card_Stock
 
 {
 public:
-    Game_Card_Stock();
-    Game_Card_Stock (int stock_type, int total_cards_to_be_played, int cards_left_to_be_played, int time_replayed);
+
+  Game_Card_Stock();
+  Game_Card_Stock (int stock_type, int total_cards_to_be_played, int cards_left_to_be_played, int time_replayed);
 
   int type() const;
   void setType(int type);
@@ -890,14 +834,6 @@ private:
 
   std::vector<GameCard> _stock;
 
-
 };
 
-
-
-
-
-
 #endif // CARD_H
-
-

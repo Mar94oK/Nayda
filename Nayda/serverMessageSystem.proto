@@ -19,7 +19,6 @@ message TimeSettings
     uint32 timeForOpponentsDecision = 1;
     uint32 totalTimeToMove = 1;
     uint32 diplomacyTime = 1;
-
 }
 
 message GameType

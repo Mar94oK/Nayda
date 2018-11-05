@@ -60,7 +60,6 @@ void GameSettingsWindow::SetupInitialAllowedFeatures()
     ui->spBox_TotalTimeToMove->setValue(_gameSettings.totalTimeToMove());
     ui->lineEdit_UserName->setText(_gameSettings.clientName());
 
-
     ui->lbl_DiplomacyTime->setText(_DiplomacyTimeBaseText + QString::number(_gameSettings.diplomacyTime()) + " секунд.");
     ui->lbl_TimeForOpponentsDecision->setText(_TimeForOpponentsDecisionBaseText + QString::number(_gameSettings.timeForOpponentsDecision()) + " секунд.");
     ui->lbl_TimeToThink->setText(_TimeToThinkBaseText + QString::number(_gameSettings.timeToThink()) + " секунд.");

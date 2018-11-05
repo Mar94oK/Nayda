@@ -6,7 +6,6 @@
 #include "Application/The_Game/The_Game.h"
 #include "Server/server.h"
  
-
 //They all are singltones
 
 
@@ -26,10 +25,5 @@ private:
 public:
     SystemManager(Before_The_Game*, Server*, The_Game*);
 };
-
-
-
-
-
 
 #endif // SYSTEM_MANAGER_H

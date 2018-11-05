@@ -15,7 +15,6 @@
 //defines of how many pixels to move the card on Hand upper to be ready for being played.
 #define movingUpCardDelta 10
 
-
 struct CardIsReadyToBePlayed {
     unsigned int cardID;
     SimpleCard card;
@@ -50,9 +49,6 @@ private:
     Ui::Hand *ui;
     std::vector<QPushButton*>_cardsVector;
 
-
-
-
     const std::map<int, gameCardDoorMonster> *_monstersDeck;
     const std::map<int, gameCardDoorAmplifier> *_amplifiersDeck;
     const std::map<int, gameCardDoorCurse> *_cursesDeck;
@@ -68,8 +64,6 @@ private:
     const std::map<int, gameCardTreasureThingsAmplifiers> *_thingsAmplifiersDeck;
     const std::map<int, gameCardTreasureWeapon> *_weaponsDeck;
 
-
-
     std::map<int, gameCardDoorMonster> :: const_iterator  _monstersIterator;
     std::map<int, gameCardDoorAmplifier> :: const_iterator _amplifiersIterator;
     std::map<int, gameCardDoorCurse> :: const_iterator _cursesIterator;
@@ -84,8 +78,6 @@ private:
     std::map<int, gameCardTreasureSpecialMechanic> :: const_iterator _specialMechanicsTreasureIterator;
     std::map<int, gameCardTreasureThingsAmplifiers> :: const_iterator _thingsAmplifiersIterator;
     std::map<int, gameCardTreasureWeapon> :: const_iterator _weaponsIterator;
-
-
 
 public:
 
@@ -103,11 +95,9 @@ public:
     void setThingsAmplifiersDeck(const std::map<int, gameCardTreasureThingsAmplifiers> *thingsAmplifiersDeck);
     void setWeaponsDeck(const std::map<int, gameCardTreasureWeapon> *weaponsDeck);
 
-
 public:
 
     void addNewCardToHands(SimpleCard card);
-
 
 private:
 
@@ -116,8 +106,6 @@ private:
     SimpleCard _currentCardToShowInCentre;
     PositionedCard _currentCardToShowNearItsPosition;
     std::vector<SimpleCard> _cardsOnHandsHandsWidgetProperty;
-
-
 
 signals:
 
@@ -159,8 +147,6 @@ public slots:
 public slots:
 
     void _removeCardFromHand(SimpleCard card);
-
-
 
 };
 

@@ -25,9 +25,7 @@ class TriangleCardPointer : public QWidget
 {
     Q_OBJECT
 
-
     Q_PROPERTY(float popupOpacity READ getPopupOpacity WRITE setPopupOpacity)
-
 
     void setPopupOpacity(float opacity);
     float getPopupOpacity() const;
@@ -38,7 +36,6 @@ public:
 
 private:
     Ui::TriangleCardPointer *ui;
-
 
 protected:
     void paintEvent(QPaintEvent *event);    // Фон будет отрисовываться через метод перерисовки
@@ -67,10 +64,7 @@ private:
 
     QPoint _positionBottomRight;
     QPoint _positionTopLeft;
-
     QRect _actualCardSize;
-
-
 
 };
 

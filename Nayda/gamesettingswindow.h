@@ -40,7 +40,6 @@ private slots:
 
 private:
 
-
     QString _DiplomacyTimeBaseText = "Время, отведённое для дипломатии: ";
     QString _TimeForOpponentsDecisionBaseText = "Время, отведённое для раздумий оппонентов: ";
     QString _TimeToThinkBaseText = "Время отведённое на размышления: ";

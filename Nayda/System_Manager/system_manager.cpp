@@ -2,8 +2,8 @@
 
 
 SystemManager::SystemManager(Before_The_Game * beforeTheGame,
-                               Server * server, The_Game * theGame) {
-    
+                               Server * server, The_Game * theGame)
+{
     m_beforeTheGamePtr = beforeTheGame;
     m_serverPtr = server;
     m_theGamePtr = theGame;

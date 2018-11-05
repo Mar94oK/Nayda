@@ -30,7 +30,7 @@ enum class RoomPosessionType {RoomMaster, RoomGuest};
   {
       Q_OBJECT
 
-  private:
+private:
 
      int m_value;
      Game_Card_Stock _Main_Doors;
@@ -42,7 +42,7 @@ enum class RoomPosessionType {RoomMaster, RoomGuest};
 
      QPair<QString, QString> defaultSettings;
 
-  private:
+private:
 
     QTcpSocket* tcpSocket;
     QNetworkSession* networkSession;
@@ -50,56 +50,52 @@ enum class RoomPosessionType {RoomMaster, RoomGuest};
     QDataStream outputSream;
     serverSettings _srvrSettings;
 
-  private:
+private:
 
     RoomPosessionType _roomPosessionType;
 
-  public:
+public:
 
-      explicit Server(QObject* parent =  nullptr, RoomPosessionType posessionType = RoomPosessionType::RoomMaster);
-      int value() const { return m_value; }
+    explicit Server(QObject* parent =  nullptr, RoomPosessionType posessionType = RoomPosessionType::RoomMaster);
+    int value() const { return m_value; }
 
-      void ConnectionSetUp();
-      void sendCreateNewRoomMessage();
-      void ConnectionSendOutgoingData(const QString&);
-      bool ConnectionSendOutgoingData(const QByteArray& data);
+    void ConnectionSetUp();
+    void sendCreateNewRoomMessage();
+    void ConnectionSendOutgoingData(const QString&);
+    bool ConnectionSendOutgoingData(const QByteArray& data);
 
-  private slots:
+private slots:
 
-      //void slotReadIncomingData();
-      void slotConnectionReadIncomingData();
-      void displayError(QAbstractSocket::SocketError socketError);
+    //void slotReadIncomingData();
+    void slotConnectionReadIncomingData();
+    void displayError(QAbstractSocket::SocketError socketError);
 
-  public slots:
+public slots:
 
-      void slot_saveServerSettings(serverSettings settings)
-      {
-          _srvrSettings = settings;
-          qDebug() << "Server settings saved!";
-      }
+    void slot_saveServerSettings(serverSettings settings)
+    {
+        _srvrSettings = settings;
+        qDebug() << "Server settings saved!";
+    }
 
-      void slot_sendTestDataToServer();
-      void slot_openConnection();
-      void slot_sessionOpened();
+    void slot_sendTestDataToServer();
+    void slot_openConnection();
+    void slot_sessionOpened();
 
-      void SlotUserHaveChangedGameSettings(const GameSettings& settings);
+    void SlotUserHaveChangedGameSettings(const GameSettings& settings);
 
-  signals:
+signals:
 
-      void valueChanged(int newValue);
-      void socketErrorReportToGUI(QAbstractSocket::SocketError signal);
-      void socketConnectionSuccessReportToGui(bool);
-      void SignalServerHasChangedGameSettings(const GameSettings&);
+    void valueChanged(int newValue);
+    void socketErrorReportToGUI(QAbstractSocket::SocketError signal);
+    void socketConnectionSuccessReportToGui(bool);
+    void SignalServerHasChangedGameSettings(const GameSettings&);
 
-  private:
+private:
 
-      GameSettings _gameSettings;
+    GameSettings _gameSettings;
 
-  };
-
+};
 
 
 #endif // SERVER_H
-
-
-

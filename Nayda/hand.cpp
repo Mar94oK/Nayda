@@ -37,18 +37,13 @@ Hand::Hand(QWidget *parent) :
     setAutoFillBackground(false);
     //setPalette(plte_HandCover);
 
-
     _showCardsTimer = new QTimer(this);
     _showCardsTimer->setSingleShot(true);
     //connect timeout issue
     connect(_showCardsTimer, &QTimer::timeout, this, &Hand::_showTheCardInCentreSlot);
 //    connect(_showCardsTimer, &QTimer::timeout ,this, &Hand::_showTheCardNearItsPositionSlot);
-
     connect(this, &Hand::_cardIsPreparedToBePlayed, this, &Hand::_slotCardIsPreparedToBePlayedFromHand);
-
 //    qDebug() << "The Size Of Cards On Hands, Height: " << size().height();
-
-
 }
 
 
@@ -124,8 +119,6 @@ Hand::~Hand()
 
 void Hand::addNewCardToHands(SimpleCard card)
 {
-
-
     std::map<int, gameCardDoorMonster> :: const_iterator  _monstersIterator;
     std::map<int, gameCardDoorAmplifier> :: const_iterator _amplifiersIterator;
     std::map<int, gameCardDoorCurse> :: const_iterator _cursesIterator;
@@ -280,21 +273,12 @@ void Hand::addNewCardToHands(SimpleCard card)
 
     _cardsVector.push_back(newCard);
     _cardsOnHandsHandsWidgetProperty.push_back(card);
-
-
-
-
-
-
-
-
 }
 
 void Hand::_showTheCardInCentreSlot()
 {
     emit _showTheCard(_currentCardToShowNearItsPosition);
 }
-
 
 
 bool Hand::eventFilter(QObject *o, QEvent *e)
@@ -317,8 +301,6 @@ bool Hand::eventFilter(QObject *o, QEvent *e)
                                                                       QWidget::mapToGlobal(_cardsVector[var]->pos()).y() + _cardsVector[var]->height()};
 
                 _showCardsTimer->start(static_cast<int>(_timeToShowTheCard));
-
-
                 return true;
             }
             else if (e->type() == QEvent::Leave) {
@@ -337,16 +319,9 @@ bool Hand::eventFilter(QObject *o, QEvent *e)
             else {
                 return QWidget::eventFilter(o, e);
             }
-
-
-
         }
-
     }
-
     return QWidget::eventFilter(o, e);
-
-
 }
 
 void Hand::_slotCardIsPreparedToBePlayedFromHand(unsigned int cardId)
@@ -371,22 +346,14 @@ void Hand::_slotCardIsPreparedToBePlayedFromHand(unsigned int cardId)
             cardToBeSendForTheCheck.positionBottomRight = { QWidget::mapToGlobal(_cardsVector[cardId]->pos()).x() + _cardsVector[cardId]->width(),
                                              QWidget::mapToGlobal(_cardsVector[cardId]->pos()).y() + _cardsVector[cardId]->height()};
 
-
-
             //Debug only...
             //returning the card to previous position!
             QPoint currPos = _cardsVector[cardId]->pos();
             _cardsVector[cardId]->move(currPos.x(), currPos.y() + movingUpCardDelta);
-
             _cardIsReadyToBePlayed.thereIsCardToBePulledDown = false;
-
-
             emit _cardIsSendedToTheGameCheck(cardToBeSendForTheCheck);
-
-
         }
         else {
-
             //returning the previous card to previous position!
             QPoint currPos = _cardsVector[_cardIsReadyToBePlayed.cardID]->pos();
             _cardsVector[_cardIsReadyToBePlayed.cardID]->move(currPos.x(), currPos.y() + movingUpCardDelta); //returning the card to previous position!
@@ -399,32 +366,17 @@ void Hand::_slotCardIsPreparedToBePlayedFromHand(unsigned int cardId)
             _cardIsReadyToBePlayed.card = _cardsOnHandsHandsWidgetProperty[cardId];
             _cardIsReadyToBePlayed.cardID = cardId;
             _cardIsReadyToBePlayed.thereIsCardToBePulledDown = true;
-
         }
-
     }
     else {
 
         QPoint currPos = _cardsVector[cardId]->pos();
         _cardsVector[cardId]->move(currPos.x(), currPos.y() - movingUpCardDelta);
-
-
-
         //setting the cardToBeChecked;
-
-
         _cardIsReadyToBePlayed.card = _cardsOnHandsHandsWidgetProperty[cardId];
         _cardIsReadyToBePlayed.cardID = cardId;
         _cardIsReadyToBePlayed.thereIsCardToBePulledDown = true;
-
-
     }
-
-
-
-
-
-
 }
 
 void Hand::_slotCardIsRejectedToBePlayed(bool rejected)
@@ -434,16 +386,11 @@ void Hand::_slotCardIsRejectedToBePlayed(bool rejected)
 
     //if we are here, we can be sure that there's card in the
     // "_cardIsReadyToBePlayed"
-
-
     //up to be debugged!
     if (!rejected) {
         _removeCardFromHand(_cardIsReadyToBePlayed.card);
         _cardIsReadyToBePlayed.thereIsCardToBePulledDown = false;
-
     }
-
-
 }
 
 void Hand::_removeCardFromHand(SimpleCard card)
@@ -460,17 +407,11 @@ void Hand::_removeCardFromHand(SimpleCard card)
             position = var;
             _cardsOnHandsHandsWidgetProperty.erase(_cardsOnHandsHandsWidgetProperty.begin() + var);
             _cardsOnHandsHandsWidgetProperty.shrink_to_fit();
-
         }
-
-
     }
 
     _cardsVector[position]->deleteLater();
-
     _cardsVector.erase(_cardsVector.begin() + position);
     _cardsVector.shrink_to_fit();
-
-
     qDebug() << "The card is removed from Hands!" ;
 }

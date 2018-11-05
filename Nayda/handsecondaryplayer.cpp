@@ -49,18 +49,14 @@ HandSecondaryPlayer::HandSecondaryPlayer(QWidget *parent) :
 
 #endif
 
-
     //setting-up the Text Style of PushButtons;
-
     //ui->btn_Doors->setStyleSheet("QPushButton{color:#FAAB21;}");
     ui->btn_Doors->setText(QString::number(0));
 //    ui->btn_Doors->setStyleSheet("font:28pt;");
 
-
 //    //ui->btn_Treasures->setStyleSheet("QPushButton{color:#FAAB21;}");
     ui->btn_Treasures->setText(QString::number(0));
 //    ui->btn_Treasures->setStyleSheet("font:28pt;");
-
 
 }
 

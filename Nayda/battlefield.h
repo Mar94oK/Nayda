@@ -56,8 +56,6 @@ private:
     const std::map<int, gameCardTreasureThingsAmplifiers> *_thingsAmplifiersDeck;
     const std::map<int, gameCardTreasureWeapon> *_weaponsDeck;
 
-
-
     std::map<int, gameCardDoorMonster> :: const_iterator  _monstersIterator;
     std::map<int, gameCardDoorAmplifier> :: const_iterator _amplifiersIterator;
     std::map<int, gameCardDoorCurse> :: const_iterator _cursesIterator;
@@ -73,8 +71,6 @@ private:
     std::map<int, gameCardTreasureThingsAmplifiers> :: const_iterator _thingsAmplifiersIterator;
     std::map<int, gameCardTreasureWeapon> :: const_iterator _weaponsIterator;
 
-
-
     QTimer *_showCardsTimer;
     QPushButton* _theBtnMainRepresenter;
     QPushButton* _theBtnRepresenter1;
@@ -87,19 +83,14 @@ private:
     const float _race_class_btn_size_width = 0.0415f;
     const float _race_class_btn_size_height = _race_class_btn_size_geometric_width_to_height_ratio*_race_class_btn_size_width;
 
-
     bool _continueToRepresentCards = false;
     unsigned int _currCardsArrayRepresentationStep = 0;
     int _timerCount = 100;
-
-
-
 
 public slots:
 
    void continueCardRepresentation();
    void startCardsRepresentation();
-
 
 };
 

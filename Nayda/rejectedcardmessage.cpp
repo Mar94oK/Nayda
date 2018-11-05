@@ -82,9 +82,6 @@ void RejectedCardMessage::paintEvent(QPaintEvent *event)
     normalRect.setWidth(rect().width());
     normalRect.setHeight(rect().height());
 
-
-
-
     // Кисть настраиваем на чёрный цвет в режиме полупрозрачности 180 из 255
     //painter.setBrush(QBrush(QColor(0,0,0,180)));
     //Шафраново-жёлтый	  0  30  70   0	  0  30  90   0	#F4B752	244 183  82
@@ -98,10 +95,6 @@ void RejectedCardMessage::paintEvent(QPaintEvent *event)
 
     //painter.drawRect(normalRect);
     painter.drawRoundedRect(roundedRect, 10, 10);
-
-
-
-
 
 }
 
@@ -125,8 +118,6 @@ void RejectedCardMessage::show()
                 width(),
                 height());
 
-
-
     QWidget::show();                // Отображаем виджет, который полностью прозрачен
 
     animation.start();              // И запускаем анимацию
@@ -135,9 +126,7 @@ void RejectedCardMessage::show()
     timer->start(1500);             // А также стартуем таймер, который запустит скрытие уведомления через 3 секунды
 #endif
 
-
 }
-
 
 void RejectedCardMessage::show(QPoint positionTopLeft, QPoint positionBottomRight)
 {
@@ -155,10 +144,10 @@ void RejectedCardMessage::show(QPoint positionTopLeft, QPoint positionBottomRigh
 
     //Check the position!
 
-    if (positionTopLeft.y() - height() - 30 < 0) { //higher, than allowed
+    if (positionTopLeft.y() - height() - 30 < 0)
+    { //higher, than allowed
 
         yPos = positionBottomRight.y() + 10;
-
     }
     else {
 
@@ -176,14 +165,10 @@ void RejectedCardMessage::show(QPoint positionTopLeft, QPoint positionBottomRigh
         xPos = positionTopLeft.x();
 
     }
-
-
     setGeometry(xPos,
                 yPos,
                 width(),
                 height());
-
-
 
     QWidget::show();                // Отображаем виджет, который полностью прозрачен
 
@@ -192,10 +177,7 @@ void RejectedCardMessage::show(QPoint positionTopLeft, QPoint positionBottomRigh
 #ifdef HIDE_THE_CARD_REJECTED_MESSAGE_ON_TIMEOUT
     timer->start(1500);             // А также стартуем таймер, который запустит скрытие уведомления через 3 секунды
 #endif
-
-
 }
-
 
 void RejectedCardMessage::hideAnimation()
 {

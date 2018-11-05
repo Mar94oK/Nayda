@@ -11,10 +11,9 @@ Before_The_Game::Before_The_Game(QWidget *parent) :
     newRoomDialog(new playMenu)
 {
     ui->setupUi(this);
+
     newRoomDialog->hide();
-
     setUpGeometricRelations();
-
     setUpSignalsSlotsConnections();
 }
 
@@ -43,6 +42,7 @@ void Before_The_Game::dbg_start_the_game_with_default_settings()
     qDebug() << "Start with debug button. DEFAULT SETTING ARE PROVIDED!!!!";
 }
 
+
 void Before_The_Game::slot_userHaveChangedServerSettings(serverSettings settings)
 {
     emit sig_userHaveChangedServerSettings(settings);
@@ -60,21 +60,25 @@ void Before_The_Game::slot_sendTestDataToServer()
     emit sig_sendTestDataToServer();
 }
 
+
 void Before_The_Game::SlotApplyNewGameSettings(GameSettings settings)
 {
     _gameSettings.applyNewSettings(settings);
     emit SignalUserHaveChagedGameSettigs(settings);
 }
 
+
 GameSettings Before_The_Game::getGameSettings() const
 {
     return _gameSettings;
 }
 
+
 void Before_The_Game::setGameSettings(const GameSettings &gameSettings)
 {
     _gameSettings = gameSettings;
 }
+
 
 void Before_The_Game::setUpGeometricRelations()
 {
@@ -98,6 +102,7 @@ void Before_The_Game::setUpGeometricRelations()
 
 }
 
+
 void Before_The_Game::setUpSignalsSlotsConnections()
 {
     QObject::connect( ui->btnHide, SIGNAL(clicked()), this, SLOT(hide()));
@@ -115,4 +120,3 @@ void Before_The_Game::setUpSignalsSlotsConnections()
     connect(newRoomDialog, &playMenu::sig_dbgBtnPlayWithDefaultsPressed,this, &Before_The_Game::dbg_start_the_game_with_default_settings);
     connect(newRoomDialog, &playMenu::sig_dbgBtnPlayWithDefaultsPressed, this, &Before_The_Game::hide);
 }
-

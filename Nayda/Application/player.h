@@ -9,7 +9,6 @@
 
 class player
 {
-
     bool _isMainPlayer;
 
     int _playerLevel;
@@ -26,11 +25,9 @@ class player
     bool _thereIsOneBigThing;
     bool _thereIsLimitOnBigThings; //may be remove it if checking the race
 
-
     Race _race;
     Profession _profession;
     Players_Sex _playersSex;
-
 
     bool _halfBreed;
     bool _superMunchkin;
@@ -49,26 +46,20 @@ class player
     std::vector<SimpleCard> _cardsOnHands;
     std::vector<SimpleCard> _cardsInGame;
 
-
     //Cards responsible for the Races and Classes
     SimpleCard _race1Card;
     SimpleCard _race2Card;
     SimpleCard _class1Card;
     SimpleCard _class2Card;
 
-
-
 public:
 
-
     player();
-
 
     void addRaceActiveAbility(Race_Active_Abilities raceActiveAbility, Abilities_Keys_Races raceAbilityKey);
     void addRacePassiveAbility(Race_Passive_Abilities racePassiveAbility, Abilities_Keys_Races raceAbilityKey);
     void addProfessionActiveAbility(Profession_Active_Abilities professionActiveAbility, Abilities_Keys_Professions professionAbilityKey);
     void addProfessionPassiveAbility(Profession_Passive_Abilities professionPassiveAbility, Abilities_Keys_Professions professionAbilityKey);
-
 
     int playerLevel() const;
     void setPlayerLevel(int playerLevel);
@@ -108,7 +99,6 @@ public:
     void addCardToHands(SimpleCard);
     void removeCardFromHands(SimpleCard);
 
-
     std::vector<SimpleCard>* cardsOnHandsVector();
     std::vector<SimpleCard>* cardsInGameVector();
 
@@ -116,9 +106,7 @@ private:
 
     //it is necessary to save the property in the player class of the card responsible for the
     //class review
-
     //SimpleCard
-
 
 };
 

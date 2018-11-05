@@ -39,7 +39,6 @@ public slots:
     void _slot_updateCardsOnHandsTreasures(unsigned int);
     void _slot_updateCardsOnHandsDoors(unsigned int);
 
-
 };
 
 #endif // HANDSECONDARYPLAYER_H

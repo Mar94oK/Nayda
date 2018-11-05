@@ -3,9 +3,7 @@
 #include <ctime>
 #include <QTime>
 #include "popupcard.h"
-
 #include "munchkinglobaldefines.h"
-
 
 The_Game::The_Game(QWidget *parent) :
     QMainWindow(parent),
@@ -42,15 +40,11 @@ The_Game::The_Game(QWidget *parent) :
     //some code
 #endif
 
-
-
     //Settings-up the Randomization. Disable in the DEBUG
     // Create seed for the random
     // That is needed only once on application startup
     //QTime time = QTime::currentTime();
     //qsrand((uint)time.msec());
-
-
     //Setting-up button's connections.
 
     //QObject::connect( ui->btnHide, SIGNAL(clicked()), this, SLOT(hide()));
@@ -58,9 +52,7 @@ The_Game::The_Game(QWidget *parent) :
     QObject::connect(this, SIGNAL(dbg_to_be_shown(bool)), this, SLOT(showFullScreen()));//SLOT(showFullScreen())) SLOT(show();
     QObject::connect(ui->btn_switch_back, SIGNAL(clicked(bool)), this, SLOT(dbg_return_to_the_main_window()));
 
-
     //Setting the in-Game connections with other Widgets
-
     connect(ui->MainGamer, &GamerWidget::_representTheCardInCentre, this, &The_Game::showTheCardInCentre);
     connect(ui->MainGamer, &GamerWidget::_hideTheCardInCentre, this, &The_Game::hideTheCardInCentre);
 
@@ -101,7 +93,6 @@ The_Game::The_Game(QWidget *parent) :
     //trying to disable the maximum size of the MainGamerHeight
     //ui->MainGamer->setMaximumHeight(koeff_GamerWidget_size_Height*HW_Screen_Size_Heigh);
 
-
     //with respect to the MainGamer, the height size won't be larger then allowed,
     //but may take all the availible space if the width is concerned; Why not?
     ui->MainGamer->setMinimumWidth(koeff_GamerWidget_size_Width*HW_Screen_Size_Width);
@@ -125,10 +116,8 @@ The_Game::The_Game(QWidget *parent) :
              <<" GameInfoBox.setMinimumWidth = " << koeff_GameInfoBox_size_Width*HW_Screen_Size_Width;
 #endif
 
-
     ui->btn_switch_back->setMinimumWidth(koeff_GameInfoBox_size_Width*HW_Screen_Size_Width);
     ui->btn_switch_back->setMaximumWidth(koeff_GameInfoBox_size_Width*HW_Screen_Size_Width);
-
 
     //receiving number of players;
 
@@ -147,10 +136,8 @@ The_Game::The_Game(QWidget *parent) :
     //hide Secondary Hand Widget;
     ui->MainGamer->_hideHandSecondaryPlayerWidget();
 
-
     //creating opponents
     //remember, opponents less by 1 than total amount of players
-
     //opponets
 
     _players_opponents.push_back(_opponent0);
@@ -159,22 +146,18 @@ The_Game::The_Game(QWidget *parent) :
     _players_opponents.push_back(_opponent3);
     _players_opponents.push_back(_opponent4);
 
-
     //widgets for them
-    for (unsigned int j = 0; j < m_number_of_players - 1; j++) {
+    for (unsigned int j = 0; j < m_number_of_players - 1; j++)
+    {
         _widgets4Opponents.push_back(new GamerWidget);
         _widgets4Opponents.back()->redraw_as_a_secondary_player();
         _widgets4Opponents.back()->setIs_MainPlayer(false);
 
     }
-
     //first two of them to the top layout
     //fixed numbers, they are allways there
     ui->top_opponents_layout->addWidget(_widgets4Opponents[0]);
     ui->top_opponents_layout->addWidget(_widgets4Opponents[1]);
-
-    //this->opponent[0]->
-
 
     //if there is(are) some other players, add them to the right_side layout
     if (m_number_of_players - 3 > 0) {
@@ -182,8 +165,6 @@ The_Game::The_Game(QWidget *parent) :
             ui->right_side_opponents_layout->addWidget(_widgets4Opponents[2+i]);
         }
     }
-
-
 
     //resizing 'em all
     for (unsigned int j = 0; j < m_number_of_players - 1; j++) {
@@ -197,10 +178,10 @@ The_Game::The_Game(QWidget *parent) :
     qDebug() << "Maximum Height of the Gamer_Widget: " << koeff_GamerWidget_size_Height*HW_Screen_Size_Heigh;
     qDebug() << "Maximum Width of the Gamer_Widget: " << koeff_GamerWidget_size_Width*HW_Screen_Size_Width;
 
-
 #ifdef DEBUG_NO_SERVER
 
-    for (unsigned int var = 0; var < _widgets4Opponents.size(); ++var) {
+    for (unsigned int var = 0; var < _widgets4Opponents.size(); ++var)
+    {
         connect(_widgets4Opponents[var], &GamerWidget::_representTheCardInCentre, this, &The_Game::showTheCardInCentre);
         connect(_widgets4Opponents[var], &GamerWidget::_hideTheCardInCentre, this, &The_Game::hideTheCardInCentre);
     }
@@ -291,38 +272,27 @@ The_Game::The_Game(QWidget *parent) :
     qDebug() << "Weapons parsing complete!";
 #endif
 
-
     //first pass there the Cards (after receiving them from server);
     passDecksToBattleField();
     passDecksToPlayerWidgets();
-
 
     formingInitialDecks();
     givingCardsToPlayers();
     showInitialCardsOnHands();
 
-
     //disbale CardRepresenter
     //_debugShowAllTheCards();
-
-
     //create popUpCard Widget
 
     _popUpCardWidget = new PopUpCard();
-
-
      //create CardPointerWidget
 
     _cardPointer = new TriangleCardPointer();
-
     //pass the cards to PopUp Widget
     passDecksToPopUpCardWidget();
 
-
     //pass the Cards to CardsStacks Widget
     passDecksToCardsStacksWidget();
-
-
 
 #ifndef USE_RESOURCES
     QPixmap pxmpBattleField("Pictures/JorneyCover.png");

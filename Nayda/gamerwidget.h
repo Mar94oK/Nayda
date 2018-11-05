@@ -84,12 +84,10 @@ public:
 
     bool eventFilter(QObject *o, QEvent *e);
 
-
 private:
 
     unsigned int _totalDoorsOnHands = 0;
     unsigned int _totalTreasuresOnHands = 0;
-
 
 private:
 
@@ -102,21 +100,16 @@ private:
     std::vector<SimpleCard> _cardsRacesClassesGamerWidgetProperty;
     std::vector<SimpleCard> _cardsInGameWidgetGamerProperty;
 
-
 signals:
 
     void _representTheCardInCentre(PositionedCard);
     void _hideTheCardInCentre(bool);
-
-
 
 public slots:
 
     void _representTheCardInCenterSlot();
     void _representTheCardFromHandsInCentre(PositionedCard);
     void _hideTheCardInCentreSlot(bool);
-
-
 
 private:
 #ifndef USE_RESOURCES
@@ -143,13 +136,11 @@ private:
                                             {":/Pictures/levels/match10_transparent.png"}};
 #endif
 
-
     unsigned int _gamerLevel = 1;
 
 public slots:
 
     void _changeTheGamerLevel(int levelDelta);
-
 
 private:
 
@@ -157,7 +148,6 @@ private:
     const float _race_class_btn_size_geometric_width_to_height_ratio = 2.71f;
     const float _race_class_btn_size_width = 0.035f;
     const float _race_class_btn_size_height = _race_class_btn_size_geometric_width_to_height_ratio*_race_class_btn_size_width;
-
 
 private:
 
@@ -203,17 +193,14 @@ private:
 
     unsigned int _currentDeltaToBattlePower = 0;
 
-
 public slots:
 
     void _hideHandSecondaryPlayerWidget();
-
     void _adjustSizeSlot();
 
 signals:
 
     void _signalAdjustSize(bool);
-
 
 public slots:
 
@@ -230,7 +217,6 @@ public slots:
 signals:
 
     void _signalCardIsRejectedToBePlayed(bool);
-
 
 };
 
