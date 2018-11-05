@@ -15,10 +15,9 @@ message Base
 message TimeSettings
 {
     uint32 totalTimeToMove = 1;
-    uint32 timeToThink = 1;
-    uint32 timeForOpponentsDecision = 1;
-    uint32 totalTimeToMove = 1;
-    uint32 diplomacyTime = 1;
+    uint32 timeToThink = 2;
+    uint32 timeForOpponentsDecision = 3;
+    uint32 diplomacyTime = 4;
 }
 
 message GameType
@@ -31,7 +30,7 @@ message GameType
 message GameSettings
 {
     GameType gameType = 1;
-    TimeSettings timeSettings =2;
+    TimeSettings timeSettings = 2;
 }
 
 //Initial message from client while connecting
@@ -52,6 +51,21 @@ message RoomCreationErrors
     bool incorrectSettings = 3;
 }
 
+//#1
+message ServerInputQuery
+{
+    Base messageID = 1;
+    string clientName = 2;
+}
+
+//#2
+message ServerQueryReply
+{
+    Base messageID = 1;
+    string serverName = 2;
+}
+
+//#3
 message ClientEnteringRequest
 {
     Base messageID = 1;
@@ -59,6 +73,7 @@ message ClientEnteringRequest
     GameSettings gameSettings = 3;
 }
 
+//#4
 message ClientRoomCreationReply
 {
     Base messageID = 1;
@@ -66,7 +81,8 @@ message ClientRoomCreationReply
     RoomCreationErrors roomCreationErrors = 3;
 }
 
-message ClientConnectionToRooReply
+//#5
+message ClientConnectionToRoomReply
 {
     bool noRoomsAvailable = 1;
     uint32 freeSlotsLeft = 2;

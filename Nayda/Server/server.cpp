@@ -7,6 +7,7 @@
 #include <fstream>
 #include <iosfwd>
 #include <sstream>
+#include "protobufmessagesidentificators.h"
 
 Server::Server(QObject *parent, RoomPosessionType posessionType) : QObject(parent), _roomPosessionType(posessionType)
 {
@@ -113,22 +114,28 @@ void Server::displayError(QAbstractSocket::SocketError socketError)
 void Server::slot_sendTestDataToServer()
 {
     //sendDataToTheConnection("TestData");
-   serverMessageSystem::ClientEnteringRequest initialRequest;
-   serverMessageSystem::GameType* gameType(initialRequest.mutable_gametype());
-   gameType->set_hasaddonclericalerrors(true);
-   gameType->set_hasaddonwildaxe(true);
-   gameType->set_rulestype(::serverMessageSystem::RulesType::Automatic);
+//   serverMessageSystem::ClientEnteringRequest initialRequest;
+//   serverMessageSystem::GameType* gameType(initialRequest.mutable_gametype());
+//   gameType->set_hasaddonclericalerrors(true);
+//   gameType->set_hasaddonwildaxe(true);
+//   gameType->set_rulestype(::serverMessageSystem::RulesType::Automatic);
 
-   initialRequest.set_messageid(1);
-   initialRequest.set_clientname("EmpERRoR");
-   initialRequest.set_enteringrequest(::serverMessageSystem::GameCreationRequest::CreateTheGame);
-   initialRequest.PrintDebugString();
+//   initialRequest.set_messageid(1);
+//   initialRequest.set_clientname("EmpERRoR");
+//   initialRequest.set_enteringrequest(::serverMessageSystem::GameCreationRequest::CreateTheGame);
+//   initialRequest.PrintDebugString();
+
+   serverMessageSystem::ServerInputQuery initialQuery;
+   serverMessageSystem::Base* base(initialQuery.mutable_messageid());
+   base->set_messageid(MessageServerInputQueryID);
+   initialQuery.set_clientname(_gameSettings.clientName().toUtf8().constData());
+
 
    QByteArray block;
    QDataStream out(&block, QIODevice::WriteOnly);
    out.setVersion(QDataStream::Qt_4_0);
-   block.resize(initialRequest.ByteSize());
-   initialRequest.SerializeToArray(block.data(), block.size());
+   block.resize(initialQuery.ByteSize());
+   initialQuery.SerializeToArray(block.data(), block.size());
 
    qDebug() << "NAY-0001: Sending data to the server!";
    ConnectionSendOutgoingData(block);
