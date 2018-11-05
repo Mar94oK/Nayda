@@ -28,6 +28,7 @@ playMenu::playMenu(QWidget *parent) :
     setUpUiVisualizationParameters();
 
     _connectionState = ConnectionState::NoServerSettingsProvided;
+    SetUpInitilButtonsStates();
 }
 
 playMenu::~playMenu()
@@ -69,6 +70,21 @@ void playMenu::slot_sendTestDataToServer()
     emit sig_sendTestDataToServer();
 }
 
+void playMenu::SlotShowGameSettingsWindow()
+{
+    gameSettingsWindow = new GameSettingsWindow(_gameSettings);
+    QObject::connect(gameSettingsWindow, &GameSettingsWindow::SignalUserHaveChangedSettings, this, &playMenu::SlotUserHaveChangedGameSettings);
+    gameSettingsWindow->setModal(true);
+    gameSettingsWindow->show();
+}
+
+void playMenu::SlotUserHaveChangedGameSettings(const GameSettings & settings)
+{
+    _gameSettings.applyNewSettings(settings);
+    setUpButtonPicture(ui->btn_GameSettings, _gameSettingsButtonPictureAddressSetUp, buttonsWidthCoefficient, buttonsHeightWidthRelatio);
+    emit SignalUserHaveChangedGameSettings(settings);
+}
+
 void playMenu::setUpUiGeometricRelations()
 {
     QRect HwScreenSize = QApplication::desktop()->screenGeometry();
@@ -92,7 +108,7 @@ void playMenu::setUpSignalsSlotsConnections()
 {
     QObject::connect(ui->btn_DebugStart, SIGNAL(clicked(bool)), this, SLOT(slot_startGameWithDefaults()));
     QObject::connect(ui->btn_ServerSettings, &QPushButton::clicked, this, &playMenu::slot_showServerSettings);
-    //QObject::connect(ui->btn_Connection, &QPushButton::clicked, this, &playMenu::slot_openRoomForConnection);
+    QObject::connect(ui->btn_GameSettings, &QPushButton::clicked, this, &playMenu::SlotShowGameSettingsWindow);
     QObject::connect(ui->btn_SendTestData, &QPushButton::clicked, this, &playMenu::slot_sendTestDataToServer);
     QObject::connect(ui->btn_Connection, &QPushButton::clicked, this, &playMenu::slot_showServerSettings);
 }
@@ -151,6 +167,12 @@ void playMenu::setUpUiVisualizationParameters()
     setUpButtonPicture(ui->btn_Connection, _connectionButtonPictureAddressDefault, buttonsWidthCoefficient, buttonsHeightWidthRelatio);
     setUpButtonPicture(ui->btn_JoinToExistingLobby, _joinRoomButtonPictureAddressDefault, buttonsWidthCoefficient, buttonsHeightWidthRelatio);
     setUpButtonPicture(ui->btn_CreateLobby, _createRoomButtonPictureAddressDefault, buttonsWidthCoefficient, buttonsHeightWidthRelatio);
+}
+
+void playMenu::SetUpInitilButtonsStates()
+{
+    ui->btn_JoinToExistingLobby->setDisabled(true);
+    ui->btn_CreateLobby->setDisabled(true);
 }
 
 void playMenu::closeEvent(QCloseEvent *event)

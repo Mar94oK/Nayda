@@ -15,6 +15,7 @@
 #include "QDebug"
 #include <QtNetwork>
 #include <QDebug>
+#include "gamesettings.h"
 
 QT_BEGIN_NAMESPACE
 class QTcpSocket;
@@ -57,15 +58,16 @@ enum class RoomPosessionType {RoomMaster, RoomGuest};
 
       explicit Server(QObject* parent =  nullptr, RoomPosessionType posessionType = RoomPosessionType::RoomMaster);
       int value() const { return m_value; }
-      virtual bool something();
 
-      void setupConnection();
+      void ConnectionSetUp();
       void sendCreateNewRoomMessage();
-      void sendDataToTheConnection(const QString&);
+      void ConnectionSendOutgoingData(const QString&);
+      bool ConnectionSendOutgoingData(const QByteArray& data);
 
   private slots:
 
-      void readIncomingData();
+      //void slotReadIncomingData();
+      void slotConnectionReadIncomingData();
       void displayError(QAbstractSocket::SocketError socketError);
 
   public slots:
@@ -77,16 +79,21 @@ enum class RoomPosessionType {RoomMaster, RoomGuest};
       }
 
       void slot_sendTestDataToServer();
-
       void slot_openConnection();
       void slot_sessionOpened();
 
+      void SlotUserHaveChangedGameSettings(const GameSettings& settings);
 
   signals:
 
       void valueChanged(int newValue);
       void socketErrorReportToGUI(QAbstractSocket::SocketError signal);
       void socketConnectionSuccessReportToGui(bool);
+      void SignalServerHasChangedGameSettings(const GameSettings&);
+
+  private:
+
+      GameSettings _gameSettings;
 
   };
 

@@ -52,7 +52,8 @@ SOURCES += main.cpp\
     helpserversettings.cpp \
     playMenu.cpp \
     gamesettings.cpp \
-    serverMessageSystem.pb.cc
+    serverMessageSystem.pb.cc \
+    gamesettingswindow.cpp
 
 HEADERS  += main_application.h \
     Application/Before_The_Game/Before_The_Game.h \
@@ -78,7 +79,8 @@ HEADERS  += main_application.h \
     helpserversettings.h \
     playMenu.h \
     gamesettings.h \
-    serverMessageSystem.pb.h
+    serverMessageSystem.pb.h \
+    gamesettingswindow.h
 
 FORMS    += main_application.ui \
     Application/Before_The_Game/Before_The_Game.ui \
@@ -96,7 +98,8 @@ FORMS    += main_application.ui \
     handcardpointer.ui \
     serversettings.ui \
     helpserversettings.ui \
-    playMenu.ui
+    playMenu.ui \
+    gamesettingswindow.ui
 
 RESOURCES += \
     tables.qrc \

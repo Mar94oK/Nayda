@@ -40,6 +40,20 @@
      </property>
     </widget>
    </item>
+   <item row="1" column="1">
+    <widget class="QLabel" name="lbl_Connection">
+     <property name="text">
+      <string>Настройки сервера: </string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="1">
+    <widget class="QLabel" name="lbl_StartTheGameDefault">
+     <property name="text">
+      <string>Начать игру (отладка)</string>
+     </property>
+    </widget>
+   </item>
    <item row="1" column="0">
     <widget class="QPushButton" name="btn_Connection">
      <property name="focusPolicy">
@@ -56,13 +70,6 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="1">
-    <widget class="QLabel" name="lbl_Connection">
-     <property name="text">
-      <string>Настройки сервера: </string>
-     </property>
-    </widget>
-   </item>
    <item row="6" column="1">
     <widget class="QLabel" name="lbl_TestData">
      <property name="text">
@@ -70,24 +77,10 @@
      </property>
     </widget>
    </item>
-   <item row="5" column="1">
-    <widget class="QLabel" name="lbl_StartTheGameDefault">
+   <item row="2" column="0">
+    <widget class="QPushButton" name="btn_CreateLobby">
      <property name="text">
-      <string>Начать игру (отладка)</string>
-     </property>
-    </widget>
-   </item>
-   <item row="7" column="0">
-    <widget class="QPushButton" name="btn_ServerSettings">
-     <property name="text">
-      <string>Настройки сервера</string>
-     </property>
-    </widget>
-   </item>
-   <item row="7" column="1">
-    <widget class="QLabel" name="lbl_ServerSettings">
-     <property name="text">
-      <string>Настройки сервера (отладка)</string>
+      <string>Создать зал</string>
      </property>
     </widget>
    </item>
@@ -98,6 +91,20 @@
      </property>
     </widget>
    </item>
+   <item row="7" column="1">
+    <widget class="QLabel" name="lbl_ServerSettings">
+     <property name="text">
+      <string>Настройки сервера (отладка)</string>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="0">
+    <widget class="QPushButton" name="btn_ServerSettings">
+     <property name="text">
+      <string>Настройки сервера</string>
+     </property>
+    </widget>
+   </item>
    <item row="3" column="1">
     <widget class="QLabel" name="label">
      <property name="text">
@@ -105,10 +112,10 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="0">
-    <widget class="QPushButton" name="btn_CreateLobby">
+   <item row="4" column="1">
+    <widget class="QLabel" name="lbl_GameSettings">
      <property name="text">
-      <string>Создать зал</string>
+      <string>Настройки игры: </string>
      </property>
     </widget>
    </item>
@@ -126,13 +133,6 @@
      </property>
      <property name="text">
       <string>Настройки Игры</string>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="1">
-    <widget class="QLabel" name="lbl_GameSettings">
-     <property name="text">
-      <string>Настройки игры: </string>
      </property>
     </widget>
    </item>

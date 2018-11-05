@@ -20,6 +20,8 @@
 #include "rejectedcardmessage.h"
 #include "handcardpointer.h"
 
+#include "gamesettings.h"
+
 #include <QPropertyAnimation>
 #include <QAbstractAnimation>
 
@@ -326,13 +328,18 @@ private slots:
 
 private:
 
-    //QPushButton* _movingCard;
-
     void _passTheCardToTheBattleField(PositionedCard);
 
 public:
 
     QString findTheCardPicture(SimpleCard);
+
+    GameSettings gameSettings() const;
+    void setGameSettings(const GameSettings &gameSettings);
+
+private:
+
+    GameSettings _gameSettings;
 
 };
 

@@ -5,6 +5,7 @@
 #include "Server/server.h"
 #include <QDebug>
 #include "playMenu.h"
+#include "gamesettings.h"
 #define DEBUG_MESSAGES
 
 
@@ -23,6 +24,9 @@ public:
     ~Before_The_Game();
     Ui::Before_The_Game *getUi() const;
 
+    GameSettings getGameSettings() const;
+    void setGameSettings(const GameSettings &gameSettings);
+
 signals:
 
     void dbg_switch_to_game_mode(bool);
@@ -37,6 +41,8 @@ signals:
     void sig_openRoomForConnection();
     void sig_sendTestDataToServer();
 
+    void SignalUserHaveChagedGameSettigs(const GameSettings&);
+
 public slots:
 
     void dbg_switch_to_game_mode_button_pressed(void);
@@ -44,16 +50,14 @@ public slots:
     void slot_userHaveChangedServerSettings(serverSettings settings);
     void slot_openRoomForConnection();
     void slot_sendTestDataToServer();
+    void SlotApplyNewGameSettings(GameSettings settings);
 
 private:
 
     Ui::Before_The_Game *ui;
     Server* m_server_ptr;
 
-    int number_of_players; //total amount of players
-    int card_stack_mode; //type_of_stack(wich_addons)
-    int time_for_move; //time to make first step (seconds) - may be do define strategy
-    int time_to_think; //time to think before next step
+    GameSettings _gameSettings;
 
     playMenu* newRoomDialog;
 

@@ -2171,6 +2171,16 @@ QString The_Game::findTheCardPicture(SimpleCard card)
     return currentPictureAddress;
 }
 
+GameSettings The_Game::gameSettings() const
+{
+    return _gameSettings;
+}
+
+void The_Game::setGameSettings(const GameSettings &gameSettings)
+{
+    _gameSettings = gameSettings;
+}
+
 unsigned int The_Game::doorsLeft() const
 {
     return _doorsLeft;

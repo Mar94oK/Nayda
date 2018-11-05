@@ -5,6 +5,8 @@
 #include <QDebug>
 #include <serversettings.h>
 #include <Server/server.h>
+#include <gamesettingswindow.h>
+#include <gamesettings.h>
 
 namespace Ui {
 class startNewRoom;
@@ -23,6 +25,7 @@ private:
 
     Ui::startNewRoom *ui;
     ServerSettings* serverSettingsWindow = nullptr;
+    GameSettingsWindow* gameSettingsWindow = nullptr;
     void closeEvent(QCloseEvent *event);
 
     QString _gameSettingsButtonPictureAddressDefault;
@@ -48,6 +51,7 @@ private:
 private:
 
     ConnectionState _connectionState;
+    GameSettings    _gameSettings;
 
 public:
 
@@ -62,9 +66,9 @@ signals:
     void sig_openRoomForConnection();
     void sig_sendTestDataToServer();
 
+    void SignalUserHaveChangedGameSettings(const GameSettings&);
+
 private slots:
-
-
 
 public slots:
 
@@ -73,6 +77,8 @@ public slots:
     void slot_userHaveChangedServerSettings(serverSettings settings);
     void slot_openRoomForConnection();
     void slot_sendTestDataToServer();
+    void SlotShowGameSettingsWindow();
+    void SlotUserHaveChangedGameSettings(const GameSettings& settings);
 
 private:
 
@@ -81,6 +87,7 @@ private:
     void setUpUiPicturesAddresses();
     void setUpButtonPicture(QPushButton* const btn, const QString& picturePath, double widthCoeff, double heightWidthRelatio);
     void setUpUiVisualizationParameters();
+    void SetUpInitilButtonsStates();
 };
 
 #endif // START_NEW_ROOM_H

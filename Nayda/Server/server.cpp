@@ -15,16 +15,10 @@ Server::Server(QObject *parent, RoomPosessionType posessionType) : QObject(paren
     _srvrSettings.second = "";
     defaultSettings.first = "";
     defaultSettings.second = "";
-    setupConnection();
+    ConnectionSetUp();
 }
 
-bool Server::something()
-{
-    int i = 1;
-    return true;
-}
-
-void Server::setupConnection()
+void Server::ConnectionSetUp()
 {
     tcpSocket = new QTcpSocket(this);
 
@@ -51,46 +45,38 @@ void Server::setupConnection()
         networkSession->open();
     }
 
-    connect(tcpSocket, &QIODevice::readyRead, this, &Server::readIncomingData);
+    connect(tcpSocket, &QIODevice::readyRead, this, &Server::slotConnectionReadIncomingData);
     typedef void (QAbstractSocket::*QAbstractSocketErrorSignal)(QAbstractSocket::SocketError);
     connect(tcpSocket, static_cast<QAbstractSocketErrorSignal>(&QAbstractSocket::error),this, &Server::displayError);
 
 }
 
-void Server::sendDataToTheConnection(const QString &dataStr)
+bool Server::ConnectionSendOutgoingData(const QByteArray &data)
 {
-    serverMessageSystem::ClientEnteringRequest initialRequest;
-    serverMessageSystem::GameType* gameType(initialRequest.mutable_gametype());
-    gameType->set_hasaddonclericalerrors(true);
-    gameType->set_hasaddonwildaxe(true);
-    gameType->set_rulestype(::serverMessageSystem::RulesType::Automatic);
-
-    initialRequest.set_messageid(1);
-    initialRequest.set_clientname("EmpERRoR");
-    initialRequest.set_enteringrequest(::serverMessageSystem::GameCreationRequest::CreateTheGame);
-    initialRequest.PrintDebugString();
-
-    QByteArray block;
-    QDataStream out(&block, QIODevice::WriteOnly);
-    out.setVersion(QDataStream::Qt_4_0);
-    block.resize(initialRequest.ByteSize());
-    initialRequest.SerializeToArray(block.data(), block.size());
-
-    qDebug() << "NAY-0001: Sending data to the server!";
-
     if (tcpSocket->isOpen())
     {
-       if (tcpSocket->ConnectedState == QTcpSocket::ConnectedState)
-       {
-           tcpSocket->write(block);
-       }
+        if (tcpSocket->ConnectedState == QTcpSocket::ConnectedState)
+        {
+             tcpSocket->write(data);
+             return true;
+        }
+        else
+        {
+            qDebug() << "Error during data send. Socket is not closed, but in NOTConnected state! ";
+//        NAY-001: MARK_EXPECTED_ERROR
+            return false;
+        }
     }
+    else
+    {
+        qDebug() << "Error during data send. Socket is closed! ";
+//        NAY-001: MARK_EXPECTED_ERROR
+        return false;
+    }
+ }
 
-}
 
-
-
-void Server::readIncomingData()
+void Server::slotConnectionReadIncomingData()
 {
     inputStream.startTransaction();
 
@@ -122,13 +108,30 @@ void Server::displayError(QAbstractSocket::SocketError socketError)
     default:
         qDebug() << "The following error occurred: %1." << tcpSocket->errorString();
     }
-
-
 }
 
 void Server::slot_sendTestDataToServer()
 {
-    sendDataToTheConnection("TestData");
+    //sendDataToTheConnection("TestData");
+   serverMessageSystem::ClientEnteringRequest initialRequest;
+   serverMessageSystem::GameType* gameType(initialRequest.mutable_gametype());
+   gameType->set_hasaddonclericalerrors(true);
+   gameType->set_hasaddonwildaxe(true);
+   gameType->set_rulestype(::serverMessageSystem::RulesType::Automatic);
+
+   initialRequest.set_messageid(1);
+   initialRequest.set_clientname("EmpERRoR");
+   initialRequest.set_enteringrequest(::serverMessageSystem::GameCreationRequest::CreateTheGame);
+   initialRequest.PrintDebugString();
+
+   QByteArray block;
+   QDataStream out(&block, QIODevice::WriteOnly);
+   out.setVersion(QDataStream::Qt_4_0);
+   block.resize(initialRequest.ByteSize());
+   initialRequest.SerializeToArray(block.data(), block.size());
+
+   qDebug() << "NAY-0001: Sending data to the server!";
+   ConnectionSendOutgoingData(block);
 }
 
 void Server::slot_openConnection()
@@ -143,7 +146,7 @@ void Server::slot_openConnection()
         tcpSocket->connectToHost(_srvrSettings.first, static_cast<unsigned short>(_srvrSettings.second.toInt()));
         qDebug() << "Connected!";
         qDebug() << "Now to send data...";
-        sendDataToTheConnection("Some other data");
+        //sendDataToTheConnection("Some other data");
     }
 
 }
@@ -162,5 +165,11 @@ void Server::slot_sessionOpened()
     settings.beginGroup(QLatin1String("QtNetwork"));
     settings.setValue(QLatin1String("DefaultNetworkConfiguration"), id);
     settings.endGroup();
+}
+
+void Server::SlotUserHaveChangedGameSettings(const GameSettings &settings)
+{
+    _gameSettings.applyNewSettings(settings);
+    //NAY-001: EMIT HERE SIGNAL TO NOTIFY REMMOTE SERVER
 }
 

@@ -13,11 +13,6 @@ Before_The_Game::Before_The_Game(QWidget *parent) :
     ui->setupUi(this);
     newRoomDialog->hide();
 
-    //configure_with_default_settings;
-    number_of_players = 3;
-    time_for_move = 30;
-    time_to_think = 30;
-
     setUpGeometricRelations();
 
     setUpSignalsSlotsConnections();
@@ -34,7 +29,7 @@ void Before_The_Game::dbg_switch_to_game_mode_button_pressed()
 {
     emit dbg_switch_to_game_mode(true);
     emit dbg_the_game_begins(true);
-    emit update_game_options_card_stack_type(this->card_stack_mode);
+    //emit update_game_options_card_stack_type(this->card_stack_mode);
     qDebug() << "Start with debug button. ONLY VIEW!!!!";
     //emit update_game
 }
@@ -44,7 +39,7 @@ void Before_The_Game::dbg_start_the_game_with_default_settings()
 {
     emit dbg_switch_to_game_mode(true);
     emit dbg_the_game_begins(true);
-    emit update_game_options_card_stack_type(this->card_stack_mode);
+    //emit update_game_options_card_stack_type(this->card_stack_mode);
     qDebug() << "Start with debug button. DEFAULT SETTING ARE PROVIDED!!!!";
 }
 
@@ -63,6 +58,22 @@ void Before_The_Game::slot_openRoomForConnection()
 void Before_The_Game::slot_sendTestDataToServer()
 {
     emit sig_sendTestDataToServer();
+}
+
+void Before_The_Game::SlotApplyNewGameSettings(GameSettings settings)
+{
+    _gameSettings.applyNewSettings(settings);
+    emit SignalUserHaveChagedGameSettigs(settings);
+}
+
+GameSettings Before_The_Game::getGameSettings() const
+{
+    return _gameSettings;
+}
+
+void Before_The_Game::setGameSettings(const GameSettings &gameSettings)
+{
+    _gameSettings = gameSettings;
 }
 
 void Before_The_Game::setUpGeometricRelations()
@@ -93,6 +104,7 @@ void Before_The_Game::setUpSignalsSlotsConnections()
     QObject::connect (ui->btnHide, SIGNAL(clicked(bool)), this, SLOT(dbg_switch_to_game_mode_button_pressed()));
 
     QObject::connect(newRoomDialog, &playMenu::sig_userHaveChangedServerSettings, this, &Before_The_Game::slot_userHaveChangedServerSettings);
+    QObject::connect(newRoomDialog, &playMenu::SignalUserHaveChangedGameSettings, this, &Before_The_Game::SlotApplyNewGameSettings);
     QObject::connect(newRoomDialog, &playMenu::sig_openRoomForConnection, this, &Before_The_Game::slot_openRoomForConnection);
     QObject::connect(newRoomDialog, &playMenu::sig_sendTestDataToServer, this, &Before_The_Game::slot_sendTestDataToServer);
 
