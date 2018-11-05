@@ -7,11 +7,32 @@ enum RulesType
     Manual = 1;
 }
 
+message Base
+{
+    uint32 messageID = 1;
+}
+
+message TimeSettings
+{
+    uint32 totalTimeToMove = 1;
+    uint32 timeToThink = 1;
+    uint32 timeForOpponentsDecision = 1;
+    uint32 totalTimeToMove = 1;
+    uint32 diplomacyTime = 1;
+
+}
+
 message GameType
 {
     bool hasAddonWildAxe = 1;
     bool hasAddonClericalErrors = 2;
     RulesType rulesType = 3;
+}
+
+message GameSettings
+{
+    GameType gameType = 1;
+    TimeSettings timeSettings =2;
 }
 
 //Initial message from client while connecting
@@ -25,11 +46,30 @@ enum GameCreationRequest
     CreateTheGame = 1;
 }
 
-message ClientEnteringRequest
+message RoomCreationErrors
 {
-    uint32 messageID = 1;
-    string clientName = 2;
-    GameCreationRequest enteringRequest = 3;
-    GameType gameType = 4;
+    bool noFreeSlotsAvailable = 1;
+    bool rulesAreNotSupported = 2;
+    bool incorrectSettings = 3;
 }
 
+message ClientEnteringRequest
+{
+    Base messageID = 1;
+    string clientName = 2;
+    GameSettings gameSettings = 3;
+}
+
+message ClientRoomCreationReply
+{
+    Base messageID = 1;
+    bool created = 2;
+    RoomCreationErrors roomCreationErrors = 3;
+}
+
+message ClientConnectionToRooReply
+{
+    bool noRoomsAvailable = 1;
+    uint32 freeSlotsLeft = 2;
+    uint32 roomID = 3;
+}
