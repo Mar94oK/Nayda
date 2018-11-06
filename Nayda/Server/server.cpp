@@ -126,10 +126,20 @@ void Server::slot_sendTestDataToServer()
 //   initialRequest.PrintDebugString();
 
    serverMessageSystem::ServerInputQuery initialQuery;
-   serverMessageSystem::Base* base(initialQuery.mutable_messageid());
-   base->set_messageid(MessageServerInputQueryID);
+//   serverMessageSystem::Base* base(initialQuery.mutable_messageid());
+//   base->set_messageid(MessageServerInputQueryID);
+//   initialQuery.set_clientname(_gameSettings.clientName().toUtf8().constData());
+   serverMessageSystem::CommonHeader *header(initialQuery.mutable_header());
+   header->set_subsystem(serverMessageSystem::SubSystemID::CONNECTION_SUBSYSTEM);
+   initialQuery.set_connectioncmdid(serverMessageSystem::ConnectionSubSysCommandsID::SERVER_INPUT_QUERY_REQUEST);
    initialQuery.set_clientname(_gameSettings.clientName().toUtf8().constData());
-
+   QString OSName("");
+#ifdef Q_OS_WIN
+  OSName = Windows";
+#elif defined __linux__
+  OSName = "Linux";
+#endif
+   initialQuery.set_ostype(OSName.toUtf8().constData());
 
    QByteArray block;
    QDataStream out(&block, QIODevice::WriteOnly);
