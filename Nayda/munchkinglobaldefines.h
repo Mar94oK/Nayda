@@ -1,8 +1,11 @@
 #ifndef MUNCHKINGLOBALDEFINES_H
 #define MUNCHKINGLOBALDEFINES_H
 
-//#define USE_RESOURCES
+#ifdef Q_OS_WIN
 #undef USE_RESOURCES
+#elif defined __linux__
+#define USE_RESOURCES
+#endif
 
 class GeometricLimitations {
 
