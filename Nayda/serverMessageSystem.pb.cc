@@ -276,6 +276,7 @@ const ::google::protobuf::uint32 TableStruct_serverMessageSystem_2eproto::offset
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::serverMessageSystem::CommonHeader, subsystem_),
+  PROTOBUF_FIELD_OFFSET(::serverMessageSystem::CommonHeader, commandid_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::serverMessageSystem::TimeSettings, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -379,17 +380,17 @@ const ::google::protobuf::uint32 TableStruct_serverMessageSystem_2eproto::offset
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::serverMessageSystem::CommonHeader)},
-  { 6, -1, sizeof(::serverMessageSystem::TimeSettings)},
-  { 15, -1, sizeof(::serverMessageSystem::GameType)},
-  { 23, -1, sizeof(::serverMessageSystem::GameSettings)},
-  { 30, -1, sizeof(::serverMessageSystem::RoomCreationErrors)},
-  { 38, -1, sizeof(::serverMessageSystem::ServerInputQuery)},
-  { 47, -1, sizeof(::serverMessageSystem::ServerQueryReply)},
-  { 57, -1, sizeof(::serverMessageSystem::ClientRoomCreationRequest)},
-  { 66, -1, sizeof(::serverMessageSystem::ClientRoomCreationReply)},
-  { 77, -1, sizeof(::serverMessageSystem::ClientConnectionToRoomRequest)},
-  { 87, -1, sizeof(::serverMessageSystem::ClientConnectionToRoomReply)},
-  { 98, -1, sizeof(::serverMessageSystem::ServerQueryOrderNotification)},
+  { 7, -1, sizeof(::serverMessageSystem::TimeSettings)},
+  { 16, -1, sizeof(::serverMessageSystem::GameType)},
+  { 24, -1, sizeof(::serverMessageSystem::GameSettings)},
+  { 31, -1, sizeof(::serverMessageSystem::RoomCreationErrors)},
+  { 39, -1, sizeof(::serverMessageSystem::ServerInputQuery)},
+  { 48, -1, sizeof(::serverMessageSystem::ServerQueryReply)},
+  { 58, -1, sizeof(::serverMessageSystem::ClientRoomCreationRequest)},
+  { 67, -1, sizeof(::serverMessageSystem::ClientRoomCreationReply)},
+  { 78, -1, sizeof(::serverMessageSystem::ClientConnectionToRoomRequest)},
+  { 88, -1, sizeof(::serverMessageSystem::ClientConnectionToRoomReply)},
+  { 99, -1, sizeof(::serverMessageSystem::ServerQueryOrderNotification)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -416,73 +417,73 @@ static ::google::protobuf::Message const * const file_default_instances[] = {
 ::google::protobuf::internal::DescriptorTable descriptor_table_serverMessageSystem_2eproto = {
   false, InitDefaults_serverMessageSystem_2eproto, 
   "\n\031serverMessageSystem.proto\022\023serverMessa"
-  "geSystem\"C\n\014CommonHeader\0223\n\tsubSystem\030\001 "
-  "\001(\0162 .serverMessageSystem.SubSystemID\"u\n"
-  "\014TimeSettings\022\027\n\017totalTimeToMove\030\001 \001(\r\022\023"
-  "\n\013timeToThink\030\002 \001(\r\022 \n\030timeForOpponentsD"
-  "ecision\030\003 \001(\r\022\025\n\rdiplomacyTime\030\004 \001(\r\"v\n\010"
-  "GameType\022\027\n\017hasAddonWildAxe\030\001 \001(\010\022\036\n\026has"
-  "AddonClericalErrors\030\002 \001(\010\0221\n\trulesType\030\003"
-  " \001(\0162\036.serverMessageSystem.RulesType\"x\n\014"
-  "GameSettings\022/\n\010gameType\030\001 \001(\0132\035.serverM"
-  "essageSystem.GameType\0227\n\014timeSettings\030\002 "
-  "\001(\0132!.serverMessageSystem.TimeSettings\"k"
-  "\n\022RoomCreationErrors\022\034\n\024noFreeSlotsAvail"
-  "able\030\001 \001(\010\022\034\n\024rulesAreNotSupported\030\002 \001(\010"
-  "\022\031\n\021incorrectSettings\030\003 \001(\010\"\263\001\n\020ServerIn"
-  "putQuery\0221\n\006header\030\001 \001(\0132!.serverMessage"
-  "System.CommonHeader\022H\n\017connectionCmdID\030\002"
-  " \001(\0162/.serverMessageSystem.ConnectionSub"
-  "SysCommandsID\022\022\n\nclientName\030\003 \001(\t\022\016\n\006OsT"
-  "ype\030\004 \001(\t\"\341\001\n\020ServerQueryReply\0221\n\006header"
-  "\030\001 \001(\0132!.serverMessageSystem.CommonHeade"
-  "r\022H\n\017connectionCmdID\030\002 \001(\0162/.serverMessa"
-  "geSystem.ConnectionSubSysCommandsID\022\033\n\023r"
-  "oomCreationAllowed\030\003 \001(\010\022\037\n\027connectionTo"
-  "RoomAllowed\030\004 \001(\010\022\022\n\nserverName\030\005 \001(\t\"\345\001"
-  "\n\031ClientRoomCreationRequest\0221\n\006header\030\001 "
+  "geSystem\"V\n\014CommonHeader\0223\n\tsubSystem\030\001 "
+  "\001(\0162 .serverMessageSystem.SubSystemID\022\021\n"
+  "\tcommandId\030\002 \001(\r\"u\n\014TimeSettings\022\027\n\017tota"
+  "lTimeToMove\030\001 \001(\r\022\023\n\013timeToThink\030\002 \001(\r\022 "
+  "\n\030timeForOpponentsDecision\030\003 \001(\r\022\025\n\rdipl"
+  "omacyTime\030\004 \001(\r\"v\n\010GameType\022\027\n\017hasAddonW"
+  "ildAxe\030\001 \001(\010\022\036\n\026hasAddonClericalErrors\030\002"
+  " \001(\010\0221\n\trulesType\030\003 \001(\0162\036.serverMessageS"
+  "ystem.RulesType\"x\n\014GameSettings\022/\n\010gameT"
+  "ype\030\001 \001(\0132\035.serverMessageSystem.GameType"
+  "\0227\n\014timeSettings\030\002 \001(\0132!.serverMessageSy"
+  "stem.TimeSettings\"k\n\022RoomCreationErrors\022"
+  "\034\n\024noFreeSlotsAvailable\030\001 \001(\010\022\034\n\024rulesAr"
+  "eNotSupported\030\002 \001(\010\022\031\n\021incorrectSettings"
+  "\030\003 \001(\010\"\263\001\n\020ServerInputQuery\0221\n\006header\030\001 "
   "\001(\0132!.serverMessageSystem.CommonHeader\022H"
   "\n\017connectionCmdID\030\002 \001(\0162/.serverMessageS"
   "ystem.ConnectionSubSysCommandsID\022\022\n\nclie"
-  "ntName\030\003 \001(\t\0227\n\014gameSettings\030\004 \001(\0132!.ser"
-  "verMessageSystem.GameSettings\"\235\002\n\027Client"
-  "RoomCreationReply\0221\n\006header\030\001 \001(\0132!.serv"
-  "erMessageSystem.CommonHeader\022H\n\017connecti"
-  "onCmdID\030\002 \001(\0162/.serverMessageSystem.Conn"
-  "ectionSubSysCommandsID\022\031\n\021connectionAllo"
-  "wed\030\003 \001(\010\022\016\n\006slotID\030\004 \001(\r\022\025\n\rfreeSlotsLe"
-  "ft\030\005 \001(\r\022C\n\022roomCreationErrors\030\006 \001(\0132\'.s"
-  "erverMessageSystem.RoomCreationErrors\"\337\001"
-  "\n\035ClientConnectionToRoomRequest\0221\n\006heade"
-  "r\030\001 \001(\0132!.serverMessageSystem.CommonHead"
-  "er\022H\n\017connectionCmdID\030\002 \001(\0162/.serverMess"
-  "ageSystem.ConnectionSubSysCommandsID\022\022\n\n"
-  "clientName\030\003 \001(\t\022\030\n\020connectToAnyRoom\030\004 \001"
-  "(\010\022\023\n\013agreeToWait\030\005 \001(\010\"\357\001\n\033ClientConnec"
-  "tionToRoomReply\0221\n\006header\030\001 \001(\0132!.server"
-  "MessageSystem.CommonHeader\022H\n\017connection"
-  "CmdID\030\002 \001(\0162/.serverMessageSystem.Connec"
-  "tionSubSysCommandsID\022\030\n\020noRoomsAvailable"
-  "\030\003 \001(\010\022\025\n\rfreeSlotsLeft\030\004 \001(\r\022\016\n\006roomID\030"
-  "\005 \003(\r\022\022\n\nqueryOrder\030\006 \001(\r\"\257\001\n\034ServerQuer"
-  "yOrderNotification\0221\n\006header\030\001 \001(\0132!.ser"
-  "verMessageSystem.CommonHeader\022H\n\017connect"
-  "ionCmdID\030\002 \001(\0162/.serverMessageSystem.Con"
-  "nectionSubSysCommandsID\022\022\n\nqueryOrder\030\003 "
-  "\001(\r*&\n\tRulesType\022\r\n\tAutomatic\020\000\022\n\n\006Manua"
-  "l\020\001*d\n\013SubSystemID\022\030\n\024CONNECTION_SUBSYST"
-  "EM\020\000\022\032\n\026GAME_ACTIONS_SUBSYSTEM\020\001\022\037\n\033GAME"
-  "_NOTIFICATION_SUBSYSTEM\020\002*\350\001\n\032Connection"
-  "SubSysCommandsID\022\036\n\032SERVER_INPUT_QUERY_R"
-  "EQUEST\020\000\022\034\n\030SERVER_INPUT_QUERY_REPLY\020\001\022 "
-  "\n\034CLIENT_ROOM_CREATION_REQUEST\020\002\022\036\n\032CLIE"
-  "NT_ROOM_CREATION_REPLY\020\003\022%\n!CLIENT_CONNE"
-  "CTION_TO_ROOM_REQUEST\020\004\022#\n\037CLIENT_CONNEC"
-  "TION_TO_ROOM_REPLY\020\005*9\n\023GameCreationRequ"
-  "est\022\017\n\013JoinTheGame\020\000\022\021\n\rCreateTheGame\020\001b"
-  "\006proto3"
+  "ntName\030\003 \001(\t\022\016\n\006OsType\030\004 \001(\t\"\341\001\n\020ServerQ"
+  "ueryReply\0221\n\006header\030\001 \001(\0132!.serverMessag"
+  "eSystem.CommonHeader\022H\n\017connectionCmdID\030"
+  "\002 \001(\0162/.serverMessageSystem.ConnectionSu"
+  "bSysCommandsID\022\033\n\023roomCreationAllowed\030\003 "
+  "\001(\010\022\037\n\027connectionToRoomAllowed\030\004 \001(\010\022\022\n\n"
+  "serverName\030\005 \001(\t\"\345\001\n\031ClientRoomCreationR"
+  "equest\0221\n\006header\030\001 \001(\0132!.serverMessageSy"
+  "stem.CommonHeader\022H\n\017connectionCmdID\030\002 \001"
+  "(\0162/.serverMessageSystem.ConnectionSubSy"
+  "sCommandsID\022\022\n\nclientName\030\003 \001(\t\0227\n\014gameS"
+  "ettings\030\004 \001(\0132!.serverMessageSystem.Game"
+  "Settings\"\235\002\n\027ClientRoomCreationReply\0221\n\006"
+  "header\030\001 \001(\0132!.serverMessageSystem.Commo"
+  "nHeader\022H\n\017connectionCmdID\030\002 \001(\0162/.serve"
+  "rMessageSystem.ConnectionSubSysCommandsI"
+  "D\022\031\n\021connectionAllowed\030\003 \001(\010\022\016\n\006slotID\030\004"
+  " \001(\r\022\025\n\rfreeSlotsLeft\030\005 \001(\r\022C\n\022roomCreat"
+  "ionErrors\030\006 \001(\0132\'.serverMessageSystem.Ro"
+  "omCreationErrors\"\337\001\n\035ClientConnectionToR"
+  "oomRequest\0221\n\006header\030\001 \001(\0132!.serverMessa"
+  "geSystem.CommonHeader\022H\n\017connectionCmdID"
+  "\030\002 \001(\0162/.serverMessageSystem.ConnectionS"
+  "ubSysCommandsID\022\022\n\nclientName\030\003 \001(\t\022\030\n\020c"
+  "onnectToAnyRoom\030\004 \001(\010\022\023\n\013agreeToWait\030\005 \001"
+  "(\010\"\357\001\n\033ClientConnectionToRoomReply\0221\n\006he"
+  "ader\030\001 \001(\0132!.serverMessageSystem.CommonH"
+  "eader\022H\n\017connectionCmdID\030\002 \001(\0162/.serverM"
+  "essageSystem.ConnectionSubSysCommandsID\022"
+  "\030\n\020noRoomsAvailable\030\003 \001(\010\022\025\n\rfreeSlotsLe"
+  "ft\030\004 \001(\r\022\016\n\006roomID\030\005 \003(\r\022\022\n\nqueryOrder\030\006"
+  " \001(\r\"\257\001\n\034ServerQueryOrderNotification\0221\n"
+  "\006header\030\001 \001(\0132!.serverMessageSystem.Comm"
+  "onHeader\022H\n\017connectionCmdID\030\002 \001(\0162/.serv"
+  "erMessageSystem.ConnectionSubSysCommands"
+  "ID\022\022\n\nqueryOrder\030\003 \001(\r*&\n\tRulesType\022\r\n\tA"
+  "utomatic\020\000\022\n\n\006Manual\020\001*d\n\013SubSystemID\022\030\n"
+  "\024CONNECTION_SUBSYSTEM\020\000\022\032\n\026GAME_ACTIONS_"
+  "SUBSYSTEM\020\001\022\037\n\033GAME_NOTIFICATION_SUBSYST"
+  "EM\020\002*\350\001\n\032ConnectionSubSysCommandsID\022\036\n\032S"
+  "ERVER_INPUT_QUERY_REQUEST\020\000\022\034\n\030SERVER_IN"
+  "PUT_QUERY_REPLY\020\001\022 \n\034CLIENT_ROOM_CREATIO"
+  "N_REQUEST\020\002\022\036\n\032CLIENT_ROOM_CREATION_REPL"
+  "Y\020\003\022%\n!CLIENT_CONNECTION_TO_ROOM_REQUEST"
+  "\020\004\022#\n\037CLIENT_CONNECTION_TO_ROOM_REPLY\020\005*"
+  "9\n\023GameCreationRequest\022\017\n\013JoinTheGame\020\000\022"
+  "\021\n\rCreateTheGame\020\001b\006proto3"
 ,
-  "serverMessageSystem.proto", &assign_descriptors_table_serverMessageSystem_2eproto, 2607,
+  "serverMessageSystem.proto", &assign_descriptors_table_serverMessageSystem_2eproto, 2626,
 };
 
 void AddDescriptors_serverMessageSystem_2eproto() {
@@ -567,6 +568,7 @@ class CommonHeader::HasBitSetters {
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int CommonHeader::kSubSystemFieldNumber;
+const int CommonHeader::kCommandIdFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 CommonHeader::CommonHeader()
@@ -578,12 +580,16 @@ CommonHeader::CommonHeader(const CommonHeader& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  subsystem_ = from.subsystem_;
+  ::memcpy(&subsystem_, &from.subsystem_,
+    static_cast<size_t>(reinterpret_cast<char*>(&commandid_) -
+    reinterpret_cast<char*>(&subsystem_)) + sizeof(commandid_));
   // @@protoc_insertion_point(copy_constructor:serverMessageSystem.CommonHeader)
 }
 
 void CommonHeader::SharedCtor() {
-  subsystem_ = 0;
+  ::memset(&subsystem_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&commandid_) -
+      reinterpret_cast<char*>(&subsystem_)) + sizeof(commandid_));
 }
 
 CommonHeader::~CommonHeader() {
@@ -609,7 +615,9 @@ void CommonHeader::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  subsystem_ = 0;
+  ::memset(&subsystem_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&commandid_) -
+      reinterpret_cast<char*>(&subsystem_)) + sizeof(commandid_));
   _internal_metadata_.Clear();
 }
 
@@ -634,6 +642,16 @@ const char* CommonHeader::_InternalParse(const char* begin, const char* end, voi
         GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
         ::serverMessageSystem::SubSystemID value = static_cast<::serverMessageSystem::SubSystemID>(val);
         msg->set_subsystem(value);
+        break;
+      }
+      // uint32 commandId = 2;
+      case 2: {
+        if (static_cast<::google::protobuf::uint8>(tag) != 16) goto handle_unusual;
+        ::google::protobuf::uint64 val;
+        ptr = Varint::Parse64(ptr, &val);
+        GOOGLE_PROTOBUF_PARSER_ASSERT(ptr);
+        ::google::protobuf::uint32 value = val;
+        msg->set_commandid(value);
         break;
       }
       default: {
@@ -684,6 +702,19 @@ bool CommonHeader::MergePartialFromCodedStream(
         break;
       }
 
+      // uint32 commandId = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) == (16 & 0xFF)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &commandid_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
         if (tag == 0) {
@@ -717,6 +748,11 @@ void CommonHeader::SerializeWithCachedSizes(
       1, this->subsystem(), output);
   }
 
+  // uint32 commandId = 2;
+  if (this->commandid() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(2, this->commandid(), output);
+  }
+
   if (_internal_metadata_.have_unknown_fields()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         _internal_metadata_.unknown_fields(), output);
@@ -735,6 +771,11 @@ void CommonHeader::SerializeWithCachedSizes(
   if (this->subsystem() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
       1, this->subsystem(), target);
+  }
+
+  // uint32 commandId = 2;
+  if (this->commandid() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(2, this->commandid(), target);
   }
 
   if (_internal_metadata_.have_unknown_fields()) {
@@ -762,6 +803,13 @@ size_t CommonHeader::ByteSizeLong() const {
   if (this->subsystem() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::EnumSize(this->subsystem());
+  }
+
+  // uint32 commandId = 2;
+  if (this->commandid() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt32Size(
+        this->commandid());
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -794,6 +842,9 @@ void CommonHeader::MergeFrom(const CommonHeader& from) {
   if (from.subsystem() != 0) {
     set_subsystem(from.subsystem());
   }
+  if (from.commandid() != 0) {
+    set_commandid(from.commandid());
+  }
 }
 
 void CommonHeader::CopyFrom(const ::google::protobuf::Message& from) {
@@ -822,6 +873,7 @@ void CommonHeader::InternalSwap(CommonHeader* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(subsystem_, other->subsystem_);
+  swap(commandid_, other->commandid_);
 }
 
 ::google::protobuf::Metadata CommonHeader::GetMetadata() const {

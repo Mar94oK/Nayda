@@ -296,12 +296,19 @@ class CommonHeader : public ::google::protobuf::Message /* @@protoc_insertion_po
   ::serverMessageSystem::SubSystemID subsystem() const;
   void set_subsystem(::serverMessageSystem::SubSystemID value);
 
+  // uint32 commandId = 2;
+  void clear_commandid();
+  static const int kCommandIdFieldNumber = 2;
+  ::google::protobuf::uint32 commandid() const;
+  void set_commandid(::google::protobuf::uint32 value);
+
   // @@protoc_insertion_point(class_scope:serverMessageSystem.CommonHeader)
  private:
   class HasBitSetters;
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   int subsystem_;
+  ::google::protobuf::uint32 commandid_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_serverMessageSystem_2eproto;
 };
@@ -1867,6 +1874,20 @@ inline void CommonHeader::set_subsystem(::serverMessageSystem::SubSystemID value
   
   subsystem_ = value;
   // @@protoc_insertion_point(field_set:serverMessageSystem.CommonHeader.subSystem)
+}
+
+// uint32 commandId = 2;
+inline void CommonHeader::clear_commandid() {
+  commandid_ = 0u;
+}
+inline ::google::protobuf::uint32 CommonHeader::commandid() const {
+  // @@protoc_insertion_point(field_get:serverMessageSystem.CommonHeader.commandId)
+  return commandid_;
+}
+inline void CommonHeader::set_commandid(::google::protobuf::uint32 value) {
+  
+  commandid_ = value;
+  // @@protoc_insertion_point(field_set:serverMessageSystem.CommonHeader.commandId)
 }
 
 // -------------------------------------------------------------------

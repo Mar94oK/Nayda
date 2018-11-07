@@ -38,6 +38,7 @@ enum ConnectionSubSysCommandsID
 message CommonHeader
 {
     SubSystemID subSystem = 1;
+    uint32      commandId = 2;
 }
 
 //GameTimers Constraints. Might be modified later.

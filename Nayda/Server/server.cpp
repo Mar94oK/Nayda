@@ -142,8 +142,6 @@ void Server::slot_sendTestDataToServer()
    initialQuery.set_ostype(OSName.toUtf8().constData());
 
    QByteArray block;
-   QDataStream out(&block, QIODevice::WriteOnly);
-   out.setVersion(QDataStream::Qt_4_0);
    block.resize(initialQuery.ByteSize());
    initialQuery.SerializeToArray(block.data(), block.size());
 
