@@ -67,6 +67,11 @@ void Before_The_Game::SlotApplyNewGameSettings(GameSettings settings)
     emit SignalUserHaveChagedGameSettigs(settings);
 }
 
+void Before_The_Game::SlotProcessServerQueryReplyData(ServerQueryReplyData data)
+{
+    emit SignalServerQueryReplyData(data);
+}
+
 
 GameSettings Before_The_Game::getGameSettings() const
 {
@@ -117,6 +122,8 @@ void Before_The_Game::setUpSignalsSlotsConnections()
     QObject::connect(ui->btn_Play, &QPushButton::clicked, this, &Before_The_Game::hide);
     QObject::connect(newRoomDialog, &playMenu::sig_userIsClosingStartNewRoomWindow, this, &Before_The_Game::show);
 
-    connect(newRoomDialog, &playMenu::sig_dbgBtnPlayWithDefaultsPressed,this, &Before_The_Game::dbg_start_the_game_with_default_settings);
+    connect(newRoomDialog, &playMenu::sig_dbgBtnPlayWithDefaultsPressed, this, &Before_The_Game::dbg_start_the_game_with_default_settings);
     connect(newRoomDialog, &playMenu::sig_dbgBtnPlayWithDefaultsPressed, this, &Before_The_Game::hide);
+
+    QObject::connect(this, &Before_The_Game::SignalServerQueryReplyData, newRoomDialog, &playMenu::SlotProcessServerQueryReplyData);
 }

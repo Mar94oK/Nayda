@@ -6,6 +6,7 @@
 #include <QDebug>
 #include "playMenu.h"
 #include "gamesettings.h"
+#include "MessagesDefinitions.h"
 #define DEBUG_MESSAGES
 
 
@@ -43,6 +44,8 @@ signals:
 
     void SignalUserHaveChagedGameSettigs(const GameSettings&);
 
+    void SignalServerQueryReplyData(ServerQueryReplyData data);
+
 public slots:
 
     void dbg_switch_to_game_mode_button_pressed(void);
@@ -51,6 +54,8 @@ public slots:
     void slot_openRoomForConnection();
     void slot_sendTestDataToServer();
     void SlotApplyNewGameSettings(GameSettings settings);
+
+    void SlotProcessServerQueryReplyData(ServerQueryReplyData data);
 
 private:
 

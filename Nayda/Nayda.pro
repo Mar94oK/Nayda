@@ -81,7 +81,7 @@ HEADERS  += main_application.h \
     gamesettings.h \
     serverMessageSystem.pb.h \
     gamesettingswindow.h \
-    protobufmessagesidentificators.h
+    MessagesDefinitions.h
 
 FORMS    += main_application.ui \
     Application/Before_The_Game/Before_The_Game.ui \

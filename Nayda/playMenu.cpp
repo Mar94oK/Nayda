@@ -85,6 +85,22 @@ void playMenu::SlotUserHaveChangedGameSettings(const GameSettings & settings)
     emit SignalUserHaveChangedGameSettings(settings);
 }
 
+void playMenu::SlotProcessServerQueryReplyData(ServerQueryReplyData data)
+{
+    if (data._connectionToRoomAllowed)
+    {
+        setUpButtonPicture(ui->btn_JoinToExistingLobby, _joinRoomButtonPictureAddressAllowed, buttonsWidthCoefficient, buttonsHeightWidthRelatio);
+        ui->btn_JoinToExistingLobby->setEnabled(true);
+    }
+    if (data._roomCreationAllowed)
+    {
+        setUpButtonPicture(ui->btn_CreateLobby, _createRoomButtonPictureAddressAllowed, buttonsWidthCoefficient, buttonsHeightWidthRelatio);
+        ui->btn_CreateLobby->setEnabled(true);
+    }
+    QString text = ui->lbl_Connection->text();
+    ui->lbl_Connection->setText(ui->lbl_Connection->text() + data._serverName);
+}
+
 void playMenu::setUpUiGeometricRelations()
 {
     QRect HwScreenSize = QApplication::desktop()->screenGeometry();

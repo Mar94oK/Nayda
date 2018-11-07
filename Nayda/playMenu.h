@@ -7,6 +7,7 @@
 #include <Server/server.h>
 #include <gamesettingswindow.h>
 #include <gamesettings.h>
+#include <MessagesDefinitions.h>
 
 namespace Ui {
 class startNewRoom;
@@ -79,6 +80,8 @@ public slots:
     void slot_sendTestDataToServer();
     void SlotShowGameSettingsWindow();
     void SlotUserHaveChangedGameSettings(const GameSettings& settings);
+
+    void SlotProcessServerQueryReplyData(ServerQueryReplyData data);
 
 private:
 

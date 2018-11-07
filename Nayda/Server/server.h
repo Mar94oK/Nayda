@@ -16,6 +16,7 @@
 #include <QtNetwork>
 #include <QDebug>
 #include "gamesettings.h"
+#include "MessagesDefinitions.h"
 
 QT_BEGIN_NAMESPACE
 class QTcpSocket;
@@ -88,12 +89,18 @@ signals:
 
     void valueChanged(int newValue);
     void socketErrorReportToGUI(QAbstractSocket::SocketError signal);
-    void socketConnectionSuccessReportToGui(bool);
+    void SignalSocketConnectionSuccessReportToGui(bool);
     void SignalServerHasChangedGameSettings(const GameSettings&);
+    void SignalReportServerQueryReplyData(ServerQueryReplyData data);
 
 private:
 
     GameSettings _gameSettings;
+
+private:
+
+    void MessageParser(const QByteArray& data, int socketDescriptor);
+    void ProcessServerInputQueryReply(const QByteArray &data, int socketDescriptor);
 
 };
 

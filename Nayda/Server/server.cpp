@@ -7,7 +7,7 @@
 #include <fstream>
 #include <iosfwd>
 #include <sstream>
-#include "protobufmessagesidentificators.h"
+
 
 Server::Server(QObject *parent, RoomPosessionType posessionType) : QObject(parent), _roomPosessionType(posessionType)
 {
@@ -79,15 +79,11 @@ bool Server::ConnectionSendOutgoingData(const QByteArray &data)
 
 void Server::slotConnectionReadIncomingData()
 {
-    inputStream.startTransaction();
-
-    QString nextFortune;
-    inputStream >> nextFortune;
-
-    if (!inputStream.commitTransaction())
-        return;
-
-    qDebug() << "Fortune: " << nextFortune;
+    qDebug() << ("Trying to read the info...");
+    QByteArray array;
+    qDebug() << "NAY-0001: Before message parsing! ";
+    array = tcpSocket->readAll();
+    MessageParser(array, tcpSocket->socketDescriptor());
 }
 
 void Server::displayError(QAbstractSocket::SocketError socketError)
@@ -135,7 +131,7 @@ void Server::slot_sendTestDataToServer()
    initialQuery.set_clientname(_gameSettings.clientName().toUtf8().constData());
    QString OSName("");
 #ifdef Q_OS_WIN
-  OSName = Windows";
+  OSName = "Windows";
 #elif defined __linux__
   OSName = "Linux";
 #endif
@@ -186,5 +182,91 @@ void Server::SlotUserHaveChangedGameSettings(const GameSettings &settings)
 {
     _gameSettings.applyNewSettings(settings);
     //NAY-001: EMIT HERE SIGNAL TO NOTIFY REMMOTE SERVER
+}
+
+void Server::MessageParser(const QByteArray &data, int socketDescriptor)
+{
+
+    qDebug() << "NAY-0001: Parsing Message for socketDescriptor: " << socketDescriptor;
+
+    serverMessageSystem::CommonHeader header;
+    if(!header.ParseFromArray(data.data(), data.size()))
+    {
+       qDebug() << "NAY-0001: Error during protobuf message parsing! ";
+       qDebug() << "NAY-001: Array size: array.size()";
+       qDebug() << "NAY-0001: Error during protobuf message parsing! ";
+    }
+    else
+    {
+       qDebug() << "NAY-0001: Header Parsed successfully! ";
+       qDebug() << "NAY-001: Array size: " << data.size();
+
+       switch (header.subsystem())
+       {
+            case serverMessageSystem::SubSystemID::CONNECTION_SUBSYSTEM:
+            {
+                switch (header.commandid())
+                {
+                    case serverMessageSystem::ConnectionSubSysCommandsID::SERVER_INPUT_QUERY_REPLY:
+                    {
+                        ProcessServerInputQueryReply(data, socketDescriptor);
+                    }
+                    break;
+
+                    case serverMessageSystem::ConnectionSubSysCommandsID::CLIENT_ROOM_CREATION_REPLY:
+                    break;
+
+                    case serverMessageSystem::ConnectionSubSysCommandsID::CLIENT_CONNECTION_TO_ROOM_REPLY:
+                    break;
+
+                    default:
+                        qDebug() << ("NAY-0001: Unsupported Command in CONNECTION_SUBSYSTEM with CmdID: " + QString::number(header.commandid()));
+                    break;
+                 }
+            }
+            break;
+       case serverMessageSystem::SubSystemID::GAME_ACTIONS_SUBSYSTEM:
+           qDebug() << ("NAY-0001: Message SubSystem"
+                                      " GAME_ACTIONS_SUBSYSTEM "
+                                      " Not supported yet.");
+           break;
+
+       case serverMessageSystem::SubSystemID::GAME_NOTIFICATION_SUBSYSTEM:
+           qDebug() << ("NAY-0001: Message SubSystem"
+                                      " GAME_NOTIFICATION_SUBSYSTEM "
+                                      " Not supported yet.");
+           break;
+
+
+       default:
+           qDebug() << ("NAY-0001: Message SubSystem"
+                                      " GAME_NOTIFICATION_SUBSYSTEM "
+                                      " Not supported yet.");
+           break;
+       }
+    }
+
+}
+
+void Server::ProcessServerInputQueryReply(const QByteArray &data, int socketDescriptor)
+{
+    serverMessageSystem::ServerQueryReply message;
+
+    if (!message.ParseFromArray(data.data(), data.size()))
+    {
+        qDebug() << ("NAY-001: Error while ProcessServerInputQueryReply() ");
+        return;
+    }
+
+    qDebug() << ("NAY-001: ServerQueryReply: ServerName: " + QString::fromStdString(message.servername()));
+    qDebug() << ("NAY-001: ServerQueryReply: ServerName: " + QString::number(message.roomcreationallowed()));
+    qDebug() << ("NAY-001: ServerQueryReply: ServerName: " + QString::number(message.connectiontoroomallowed()));
+
+    ServerQueryReplyData replyData(message.roomcreationallowed(),
+                              message.connectiontoroomallowed(),
+                              QString::fromStdString(message.servername()));
+
+    emit SignalReportServerQueryReplyData(replyData);
+
 }
 

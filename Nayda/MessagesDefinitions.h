@@ -1,12 +1,12 @@
 #ifndef PROTOBUFMESSAGESIDENTIFICATORS_H
 #define PROTOBUFMESSAGESIDENTIFICATORS_H
 
+#include <QString>
 
-#define MessageServerInputQueryID 1
-#define MessageServerQueryReplyID 2
-#define MessageClientEnteringRequestID 3
-#define MessageClientRoomCreationReplyID 4
-#define MessageClientConnectionToRoomReplyID 5
+namespace MessageSystem {
+
+
+}
 
 enum class MessageSubSystems
 {
@@ -23,6 +23,17 @@ enum class ConnectionSubSysCommandsID
     CLIENT_ROOM_CREATION_REPLY = 3,
     CLIENT_CONNECTION_TO_ROOM_REQUEST = 4,
     CLIENT_CONNECTION_TO_ROOM_REPLY = 5
+};
+
+struct ServerQueryReplyData
+{
+    bool _roomCreationAllowed;
+    bool _connectionToRoomAllowed;
+    QString _serverName;
+
+    ServerQueryReplyData(bool creationAllowed, bool connectionAllowed, QString name) :
+        _roomCreationAllowed(creationAllowed), _connectionToRoomAllowed(connectionAllowed), _serverName(name)
+    { }
 };
 
 #endif // PROTOBUFMESSAGESIDENTIFICATORS_H
