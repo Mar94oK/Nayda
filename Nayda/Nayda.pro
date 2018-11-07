@@ -117,8 +117,8 @@ DISTFILES += \
 unix: LIBS += /usr/local/lib/libprotobuf.a
 win32: LIBS += $$PWD/Libs/libprotobuf.a
 
-INCLUDEPATH += $$PWD/Includes
-DEPENDPATH += $$PWD/Includes
+win32: INCLUDEPATH += $$PWD/Includes
+win32: DEPENDPATH += $$PWD/Includes
 
 win32:!win32-g++: PRE_TARGETDEPS += $$PWD/Libs/protobuf.lib
 else:win32-g++: PRE_TARGETDEPS += $$PWD/Libs/libprotobuf.a
