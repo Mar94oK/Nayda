@@ -109,24 +109,11 @@ void Server::displayError(QAbstractSocket::SocketError socketError)
 
 void Server::slot_sendTestDataToServer()
 {
-    //sendDataToTheConnection("TestData");
-//   serverMessageSystem::ClientEnteringRequest initialRequest;
-//   serverMessageSystem::GameType* gameType(initialRequest.mutable_gametype());
-//   gameType->set_hasaddonclericalerrors(true);
-//   gameType->set_hasaddonwildaxe(true);
-//   gameType->set_rulestype(::serverMessageSystem::RulesType::Automatic);
-
-//   initialRequest.set_messageid(1);
-//   initialRequest.set_clientname("EmpERRoR");
-//   initialRequest.set_enteringrequest(::serverMessageSystem::GameCreationRequest::CreateTheGame);
-//   initialRequest.PrintDebugString();
 
    serverMessageSystem::ServerInputQuery initialQuery;
-//   serverMessageSystem::Base* base(initialQuery.mutable_messageid());
-//   base->set_messageid(MessageServerInputQueryID);
-//   initialQuery.set_clientname(_gameSettings.clientName().toUtf8().constData());
    serverMessageSystem::CommonHeader *header(initialQuery.mutable_header());
    header->set_subsystem(serverMessageSystem::SubSystemID::CONNECTION_SUBSYSTEM);
+   header->set_commandid(static_cast<uint32_t>(serverMessageSystem::ConnectionSubSysCommandsID::SERVER_INPUT_QUERY_REQUEST));
    initialQuery.set_connectioncmdid(serverMessageSystem::ConnectionSubSysCommandsID::SERVER_INPUT_QUERY_REQUEST);
    initialQuery.set_clientname(_gameSettings.clientName().toUtf8().constData());
    QString OSName("");
@@ -136,6 +123,8 @@ void Server::slot_sendTestDataToServer()
   OSName = "Linux";
 #endif
    initialQuery.set_ostype(OSName.toUtf8().constData());
+
+   initialQuery.PrintDebugString();
 
    QByteArray block;
    block.resize(initialQuery.ByteSize());
