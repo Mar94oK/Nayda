@@ -98,7 +98,7 @@ void playMenu::SlotProcessServerQueryReplyData(ServerQueryReplyData data)
         ui->btn_CreateLobby->setEnabled(true);
     }
     QString text = ui->lbl_Connection->text();
-    ui->lbl_Connection->setText(ui->lbl_Connection->text() + data._serverName);
+    ui->lbl_Connection->setText(ui->lbl_Connection->text() + " Server Name: " + data._serverName);
 }
 
 void playMenu::setUpUiGeometricRelations()
@@ -155,7 +155,7 @@ void playMenu::setUpUiPicturesAddresses()
     _createRoomButtonPictureAddressAllowed = picturesLocationBasis + "crown_ready.png";
 
     _joinRoomButtonPictureAddressDefault = picturesLocationBasis + "binocular_gray.png";
-    _joinRoomButtonPictureAddressAllowed = picturesLocationBasis + "binocular_read.png";
+    _joinRoomButtonPictureAddressAllowed = picturesLocationBasis + "binocular_ready.png";
 }
 
 void playMenu::setUpButtonPicture(QPushButton* const btn, const QString &picturePath, double widthCoeff, double heightWidthRelatio)
