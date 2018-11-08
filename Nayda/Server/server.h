@@ -72,6 +72,7 @@ private slots:
     void displayError(QAbstractSocket::SocketError socketError);
     void SlotSocketStateChanged(QAbstractSocket::SocketState state);
 
+
 public slots:
 
     void slot_saveServerSettings(serverSettings settings)
@@ -94,6 +95,10 @@ signals:
     void SignalServerHasChangedGameSettings(const GameSettings&);
     void SignalReportServerQueryReplyData(ServerQueryReplyData data);
 
+//error signals
+
+    void SignalRemoteHostClosedErrorReport();
+
 private:
 
     GameSettings _gameSettings;
@@ -102,6 +107,7 @@ private:
 
     void MessageParser(const QByteArray& data, int socketDescriptor);
     void ProcessServerInputQueryReply(const QByteArray &data, int socketDescriptor);
+    void SocketErorHandler(QAbstractSocket::SocketError socketError);
 
 public:
 

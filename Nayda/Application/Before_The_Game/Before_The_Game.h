@@ -46,6 +46,9 @@ signals:
 
     void SignalServerQueryReplyData(ServerQueryReplyData data);
 
+    void SignalRemoteHostClosedErrorReport();
+
+
 public slots:
 
     void dbg_switch_to_game_mode_button_pressed(void);
@@ -56,6 +59,9 @@ public slots:
     void SlotApplyNewGameSettings(GameSettings settings);
 
     void SlotProcessServerQueryReplyData(ServerQueryReplyData data);
+
+//error processing
+    void SlotProcessRemoteHostClosedErrorReport() { emit SignalRemoteHostClosedErrorReport(); }
 
 private:
 

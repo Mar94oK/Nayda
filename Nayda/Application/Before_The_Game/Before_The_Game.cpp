@@ -126,4 +126,5 @@ void Before_The_Game::setUpSignalsSlotsConnections()
     connect(newRoomDialog, &playMenu::sig_dbgBtnPlayWithDefaultsPressed, this, &Before_The_Game::hide);
 
     QObject::connect(this, &Before_The_Game::SignalServerQueryReplyData, newRoomDialog, &playMenu::SlotProcessServerQueryReplyData);
+    QObject::connect(this, &Before_The_Game::SignalRemoteHostClosedErrorReport, newRoomDialog, &playMenu::SlotProcessRemoteHostClosedErrorReport);
 }

@@ -18,4 +18,6 @@ SystemManager::SystemManager(Before_The_Game * beforeTheGame,
     QObject::connect(m_serverPtr, &Server::SignalServerHasChangedGameSettings, m_beforeTheGamePtr, &Before_The_Game::SlotApplyNewGameSettings);
     QObject::connect(m_beforeTheGamePtr, &Before_The_Game::SignalUserHaveChagedGameSettigs, m_serverPtr, &Server::SlotUserHaveChangedGameSettings);
     QObject::connect(m_serverPtr, &Server::SignalReportServerQueryReplyData, m_beforeTheGamePtr, &Before_The_Game::SlotProcessServerQueryReplyData);
+    QObject::connect(m_serverPtr, &Server::SignalRemoteHostClosedErrorReport, m_beforeTheGamePtr, &Before_The_Game::SlotProcessRemoteHostClosedErrorReport);
+
 }

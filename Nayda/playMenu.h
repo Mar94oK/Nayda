@@ -75,7 +75,7 @@ private slots:
 public slots:
 
     void slot_startGameWithDefaults(void);
-    void slot_showServerSettings(void);
+    void SlotShowServerSettings(void);
     void SlotUserHaveChangedServerSettings(serverSettings settings);
     void SlotSetUpConnection();
     void slot_sendTestDataToServer();
@@ -83,6 +83,11 @@ public slots:
     void SlotUserHaveChangedGameSettings(const GameSettings& settings);
 
     void SlotProcessServerQueryReplyData(ServerQueryReplyData data);
+
+//erorrs processing
+
+    void SlotProcessRemoteHostClosedErrorReport();
+
 
 private:
 

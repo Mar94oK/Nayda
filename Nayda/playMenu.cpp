@@ -42,7 +42,7 @@ void playMenu::slot_startGameWithDefaults()
     emit sig_dbgBtnPlayWithDefaultsPressed(true);
 }
 
-void playMenu::slot_showServerSettings()
+void playMenu::SlotShowServerSettings()
 {
     serverSettingsWindow = new ServerSettings();
     QObject::connect(serverSettingsWindow, &ServerSettings::sig_userHaveChangedServerSettings, this, &playMenu::SlotUserHaveChangedServerSettings);
@@ -55,7 +55,7 @@ void playMenu::SlotUserHaveChangedServerSettings(serverSettings settings)
     _connectionState = ConnectionState::CompleteServerSettings;
     setUpButtonPicture(ui->btn_Connection, _connectionButtonPictureAddressSetUp, buttonsWidthCoefficient, buttonsHeightWidthRelatio);
     QObject::connect(ui->btn_Connection, &QPushButton::clicked, this, &playMenu::SlotSetUpConnection);
-    QObject::disconnect(ui->btn_Connection, &QPushButton::clicked, this, &playMenu::slot_showServerSettings);
+    QObject::disconnect(ui->btn_Connection, &QPushButton::clicked, this, &playMenu::SlotShowServerSettings);
     ui->lbl_Connection->setText("Сервер: " + settings.first + '\n'+
                                 "Порт: " + settings.second + '\n' +
                                 "Нажмите ещё раз для соединения с сервером!");
@@ -110,6 +110,18 @@ void playMenu::SlotProcessServerQueryReplyData(ServerQueryReplyData data)
     setUpButtonPicture(ui->btn_Connection, _connectionButtonPictureAddressConnected, buttonsWidthCoefficient, buttonsHeightWidthRelatio);
 }
 
+void playMenu::SlotProcessRemoteHostClosedErrorReport()
+{
+    ui->btn_Connection->setEnabled(true);
+    setUpButtonPicture(ui->btn_Connection, _connectionButtonPictureAddressDefault, buttonsWidthCoefficient, buttonsHeightWidthRelatio);
+    QObject::connect(ui->btn_Connection, &QPushButton::clicked, this, &playMenu::SlotShowServerSettings);
+    ui->btn_CreateLobby->setEnabled(false);
+    setUpButtonPicture(ui->btn_CreateLobby, _createRoomButtonPictureAddressDefault, buttonsWidthCoefficient, buttonsHeightWidthRelatio);
+    ui->btn_JoinToExistingLobby->setEnabled(false);
+    setUpButtonPicture(ui->btn_JoinToExistingLobby, _joinRoomButtonPictureAddressDefault, buttonsWidthCoefficient, buttonsHeightWidthRelatio);
+    ui->lbl_Connection->setText("Сервер отключился!\n Пожалуйста, заново настройте подключение и попробуйте соединиться!");
+}
+
 void playMenu::setUpUiGeometricRelations()
 {
     QRect HwScreenSize = QApplication::desktop()->screenGeometry();
@@ -132,10 +144,10 @@ void playMenu::setUpUiGeometricRelations()
 void playMenu::setUpSignalsSlotsConnections()
 {
     QObject::connect(ui->btn_DebugStart, SIGNAL(clicked(bool)), this, SLOT(slot_startGameWithDefaults()));
-    QObject::connect(ui->btn_ServerSettings, &QPushButton::clicked, this, &playMenu::slot_showServerSettings);
+    QObject::connect(ui->btn_ServerSettings, &QPushButton::clicked, this, &playMenu::SlotShowServerSettings);
     QObject::connect(ui->btn_GameSettings, &QPushButton::clicked, this, &playMenu::SlotShowGameSettingsWindow);
     QObject::connect(ui->btn_SendTestData, &QPushButton::clicked, this, &playMenu::slot_sendTestDataToServer);
-    QObject::connect(ui->btn_Connection, &QPushButton::clicked, this, &playMenu::slot_showServerSettings);
+    QObject::connect(ui->btn_Connection, &QPushButton::clicked, this, &playMenu::SlotShowServerSettings);
 }
 
 void playMenu::setUpUiPicturesAddresses()

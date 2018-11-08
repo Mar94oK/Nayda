@@ -92,6 +92,7 @@ void Server::displayError(QAbstractSocket::SocketError socketError)
     switch (socketError) {
     case QAbstractSocket::RemoteHostClosedError:
         qDebug() << "Host is closed!";
+        emit SignalRemoteHostClosedErrorReport();
         break;
     case QAbstractSocket::HostNotFoundError:
         qDebug() << "The host was not found. Please check the "
@@ -267,6 +268,29 @@ void Server::ProcessServerInputQueryReply(const QByteArray &data, int socketDesc
                               QString::fromStdString(message.servername()));
 
     emit SignalReportServerQueryReplyData(replyData);
+}
+
+void Server::SocketErorHandler(QAbstractSocket::SocketError socketError)
+{
+    switch (socketError)
+    {
+    case QAbstractSocket::RemoteHostClosedError:
+        qDebug() << "Host is closed!";
+        emit SignalRemoteHostClosedErrorReport();
+        break;
+    case QAbstractSocket::HostNotFoundError:
+        qDebug() << "The host was not found. Please check the "
+                                    "host name and port settings.";
+        break;
+    case QAbstractSocket::ConnectionRefusedError:
+        qDebug() <<"The connection was refused by the peer. "
+                                    "Make sure the fortune server is running, "
+                                    "and check that the host name and port "
+                                    "settings are correct.";
+        break;
+    default:
+        qDebug() << "The following error occurred: %1." << tcpSocket->errorString();
+    }
 }
 
 
