@@ -53,6 +53,7 @@ private:
 
     ConnectionState _connectionState;
     GameSettings    _gameSettings;
+    serverSettings  _serverSettings;
 
 public:
 

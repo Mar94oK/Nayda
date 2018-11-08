@@ -56,7 +56,11 @@ void playMenu::slot_userHaveChangedServerSettings(serverSettings settings)
     setUpButtonPicture(ui->btn_Connection, _connectionButtonPictureAddressSetUp, buttonsWidthCoefficient, buttonsHeightWidthRelatio);
     QObject::connect(ui->btn_Connection, &QPushButton::clicked, this, &playMenu::slot_openRoomForConnection);
     QObject::disconnect(ui->btn_Connection, &QPushButton::clicked, this, &playMenu::slot_showServerSettings);
-    ui->lbl_Connection->setText("Сервер: " + settings.first + " Порт: " + settings.second);
+    ui->lbl_Connection->setText("Сервер: " + settings.first + '\n'+
+                                "Порт: " + settings.second + '\n' +
+                                "Нажмите ещё раз для соединения с сервером!");
+    _serverSettings.first = settings.first;
+    _serverSettings.second = settings.second;
     emit sig_userHaveChangedServerSettings(settings);
 }
 
@@ -97,8 +101,10 @@ void playMenu::SlotProcessServerQueryReplyData(ServerQueryReplyData data)
         setUpButtonPicture(ui->btn_CreateLobby, _createRoomButtonPictureAddressAllowed, buttonsWidthCoefficient, buttonsHeightWidthRelatio);
         ui->btn_CreateLobby->setEnabled(true);
     }
-    QString text = ui->lbl_Connection->text();
-    ui->lbl_Connection->setText(ui->lbl_Connection->text() + " Server Name: " + data._serverName);
+    ui->lbl_Connection->setText("Сервер: " + _serverSettings.first + '\n'+
+                                "Порт: " + _serverSettings.second + '\n' +
+                                "Имя сервера: " + data._serverName);
+
 }
 
 void playMenu::setUpUiGeometricRelations()
