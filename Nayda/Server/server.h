@@ -42,6 +42,7 @@ private:
      Game_Card_Stock _Basis_Treasures;
 
      QPair<QString, QString> defaultSettings;
+     QTimer *connectionTimeoutTimer;
 
 private:
 
@@ -50,6 +51,8 @@ private:
     QDataStream inputStream;
     QDataStream outputSream;
     serverSettings _srvrSettings;
+
+    bool _socketStateHandlerReportedConnectedState;
 
 private:
 
@@ -98,6 +101,10 @@ signals:
 //error signals
 
     void SignalRemoteHostClosedErrorReport();
+    void SignalRemoteHostConnectionRefusedErrorReport();
+    void SignalRemoteHostNotFoundErrorReport();
+    void SignalLockConnectionButtonWhileConnecting();
+    void SignalUnlockConnectionButtonAfterConnection();
 
 private:
 
@@ -108,6 +115,7 @@ private:
     void MessageParser(const QByteArray& data, int socketDescriptor);
     void ProcessServerInputQueryReply(const QByteArray &data, int socketDescriptor);
     void SocketErorHandler(QAbstractSocket::SocketError socketError);
+    void ConnectionTimeoutHandler();
 
 public:
 

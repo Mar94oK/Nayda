@@ -122,6 +122,35 @@ void playMenu::SlotProcessRemoteHostClosedErrorReport()
     ui->lbl_Connection->setText("Сервер отключился!\n Пожалуйста, заново настройте подключение и попробуйте соединиться!");
 }
 
+void playMenu::SlotProcessRemoteHostConnectionRefusedErrorReport()
+{
+    ui->btn_Connection->setEnabled(true);
+    setUpButtonPicture(ui->btn_Connection, _connectionButtonPictureAddressDefault, buttonsWidthCoefficient, buttonsHeightWidthRelatio);
+    QObject::disconnect(ui->btn_Connection, &QPushButton::clicked, this, &playMenu::SlotSetUpConnection);
+    QObject::connect(ui->btn_Connection, &QPushButton::clicked, this, &playMenu::SlotShowServerSettings);
+    ui->lbl_Connection->setText("Сервер отклонил попытку соединения!\n Пожалуйста, убедитесь, что подключаетесь к нужному серверу\n"
+                                "и проверьте порт подключения.");
+}
+
+void playMenu::SlotProcessRemoteHostNotFoundErrorReport()
+{
+    ui->btn_Connection->setEnabled(true);
+    setUpButtonPicture(ui->btn_Connection, _connectionButtonPictureAddressDefault, buttonsWidthCoefficient, buttonsHeightWidthRelatio);
+    QObject::connect(ui->btn_Connection, &QPushButton::clicked, this, &playMenu::SlotShowServerSettings);
+    ui->lbl_Connection->setText("Сервер не обнаружен!\n Пожалуйста, укажите другой сервер, или проверьте доступность текущего.\n"
+                                "Возможно, на нём не запущен Манчкин?");
+}
+
+void playMenu::SlotProcessLockingConnectionButtonWhileConnecting()
+{
+    ui->btn_Connection->setEnabled(false);
+}
+
+void playMenu::SlotProcessUnlockConnectionButtonAfterConnection()
+{
+    ui->btn_Connection->setEnabled(true);
+}
+
 void playMenu::setUpUiGeometricRelations()
 {
     QRect HwScreenSize = QApplication::desktop()->screenGeometry();

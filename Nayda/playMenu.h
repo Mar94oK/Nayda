@@ -87,7 +87,11 @@ public slots:
 //erorrs processing
 
     void SlotProcessRemoteHostClosedErrorReport();
+    void SlotProcessRemoteHostConnectionRefusedErrorReport();
+    void SlotProcessRemoteHostNotFoundErrorReport();
 
+    void SlotProcessLockingConnectionButtonWhileConnecting();
+    void SlotProcessUnlockConnectionButtonAfterConnection();
 
 private:
 

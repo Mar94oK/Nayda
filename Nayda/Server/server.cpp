@@ -7,6 +7,8 @@
 #include <fstream>
 #include <iosfwd>
 #include <sstream>
+#include <QThread>
+#include <QTimer>
 
 
 Server::Server(QObject *parent, RoomPosessionType posessionType) : QObject(parent), _roomPosessionType(posessionType)
@@ -91,18 +93,31 @@ void Server::displayError(QAbstractSocket::SocketError socketError)
 {
     switch (socketError) {
     case QAbstractSocket::RemoteHostClosedError:
+
+    {
         qDebug() << "Host is closed!";
         emit SignalRemoteHostClosedErrorReport();
+        if (connectionTimeoutTimer->isActive())
+            connectionTimeoutTimer->stop();
+    }
+
+
         break;
     case QAbstractSocket::HostNotFoundError:
         qDebug() << "The host was not found. Please check the "
                                     "host name and port settings.";
+        emit SignalRemoteHostNotFoundErrorReport();
         break;
     case QAbstractSocket::ConnectionRefusedError:
+    {
         qDebug() <<"The connection was refused by the peer. "
                                     "Make sure the fortune server is running, "
                                     "and check that the host name and port "
                                     "settings are correct.";
+        if (connectionTimeoutTimer->isActive())
+            connectionTimeoutTimer->stop();
+        emit SignalRemoteHostConnectionRefusedErrorReport();
+    }
         break;
     default:
         qDebug() << "The following error occurred: %1." << tcpSocket->errorString();
@@ -114,10 +129,42 @@ void Server::SlotSocketStateChanged(QAbstractSocket::SocketState state)
     switch (state) {
     case QAbstractSocket::SocketState::ClosingState:
         qDebug() << "Socket is in the Closing State";
+        _socketStateHandlerReportedConnectedState = false;
+        break;
+    case QAbstractSocket::SocketState::ConnectedState:
+        qDebug() << "Socket is in the Connected State!";
+        _socketStateHandlerReportedConnectedState = true;
+        emit SignalUnlockConnectionButtonAfterConnection();
+        ConnectionSendOutgoingData(FormServerInputQueryRequest());
+        break;
+    case QAbstractSocket::SocketState::UnconnectedState:
+        qDebug() << "Socket is in the UnconnectedState State!";
+        break;
+    case QAbstractSocket::SocketState::HostLookupState:
+        qDebug() << "Socket is in the HostLookupState State!";
+        break;
+    case QAbstractSocket::SocketState::BoundState:
+        qDebug() << "Socket is in the BoundState State!";
+        break;
+    case QAbstractSocket::SocketState::ListeningState:
+        qDebug() << "Socket is in the ListeningState State!";
+        break;
+    case QAbstractSocket::SocketState::ConnectingState:
+        qDebug() << "Socket is in the ConnectingState State!";
+        break;
 
-        break;
     default:
+        qDebug() << "Socket is in the Some Another State!";
+        _socketStateHandlerReportedConnectedState = false;
         break;
+
+        //UnconnectedState,
+        //HostLookupState,
+        //ConnectingState,
+        //ConnectedState,
+        //BoundState,
+        //ListeningState,
+        //ClosingState
     }
 }
 
@@ -158,13 +205,16 @@ void Server::SlotSetUpConnection()
         tcpSocket->abort();
         tcpSocket->connectToHost(_srvrSettings.first, static_cast<unsigned short>(_srvrSettings.second.toInt()));
 
-        //Error signal will be emmitted here if socket conenction was refused.
+        //Error signal will be emmitted here if socket connection was refused.
         //Place handler there.
 
-        qDebug() << "Connected!";
-        qDebug() << "Ready to send data";
-        qDebug() << "NAY-0001: Sending data to the server!";
-        ConnectionSendOutgoingData(FormServerInputQueryRequest());
+        connectionTimeoutTimer = new QTimer(this);
+        connectionTimeoutTimer->setSingleShot(true);
+        connectionTimeoutTimer->setInterval(15000);
+        emit SignalLockConnectionButtonWhileConnecting();
+        connectionTimeoutTimer->start();
+
+        QObject::connect(connectionTimeoutTimer, &QTimer::timeout, this, &Server::ConnectionTimeoutHandler);
     }
 }
 
@@ -281,17 +331,43 @@ void Server::SocketErorHandler(QAbstractSocket::SocketError socketError)
     case QAbstractSocket::HostNotFoundError:
         qDebug() << "The host was not found. Please check the "
                                     "host name and port settings.";
+        emit SignalRemoteHostNotFoundErrorReport();
+        emit SignalUnlockConnectionButtonAfterConnection();
         break;
     case QAbstractSocket::ConnectionRefusedError:
         qDebug() <<"The connection was refused by the peer. "
                                     "Make sure the fortune server is running, "
                                     "and check that the host name and port "
                                     "settings are correct.";
+        emit SignalRemoteHostConnectionRefusedErrorReport();
+        emit SignalUnlockConnectionButtonAfterConnection();
         break;
     default:
         qDebug() << "The following error occurred: %1." << tcpSocket->errorString();
     }
 }
+
+void Server::ConnectionTimeoutHandler()
+{
+    //for the fact, should never go here...
+    if (_socketStateHandlerReportedConnectedState)
+    {
+        qDebug() << "Socket State Handler Reported Connected state Earlier then the timer. Nothing to do here!";
+        return;
+    }
+
+    if (tcpSocket->state() != QTcpSocket::SocketState::ConnectedState)
+        qDebug() << "Connection timeout occured!";
+    else
+    {
+        qDebug() << "Connected!";
+        qDebug() << "Ready to send data";
+        qDebug() << "NAY-0001: Sending ServerQueryRequest!";
+        emit SignalUnlockConnectionButtonAfterConnection();
+        ConnectionSendOutgoingData(FormServerInputQueryRequest());
+    }
+}
+
 
 
 QByteArray Server::FormServerInputQueryRequest()

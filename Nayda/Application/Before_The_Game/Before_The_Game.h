@@ -47,6 +47,11 @@ signals:
     void SignalServerQueryReplyData(ServerQueryReplyData data);
 
     void SignalRemoteHostClosedErrorReport();
+    void SignalRemoteHostConnectionRefusedErrorReport();
+    void SignalRemoteHostNotFoundErrorReport();
+
+    void SignalLockConnectionButtonWhileConnecting();
+    void SignalUnclockConnectionButtonAfterConnection();
 
 
 public slots:
@@ -62,6 +67,14 @@ public slots:
 
 //error processing
     void SlotProcessRemoteHostClosedErrorReport() { emit SignalRemoteHostClosedErrorReport(); }
+    void SlotProcessRemoteHostConnectionRefusedErrorReport() { emit SignalRemoteHostConnectionRefusedErrorReport();
+                                                             qDebug() << "NAY-001: I am here! ";}
+    void SlotProcessRemoteHostNotFoundErrorReport() { emit SignalRemoteHostNotFoundErrorReport(); }
+
+    void SlotProcessConnectionButtonLockingWhileConnecting() { emit SignalLockConnectionButtonWhileConnecting();
+                                                                qDebug() << "Locking the button! "; }
+    void SlotProcessUnlockConnectionButtonAfterConnection() { emit SignalUnclockConnectionButtonAfterConnection(); }
+
 
 private:
 

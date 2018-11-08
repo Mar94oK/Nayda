@@ -20,4 +20,9 @@ SystemManager::SystemManager(Before_The_Game * beforeTheGame,
     QObject::connect(m_serverPtr, &Server::SignalReportServerQueryReplyData, m_beforeTheGamePtr, &Before_The_Game::SlotProcessServerQueryReplyData);
     QObject::connect(m_serverPtr, &Server::SignalRemoteHostClosedErrorReport, m_beforeTheGamePtr, &Before_The_Game::SlotProcessRemoteHostClosedErrorReport);
 
+    QObject::connect(m_serverPtr, &Server::SignalRemoteHostNotFoundErrorReport, m_beforeTheGamePtr, &Before_The_Game::SlotProcessRemoteHostNotFoundErrorReport);
+    QObject::connect(m_serverPtr, &Server::SignalRemoteHostConnectionRefusedErrorReport, m_beforeTheGamePtr, &Before_The_Game::SlotProcessRemoteHostConnectionRefusedErrorReport);
+    QObject::connect(m_serverPtr, &Server::SignalLockConnectionButtonWhileConnecting, m_beforeTheGamePtr, &Before_The_Game::SlotProcessConnectionButtonLockingWhileConnecting);
+    QObject::connect(m_serverPtr, &Server::SignalUnlockConnectionButtonAfterConnection, m_beforeTheGamePtr, &Before_The_Game::SlotProcessUnlockConnectionButtonAfterConnection);
+
 }
