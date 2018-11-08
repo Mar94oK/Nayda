@@ -70,6 +70,7 @@ private slots:
     //void slotReadIncomingData();
     void slotConnectionReadIncomingData();
     void displayError(QAbstractSocket::SocketError socketError);
+    void SlotSocketStateChanged(QAbstractSocket::SocketState state);
 
 public slots:
 
@@ -79,8 +80,8 @@ public slots:
         qDebug() << "Server settings saved!";
     }
 
-    void slot_sendTestDataToServer();
-    void slot_openConnection();
+    void SlotSendTestDataToServer();
+    void SlotSetUpConnection();
     void slot_sessionOpened();
 
     void SlotUserHaveChangedGameSettings(const GameSettings& settings);
@@ -101,6 +102,10 @@ private:
 
     void MessageParser(const QByteArray& data, int socketDescriptor);
     void ProcessServerInputQueryReply(const QByteArray &data, int socketDescriptor);
+
+public:
+
+    QByteArray FormServerInputQueryRequest();
 
 };
 

@@ -49,9 +49,9 @@ void Before_The_Game::slot_userHaveChangedServerSettings(serverSettings settings
 }
 
 
-void Before_The_Game::slot_openRoomForConnection()
+void Before_The_Game::SlotSetUpConnection()
 {
-    emit sig_openRoomForConnection();
+    emit SignalSetUpConnection();
 }
 
 
@@ -115,7 +115,7 @@ void Before_The_Game::setUpSignalsSlotsConnections()
 
     QObject::connect(newRoomDialog, &playMenu::sig_userHaveChangedServerSettings, this, &Before_The_Game::slot_userHaveChangedServerSettings);
     QObject::connect(newRoomDialog, &playMenu::SignalUserHaveChangedGameSettings, this, &Before_The_Game::SlotApplyNewGameSettings);
-    QObject::connect(newRoomDialog, &playMenu::sig_openRoomForConnection, this, &Before_The_Game::slot_openRoomForConnection);
+    QObject::connect(newRoomDialog, &playMenu::SignalSetUpConnection, this, &Before_The_Game::SlotSetUpConnection);
     QObject::connect(newRoomDialog, &playMenu::sig_sendTestDataToServer, this, &Before_The_Game::slot_sendTestDataToServer);
 
     QObject::connect(ui->btn_Play, &QPushButton::clicked, newRoomDialog, &playMenu::show);

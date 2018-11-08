@@ -45,16 +45,16 @@ void playMenu::slot_startGameWithDefaults()
 void playMenu::slot_showServerSettings()
 {
     serverSettingsWindow = new ServerSettings();
-    QObject::connect(serverSettingsWindow, &ServerSettings::sig_userHaveChangedServerSettings, this, &playMenu::slot_userHaveChangedServerSettings);
+    QObject::connect(serverSettingsWindow, &ServerSettings::sig_userHaveChangedServerSettings, this, &playMenu::SlotUserHaveChangedServerSettings);
     serverSettingsWindow->setModal(true);
     serverSettingsWindow->show();
 }
 
-void playMenu::slot_userHaveChangedServerSettings(serverSettings settings)
+void playMenu::SlotUserHaveChangedServerSettings(serverSettings settings)
 {
     _connectionState = ConnectionState::CompleteServerSettings;
     setUpButtonPicture(ui->btn_Connection, _connectionButtonPictureAddressSetUp, buttonsWidthCoefficient, buttonsHeightWidthRelatio);
-    QObject::connect(ui->btn_Connection, &QPushButton::clicked, this, &playMenu::slot_openRoomForConnection);
+    QObject::connect(ui->btn_Connection, &QPushButton::clicked, this, &playMenu::SlotSetUpConnection);
     QObject::disconnect(ui->btn_Connection, &QPushButton::clicked, this, &playMenu::slot_showServerSettings);
     ui->lbl_Connection->setText("Сервер: " + settings.first + '\n'+
                                 "Порт: " + settings.second + '\n' +
@@ -64,9 +64,9 @@ void playMenu::slot_userHaveChangedServerSettings(serverSettings settings)
     emit sig_userHaveChangedServerSettings(settings);
 }
 
-void playMenu::slot_openRoomForConnection()
+void playMenu::SlotSetUpConnection()
 {
-    emit sig_openRoomForConnection();
+    emit SignalSetUpConnection();
 }
 
 void playMenu::slot_sendTestDataToServer()
@@ -105,6 +105,9 @@ void playMenu::SlotProcessServerQueryReplyData(ServerQueryReplyData data)
                                 "Порт: " + _serverSettings.second + '\n' +
                                 "Имя сервера: " + data._serverName);
 
+    //Disabling new connection attempts till some Errors occured.
+    QObject::disconnect(ui->btn_Connection, &QPushButton::clicked, this, &playMenu::SlotSetUpConnection);
+    setUpButtonPicture(ui->btn_Connection, _connectionButtonPictureAddressConnected, buttonsWidthCoefficient, buttonsHeightWidthRelatio);
 }
 
 void playMenu::setUpUiGeometricRelations()

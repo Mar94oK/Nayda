@@ -65,7 +65,7 @@ signals:
     void sig_dbgBtnPlayWithDefaultsPressed(bool);
     void sig_userIsClosingStartNewRoomWindow(bool);
     void sig_userHaveChangedServerSettings(serverSettings settings);
-    void sig_openRoomForConnection();
+    void SignalSetUpConnection();
     void sig_sendTestDataToServer();
 
     void SignalUserHaveChangedGameSettings(const GameSettings&);
@@ -76,8 +76,8 @@ public slots:
 
     void slot_startGameWithDefaults(void);
     void slot_showServerSettings(void);
-    void slot_userHaveChangedServerSettings(serverSettings settings);
-    void slot_openRoomForConnection();
+    void SlotUserHaveChangedServerSettings(serverSettings settings);
+    void SlotSetUpConnection();
     void slot_sendTestDataToServer();
     void SlotShowGameSettingsWindow();
     void SlotUserHaveChangedGameSettings(const GameSettings& settings);

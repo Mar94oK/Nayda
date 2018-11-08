@@ -49,6 +49,7 @@ void Server::ConnectionSetUp()
     connect(tcpSocket, &QIODevice::readyRead, this, &Server::slotConnectionReadIncomingData);
     typedef void (QAbstractSocket::*QAbstractSocketErrorSignal)(QAbstractSocket::SocketError);
     connect(tcpSocket, static_cast<QAbstractSocketErrorSignal>(&QAbstractSocket::error),this, &Server::displayError);
+    connect(tcpSocket, &QAbstractSocket::stateChanged, this, &Server::SlotSocketStateChanged);
 
 }
 
@@ -107,9 +108,20 @@ void Server::displayError(QAbstractSocket::SocketError socketError)
     }
 }
 
-void Server::slot_sendTestDataToServer()
+void Server::SlotSocketStateChanged(QAbstractSocket::SocketState state)
 {
+    switch (state) {
+    case QAbstractSocket::SocketState::ClosingState:
+        qDebug() << "Socket is in the Closing State";
 
+        break;
+    default:
+        break;
+    }
+}
+
+void Server::SlotSendTestDataToServer()
+{
    serverMessageSystem::ServerInputQuery initialQuery;
    serverMessageSystem::CommonHeader *header(initialQuery.mutable_header());
    header->set_subsystem(serverMessageSystem::SubSystemID::CONNECTION_SUBSYSTEM);
@@ -134,7 +146,7 @@ void Server::slot_sendTestDataToServer()
    ConnectionSendOutgoingData(block);
 }
 
-void Server::slot_openConnection()
+void Server::SlotSetUpConnection()
 {
     if (_srvrSettings == defaultSettings)
     {
@@ -144,11 +156,15 @@ void Server::slot_openConnection()
     {
         tcpSocket->abort();
         tcpSocket->connectToHost(_srvrSettings.first, static_cast<unsigned short>(_srvrSettings.second.toInt()));
-        qDebug() << "Connected!";
-        qDebug() << "Now to send data...";
-        //sendDataToTheConnection("Some other data");
-    }
 
+        //Error signal will be emmitted here if socket conenction was refused.
+        //Place handler there.
+
+        qDebug() << "Connected!";
+        qDebug() << "Ready to send data";
+        qDebug() << "NAY-0001: Sending data to the server!";
+        ConnectionSendOutgoingData(FormServerInputQueryRequest());
+    }
 }
 
 void Server::slot_sessionOpened()
@@ -183,7 +199,6 @@ void Server::MessageParser(const QByteArray &data, int socketDescriptor)
     {
        qDebug() << "NAY-0001: Error during protobuf message parsing! ";
        qDebug() << "NAY-001: Array size: array.size()";
-       qDebug() << "NAY-0001: Error during protobuf message parsing! ";
     }
     else
     {
@@ -247,15 +262,36 @@ void Server::ProcessServerInputQueryReply(const QByteArray &data, int socketDesc
         return;
     }
 
-    qDebug() << ("NAY-001: ServerQueryReply: ServerName: " + QString::fromStdString(message.servername()));
-    qDebug() << ("NAY-001: ServerQueryReply: ServerName: " + QString::number(message.roomcreationallowed()));
-    qDebug() << ("NAY-001: ServerQueryReply: ServerName: " + QString::number(message.connectiontoroomallowed()));
-
     ServerQueryReplyData replyData(message.roomcreationallowed(),
                               message.connectiontoroomallowed(),
                               QString::fromStdString(message.servername()));
 
     emit SignalReportServerQueryReplyData(replyData);
-
 }
 
+
+QByteArray Server::FormServerInputQueryRequest()
+{
+    serverMessageSystem::ServerInputQuery message;
+    serverMessageSystem::CommonHeader *header(message.mutable_header());
+    header->set_subsystem(serverMessageSystem::SubSystemID::CONNECTION_SUBSYSTEM);
+    header->set_commandid(static_cast<uint32_t>(serverMessageSystem::ConnectionSubSysCommandsID::SERVER_INPUT_QUERY_REQUEST));
+    message.set_connectioncmdid(serverMessageSystem::ConnectionSubSysCommandsID::SERVER_INPUT_QUERY_REQUEST);
+    message.set_clientname(_gameSettings.clientName().toUtf8().constData());
+    QString OSName("");
+
+ #ifdef Q_OS_WIN
+   OSName = "Windows";
+ #elif defined __linux__
+   OSName = "Linux";
+ #endif
+
+    message.set_ostype(OSName.toUtf8().constData());
+    message.PrintDebugString();
+
+    QByteArray block;
+    block.resize(message.ByteSize());
+    message.SerializeToArray(block.data(), block.size());
+    qDebug() << "NAY-001: Serialized FormServerInputQueryRequest is ready.";
+    return block;
+}
