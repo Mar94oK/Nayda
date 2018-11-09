@@ -131,6 +131,7 @@ void Before_The_Game::setUpSignalsSlotsConnections()
     QObject::connect(this, &Before_The_Game::SignalRemoteHostConnectionRefusedErrorReport, newRoomDialog, &playMenu::SlotProcessRemoteHostConnectionRefusedErrorReport);
     QObject::connect(this, &Before_The_Game::SignalUnclockConnectionButtonAfterConnection, newRoomDialog, &playMenu::SlotProcessUnlockConnectionButtonAfterConnection);
     QObject::connect(this, &Before_The_Game::SignalLockConnectionButtonWhileConnecting, newRoomDialog, &playMenu::SlotProcessLockingConnectionButtonWhileConnecting);
+    QObject::connect(newRoomDialog, &playMenu::SignalSendClientRoomCreationRequest, this, &Before_The_Game::SlotSendClientRoomCreationRequest);
 
 
 

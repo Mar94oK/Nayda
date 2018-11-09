@@ -70,6 +70,8 @@ signals:
 
     void SignalUserHaveChangedGameSettings(const GameSettings&);
 
+    void SignalSendClientRoomCreationRequest();
+
 private slots:
 
 public slots:
@@ -83,6 +85,8 @@ public slots:
     void SlotUserHaveChangedGameSettings(const GameSettings& settings);
 
     void SlotProcessServerQueryReplyData(ServerQueryReplyData data);
+
+    void SlotSendClientRoomCreationRequest() { emit SignalSendClientRoomCreationRequest(); }
 
 //erorrs processing
 

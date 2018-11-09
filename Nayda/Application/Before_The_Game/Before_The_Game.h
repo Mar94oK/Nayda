@@ -53,6 +53,8 @@ signals:
     void SignalLockConnectionButtonWhileConnecting();
     void SignalUnclockConnectionButtonAfterConnection();
 
+    void SignalSendClientRoomCreationRequest();
+
 
 public slots:
 
@@ -65,6 +67,8 @@ public slots:
 
     void SlotProcessServerQueryReplyData(ServerQueryReplyData data);
 
+    void SlotSendClientRoomCreationRequest() { emit SignalSendClientRoomCreationRequest(); };
+
 //error processing
     void SlotProcessRemoteHostClosedErrorReport() { emit SignalRemoteHostClosedErrorReport(); }
     void SlotProcessRemoteHostConnectionRefusedErrorReport() { emit SignalRemoteHostConnectionRefusedErrorReport();
@@ -75,6 +79,7 @@ public slots:
                                                                 qDebug() << "Locking the button! "; }
     void SlotProcessUnlockConnectionButtonAfterConnection() { emit SignalUnclockConnectionButtonAfterConnection();
                                                                 qDebug() << "Unlocking the Button! "; }
+
 
 
 private:

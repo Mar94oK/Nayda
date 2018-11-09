@@ -240,6 +240,12 @@ void Server::SlotUserHaveChangedGameSettings(const GameSettings &settings)
     //NAY-001: EMIT HERE SIGNAL TO NOTIFY REMMOTE SERVER
 }
 
+void Server::SlotSendClientRoomCreationRequest()
+{
+    qDebug() << "NAY-001: Send Room Creation Request";
+    ConnectionSendOutgoingData(FormServerInputQueryRequest());
+}
+
 void Server::MessageParser(const QByteArray &data, int socketDescriptor)
 {
 
@@ -319,6 +325,7 @@ void Server::ProcessServerInputQueryReply(const QByteArray &data, int socketDesc
 
     emit SignalReportServerQueryReplyData(replyData);
 }
+
 
 void Server::SocketErorHandler(QAbstractSocket::SocketError socketError)
 {
@@ -410,6 +417,36 @@ QByteArray Server::FormServerInputQueryRequest()
 
     message.set_ostype(OSName.toUtf8().constData());
     message.PrintDebugString();
+
+    QByteArray block;
+    block.resize(message.ByteSize());
+    message.SerializeToArray(block.data(), block.size());
+    qDebug() << "NAY-001: Serialized FormServerInputQueryRequest is ready.";
+    return block;
+}
+
+
+
+QByteArray Server::FormClientRoomCreationRequest()
+{
+    serverMessageSystem::ClientRoomCreationRequest message;
+    serverMessageSystem::CommonHeader *header(message.mutable_header());
+    header->set_subsystem(serverMessageSystem::SubSystemID::CONNECTION_SUBSYSTEM);
+    header->set_commandid(static_cast<uint32_t>(serverMessageSystem::ConnectionSubSysCommandsID::CLIENT_ROOM_CREATION_REQUEST));
+    message.set_connectioncmdid(serverMessageSystem::ConnectionSubSysCommandsID::CLIENT_ROOM_CREATION_REQUEST);
+    message.set_clientname(_gameSettings.clientName().toUtf8().constData());
+
+    serverMessageSystem::GameSettings *settings(message.mutable_gamesettings());
+    serverMessageSystem::GameType *gameType(settings->mutable_gametype());
+    gameType->set_hasaddonwildaxe(_gameSettings.hasAddonWildAxe());
+    gameType->set_hasaddonclericalerrors(_gameSettings.hasAddonClericalErrors());
+    gameType->set_rulestype(serverMessageSystem::RulesType::Automatic);
+
+    serverMessageSystem::TimeSettings *timeSettings(settings->mutable_timesettings());
+    timeSettings->set_diplomacytime(_gameSettings.diplomacyTime());
+    timeSettings->set_timeforopponentsdecision(_gameSettings.timeForOpponentsDecision());
+    timeSettings->set_timetothink(_gameSettings.timeToThink());
+    timeSettings->set_totaltimetomove(_gameSettings.totalTimeToMove());
 
     QByteArray block;
     block.resize(message.ByteSize());

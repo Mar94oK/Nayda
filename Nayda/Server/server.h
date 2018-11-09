@@ -89,6 +89,8 @@ public slots:
     void slot_sessionOpened();
 
     void SlotUserHaveChangedGameSettings(const GameSettings& settings);
+    void SlotSendClientRoomCreationRequest();
+
 
 signals:
 
@@ -113,7 +115,7 @@ private:
 private:
 
     void MessageParser(const QByteArray& data, int socketDescriptor);
-    void ProcessServerInputQueryReply(const QByteArray &data, int socketDescriptor);
+    void ProcessServerInputQueryReply(const QByteArray &data, int socketDescriptor);    
     void SocketErorHandler(QAbstractSocket::SocketError socketError);
     void SetUpConnectionTImeoutTimer();
     void ConnectionUnexpectedBehaviourHandler();
@@ -124,6 +126,7 @@ private:
 public:
 
     QByteArray FormServerInputQueryRequest();
+    QByteArray FormClientRoomCreationRequest();
 
 };
 
