@@ -42,7 +42,7 @@ private:
      Game_Card_Stock _Basis_Treasures;
 
      QPair<QString, QString> defaultSettings;
-     QTimer *connectionTimeoutTimer;
+     QTimer *connectionUnexpectedBehaviorTimer;
 
 private:
 
@@ -115,7 +115,11 @@ private:
     void MessageParser(const QByteArray& data, int socketDescriptor);
     void ProcessServerInputQueryReply(const QByteArray &data, int socketDescriptor);
     void SocketErorHandler(QAbstractSocket::SocketError socketError);
-    void ConnectionTimeoutHandler();
+    void SetUpConnectionTImeoutTimer();
+    void ConnectionUnexpectedBehaviourHandler();
+
+    QString _currentUnheldedErrorString = "";
+
 
 public:
 

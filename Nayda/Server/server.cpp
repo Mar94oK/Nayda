@@ -19,6 +19,9 @@ Server::Server(QObject *parent, RoomPosessionType posessionType) : QObject(paren
     defaultSettings.first = "";
     defaultSettings.second = "";
     ConnectionSetUp();
+    SetUpConnectionTImeoutTimer();
+
+    QObject::connect(connectionUnexpectedBehaviorTimer, &QTimer::timeout, this, &Server::ConnectionUnexpectedBehaviourHandler);
 }
 
 void Server::ConnectionSetUp()
@@ -91,22 +94,24 @@ void Server::slotConnectionReadIncomingData()
 
 void Server::displayError(QAbstractSocket::SocketError socketError)
 {
+    qDebug() << "displayError()";
     switch (socketError) {
     case QAbstractSocket::RemoteHostClosedError:
-
     {
         qDebug() << "Host is closed!";
+        if (connectionUnexpectedBehaviorTimer->isActive())
+            connectionUnexpectedBehaviorTimer->stop();
         emit SignalRemoteHostClosedErrorReport();
-        if (connectionTimeoutTimer->isActive())
-            connectionTimeoutTimer->stop();
+        emit SignalUnlockConnectionButtonAfterConnection();
     }
-
-
-        break;
+    break;
     case QAbstractSocket::HostNotFoundError:
         qDebug() << "The host was not found. Please check the "
                                     "host name and port settings.";
+        if (connectionUnexpectedBehaviorTimer->isActive())
+            connectionUnexpectedBehaviorTimer->stop();
         emit SignalRemoteHostNotFoundErrorReport();
+        emit SignalUnlockConnectionButtonAfterConnection();
         break;
     case QAbstractSocket::ConnectionRefusedError:
     {
@@ -114,9 +119,10 @@ void Server::displayError(QAbstractSocket::SocketError socketError)
                                     "Make sure the fortune server is running, "
                                     "and check that the host name and port "
                                     "settings are correct.";
-        if (connectionTimeoutTimer->isActive())
-            connectionTimeoutTimer->stop();
+        if (connectionUnexpectedBehaviorTimer->isActive())
+            connectionUnexpectedBehaviorTimer->stop();
         emit SignalRemoteHostConnectionRefusedErrorReport();
+        emit SignalUnlockConnectionButtonAfterConnection();
     }
         break;
     default:
@@ -138,18 +144,23 @@ void Server::SlotSocketStateChanged(QAbstractSocket::SocketState state)
         ConnectionSendOutgoingData(FormServerInputQueryRequest());
         break;
     case QAbstractSocket::SocketState::UnconnectedState:
+        _socketStateHandlerReportedConnectedState = false;
         qDebug() << "Socket is in the UnconnectedState State!";
         break;
     case QAbstractSocket::SocketState::HostLookupState:
+        _socketStateHandlerReportedConnectedState = false;
         qDebug() << "Socket is in the HostLookupState State!";
         break;
     case QAbstractSocket::SocketState::BoundState:
+        _socketStateHandlerReportedConnectedState = false;
         qDebug() << "Socket is in the BoundState State!";
         break;
     case QAbstractSocket::SocketState::ListeningState:
+        _socketStateHandlerReportedConnectedState = false;
         qDebug() << "Socket is in the ListeningState State!";
         break;
     case QAbstractSocket::SocketState::ConnectingState:
+        _socketStateHandlerReportedConnectedState = false;
         qDebug() << "Socket is in the ConnectingState State!";
         break;
 
@@ -157,14 +168,6 @@ void Server::SlotSocketStateChanged(QAbstractSocket::SocketState state)
         qDebug() << "Socket is in the Some Another State!";
         _socketStateHandlerReportedConnectedState = false;
         break;
-
-        //UnconnectedState,
-        //HostLookupState,
-        //ConnectingState,
-        //ConnectedState,
-        //BoundState,
-        //ListeningState,
-        //ClosingState
     }
 }
 
@@ -208,13 +211,10 @@ void Server::SlotSetUpConnection()
         //Error signal will be emmitted here if socket connection was refused.
         //Place handler there.
 
-        connectionTimeoutTimer = new QTimer(this);
-        connectionTimeoutTimer->setSingleShot(true);
-        connectionTimeoutTimer->setInterval(15000);
+        qDebug() << "Preparing the timer!";
         emit SignalLockConnectionButtonWhileConnecting();
-        connectionTimeoutTimer->start();
-
-        QObject::connect(connectionTimeoutTimer, &QTimer::timeout, this, &Server::ConnectionTimeoutHandler);
+        connectionUnexpectedBehaviorTimer->setInterval(15000);
+        connectionUnexpectedBehaviorTimer->start();
     }
 }
 
@@ -327,6 +327,7 @@ void Server::SocketErorHandler(QAbstractSocket::SocketError socketError)
     case QAbstractSocket::RemoteHostClosedError:
         qDebug() << "Host is closed!";
         emit SignalRemoteHostClosedErrorReport();
+        emit SignalUnlockConnectionButtonAfterConnection();
         break;
     case QAbstractSocket::HostNotFoundError:
         qDebug() << "The host was not found. Please check the "
@@ -342,12 +343,25 @@ void Server::SocketErorHandler(QAbstractSocket::SocketError socketError)
         emit SignalRemoteHostConnectionRefusedErrorReport();
         emit SignalUnlockConnectionButtonAfterConnection();
         break;
+    case QAbstractSocket::SocketTimeoutError:
+        qDebug() <<"Connection has been timed out!";
+        emit SignalRemoteHostConnectionRefusedErrorReport();
+        emit SignalUnlockConnectionButtonAfterConnection();
+        break;
     default:
         qDebug() << "The following error occurred: %1." << tcpSocket->errorString();
+        _currentUnheldedErrorString = tcpSocket->errorString();
     }
 }
 
-void Server::ConnectionTimeoutHandler()
+void Server::SetUpConnectionTImeoutTimer()
+{
+    connectionUnexpectedBehaviorTimer = new QTimer(this);
+    connectionUnexpectedBehaviorTimer->setSingleShot(true);
+    connectionUnexpectedBehaviorTimer->setInterval(15000);
+}
+
+void Server::ConnectionUnexpectedBehaviourHandler()
 {
     //for the fact, should never go here...
     if (_socketStateHandlerReportedConnectedState)
@@ -357,7 +371,15 @@ void Server::ConnectionTimeoutHandler()
     }
 
     if (tcpSocket->state() != QTcpSocket::SocketState::ConnectedState)
-        qDebug() << "Connection timeout occured!";
+    {
+        qDebug() << "Connection unhelded error occured,"
+                    "or unhelded behaviour timeout is longer then the system timeout!";
+        //NAY-001: MARK_EXPECTED_ERROR.
+        //By the fact, the Error occured here might differ from the actual error reported by the signal.
+        //Consider reworking the handler of the errors making signal signal-slot connection passing actual error there
+        emit SignalRemoteHostNotFoundErrorReport();
+        emit SignalUnlockConnectionButtonAfterConnection();
+    }
     else
     {
         qDebug() << "Connected!";

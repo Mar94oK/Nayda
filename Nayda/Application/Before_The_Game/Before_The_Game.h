@@ -68,12 +68,13 @@ public slots:
 //error processing
     void SlotProcessRemoteHostClosedErrorReport() { emit SignalRemoteHostClosedErrorReport(); }
     void SlotProcessRemoteHostConnectionRefusedErrorReport() { emit SignalRemoteHostConnectionRefusedErrorReport();
-                                                             qDebug() << "NAY-001: I am here! ";}
+                                                             qDebug() << "NAY-001: RemoteHostConnectionRefusedError()! ";}
     void SlotProcessRemoteHostNotFoundErrorReport() { emit SignalRemoteHostNotFoundErrorReport(); }
 
     void SlotProcessConnectionButtonLockingWhileConnecting() { emit SignalLockConnectionButtonWhileConnecting();
                                                                 qDebug() << "Locking the button! "; }
-    void SlotProcessUnlockConnectionButtonAfterConnection() { emit SignalUnclockConnectionButtonAfterConnection(); }
+    void SlotProcessUnlockConnectionButtonAfterConnection() { emit SignalUnclockConnectionButtonAfterConnection();
+                                                                qDebug() << "Unlocking the Button! "; }
 
 
 private:
