@@ -18,13 +18,17 @@ public:
 private:
     Ui::RoomCreationWaitingLobby *ui;
 
-
 private:
+
+    void closeEvent(QCloseEvent *event);
 
 private:
 
     void setUpUiGeometricRelations();
 
+signals:
+
+    void SignalUserIsClosingRoomCreationLobby();
 };
 
 #endif // ROOMCREATIONWAITINGLOBBY_H

@@ -15,6 +15,11 @@ RoomCreationWaitingLobby::~RoomCreationWaitingLobby()
     delete ui;
 }
 
+void RoomCreationWaitingLobby::closeEvent(QCloseEvent *event)
+{
+    emit SignalUserIsClosingRoomCreationLobby();
+}
+
 void RoomCreationWaitingLobby::setUpUiGeometricRelations()
 {
     QRect HwScreenSize = QApplication::desktop()->screenGeometry();

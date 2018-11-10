@@ -55,6 +55,10 @@ private:
     GameSettings    _gameSettings;
     serverSettings  _serverSettings;
 
+private:
+
+    QString _roomCreationLobbyBaseText = "Создать новый зал!";
+
 public:
 
     explicit playMenu(QWidget *parent = 0);
@@ -88,6 +92,7 @@ public slots:
 
     void SlotSendClientRoomCreationRequest() { emit SignalSendClientRoomCreationRequest(); }
 
+
 //erorrs processing
 
     void SlotProcessRemoteHostClosedErrorReport();
@@ -96,6 +101,8 @@ public slots:
 
     void SlotProcessLockingConnectionButtonWhileConnecting();
     void SlotProcessUnlockConnectionButtonAfterConnection();
+
+    void SlotProcessRoomCreationReplyError(ClientRoomCreationReplyData data);
 
 private:
 

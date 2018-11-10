@@ -153,6 +153,18 @@ void playMenu::SlotProcessUnlockConnectionButtonAfterConnection()
     ui->btn_Connection->setEnabled(true);
 }
 
+void playMenu::SlotProcessRoomCreationReplyError(ClientRoomCreationReplyData data)
+{
+    ui->lbl_CreateLObby->setText("В процессе создания зала произошла ошибка! ");
+    if (data._errors.incorrectSettings)
+        ui->lbl_CreateLObby->setText("В процессе создания зала произошла ошибка! Неверные настройки. Пожалуйста, проверьте их.");
+    if (data._errors.rulesAreNotSupported)
+        ui->lbl_CreateLObby->setText("Тип правил не поддерживается сервером. Пожалуйста, обновите сервер, или используйте другие правила.");
+    if (data._errors.noFreeSlots)
+        ui->lbl_CreateLObby->setText("В процессе создания зала произошла ошибка! На сервере нет свободных слотов!");
+
+}
+
 void playMenu::setUpUiGeometricRelations()
 {
     QRect HwScreenSize = QApplication::desktop()->screenGeometry();
