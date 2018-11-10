@@ -63,7 +63,16 @@ void GameSettingsWindow::SetupInitialAllowedFeatures()
     ui->lbl_DiplomacyTime->setText(_DiplomacyTimeBaseText + QString::number(_gameSettings.diplomacyTime()) + " секунд.");
     ui->lbl_TimeForOpponentsDecision->setText(_TimeForOpponentsDecisionBaseText + QString::number(_gameSettings.timeForOpponentsDecision()) + " секунд.");
     ui->lbl_TimeToThink->setText(_TimeToThinkBaseText + QString::number(_gameSettings.timeToThink()) + " секунд.");
-    ui->lbl_MaximumNumberOfPLayers->setText(_MaximumNumberOfPLayersBaseText + QString::number(_gameSettings.maximumNumberOfPlayers()) + " секунд.");
+    switch (_gameSettings.maximumNumberOfPlayers())
+    {
+    case 3:
+    case 4:
+        ui->lbl_MaximumNumberOfPLayers->setText(_MaximumNumberOfPLayersBaseText + QString::number(_gameSettings.maximumNumberOfPlayers()) + " игрока.");
+        break;
+    default:
+        ui->lbl_MaximumNumberOfPLayers->setText(_MaximumNumberOfPLayersBaseText + QString::number(_gameSettings.maximumNumberOfPlayers()) + " игроков.");
+        break;
+    }
     ui->lbl_RulesType->setText(_RulesTypeBaseText + (_gameSettings.rulesType() == RulesType::Automatic ? "Автоматические." : "Ручные!"));
     ui->lbl_TotalTimeToMove->setText(_TotalTimeToMoveBaseText +QString::number(_gameSettings.totalTimeToMove()) + " секунд.");
     ui->lbl_UserName->setText(_UserNameBaseText + _gameSettings.clientName());
@@ -75,7 +84,16 @@ void GameSettingsWindow::SetupInitialAllowedFeatures()
 void GameSettingsWindow::SlotUserHaveChangedMaximumNumberOfPlayers(unsigned int val)
 {
     _gameSettings.setMaximumNumberOfPlayers(val);
-    ui->lbl_MaximumNumberOfPLayers->setText(_MaximumNumberOfPLayersBaseText + QString::number(val) + " секунд.");
+    switch (val)
+    {
+    case 3:
+    case 4:
+        ui->lbl_MaximumNumberOfPLayers->setText(_MaximumNumberOfPLayersBaseText + QString::number(val) + " игрока");
+        break;
+    default:
+        ui->lbl_MaximumNumberOfPLayers->setText(_MaximumNumberOfPLayersBaseText + QString::number(val) + " игроков");
+        break;
+    }
     //emit SignalUserHaveChangedSettings(_gameSettings);
 }
 

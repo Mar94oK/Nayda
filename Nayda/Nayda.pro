@@ -53,7 +53,8 @@ SOURCES += main.cpp\
     playMenu.cpp \
     gamesettings.cpp \
     serverMessageSystem.pb.cc \
-    gamesettingswindow.cpp
+    gamesettingswindow.cpp \
+    roomcreationwaitinglobby.cpp
 
 HEADERS  += main_application.h \
     Application/Before_The_Game/Before_The_Game.h \
@@ -81,7 +82,8 @@ HEADERS  += main_application.h \
     gamesettings.h \
     serverMessageSystem.pb.h \
     gamesettingswindow.h \
-    MessagesDefinitions.h
+    MessagesDefinitions.h \
+    roomcreationwaitinglobby.h
 
 FORMS    += main_application.ui \
     Application/Before_The_Game/Before_The_Game.ui \
@@ -100,7 +102,8 @@ FORMS    += main_application.ui \
     serversettings.ui \
     helpserversettings.ui \
     playMenu.ui \
-    gamesettingswindow.ui
+    gamesettingswindow.ui \
+    roomcreationwaitinglobby.ui
 
 RESOURCES += \
     tables.qrc \
