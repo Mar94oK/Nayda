@@ -437,6 +437,8 @@ QByteArray Server::FormClientRoomCreationRequest()
     message.set_clientname(_gameSettings.clientName().toUtf8().constData());
 
     serverMessageSystem::GameSettings *settings(message.mutable_gamesettings());
+    settings->set_settingscorrectionallowed(_gameSettings.settingsCorrectionAllowed());
+    settings->set_maximumnumberofplayers(_gameSettings.maximumNumberOfPlayers());
     serverMessageSystem::GameType *gameType(settings->mutable_gametype());
     gameType->set_hasaddonwildaxe(_gameSettings.hasAddonWildAxe());
     gameType->set_hasaddonclericalerrors(_gameSettings.hasAddonClericalErrors());

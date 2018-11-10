@@ -35,8 +35,10 @@ private slots:
     void SlotUserHaveChangedHasAddonWildAxe(bool has);
     void SlotUserHaveChangedClientName(const QString& clientName);
     void SlotUserHaveChangedRulesType(int automatic);
+    void SlotUserHaveChangedSettingsChangesAllowance(bool);
     void SlotUserApplyedChangedSettings(bool);
     void SlotUserRejectedChangedSettings(bool);
+
 
 private:
 
@@ -49,6 +51,7 @@ private:
     QString _UserNameBaseText = "Имя пользователя: ";
     QString _HasAddonWildAxeBaseText = "Дополнение Дикий Топор: ";
     QString _HasAddonClericalErrorsBaseText = "Дополнение Клирические Ошибки: ";
+    QString _SettingsChangesBaseText = "Изменение настроек в процессе подготовки к игре: ";
 
 signals:
 

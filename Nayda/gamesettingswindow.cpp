@@ -30,6 +30,7 @@ void GameSettingsWindow::SignalsSlotsConnector()
     QObject::connect(ui->verticalScrollBar, &QScrollBar::sliderMoved, this, &GameSettingsWindow::SlotUserHaveChangedRulesType);
     QObject::connect(ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok), &QPushButton::clicked, this, &GameSettingsWindow::SlotUserApplyedChangedSettings);
     QObject::connect(ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel), &QPushButton::clicked, this, &GameSettingsWindow::SlotUserRejectedChangedSettings);
+    QObject::connect(ui->chckBox_AllowSettingsChanges, &QCheckBox::clicked, this, &GameSettingsWindow::SlotUserHaveChangedSettingsChangesAllowance);
 
 }
 
@@ -39,6 +40,8 @@ void GameSettingsWindow::SetupInitialAllowedFeatures()
     ui->chckBox_HasAddonClericalErrors->setCheckState(Qt::CheckState::Checked);
     ui->chkBox_HasAddonWildAxe->setEnabled(false);
     ui->chckBox_HasAddonClericalErrors->setEnabled(false);
+    ui->chckBox_AllowSettingsChanges->setCheckState(Qt::CheckState::Checked);
+
     ui->verticalScrollBar->setEnabled(false);
 
     ui->spBox_DiplomacyTime->setMaximum(300);
@@ -78,7 +81,7 @@ void GameSettingsWindow::SetupInitialAllowedFeatures()
     ui->lbl_UserName->setText(_UserNameBaseText + _gameSettings.clientName());
     ui->lbl_HasAddonWildAxe->setText(_HasAddonWildAxeBaseText + (_gameSettings.hasAddonWildAxe() ? "используется." : "отключен."));
     ui->lbl_HasAddonClericalErrors->setText(_HasAddonClericalErrorsBaseText + (_gameSettings.hasAddonClericalErrors() ? "используется." : "отключен."));
-
+    ui->lbl_AllowSettingsChanges->setText(_SettingsChangesBaseText + (_gameSettings.settingsCorrectionAllowed() ? "разрешено" : "запрещено"));
 }
 
 void GameSettingsWindow::SlotUserHaveChangedMaximumNumberOfPlayers(unsigned int val)
@@ -152,6 +155,13 @@ void GameSettingsWindow::SlotUserHaveChangedRulesType(int automatic)
     //NAY-001: MARK_EXPECTED_ERROR
     //Scroll may later provide any digit, but here will be only true/false selector!
     ui->lbl_RulesType->setText(_RulesTypeBaseText + (automatic ? "Автоматические." : "Ручные!"));
+    //emit SignalUserHaveChangedSettings(_gameSettings);
+}
+
+void GameSettingsWindow::SlotUserHaveChangedSettingsChangesAllowance(bool allowed)
+{
+    _gameSettings.setSettingsCorrectionAllowed(allowed);
+    ui->lbl_AllowSettingsChanges->setText(_SettingsChangesBaseText + (allowed ? "разрешено." : "запрещено"));
     //emit SignalUserHaveChangedSettings(_gameSettings);
 }
 
