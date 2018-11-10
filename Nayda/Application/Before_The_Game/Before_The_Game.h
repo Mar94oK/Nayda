@@ -55,6 +55,9 @@ signals:
 
     void SignalServerQueryReplyData(ServerQueryReplyData data);
 
+    void SignalRoomCreationAllowed(ClientRoomCreationReplyData data);
+    void SignalRoomCreationForbidden(ClientRoomCreationReplyData data);
+
     void SignalRemoteHostClosedErrorReport();
     void SignalRemoteHostConnectionRefusedErrorReport();
     void SignalRemoteHostNotFoundErrorReport();
@@ -75,9 +78,11 @@ public slots:
     void SlotApplyNewGameSettings(GameSettings settings);
 
     void SlotProcessServerQueryReplyData(ServerQueryReplyData data);
+    void SlotProcessClientRoomCreationReplyData(ClientRoomCreationReplyData data);
 
-    void SlotSendClientRoomCreationRequest() { emit SignalSendClientRoomCreationRequest();
-                                             CreateNewRoomCreationWaitingLobby(); } //DEBUG FOR A VIEW ONLY!!!
+    void SlotSendClientRoomCreationRequest() { emit SignalSendClientRoomCreationRequest(); } //DEBUG FOR A VIEW ONLY!!!
+
+    void SlotCreateNewRoomCreationWaitingLobby();
 
 //error processing
     void SlotProcessRemoteHostClosedErrorReport() { emit SignalRemoteHostClosedErrorReport(); }
@@ -89,6 +94,7 @@ public slots:
                                                                 qDebug() << "Locking the button! "; }
     void SlotProcessUnlockConnectionButtonAfterConnection() { emit SignalUnclockConnectionButtonAfterConnection();
                                                                 qDebug() << "Unlocking the Button! "; }
+
 
 
 
@@ -106,7 +112,7 @@ private:
 
     void setUpGeometricRelations();
     void setUpSignalsSlotsConnections();
-    void CreateNewRoomCreationWaitingLobby();
+
 
 };
 

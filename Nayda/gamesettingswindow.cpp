@@ -175,4 +175,3 @@ void GameSettingsWindow::SlotUserRejectedChangedSettings(bool)
 {
     close();
 }
-

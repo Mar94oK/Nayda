@@ -72,6 +72,29 @@ void Before_The_Game::SlotProcessServerQueryReplyData(ServerQueryReplyData data)
     emit SignalServerQueryReplyData(data);
 }
 
+void Before_The_Game::SlotProcessClientRoomCreationReplyData(ClientRoomCreationReplyData data)
+{
+    qDebug() << "NAY-0001: Processing SlotProcessClientRoomCreationReplyData";
+    //parse
+    if (data._errors.incorrectSettings
+        || data._errors.noFreeSlots
+        || data._errors.rulesAreNotSupported)
+    {
+         qDebug() << "NAY-0001: RoomCreation Restricted!";
+         emit SignalRoomCreationForbidden(data);
+    }
+
+    else
+    {
+        qDebug() << "NAY-0001: RoomCreation Allowed!";
+        emit SignalRoomCreationAllowed(data);
+    }
+    //if not Ok emit ErrorSignal to playMenu
+    //if Ok emit close signal to PlayMenu
+
+            //and emit Creation Signal for RoomCreationWaitingLobby
+}
+
 
 GameSettings Before_The_Game::getGameSettings() const
 {
@@ -133,11 +156,12 @@ void Before_The_Game::setUpSignalsSlotsConnections()
     QObject::connect(this, &Before_The_Game::SignalLockConnectionButtonWhileConnecting, newRoomDialog, &playMenu::SlotProcessLockingConnectionButtonWhileConnecting);
     QObject::connect(newRoomDialog, &playMenu::SignalSendClientRoomCreationRequest, this, &Before_The_Game::SlotSendClientRoomCreationRequest);
 
-
+    QObject::connect(this, &Before_The_Game::SignalRoomCreationAllowed, newRoomDialog, &playMenu::close);
+    QObject::connect(this, &Before_The_Game::SignalRoomCreationAllowed, this, &Before_The_Game::SlotCreateNewRoomCreationWaitingLobby);
 
 }
 
-void Before_The_Game::CreateNewRoomCreationWaitingLobby()
+void Before_The_Game::SlotCreateNewRoomCreationWaitingLobby()
 {
     _roomCreationWaitingLobby = new RoomCreationWaitingLobby();
     _roomCreationWaitingLobby->show();

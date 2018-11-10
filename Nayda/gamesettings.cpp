@@ -129,6 +129,7 @@ GameSettings::GameSettings(const GameSettings &settings)
     _hasAddonWildAxe = settings.hasAddonWildAxe();
     _clientName = settings.clientName();
     _rulesType = settings.rulesType();
+    _settingsCorrectionAllowed = settings.settingsCorrectionAllowed();
 }
 
 void GameSettings::applyNewSettings(const GameSettings &settings)
@@ -142,4 +143,5 @@ void GameSettings::applyNewSettings(const GameSettings &settings)
     _hasAddonWildAxe = settings.hasAddonWildAxe();
     _clientName = settings.clientName();
     _rulesType = settings.rulesType();
+    _settingsCorrectionAllowed = settings.settingsCorrectionAllowed();
 }

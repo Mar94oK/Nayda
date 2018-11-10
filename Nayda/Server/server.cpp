@@ -260,7 +260,7 @@ void Server::MessageParser(const QByteArray &data, int socketDescriptor)
     else
     {
        qDebug() << "NAY-0001: Header Parsed successfully! ";
-       qDebug() << "NAY-001: Array size: " << data.size();
+       qDebug() << "NAY-0010: Array size: " << data.size();
 
        switch (header.subsystem())
        {
@@ -275,6 +275,9 @@ void Server::MessageParser(const QByteArray &data, int socketDescriptor)
                     break;
 
                     case serverMessageSystem::ConnectionSubSysCommandsID::CLIENT_ROOM_CREATION_REPLY:
+                    {
+                        ProcessClientRoomCreationReply(data, socketDescriptor);
+                    }
                     break;
 
                     case serverMessageSystem::ConnectionSubSysCommandsID::CLIENT_CONNECTION_TO_ROOM_REPLY:
@@ -324,6 +327,33 @@ void Server::ProcessServerInputQueryReply(const QByteArray &data, int socketDesc
                               QString::fromStdString(message.servername()));
 
     emit SignalReportServerQueryReplyData(replyData);
+}
+
+void Server::ProcessClientRoomCreationReply(const QByteArray &data, int socketDescriptor)
+{
+     qDebug() << ("NAY-0001: Error while ProcessClientRoomCreationReply() ");
+    serverMessageSystem::ClientRoomCreationReply message;
+
+    if (!message.ParseFromArray(data.data(), data.size()))
+    {
+        qDebug() << ("NAY-0001: Error while ProcessClientRoomCreationReply() ");
+        return;
+    }
+
+//    ClientRoomCreationReplyData(bool connectionAllowed, uint32_t slotID, uint32_t freeSlotsLeft, RoomCreationErrors error) :
+//        _connectionAllowed(connectionAllowed), _slotID(slotID), _freeSlotsLeft(freeSlotsLeft), _error(error)
+//    { }
+
+    ErrorType errors;
+    if (message.roomcreationerrors().nofreeslotsavailable())
+        errors.noFreeSlots = true;
+    if (message.roomcreationerrors().rulesarenotsupported())
+        errors.rulesAreNotSupported = true;
+    if (message.roomcreationerrors().incorrectsettings())
+        errors.incorrectSettings = true;
+
+    ClientRoomCreationReplyData replyData(message.connectionallowed(), message.slotid(), message.freeslotsleft(), errors);
+    emit SignalReportClientRoomCreationReplyData(replyData);
 }
 
 

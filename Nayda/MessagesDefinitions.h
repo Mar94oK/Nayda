@@ -25,6 +25,14 @@ enum class ConnectionSubSysCommandsID
     CLIENT_CONNECTION_TO_ROOM_REPLY = 5
 };
 
+enum class RoomCreationErrors
+{
+    NO_ERRORS = 0,
+    NO_FREE_SLOTS_AVAILABLE = 1,
+    RULES_ARE_NOT_SUPPORTED = 2,
+    INCORRECT_SETTINGS = 3
+};
+
 struct ServerQueryReplyData
 {
     bool _roomCreationAllowed;
@@ -33,6 +41,25 @@ struct ServerQueryReplyData
 
     ServerQueryReplyData(bool creationAllowed, bool connectionAllowed, QString name) :
         _roomCreationAllowed(creationAllowed), _connectionToRoomAllowed(connectionAllowed), _serverName(name)
+    { }
+};
+
+struct ErrorType
+{
+    bool noFreeSlots;
+    bool rulesAreNotSupported;
+    bool incorrectSettings;
+};
+
+struct ClientRoomCreationReplyData
+{
+    bool _connectionAllowed;        //check
+    uint32_t _slotID;               //to identify the slot's number
+    uint32_t _freeSlotsLeft;        //how many slots left
+    ErrorType _errors;      //to identify the Error
+
+    ClientRoomCreationReplyData(bool connectionAllowed, uint32_t slotID, uint32_t freeSlotsLeft, ErrorType errors) :
+        _connectionAllowed(connectionAllowed), _slotID(slotID), _freeSlotsLeft(freeSlotsLeft), _errors(errors)
     { }
 };
 
