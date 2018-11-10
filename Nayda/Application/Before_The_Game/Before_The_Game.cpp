@@ -76,23 +76,38 @@ void Before_The_Game::SlotProcessClientRoomCreationReplyData(ClientRoomCreationR
 {
     qDebug() << "NAY-0001: Processing SlotProcessClientRoomCreationReplyData";
     //parse
+    if (data._connectionAllowed)
+    {
+        //if Ok emit close signal to PlayMenu
+        //and emit Creation Signal for RoomCreationWaitingLobby
+        qDebug() << "NAY-0001: RoomCreation Allowed!";
+        emit SignalRoomCreationAllowed(data);
+    }
+    //if not Ok emit ErrorSignal to playMenu
     if (data._errors.incorrectSettings
         || data._errors.noFreeSlots
         || data._errors.rulesAreNotSupported)
     {
          qDebug() << "NAY-0001: RoomCreation Restricted!";
+         qDebug() << "data._errors.incorrectSettings: " << data._errors.incorrectSettings;
+         qDebug() << "data._errors.noFreeSlots: " << data._errors.noFreeSlots;
+         qDebug() << "data._errors.rulesAreNotSupported: " << data._errors.rulesAreNotSupported;
          emit SignalRoomCreationForbidden(data);
     }
-
     else
     {
-        qDebug() << "NAY-0001: RoomCreation Allowed!";
-        emit SignalRoomCreationAllowed(data);
+        //if not Ok emit ErrorSignal to playMenu
+        if (data._errors.incorrectSettings
+            || data._errors.noFreeSlots
+            || data._errors.rulesAreNotSupported)
+        {
+             qDebug() << "NAY-0001: RoomCreation Restricted!";
+             qDebug() << "data._errors.incorrectSettings: " << data._errors.incorrectSettings;
+             qDebug() << "data._errors.noFreeSlots: " << data._errors.noFreeSlots;
+             qDebug() << "data._errors.rulesAreNotSupported: " << data._errors.rulesAreNotSupported;
+             emit SignalRoomCreationForbidden(data);
+        }
     }
-    //if not Ok emit ErrorSignal to playMenu
-    //if Ok emit close signal to PlayMenu
-
-            //and emit Creation Signal for RoomCreationWaitingLobby
 }
 
 

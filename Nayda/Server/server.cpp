@@ -340,17 +340,27 @@ void Server::ProcessClientRoomCreationReply(const QByteArray &data, int socketDe
         return;
     }
 
-//    ClientRoomCreationReplyData(bool connectionAllowed, uint32_t slotID, uint32_t freeSlotsLeft, RoomCreationErrors error) :
-//        _connectionAllowed(connectionAllowed), _slotID(slotID), _freeSlotsLeft(freeSlotsLeft), _error(error)
-//    { }
+    qDebug() << "Message ClientRoomCreationReply: connectionAllowed() " << message.connectionallowed();
+    qDebug() << "Message ClientRoomCreationReply: message.slotid() " << message.slotid();
+    qDebug() << "Message ClientRoomCreationReply: message.freeslotsleft() " << message.freeslotsleft();
+    qDebug() << "Message ClientRoomCreationReply: message.roomcreationerrors().nofreeslotsavailable() " << message.roomcreationerrors().nofreeslotsavailable();
+    qDebug() << "Message ClientRoomCreationReply: message.roomcreationerrors().rulesarenotsupported() " << message.roomcreationerrors().rulesarenotsupported();
+    qDebug() << "Message ClientRoomCreationReply: message.roomcreationerrors().incorrectsettings() " << message.roomcreationerrors().incorrectsettings();
+
 
     ErrorType errors;
     if (message.roomcreationerrors().nofreeslotsavailable())
         errors.noFreeSlots = true;
+    else
+        errors.noFreeSlots = false;
     if (message.roomcreationerrors().rulesarenotsupported())
         errors.rulesAreNotSupported = true;
+    else
+        errors.rulesAreNotSupported = false;
     if (message.roomcreationerrors().incorrectsettings())
         errors.incorrectSettings = true;
+    else
+        errors.incorrectSettings = false;
 
     ClientRoomCreationReplyData replyData(message.connectionallowed(), message.slotid(), message.freeslotsleft(), errors);
     emit SignalReportClientRoomCreationReplyData(replyData);
