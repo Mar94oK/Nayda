@@ -243,7 +243,7 @@ void Server::SlotUserHaveChangedGameSettings(const GameSettings &settings)
 void Server::SlotSendClientRoomCreationRequest()
 {
     qDebug() << "NAY-001: Send Room Creation Request";
-    ConnectionSendOutgoingData(FormServerInputQueryRequest());
+    ConnectionSendOutgoingData(FormClientRoomCreationRequest());
 }
 
 void Server::MessageParser(const QByteArray &data, int socketDescriptor)
