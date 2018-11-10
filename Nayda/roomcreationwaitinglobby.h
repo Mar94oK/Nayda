@@ -17,6 +17,14 @@ public:
 
 private:
     Ui::RoomCreationWaitingLobby *ui;
+
+
+private:
+
+private:
+
+    void setUpUiGeometricRelations();
+
 };
 
 #endif // ROOMCREATIONWAITINGLOBBY_H

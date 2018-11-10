@@ -7,8 +7,17 @@
 #include "playMenu.h"
 #include "gamesettings.h"
 #include "MessagesDefinitions.h"
+#include "roomcreationwaitinglobby.h"
 #define DEBUG_MESSAGES
 
+
+enum class StateOfBeforeTheGame
+{
+    InitialMenu,
+    PlayMenu,
+    RoomCreationWaitingLobby,
+    GameInProgress
+};
 
 
 namespace Ui {
@@ -67,7 +76,8 @@ public slots:
 
     void SlotProcessServerQueryReplyData(ServerQueryReplyData data);
 
-    void SlotSendClientRoomCreationRequest() { emit SignalSendClientRoomCreationRequest(); };
+    void SlotSendClientRoomCreationRequest() { emit SignalSendClientRoomCreationRequest();
+                                             CreateNewRoomCreationWaitingLobby(); } //DEBUG FOR A VIEW ONLY!!!
 
 //error processing
     void SlotProcessRemoteHostClosedErrorReport() { emit SignalRemoteHostClosedErrorReport(); }
@@ -88,13 +98,15 @@ private:
     Server* m_server_ptr;
 
     GameSettings _gameSettings;
-
     playMenu* newRoomDialog;
+
+    RoomCreationWaitingLobby* _roomCreationWaitingLobby = nullptr;
 
 private:
 
     void setUpGeometricRelations();
     void setUpSignalsSlotsConnections();
+    void CreateNewRoomCreationWaitingLobby();
 
 };
 

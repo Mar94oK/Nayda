@@ -6,14 +6,72 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>767</width>
-    <height>498</height>
+    <width>689</width>
+    <height>520</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="0" column="5">
+    <widget class="QPushButton" name="btn_Opponent_4">
+     <property name="text">
+      <string>Opponent 4</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="6">
+    <widget class="QPushButton" name="btn_Opponent_5">
+     <property name="text">
+      <string>Opponent 5</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="3">
+    <widget class="QPushButton" name="btn_Opponent_3">
+     <property name="text">
+      <string>Opponent 2</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" rowspan="3" colspan="2">
+    <widget class="QTextBrowser" name="txtBrsr_Dialog"/>
+   </item>
+   <item row="0" column="4">
+    <widget class="QPushButton" name="btn_Opponent_2">
+     <property name="text">
+      <string>Opponent 3</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="2">
+    <widget class="QPushButton" name="btn_Opponent_1">
+     <property name="text">
+      <string>Opponent 1</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0" colspan="2">
+    <widget class="GameSettingsWidget" name="widget" native="true"/>
+   </item>
+   <item row="3" column="4">
+    <widget class="QPushButton" name="btn_Creator">
+     <property name="text">
+      <string>Creator</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>GameSettingsWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">gamesettingswidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

@@ -136,3 +136,9 @@ void Before_The_Game::setUpSignalsSlotsConnections()
 
 
 }
+
+void Before_The_Game::CreateNewRoomCreationWaitingLobby()
+{
+    _roomCreationWaitingLobby = new RoomCreationWaitingLobby();
+    _roomCreationWaitingLobby->show();
+}
