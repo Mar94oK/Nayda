@@ -114,6 +114,7 @@ void playMenu::SlotProcessRemoteHostClosedErrorReport()
 {
     ui->btn_Connection->setEnabled(true);
     setUpButtonPicture(ui->btn_Connection, _connectionButtonPictureAddressDefault, buttonsWidthCoefficient, buttonsHeightWidthRelatio);
+    QObject::disconnect(ui->btn_Connection, &QPushButton::clicked, this, &playMenu::SlotSetUpConnection);
     QObject::connect(ui->btn_Connection, &QPushButton::clicked, this, &playMenu::SlotShowServerSettings);
     ui->btn_CreateLobby->setEnabled(false);
     setUpButtonPicture(ui->btn_CreateLobby, _createRoomButtonPictureAddressDefault, buttonsWidthCoefficient, buttonsHeightWidthRelatio);
@@ -136,8 +137,9 @@ void playMenu::SlotProcessRemoteHostNotFoundErrorReport()
 {
     ui->btn_Connection->setEnabled(true);
     setUpButtonPicture(ui->btn_Connection, _connectionButtonPictureAddressDefault, buttonsWidthCoefficient, buttonsHeightWidthRelatio);
+    QObject::disconnect(ui->btn_Connection, &QPushButton::clicked, this, &playMenu::SlotSetUpConnection);
     QObject::connect(ui->btn_Connection, &QPushButton::clicked, this, &playMenu::SlotShowServerSettings);
-    ui->lbl_Connection->setText("Сервер не обнаружен!\n Пожалуйста, укажите другой сервер, или проверьте доступность текущего.\n"
+    ui->lbl_Connection->setText("Сервер не обнаружен!\nПожалуйста, укажите другой сервер, или проверьте доступность текущего.\n"
                                 "Возможно, на нём не запущен Манчкин?");
 }
 
