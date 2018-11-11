@@ -3,6 +3,7 @@
 #include "munchkinglobaldefines.h"
 #include <QDesktopWidget>
 
+
 RoomCreationWaitingLobby::RoomCreationWaitingLobby(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::RoomCreationWaitingLobby)
@@ -34,4 +35,17 @@ void RoomCreationWaitingLobby::setUpUiGeometricRelations()
                                     Qt::AlignCenter,
                                     size(),
                                     QApplication::desktop()->availableGeometry()));
+}
+
+void RoomCreationWaitingLobby::applyNewSettings(GameSettings settings)
+{
+    _gameSettings.applyNewSettings(settings);
+}
+
+void RoomCreationWaitingLobby::SetUpInitalState(GameSettings settings)
+{
+    _gameSettings.applyNewSettings(settings);
+    ui->wdgt_GameSettings->ApplyNewSettings(settings);
+    ui->wdgt_GameSettings->setUpInitialState();
+    //ui->wdgt_GameSettings
 }

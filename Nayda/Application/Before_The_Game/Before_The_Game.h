@@ -67,7 +67,6 @@ signals:
 
     void SignalSendClientRoomCreationRequest();
 
-
 public slots:
 
     void dbg_switch_to_game_mode_button_pressed(void);

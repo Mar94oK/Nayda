@@ -2,6 +2,8 @@
 #define ROOMCREATIONWAITINGLOBBY_H
 
 #include <QWidget>
+#include "gamesettings.h"
+
 
 namespace Ui {
 class RoomCreationWaitingLobby;
@@ -25,10 +27,21 @@ private:
 private:
 
     void setUpUiGeometricRelations();
+    void applyNewSettings(GameSettings settings);
+
+private:
+
+    GameSettings _gameSettings;
+
+public:
+
+    void SetUpInitalState(GameSettings settings);
 
 signals:
 
     void SignalUserIsClosingRoomCreationLobby();
+
+
 };
 
 #endif // ROOMCREATIONWAITINGLOBBY_H

@@ -170,7 +170,11 @@ void Before_The_Game::setUpSignalsSlotsConnections()
 void Before_The_Game::SlotCreateNewRoomCreationWaitingLobby()
 {
     _roomCreationWaitingLobby = new RoomCreationWaitingLobby();
-    _roomCreationWaitingLobby->show();    
+    _roomCreationWaitingLobby->show();
+    _roomCreationWaitingLobby->SetUpInitalState(_gameSettings);
     QObject::connect(_roomCreationWaitingLobby, &RoomCreationWaitingLobby::SignalUserIsClosingRoomCreationLobby, newRoomDialog, &playMenu::show);
+
+    //SignalSetUpInitialStateRoomCreationWaitingLobby
+    //SlotSetUpInitalState
 //    QObject::connect(_roomCreationWaitingLobby, &RoomCreationWaitingLobby::destroyed, this, &Before_The_Game::show);
 }

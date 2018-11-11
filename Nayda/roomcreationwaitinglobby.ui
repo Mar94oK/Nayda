@@ -53,7 +53,7 @@
     </widget>
    </item>
    <item row="3" column="0" colspan="2">
-    <widget class="GameSettingsWidget" name="widget" native="true"/>
+    <widget class="GameSettingsWidget" name="wdgt_GameSettings" native="true"/>
    </item>
    <item row="3" column="4">
     <widget class="QPushButton" name="btn_Creator">
