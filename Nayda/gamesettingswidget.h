@@ -41,8 +41,11 @@ private:
     QString _timeForOpponentsToDecideTimerPictureAddress;
     QString _automaticRulesTypePictureAddress;
     QString _manualRulesTypePictureAddress;
+    QString _totalNumberOfPeoplePictureAddress;
+    QString _hasAddonWildAxePictureAddress;
+    QString _hasAddonClericalErrorsPictureAddress;
 
-    const double buttonsWidthCoefficient = 0.3;
+    const double buttonsWidthCoefficient = 0.1;
     const double buttonsHeightWidthRelatio = 1.24633;
 
     QString _DiplomacyTimeBaseText = "Время, отведённое для дипломатии: ";

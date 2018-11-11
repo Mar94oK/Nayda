@@ -42,6 +42,9 @@ void GameSettingsWidget::setUpUiPicturesAddresses()
      _timeForOpponentsToDecideTimerPictureAddress = picturesLocationBasis + "TimeForOpponentsDecision.png";
      _automaticRulesTypePictureAddress = picturesLocationBasis + "AutomaticRuleType.png";
      _manualRulesTypePictureAddress = picturesLocationBasis + "ManualRulesType.png";
+     _totalNumberOfPeoplePictureAddress = picturesLocationBasis + "NumberOfPeople.png";
+     _hasAddonWildAxePictureAddress = picturesLocationBasis + "WildAxeAddon.png";
+     _hasAddonClericalErrorsPictureAddress = picturesLocationBasis + "ClericalErrorsAddon.png";
 }
 
 void GameSettingsWidget::setUpInitialState()
@@ -51,12 +54,16 @@ void GameSettingsWidget::setUpInitialState()
     setUpButtonPicture(ui->btn_TimeToMove, _timeToMoveTimerPictureAddress, buttonsWidthCoefficient, buttonsHeightWidthRelatio);
     setUpButtonPicture(ui->btn_TimeToThink, _timeToThinkTimerPictureAddress, buttonsWidthCoefficient, buttonsHeightWidthRelatio);
     setUpButtonPicture(ui->btn_RulesType, _automaticRulesTypePictureAddress, buttonsWidthCoefficient, buttonsHeightWidthRelatio);
+    setUpButtonPicture(ui->btn_MaxNumberOfPlayers, _totalNumberOfPeoplePictureAddress, buttonsWidthCoefficient, buttonsHeightWidthRelatio);
+    setUpButtonPicture(ui->btn_HasAddonWildAxe, _hasAddonWildAxePictureAddress, buttonsWidthCoefficient, buttonsHeightWidthRelatio);
+    setUpButtonPicture(ui->btn_HasAddonClericalErrors, _hasAddonClericalErrorsPictureAddress, buttonsWidthCoefficient, buttonsHeightWidthRelatio);
 
     ui->btn_DiplomacyTime->setText("");
     ui->btn_TimeToMove->setText("");
     ui->btn_TimeForOpponentsDecision->setText("");
     ui->btn_TimeToThink->setText("");
     ui->btn_RulesType->setText("");
+    ui->btn_MaxNumberOfPlayers->setText("");
 
     ui->lbl_DiplomacyTime->setText(_DiplomacyTimeBaseText + QString::number(_gameSettings.diplomacyTime()) + " секунд.");
     ui->lbl_TimeForOpponentsDecision->setText(_TimeForOpponentsDecisionBaseText + QString::number(_gameSettings.timeForOpponentsDecision()) + " секунд.");
@@ -92,8 +99,14 @@ void GameSettingsWidget::setUpButtonPicture(QPushButton * const btn, const QStri
                                             geometry().width()*widthCoeff*heightWidthRelatio,
                                             Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
 
+    qDebug() << "Size width picture: " << geometry().width()*widthCoeff;
+    qDebug() << "Size height picture: " << geometry().width()*widthCoeff*heightWidthRelatio;
+
+
     btn->setMinimumWidth(geometry().width()*widthCoeff);
     btn->setMinimumHeight(geometry().width()*widthCoeff*heightWidthRelatio);
+    btn->setMaximumWidth(geometry().width()*widthCoeff);
+    btn->setMaximumHeight(geometry().width()*widthCoeff*heightWidthRelatio);
     btn->setFlat(true);
     btn->setAutoFillBackground(true);
     btn->setPalette(plteBtnMainRepresenter);
