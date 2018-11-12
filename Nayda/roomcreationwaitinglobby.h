@@ -28,6 +28,7 @@ private:
 
     void setUpUiGeometricRelations();
     void applyNewSettings(GameSettings settings);
+    void setUpCreatorsName(const QString& name);
 
 private:
 

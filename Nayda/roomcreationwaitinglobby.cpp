@@ -42,9 +42,15 @@ void RoomCreationWaitingLobby::applyNewSettings(GameSettings settings)
     _gameSettings.applyNewSettings(settings);
 }
 
+void RoomCreationWaitingLobby::setUpCreatorsName(const QString &name)
+{
+    ui->btn_Creator->setText(name);
+}
+
 void RoomCreationWaitingLobby::SetUpInitalState(GameSettings settings)
 {
     _gameSettings.applyNewSettings(settings);
+    setUpCreatorsName(settings.clientName());
     ui->wdgt_GameSettings->ApplyNewSettings(settings);
     ui->wdgt_GameSettings->setUpInitialState();
     //ui->wdgt_GameSettings
