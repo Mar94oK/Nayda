@@ -8,6 +8,7 @@
 #include "gamesettings.h"
 #include "MessagesDefinitions.h"
 #include "roomcreationwaitinglobby.h"
+#include "serverhadclosedconnectionwindow.h"
 #define DEBUG_MESSAGES
 
 
@@ -88,7 +89,7 @@ public slots:
     void SlotAbortingConnectionByUserInitiative() {emit SignalAbortingConnectionByUserInitiative(); }
 
 //error processing
-    void SlotProcessRemoteHostClosedErrorReport() { emit SignalRemoteHostClosedErrorReport(); }
+    void SlotProcessRemoteHostClosedErrorReport();
     void SlotProcessRemoteHostConnectionRefusedErrorReport() { emit SignalRemoteHostConnectionRefusedErrorReport();
                                                              qDebug() << "NAY-001: RemoteHostConnectionRefusedError()! ";}
     void SlotProcessRemoteHostNotFoundErrorReport() { emit SignalRemoteHostNotFoundErrorReport(); }
@@ -110,6 +111,7 @@ private:
     playMenu* newRoomDialog;
 
     RoomCreationWaitingLobby* _roomCreationWaitingLobby = nullptr;
+    ServerHadClosedConnectionWindow* _serverHadClosedConnectionWindow = nullptr;
 
 private:
 

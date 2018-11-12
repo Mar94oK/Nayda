@@ -51,6 +51,11 @@ signals:
 
     void SignalUserIsClosingRoomCreationLobby();
 
+public slots:
+
+    //Error processing
+    void SlotProcessRemoteHostClosedErrorReport();
+
 
 };
 

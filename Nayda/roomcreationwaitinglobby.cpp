@@ -98,3 +98,8 @@ void RoomCreationWaitingLobby::SetUpInitalState(GameSettings settings)
     ui->wdgt_GameSettings->setUpInitialState();
 
 }
+
+void RoomCreationWaitingLobby::SlotProcessRemoteHostClosedErrorReport()
+{
+    close();
+}

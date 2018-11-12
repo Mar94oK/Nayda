@@ -55,7 +55,8 @@ SOURCES += main.cpp\
     serverMessageSystem.pb.cc \
     gamesettingswindow.cpp \
     roomcreationwaitinglobby.cpp \
-    gamesettingswidget.cpp
+    gamesettingswidget.cpp \
+    serverhadclosedconnectionwindow.cpp
 
 HEADERS  += main_application.h \
     Application/Before_The_Game/Before_The_Game.h \
@@ -85,7 +86,8 @@ HEADERS  += main_application.h \
     gamesettingswindow.h \
     MessagesDefinitions.h \
     roomcreationwaitinglobby.h \
-    gamesettingswidget.h
+    gamesettingswidget.h \
+    serverhadclosedconnectionwindow.h
 
 FORMS    += main_application.ui \
     Application/Before_The_Game/Before_The_Game.ui \
@@ -106,7 +108,8 @@ FORMS    += main_application.ui \
     playMenu.ui \
     gamesettingswindow.ui \
     roomcreationwaitinglobby.ui \
-    gamesettingswidget.ui
+    gamesettingswidget.ui \
+    serverhadclosedconnectionwindow.ui
 
 RESOURCES += \
     tables.qrc \

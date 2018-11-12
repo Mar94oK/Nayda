@@ -175,8 +175,17 @@ void Before_The_Game::SlotCreateNewRoomCreationWaitingLobby()
     _roomCreationWaitingLobby->SetUpInitalState(_gameSettings);
     QObject::connect(_roomCreationWaitingLobby, &RoomCreationWaitingLobby::SignalUserIsClosingRoomCreationLobby, newRoomDialog, &playMenu::show);
     QObject::connect(_roomCreationWaitingLobby, &RoomCreationWaitingLobby::SignalUserIsClosingRoomCreationLobby, this, &Before_The_Game::SlotAbortingConnectionByUserInitiative);
+    QObject::connect(this, &Before_The_Game::SignalRemoteHostClosedErrorReport, _roomCreationWaitingLobby, &RoomCreationWaitingLobby::SlotProcessRemoteHostClosedErrorReport);
 
     //SignalSetUpInitialStateRoomCreationWaitingLobby
     //SlotSetUpInitalState
 //    QObject::connect(_roomCreationWaitingLobby, &RoomCreationWaitingLobby::destroyed, this, &Before_The_Game::show);
+}
+
+void Before_The_Game::SlotProcessRemoteHostClosedErrorReport()
+{
+    qDebug() << "NAY-001: Processing HostClosedConnectionError!";
+    emit SignalRemoteHostClosedErrorReport();
+    _serverHadClosedConnectionWindow = new ServerHadClosedConnectionWindow(this);
+    _serverHadClosedConnectionWindow->setModal(true);
 }
