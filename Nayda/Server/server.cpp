@@ -372,6 +372,23 @@ void Server::ProcessClientRoomCreationReply(const QByteArray &data, int socketDe
     emit SignalReportClientRoomCreationReplyData(replyData);
 }
 
+void Server::ProcessServerReportsOpponentIsEnteringRoom(const QByteArray &data, int socketDescriptor)
+{
+    serverMessageSystem::ServerReportsOpponentIsEnteringRoom message;
+
+    if (!message.ParseFromArray(data.data(), data.size()))
+    {
+        qDebug() << ("NAY-001: Error while ProcessServerReportsOpponentIsEnteringRoom() ");
+        return;
+    }
+
+    qDebug() << "NAY-001: message: Opponent's name: " << message.opponentname();
+    qDebug() << "NAY-001: message: Room's id: " << message.roomid();
+
+    emit SignalServerReportsOpponentIsEnteringRoom(QString::fromUtf8(message.opponentname()));
+
+}
+
 
 void Server::SocketErorHandler(QAbstractSocket::SocketError socketError)
 {

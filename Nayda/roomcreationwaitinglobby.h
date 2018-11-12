@@ -53,8 +53,14 @@ signals:
 
 public slots:
 
+    void SlotProcessServerReportsOpponentIsEnteringRoom(const QString& opponentName);
+
     //Error processing
     void SlotProcessRemoteHostClosedErrorReport();
+
+private:
+
+    std::vector<QPushButton* btn> _opponnets;
 
 
 };

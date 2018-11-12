@@ -101,6 +101,7 @@ signals:
     void SignalServerHasChangedGameSettings(const GameSettings&);
     void SignalReportServerQueryReplyData(ServerQueryReplyData data);
     void SignalReportClientRoomCreationReplyData(ClientRoomCreationReplyData data);
+    void SignalServerReportsOpponentIsEnteringRoom(const QString& clientName);
 
 //error signals
 
@@ -119,6 +120,7 @@ private:
     void MessageParser(const QByteArray& data, int socketDescriptor);
     void ProcessServerInputQueryReply(const QByteArray &data, int socketDescriptor);
     void ProcessClientRoomCreationReply(const QByteArray &data, int socketDescriptor);
+    void ProcessServerReportsOpponentIsEnteringRoom(const QByteArray &data, int socketDescriptor);
     void SocketErorHandler(QAbstractSocket::SocketError socketError);
     void SetUpConnectionTImeoutTimer();
     void ConnectionUnexpectedBehaviourHandler();

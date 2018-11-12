@@ -70,6 +70,8 @@ signals:
 
     void SignalAbortingConnectionByUserInitiative();
 
+    void SignalServerReportsOpponentIsEnteringRoom(const QString& opponentName);
+
 public slots:
 
     void dbg_switch_to_game_mode_button_pressed(void);
@@ -82,11 +84,14 @@ public slots:
     void SlotProcessServerQueryReplyData(ServerQueryReplyData data);
     void SlotProcessClientRoomCreationReplyData(ClientRoomCreationReplyData data);
 
-    void SlotSendClientRoomCreationRequest() { emit SignalSendClientRoomCreationRequest(); } //DEBUG FOR A VIEW ONLY!!!
+    void SlotSendClientRoomCreationRequest() { emit SignalSendClientRoomCreationRequest(); }
 
     void SlotCreateNewRoomCreationWaitingLobby();
 
     void SlotAbortingConnectionByUserInitiative() {emit SignalAbortingConnectionByUserInitiative(); }
+
+    void SlotProcessServerReportsOpponentIsEnteringRoom(const QString& opponentName)
+    { emit SignalServerReportsOpponentIsEnteringRoom(opponentName); }
 
 //error processing
     void SlotProcessRemoteHostClosedErrorReport();

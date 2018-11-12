@@ -42,7 +42,7 @@ struct TableStruct_serverMessageSystem_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::google::protobuf::internal::ParseTable schema[12]
+  static const ::google::protobuf::internal::ParseTable schema[15]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
@@ -62,6 +62,9 @@ extern ClientRoomCreationReplyDefaultTypeInternal _ClientRoomCreationReply_defau
 class ClientRoomCreationRequest;
 class ClientRoomCreationRequestDefaultTypeInternal;
 extern ClientRoomCreationRequestDefaultTypeInternal _ClientRoomCreationRequest_default_instance_;
+class ClientSendRoomCreationLobbyChartMessage;
+class ClientSendRoomCreationLobbyChartMessageDefaultTypeInternal;
+extern ClientSendRoomCreationLobbyChartMessageDefaultTypeInternal _ClientSendRoomCreationLobbyChartMessage_default_instance_;
 class CommonHeader;
 class CommonHeaderDefaultTypeInternal;
 extern CommonHeaderDefaultTypeInternal _CommonHeader_default_instance_;
@@ -83,6 +86,12 @@ extern ServerQueryOrderNotificationDefaultTypeInternal _ServerQueryOrderNotifica
 class ServerQueryReply;
 class ServerQueryReplyDefaultTypeInternal;
 extern ServerQueryReplyDefaultTypeInternal _ServerQueryReply_default_instance_;
+class ServerReportsOpponentIsEnteringRoom;
+class ServerReportsOpponentIsEnteringRoomDefaultTypeInternal;
+extern ServerReportsOpponentIsEnteringRoomDefaultTypeInternal _ServerReportsOpponentIsEnteringRoom_default_instance_;
+class ServerSendRoomCreationLobbyChartMessage;
+class ServerSendRoomCreationLobbyChartMessageDefaultTypeInternal;
+extern ServerSendRoomCreationLobbyChartMessageDefaultTypeInternal _ServerSendRoomCreationLobbyChartMessage_default_instance_;
 class TimeSettings;
 class TimeSettingsDefaultTypeInternal;
 extern TimeSettingsDefaultTypeInternal _TimeSettings_default_instance_;
@@ -93,6 +102,7 @@ template<> ::serverMessageSystem::ClientConnectionToRoomReply* Arena::CreateMayb
 template<> ::serverMessageSystem::ClientConnectionToRoomRequest* Arena::CreateMaybeMessage<::serverMessageSystem::ClientConnectionToRoomRequest>(Arena*);
 template<> ::serverMessageSystem::ClientRoomCreationReply* Arena::CreateMaybeMessage<::serverMessageSystem::ClientRoomCreationReply>(Arena*);
 template<> ::serverMessageSystem::ClientRoomCreationRequest* Arena::CreateMaybeMessage<::serverMessageSystem::ClientRoomCreationRequest>(Arena*);
+template<> ::serverMessageSystem::ClientSendRoomCreationLobbyChartMessage* Arena::CreateMaybeMessage<::serverMessageSystem::ClientSendRoomCreationLobbyChartMessage>(Arena*);
 template<> ::serverMessageSystem::CommonHeader* Arena::CreateMaybeMessage<::serverMessageSystem::CommonHeader>(Arena*);
 template<> ::serverMessageSystem::GameSettings* Arena::CreateMaybeMessage<::serverMessageSystem::GameSettings>(Arena*);
 template<> ::serverMessageSystem::GameType* Arena::CreateMaybeMessage<::serverMessageSystem::GameType>(Arena*);
@@ -100,6 +110,8 @@ template<> ::serverMessageSystem::RoomCreationErrors* Arena::CreateMaybeMessage<
 template<> ::serverMessageSystem::ServerInputQuery* Arena::CreateMaybeMessage<::serverMessageSystem::ServerInputQuery>(Arena*);
 template<> ::serverMessageSystem::ServerQueryOrderNotification* Arena::CreateMaybeMessage<::serverMessageSystem::ServerQueryOrderNotification>(Arena*);
 template<> ::serverMessageSystem::ServerQueryReply* Arena::CreateMaybeMessage<::serverMessageSystem::ServerQueryReply>(Arena*);
+template<> ::serverMessageSystem::ServerReportsOpponentIsEnteringRoom* Arena::CreateMaybeMessage<::serverMessageSystem::ServerReportsOpponentIsEnteringRoom>(Arena*);
+template<> ::serverMessageSystem::ServerSendRoomCreationLobbyChartMessage* Arena::CreateMaybeMessage<::serverMessageSystem::ServerSendRoomCreationLobbyChartMessage>(Arena*);
 template<> ::serverMessageSystem::TimeSettings* Arena::CreateMaybeMessage<::serverMessageSystem::TimeSettings>(Arena*);
 }  // namespace protobuf
 }  // namespace google
@@ -155,12 +167,15 @@ enum ConnectionSubSysCommandsID {
   CLIENT_ROOM_CREATION_REPLY = 3,
   CLIENT_CONNECTION_TO_ROOM_REQUEST = 4,
   CLIENT_CONNECTION_TO_ROOM_REPLY = 5,
+  SERVER_REPORTS_OPPONENT_IS_ENTERING_ROOM = 6,
+  SERVER_SEND_ROOM_CREATION_LOBBY_CHART_MESSAGE = 7,
+  CLIENT_SEND_ROOM_CREATION_LOBBY_CHART_MESSAGE = 8,
   ConnectionSubSysCommandsID_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::google::protobuf::int32>::min(),
   ConnectionSubSysCommandsID_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::google::protobuf::int32>::max()
 };
 bool ConnectionSubSysCommandsID_IsValid(int value);
 const ConnectionSubSysCommandsID ConnectionSubSysCommandsID_MIN = SERVER_INPUT_QUERY_REQUEST;
-const ConnectionSubSysCommandsID ConnectionSubSysCommandsID_MAX = CLIENT_CONNECTION_TO_ROOM_REPLY;
+const ConnectionSubSysCommandsID ConnectionSubSysCommandsID_MAX = CLIENT_SEND_ROOM_CREATION_LOBBY_CHART_MESSAGE;
 const int ConnectionSubSysCommandsID_ARRAYSIZE = ConnectionSubSysCommandsID_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* ConnectionSubSysCommandsID_descriptor();
@@ -1865,6 +1880,451 @@ class ServerQueryOrderNotification : public ::google::protobuf::Message /* @@pro
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_serverMessageSystem_2eproto;
 };
+// -------------------------------------------------------------------
+
+class ServerReportsOpponentIsEnteringRoom : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:serverMessageSystem.ServerReportsOpponentIsEnteringRoom) */ {
+ public:
+  ServerReportsOpponentIsEnteringRoom();
+  virtual ~ServerReportsOpponentIsEnteringRoom();
+
+  ServerReportsOpponentIsEnteringRoom(const ServerReportsOpponentIsEnteringRoom& from);
+
+  inline ServerReportsOpponentIsEnteringRoom& operator=(const ServerReportsOpponentIsEnteringRoom& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  ServerReportsOpponentIsEnteringRoom(ServerReportsOpponentIsEnteringRoom&& from) noexcept
+    : ServerReportsOpponentIsEnteringRoom() {
+    *this = ::std::move(from);
+  }
+
+  inline ServerReportsOpponentIsEnteringRoom& operator=(ServerReportsOpponentIsEnteringRoom&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return default_instance().GetDescriptor();
+  }
+  static const ServerReportsOpponentIsEnteringRoom& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const ServerReportsOpponentIsEnteringRoom* internal_default_instance() {
+    return reinterpret_cast<const ServerReportsOpponentIsEnteringRoom*>(
+               &_ServerReportsOpponentIsEnteringRoom_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    12;
+
+  void Swap(ServerReportsOpponentIsEnteringRoom* other);
+  friend void swap(ServerReportsOpponentIsEnteringRoom& a, ServerReportsOpponentIsEnteringRoom& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline ServerReportsOpponentIsEnteringRoom* New() const final {
+    return CreateMaybeMessage<ServerReportsOpponentIsEnteringRoom>(NULL);
+  }
+
+  ServerReportsOpponentIsEnteringRoom* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<ServerReportsOpponentIsEnteringRoom>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const ServerReportsOpponentIsEnteringRoom& from);
+  void MergeFrom(const ServerReportsOpponentIsEnteringRoom& from);
+  void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
+  static const char* _InternalParse(const char* begin, const char* end, void* object, ::google::protobuf::internal::ParseContext* ctx);
+  ::google::protobuf::internal::ParseFunc _ParseFunc() const final { return _InternalParse; }
+  #else
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(ServerReportsOpponentIsEnteringRoom* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string opponentName = 3;
+  void clear_opponentname();
+  static const int kOpponentNameFieldNumber = 3;
+  const ::std::string& opponentname() const;
+  void set_opponentname(const ::std::string& value);
+  #if LANG_CXX11
+  void set_opponentname(::std::string&& value);
+  #endif
+  void set_opponentname(const char* value);
+  void set_opponentname(const char* value, size_t size);
+  ::std::string* mutable_opponentname();
+  ::std::string* release_opponentname();
+  void set_allocated_opponentname(::std::string* opponentname);
+
+  // .serverMessageSystem.CommonHeader header = 1;
+  bool has_header() const;
+  void clear_header();
+  static const int kHeaderFieldNumber = 1;
+  const ::serverMessageSystem::CommonHeader& header() const;
+  ::serverMessageSystem::CommonHeader* release_header();
+  ::serverMessageSystem::CommonHeader* mutable_header();
+  void set_allocated_header(::serverMessageSystem::CommonHeader* header);
+
+  // .serverMessageSystem.ConnectionSubSysCommandsID connectionCmdID = 2;
+  void clear_connectioncmdid();
+  static const int kConnectionCmdIDFieldNumber = 2;
+  ::serverMessageSystem::ConnectionSubSysCommandsID connectioncmdid() const;
+  void set_connectioncmdid(::serverMessageSystem::ConnectionSubSysCommandsID value);
+
+  // uint32 roomID = 4;
+  void clear_roomid();
+  static const int kRoomIDFieldNumber = 4;
+  ::google::protobuf::uint32 roomid() const;
+  void set_roomid(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:serverMessageSystem.ServerReportsOpponentIsEnteringRoom)
+ private:
+  class HasBitSetters;
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr opponentname_;
+  ::serverMessageSystem::CommonHeader* header_;
+  int connectioncmdid_;
+  ::google::protobuf::uint32 roomid_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_serverMessageSystem_2eproto;
+};
+// -------------------------------------------------------------------
+
+class ServerSendRoomCreationLobbyChartMessage : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:serverMessageSystem.ServerSendRoomCreationLobbyChartMessage) */ {
+ public:
+  ServerSendRoomCreationLobbyChartMessage();
+  virtual ~ServerSendRoomCreationLobbyChartMessage();
+
+  ServerSendRoomCreationLobbyChartMessage(const ServerSendRoomCreationLobbyChartMessage& from);
+
+  inline ServerSendRoomCreationLobbyChartMessage& operator=(const ServerSendRoomCreationLobbyChartMessage& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  ServerSendRoomCreationLobbyChartMessage(ServerSendRoomCreationLobbyChartMessage&& from) noexcept
+    : ServerSendRoomCreationLobbyChartMessage() {
+    *this = ::std::move(from);
+  }
+
+  inline ServerSendRoomCreationLobbyChartMessage& operator=(ServerSendRoomCreationLobbyChartMessage&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return default_instance().GetDescriptor();
+  }
+  static const ServerSendRoomCreationLobbyChartMessage& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const ServerSendRoomCreationLobbyChartMessage* internal_default_instance() {
+    return reinterpret_cast<const ServerSendRoomCreationLobbyChartMessage*>(
+               &_ServerSendRoomCreationLobbyChartMessage_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    13;
+
+  void Swap(ServerSendRoomCreationLobbyChartMessage* other);
+  friend void swap(ServerSendRoomCreationLobbyChartMessage& a, ServerSendRoomCreationLobbyChartMessage& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline ServerSendRoomCreationLobbyChartMessage* New() const final {
+    return CreateMaybeMessage<ServerSendRoomCreationLobbyChartMessage>(NULL);
+  }
+
+  ServerSendRoomCreationLobbyChartMessage* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<ServerSendRoomCreationLobbyChartMessage>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const ServerSendRoomCreationLobbyChartMessage& from);
+  void MergeFrom(const ServerSendRoomCreationLobbyChartMessage& from);
+  void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
+  static const char* _InternalParse(const char* begin, const char* end, void* object, ::google::protobuf::internal::ParseContext* ctx);
+  ::google::protobuf::internal::ParseFunc _ParseFunc() const final { return _InternalParse; }
+  #else
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(ServerSendRoomCreationLobbyChartMessage* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string opponentName = 3;
+  void clear_opponentname();
+  static const int kOpponentNameFieldNumber = 3;
+  const ::std::string& opponentname() const;
+  void set_opponentname(const ::std::string& value);
+  #if LANG_CXX11
+  void set_opponentname(::std::string&& value);
+  #endif
+  void set_opponentname(const char* value);
+  void set_opponentname(const char* value, size_t size);
+  ::std::string* mutable_opponentname();
+  ::std::string* release_opponentname();
+  void set_allocated_opponentname(::std::string* opponentname);
+
+  // string chartMessage = 4;
+  void clear_chartmessage();
+  static const int kChartMessageFieldNumber = 4;
+  const ::std::string& chartmessage() const;
+  void set_chartmessage(const ::std::string& value);
+  #if LANG_CXX11
+  void set_chartmessage(::std::string&& value);
+  #endif
+  void set_chartmessage(const char* value);
+  void set_chartmessage(const char* value, size_t size);
+  ::std::string* mutable_chartmessage();
+  ::std::string* release_chartmessage();
+  void set_allocated_chartmessage(::std::string* chartmessage);
+
+  // .serverMessageSystem.CommonHeader header = 1;
+  bool has_header() const;
+  void clear_header();
+  static const int kHeaderFieldNumber = 1;
+  const ::serverMessageSystem::CommonHeader& header() const;
+  ::serverMessageSystem::CommonHeader* release_header();
+  ::serverMessageSystem::CommonHeader* mutable_header();
+  void set_allocated_header(::serverMessageSystem::CommonHeader* header);
+
+  // .serverMessageSystem.ConnectionSubSysCommandsID connectionCmdID = 2;
+  void clear_connectioncmdid();
+  static const int kConnectionCmdIDFieldNumber = 2;
+  ::serverMessageSystem::ConnectionSubSysCommandsID connectioncmdid() const;
+  void set_connectioncmdid(::serverMessageSystem::ConnectionSubSysCommandsID value);
+
+  // @@protoc_insertion_point(class_scope:serverMessageSystem.ServerSendRoomCreationLobbyChartMessage)
+ private:
+  class HasBitSetters;
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr opponentname_;
+  ::google::protobuf::internal::ArenaStringPtr chartmessage_;
+  ::serverMessageSystem::CommonHeader* header_;
+  int connectioncmdid_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_serverMessageSystem_2eproto;
+};
+// -------------------------------------------------------------------
+
+class ClientSendRoomCreationLobbyChartMessage : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:serverMessageSystem.ClientSendRoomCreationLobbyChartMessage) */ {
+ public:
+  ClientSendRoomCreationLobbyChartMessage();
+  virtual ~ClientSendRoomCreationLobbyChartMessage();
+
+  ClientSendRoomCreationLobbyChartMessage(const ClientSendRoomCreationLobbyChartMessage& from);
+
+  inline ClientSendRoomCreationLobbyChartMessage& operator=(const ClientSendRoomCreationLobbyChartMessage& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  ClientSendRoomCreationLobbyChartMessage(ClientSendRoomCreationLobbyChartMessage&& from) noexcept
+    : ClientSendRoomCreationLobbyChartMessage() {
+    *this = ::std::move(from);
+  }
+
+  inline ClientSendRoomCreationLobbyChartMessage& operator=(ClientSendRoomCreationLobbyChartMessage&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return default_instance().GetDescriptor();
+  }
+  static const ClientSendRoomCreationLobbyChartMessage& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const ClientSendRoomCreationLobbyChartMessage* internal_default_instance() {
+    return reinterpret_cast<const ClientSendRoomCreationLobbyChartMessage*>(
+               &_ClientSendRoomCreationLobbyChartMessage_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    14;
+
+  void Swap(ClientSendRoomCreationLobbyChartMessage* other);
+  friend void swap(ClientSendRoomCreationLobbyChartMessage& a, ClientSendRoomCreationLobbyChartMessage& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline ClientSendRoomCreationLobbyChartMessage* New() const final {
+    return CreateMaybeMessage<ClientSendRoomCreationLobbyChartMessage>(NULL);
+  }
+
+  ClientSendRoomCreationLobbyChartMessage* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<ClientSendRoomCreationLobbyChartMessage>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const ClientSendRoomCreationLobbyChartMessage& from);
+  void MergeFrom(const ClientSendRoomCreationLobbyChartMessage& from);
+  void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
+  static const char* _InternalParse(const char* begin, const char* end, void* object, ::google::protobuf::internal::ParseContext* ctx);
+  ::google::protobuf::internal::ParseFunc _ParseFunc() const final { return _InternalParse; }
+  #else
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(ClientSendRoomCreationLobbyChartMessage* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string clientName = 3;
+  void clear_clientname();
+  static const int kClientNameFieldNumber = 3;
+  const ::std::string& clientname() const;
+  void set_clientname(const ::std::string& value);
+  #if LANG_CXX11
+  void set_clientname(::std::string&& value);
+  #endif
+  void set_clientname(const char* value);
+  void set_clientname(const char* value, size_t size);
+  ::std::string* mutable_clientname();
+  ::std::string* release_clientname();
+  void set_allocated_clientname(::std::string* clientname);
+
+  // string chartMessage = 4;
+  void clear_chartmessage();
+  static const int kChartMessageFieldNumber = 4;
+  const ::std::string& chartmessage() const;
+  void set_chartmessage(const ::std::string& value);
+  #if LANG_CXX11
+  void set_chartmessage(::std::string&& value);
+  #endif
+  void set_chartmessage(const char* value);
+  void set_chartmessage(const char* value, size_t size);
+  ::std::string* mutable_chartmessage();
+  ::std::string* release_chartmessage();
+  void set_allocated_chartmessage(::std::string* chartmessage);
+
+  // .serverMessageSystem.CommonHeader header = 1;
+  bool has_header() const;
+  void clear_header();
+  static const int kHeaderFieldNumber = 1;
+  const ::serverMessageSystem::CommonHeader& header() const;
+  ::serverMessageSystem::CommonHeader* release_header();
+  ::serverMessageSystem::CommonHeader* mutable_header();
+  void set_allocated_header(::serverMessageSystem::CommonHeader* header);
+
+  // .serverMessageSystem.ConnectionSubSysCommandsID connectionCmdID = 2;
+  void clear_connectioncmdid();
+  static const int kConnectionCmdIDFieldNumber = 2;
+  ::serverMessageSystem::ConnectionSubSysCommandsID connectioncmdid() const;
+  void set_connectioncmdid(::serverMessageSystem::ConnectionSubSysCommandsID value);
+
+  // @@protoc_insertion_point(class_scope:serverMessageSystem.ClientSendRoomCreationLobbyChartMessage)
+ private:
+  class HasBitSetters;
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr clientname_;
+  ::google::protobuf::internal::ArenaStringPtr chartmessage_;
+  ::serverMessageSystem::CommonHeader* header_;
+  int connectioncmdid_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_serverMessageSystem_2eproto;
+};
 // ===================================================================
 
 
@@ -3224,9 +3684,501 @@ inline void ServerQueryOrderNotification::set_queryorder(::google::protobuf::uin
   // @@protoc_insertion_point(field_set:serverMessageSystem.ServerQueryOrderNotification.queryOrder)
 }
 
+// -------------------------------------------------------------------
+
+// ServerReportsOpponentIsEnteringRoom
+
+// .serverMessageSystem.CommonHeader header = 1;
+inline bool ServerReportsOpponentIsEnteringRoom::has_header() const {
+  return this != internal_default_instance() && header_ != NULL;
+}
+inline void ServerReportsOpponentIsEnteringRoom::clear_header() {
+  if (GetArenaNoVirtual() == NULL && header_ != NULL) {
+    delete header_;
+  }
+  header_ = NULL;
+}
+inline const ::serverMessageSystem::CommonHeader& ServerReportsOpponentIsEnteringRoom::header() const {
+  const ::serverMessageSystem::CommonHeader* p = header_;
+  // @@protoc_insertion_point(field_get:serverMessageSystem.ServerReportsOpponentIsEnteringRoom.header)
+  return p != NULL ? *p : *reinterpret_cast<const ::serverMessageSystem::CommonHeader*>(
+      &::serverMessageSystem::_CommonHeader_default_instance_);
+}
+inline ::serverMessageSystem::CommonHeader* ServerReportsOpponentIsEnteringRoom::release_header() {
+  // @@protoc_insertion_point(field_release:serverMessageSystem.ServerReportsOpponentIsEnteringRoom.header)
+  
+  ::serverMessageSystem::CommonHeader* temp = header_;
+  header_ = NULL;
+  return temp;
+}
+inline ::serverMessageSystem::CommonHeader* ServerReportsOpponentIsEnteringRoom::mutable_header() {
+  
+  if (header_ == NULL) {
+    auto* p = CreateMaybeMessage<::serverMessageSystem::CommonHeader>(GetArenaNoVirtual());
+    header_ = p;
+  }
+  // @@protoc_insertion_point(field_mutable:serverMessageSystem.ServerReportsOpponentIsEnteringRoom.header)
+  return header_;
+}
+inline void ServerReportsOpponentIsEnteringRoom::set_allocated_header(::serverMessageSystem::CommonHeader* header) {
+  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == NULL) {
+    delete header_;
+  }
+  if (header) {
+    ::google::protobuf::Arena* submessage_arena = NULL;
+    if (message_arena != submessage_arena) {
+      header = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, header, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  header_ = header;
+  // @@protoc_insertion_point(field_set_allocated:serverMessageSystem.ServerReportsOpponentIsEnteringRoom.header)
+}
+
+// .serverMessageSystem.ConnectionSubSysCommandsID connectionCmdID = 2;
+inline void ServerReportsOpponentIsEnteringRoom::clear_connectioncmdid() {
+  connectioncmdid_ = 0;
+}
+inline ::serverMessageSystem::ConnectionSubSysCommandsID ServerReportsOpponentIsEnteringRoom::connectioncmdid() const {
+  // @@protoc_insertion_point(field_get:serverMessageSystem.ServerReportsOpponentIsEnteringRoom.connectionCmdID)
+  return static_cast< ::serverMessageSystem::ConnectionSubSysCommandsID >(connectioncmdid_);
+}
+inline void ServerReportsOpponentIsEnteringRoom::set_connectioncmdid(::serverMessageSystem::ConnectionSubSysCommandsID value) {
+  
+  connectioncmdid_ = value;
+  // @@protoc_insertion_point(field_set:serverMessageSystem.ServerReportsOpponentIsEnteringRoom.connectionCmdID)
+}
+
+// string opponentName = 3;
+inline void ServerReportsOpponentIsEnteringRoom::clear_opponentname() {
+  opponentname_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ServerReportsOpponentIsEnteringRoom::opponentname() const {
+  // @@protoc_insertion_point(field_get:serverMessageSystem.ServerReportsOpponentIsEnteringRoom.opponentName)
+  return opponentname_.GetNoArena();
+}
+inline void ServerReportsOpponentIsEnteringRoom::set_opponentname(const ::std::string& value) {
+  
+  opponentname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:serverMessageSystem.ServerReportsOpponentIsEnteringRoom.opponentName)
+}
+#if LANG_CXX11
+inline void ServerReportsOpponentIsEnteringRoom::set_opponentname(::std::string&& value) {
+  
+  opponentname_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:serverMessageSystem.ServerReportsOpponentIsEnteringRoom.opponentName)
+}
+#endif
+inline void ServerReportsOpponentIsEnteringRoom::set_opponentname(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  opponentname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:serverMessageSystem.ServerReportsOpponentIsEnteringRoom.opponentName)
+}
+inline void ServerReportsOpponentIsEnteringRoom::set_opponentname(const char* value, size_t size) {
+  
+  opponentname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:serverMessageSystem.ServerReportsOpponentIsEnteringRoom.opponentName)
+}
+inline ::std::string* ServerReportsOpponentIsEnteringRoom::mutable_opponentname() {
+  
+  // @@protoc_insertion_point(field_mutable:serverMessageSystem.ServerReportsOpponentIsEnteringRoom.opponentName)
+  return opponentname_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ServerReportsOpponentIsEnteringRoom::release_opponentname() {
+  // @@protoc_insertion_point(field_release:serverMessageSystem.ServerReportsOpponentIsEnteringRoom.opponentName)
+  
+  return opponentname_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ServerReportsOpponentIsEnteringRoom::set_allocated_opponentname(::std::string* opponentname) {
+  if (opponentname != NULL) {
+    
+  } else {
+    
+  }
+  opponentname_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), opponentname);
+  // @@protoc_insertion_point(field_set_allocated:serverMessageSystem.ServerReportsOpponentIsEnteringRoom.opponentName)
+}
+
+// uint32 roomID = 4;
+inline void ServerReportsOpponentIsEnteringRoom::clear_roomid() {
+  roomid_ = 0u;
+}
+inline ::google::protobuf::uint32 ServerReportsOpponentIsEnteringRoom::roomid() const {
+  // @@protoc_insertion_point(field_get:serverMessageSystem.ServerReportsOpponentIsEnteringRoom.roomID)
+  return roomid_;
+}
+inline void ServerReportsOpponentIsEnteringRoom::set_roomid(::google::protobuf::uint32 value) {
+  
+  roomid_ = value;
+  // @@protoc_insertion_point(field_set:serverMessageSystem.ServerReportsOpponentIsEnteringRoom.roomID)
+}
+
+// -------------------------------------------------------------------
+
+// ServerSendRoomCreationLobbyChartMessage
+
+// .serverMessageSystem.CommonHeader header = 1;
+inline bool ServerSendRoomCreationLobbyChartMessage::has_header() const {
+  return this != internal_default_instance() && header_ != NULL;
+}
+inline void ServerSendRoomCreationLobbyChartMessage::clear_header() {
+  if (GetArenaNoVirtual() == NULL && header_ != NULL) {
+    delete header_;
+  }
+  header_ = NULL;
+}
+inline const ::serverMessageSystem::CommonHeader& ServerSendRoomCreationLobbyChartMessage::header() const {
+  const ::serverMessageSystem::CommonHeader* p = header_;
+  // @@protoc_insertion_point(field_get:serverMessageSystem.ServerSendRoomCreationLobbyChartMessage.header)
+  return p != NULL ? *p : *reinterpret_cast<const ::serverMessageSystem::CommonHeader*>(
+      &::serverMessageSystem::_CommonHeader_default_instance_);
+}
+inline ::serverMessageSystem::CommonHeader* ServerSendRoomCreationLobbyChartMessage::release_header() {
+  // @@protoc_insertion_point(field_release:serverMessageSystem.ServerSendRoomCreationLobbyChartMessage.header)
+  
+  ::serverMessageSystem::CommonHeader* temp = header_;
+  header_ = NULL;
+  return temp;
+}
+inline ::serverMessageSystem::CommonHeader* ServerSendRoomCreationLobbyChartMessage::mutable_header() {
+  
+  if (header_ == NULL) {
+    auto* p = CreateMaybeMessage<::serverMessageSystem::CommonHeader>(GetArenaNoVirtual());
+    header_ = p;
+  }
+  // @@protoc_insertion_point(field_mutable:serverMessageSystem.ServerSendRoomCreationLobbyChartMessage.header)
+  return header_;
+}
+inline void ServerSendRoomCreationLobbyChartMessage::set_allocated_header(::serverMessageSystem::CommonHeader* header) {
+  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == NULL) {
+    delete header_;
+  }
+  if (header) {
+    ::google::protobuf::Arena* submessage_arena = NULL;
+    if (message_arena != submessage_arena) {
+      header = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, header, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  header_ = header;
+  // @@protoc_insertion_point(field_set_allocated:serverMessageSystem.ServerSendRoomCreationLobbyChartMessage.header)
+}
+
+// .serverMessageSystem.ConnectionSubSysCommandsID connectionCmdID = 2;
+inline void ServerSendRoomCreationLobbyChartMessage::clear_connectioncmdid() {
+  connectioncmdid_ = 0;
+}
+inline ::serverMessageSystem::ConnectionSubSysCommandsID ServerSendRoomCreationLobbyChartMessage::connectioncmdid() const {
+  // @@protoc_insertion_point(field_get:serverMessageSystem.ServerSendRoomCreationLobbyChartMessage.connectionCmdID)
+  return static_cast< ::serverMessageSystem::ConnectionSubSysCommandsID >(connectioncmdid_);
+}
+inline void ServerSendRoomCreationLobbyChartMessage::set_connectioncmdid(::serverMessageSystem::ConnectionSubSysCommandsID value) {
+  
+  connectioncmdid_ = value;
+  // @@protoc_insertion_point(field_set:serverMessageSystem.ServerSendRoomCreationLobbyChartMessage.connectionCmdID)
+}
+
+// string opponentName = 3;
+inline void ServerSendRoomCreationLobbyChartMessage::clear_opponentname() {
+  opponentname_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ServerSendRoomCreationLobbyChartMessage::opponentname() const {
+  // @@protoc_insertion_point(field_get:serverMessageSystem.ServerSendRoomCreationLobbyChartMessage.opponentName)
+  return opponentname_.GetNoArena();
+}
+inline void ServerSendRoomCreationLobbyChartMessage::set_opponentname(const ::std::string& value) {
+  
+  opponentname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:serverMessageSystem.ServerSendRoomCreationLobbyChartMessage.opponentName)
+}
+#if LANG_CXX11
+inline void ServerSendRoomCreationLobbyChartMessage::set_opponentname(::std::string&& value) {
+  
+  opponentname_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:serverMessageSystem.ServerSendRoomCreationLobbyChartMessage.opponentName)
+}
+#endif
+inline void ServerSendRoomCreationLobbyChartMessage::set_opponentname(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  opponentname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:serverMessageSystem.ServerSendRoomCreationLobbyChartMessage.opponentName)
+}
+inline void ServerSendRoomCreationLobbyChartMessage::set_opponentname(const char* value, size_t size) {
+  
+  opponentname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:serverMessageSystem.ServerSendRoomCreationLobbyChartMessage.opponentName)
+}
+inline ::std::string* ServerSendRoomCreationLobbyChartMessage::mutable_opponentname() {
+  
+  // @@protoc_insertion_point(field_mutable:serverMessageSystem.ServerSendRoomCreationLobbyChartMessage.opponentName)
+  return opponentname_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ServerSendRoomCreationLobbyChartMessage::release_opponentname() {
+  // @@protoc_insertion_point(field_release:serverMessageSystem.ServerSendRoomCreationLobbyChartMessage.opponentName)
+  
+  return opponentname_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ServerSendRoomCreationLobbyChartMessage::set_allocated_opponentname(::std::string* opponentname) {
+  if (opponentname != NULL) {
+    
+  } else {
+    
+  }
+  opponentname_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), opponentname);
+  // @@protoc_insertion_point(field_set_allocated:serverMessageSystem.ServerSendRoomCreationLobbyChartMessage.opponentName)
+}
+
+// string chartMessage = 4;
+inline void ServerSendRoomCreationLobbyChartMessage::clear_chartmessage() {
+  chartmessage_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ServerSendRoomCreationLobbyChartMessage::chartmessage() const {
+  // @@protoc_insertion_point(field_get:serverMessageSystem.ServerSendRoomCreationLobbyChartMessage.chartMessage)
+  return chartmessage_.GetNoArena();
+}
+inline void ServerSendRoomCreationLobbyChartMessage::set_chartmessage(const ::std::string& value) {
+  
+  chartmessage_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:serverMessageSystem.ServerSendRoomCreationLobbyChartMessage.chartMessage)
+}
+#if LANG_CXX11
+inline void ServerSendRoomCreationLobbyChartMessage::set_chartmessage(::std::string&& value) {
+  
+  chartmessage_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:serverMessageSystem.ServerSendRoomCreationLobbyChartMessage.chartMessage)
+}
+#endif
+inline void ServerSendRoomCreationLobbyChartMessage::set_chartmessage(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  chartmessage_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:serverMessageSystem.ServerSendRoomCreationLobbyChartMessage.chartMessage)
+}
+inline void ServerSendRoomCreationLobbyChartMessage::set_chartmessage(const char* value, size_t size) {
+  
+  chartmessage_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:serverMessageSystem.ServerSendRoomCreationLobbyChartMessage.chartMessage)
+}
+inline ::std::string* ServerSendRoomCreationLobbyChartMessage::mutable_chartmessage() {
+  
+  // @@protoc_insertion_point(field_mutable:serverMessageSystem.ServerSendRoomCreationLobbyChartMessage.chartMessage)
+  return chartmessage_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ServerSendRoomCreationLobbyChartMessage::release_chartmessage() {
+  // @@protoc_insertion_point(field_release:serverMessageSystem.ServerSendRoomCreationLobbyChartMessage.chartMessage)
+  
+  return chartmessage_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ServerSendRoomCreationLobbyChartMessage::set_allocated_chartmessage(::std::string* chartmessage) {
+  if (chartmessage != NULL) {
+    
+  } else {
+    
+  }
+  chartmessage_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), chartmessage);
+  // @@protoc_insertion_point(field_set_allocated:serverMessageSystem.ServerSendRoomCreationLobbyChartMessage.chartMessage)
+}
+
+// -------------------------------------------------------------------
+
+// ClientSendRoomCreationLobbyChartMessage
+
+// .serverMessageSystem.CommonHeader header = 1;
+inline bool ClientSendRoomCreationLobbyChartMessage::has_header() const {
+  return this != internal_default_instance() && header_ != NULL;
+}
+inline void ClientSendRoomCreationLobbyChartMessage::clear_header() {
+  if (GetArenaNoVirtual() == NULL && header_ != NULL) {
+    delete header_;
+  }
+  header_ = NULL;
+}
+inline const ::serverMessageSystem::CommonHeader& ClientSendRoomCreationLobbyChartMessage::header() const {
+  const ::serverMessageSystem::CommonHeader* p = header_;
+  // @@protoc_insertion_point(field_get:serverMessageSystem.ClientSendRoomCreationLobbyChartMessage.header)
+  return p != NULL ? *p : *reinterpret_cast<const ::serverMessageSystem::CommonHeader*>(
+      &::serverMessageSystem::_CommonHeader_default_instance_);
+}
+inline ::serverMessageSystem::CommonHeader* ClientSendRoomCreationLobbyChartMessage::release_header() {
+  // @@protoc_insertion_point(field_release:serverMessageSystem.ClientSendRoomCreationLobbyChartMessage.header)
+  
+  ::serverMessageSystem::CommonHeader* temp = header_;
+  header_ = NULL;
+  return temp;
+}
+inline ::serverMessageSystem::CommonHeader* ClientSendRoomCreationLobbyChartMessage::mutable_header() {
+  
+  if (header_ == NULL) {
+    auto* p = CreateMaybeMessage<::serverMessageSystem::CommonHeader>(GetArenaNoVirtual());
+    header_ = p;
+  }
+  // @@protoc_insertion_point(field_mutable:serverMessageSystem.ClientSendRoomCreationLobbyChartMessage.header)
+  return header_;
+}
+inline void ClientSendRoomCreationLobbyChartMessage::set_allocated_header(::serverMessageSystem::CommonHeader* header) {
+  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == NULL) {
+    delete header_;
+  }
+  if (header) {
+    ::google::protobuf::Arena* submessage_arena = NULL;
+    if (message_arena != submessage_arena) {
+      header = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, header, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  header_ = header;
+  // @@protoc_insertion_point(field_set_allocated:serverMessageSystem.ClientSendRoomCreationLobbyChartMessage.header)
+}
+
+// .serverMessageSystem.ConnectionSubSysCommandsID connectionCmdID = 2;
+inline void ClientSendRoomCreationLobbyChartMessage::clear_connectioncmdid() {
+  connectioncmdid_ = 0;
+}
+inline ::serverMessageSystem::ConnectionSubSysCommandsID ClientSendRoomCreationLobbyChartMessage::connectioncmdid() const {
+  // @@protoc_insertion_point(field_get:serverMessageSystem.ClientSendRoomCreationLobbyChartMessage.connectionCmdID)
+  return static_cast< ::serverMessageSystem::ConnectionSubSysCommandsID >(connectioncmdid_);
+}
+inline void ClientSendRoomCreationLobbyChartMessage::set_connectioncmdid(::serverMessageSystem::ConnectionSubSysCommandsID value) {
+  
+  connectioncmdid_ = value;
+  // @@protoc_insertion_point(field_set:serverMessageSystem.ClientSendRoomCreationLobbyChartMessage.connectionCmdID)
+}
+
+// string clientName = 3;
+inline void ClientSendRoomCreationLobbyChartMessage::clear_clientname() {
+  clientname_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ClientSendRoomCreationLobbyChartMessage::clientname() const {
+  // @@protoc_insertion_point(field_get:serverMessageSystem.ClientSendRoomCreationLobbyChartMessage.clientName)
+  return clientname_.GetNoArena();
+}
+inline void ClientSendRoomCreationLobbyChartMessage::set_clientname(const ::std::string& value) {
+  
+  clientname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:serverMessageSystem.ClientSendRoomCreationLobbyChartMessage.clientName)
+}
+#if LANG_CXX11
+inline void ClientSendRoomCreationLobbyChartMessage::set_clientname(::std::string&& value) {
+  
+  clientname_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:serverMessageSystem.ClientSendRoomCreationLobbyChartMessage.clientName)
+}
+#endif
+inline void ClientSendRoomCreationLobbyChartMessage::set_clientname(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  clientname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:serverMessageSystem.ClientSendRoomCreationLobbyChartMessage.clientName)
+}
+inline void ClientSendRoomCreationLobbyChartMessage::set_clientname(const char* value, size_t size) {
+  
+  clientname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:serverMessageSystem.ClientSendRoomCreationLobbyChartMessage.clientName)
+}
+inline ::std::string* ClientSendRoomCreationLobbyChartMessage::mutable_clientname() {
+  
+  // @@protoc_insertion_point(field_mutable:serverMessageSystem.ClientSendRoomCreationLobbyChartMessage.clientName)
+  return clientname_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ClientSendRoomCreationLobbyChartMessage::release_clientname() {
+  // @@protoc_insertion_point(field_release:serverMessageSystem.ClientSendRoomCreationLobbyChartMessage.clientName)
+  
+  return clientname_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ClientSendRoomCreationLobbyChartMessage::set_allocated_clientname(::std::string* clientname) {
+  if (clientname != NULL) {
+    
+  } else {
+    
+  }
+  clientname_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), clientname);
+  // @@protoc_insertion_point(field_set_allocated:serverMessageSystem.ClientSendRoomCreationLobbyChartMessage.clientName)
+}
+
+// string chartMessage = 4;
+inline void ClientSendRoomCreationLobbyChartMessage::clear_chartmessage() {
+  chartmessage_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ClientSendRoomCreationLobbyChartMessage::chartmessage() const {
+  // @@protoc_insertion_point(field_get:serverMessageSystem.ClientSendRoomCreationLobbyChartMessage.chartMessage)
+  return chartmessage_.GetNoArena();
+}
+inline void ClientSendRoomCreationLobbyChartMessage::set_chartmessage(const ::std::string& value) {
+  
+  chartmessage_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:serverMessageSystem.ClientSendRoomCreationLobbyChartMessage.chartMessage)
+}
+#if LANG_CXX11
+inline void ClientSendRoomCreationLobbyChartMessage::set_chartmessage(::std::string&& value) {
+  
+  chartmessage_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:serverMessageSystem.ClientSendRoomCreationLobbyChartMessage.chartMessage)
+}
+#endif
+inline void ClientSendRoomCreationLobbyChartMessage::set_chartmessage(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  chartmessage_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:serverMessageSystem.ClientSendRoomCreationLobbyChartMessage.chartMessage)
+}
+inline void ClientSendRoomCreationLobbyChartMessage::set_chartmessage(const char* value, size_t size) {
+  
+  chartmessage_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:serverMessageSystem.ClientSendRoomCreationLobbyChartMessage.chartMessage)
+}
+inline ::std::string* ClientSendRoomCreationLobbyChartMessage::mutable_chartmessage() {
+  
+  // @@protoc_insertion_point(field_mutable:serverMessageSystem.ClientSendRoomCreationLobbyChartMessage.chartMessage)
+  return chartmessage_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ClientSendRoomCreationLobbyChartMessage::release_chartmessage() {
+  // @@protoc_insertion_point(field_release:serverMessageSystem.ClientSendRoomCreationLobbyChartMessage.chartMessage)
+  
+  return chartmessage_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ClientSendRoomCreationLobbyChartMessage::set_allocated_chartmessage(::std::string* chartmessage) {
+  if (chartmessage != NULL) {
+    
+  } else {
+    
+  }
+  chartmessage_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), chartmessage);
+  // @@protoc_insertion_point(field_set_allocated:serverMessageSystem.ClientSendRoomCreationLobbyChartMessage.chartMessage)
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

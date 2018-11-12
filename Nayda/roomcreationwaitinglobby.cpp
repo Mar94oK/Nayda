@@ -97,6 +97,47 @@ void RoomCreationWaitingLobby::SetUpInitalState(GameSettings settings)
     ui->wdgt_GameSettings->ApplyNewSettings(settings);
     ui->wdgt_GameSettings->setUpInitialState();
 
+    //check how many opponents buttons to show
+    switch (settings.maximumNumberOfPlayers())
+    {
+    case 3:
+        ui->btn_Opponent_3->hide();
+        ui->btn_Opponent_4->hide();
+        ui->btn_Opponent_5->hide();
+        _opponnets.push_back(ui->btn_Opponent_1);
+        _opponnets.push_back(ui->btn_Opponent_2);
+    break;
+    case 4:
+        ui->btn_Opponent_4->hide();
+        ui->btn_Opponent_5->hide();
+        _opponnets.push_back(ui->btn_Opponent_1);
+        _opponnets.push_back(ui->btn_Opponent_2);
+        _opponnets.push_back(ui->btn_Opponent_3);
+        break;
+    case 5:
+        ui->btn_Opponent_5->hide();
+        _opponnets.push_back(ui->btn_Opponent_1);
+        _opponnets.push_back(ui->btn_Opponent_2);
+        _opponnets.push_back(ui->btn_Opponent_3);
+        _opponnets.push_back(ui->btn_Opponent_4);
+        break;
+    case 6:
+        _opponnets.push_back(ui->btn_Opponent_1);
+        _opponnets.push_back(ui->btn_Opponent_2);
+        _opponnets.push_back(ui->btn_Opponent_3);
+        _opponnets.push_back(ui->btn_Opponent_4);
+        _opponnets.push_back(ui->btn_Opponent_5);
+        break;
+    default:
+        qDebug() << "NAY-001: number of player is set to " << settings.maximumNumberOfPlayers() << " Too much. Rework the procedure!!!";
+        break;
+    }
+
+}
+
+void RoomCreationWaitingLobby::SlotProcessServerReportsOpponentIsEnteringRoom(const QString &opponentName)
+{
+
 }
 
 void RoomCreationWaitingLobby::SlotProcessRemoteHostClosedErrorReport()
