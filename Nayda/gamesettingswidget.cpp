@@ -31,7 +31,7 @@ void GameSettingsWidget::setUpUiPicturesAddresses()
      QString uiPlayMenuFilesLocation = "Munchkin/Nayda/Pictures/gameSettingsWidget";
      homeDirectory = "D:/";
 #elif defined Q_OS_UNIX
-     QString uiPlayMenuFilesLocation = "Munchkin/Nayda/Nayda/Pictures/playMenu";
+     QString uiPlayMenuFilesLocation = "Munchkin/Nayda/Nayda/Pictures/gameSettingsWidget";
 #endif
 
      QString picturesLocationBasis = homeDirectory + uiPlayMenuFilesLocation + "/";
@@ -64,6 +64,9 @@ void GameSettingsWidget::setUpInitialState()
     ui->btn_TimeToThink->setText("");
     ui->btn_RulesType->setText("");
     ui->btn_MaxNumberOfPlayers->setText("");
+    ui->btn_HasAddonWildAxe->setText("");
+    ui->btn_HasAddonClericalErrors->setText("");
+
 
     ui->lbl_DiplomacyTime->setText(_DiplomacyTimeBaseText + QString::number(_gameSettings.diplomacyTime()) + " секунд.");
     ui->lbl_TimeForOpponentsDecision->setText(_TimeForOpponentsDecisionBaseText + QString::number(_gameSettings.timeForOpponentsDecision()) + " секунд.");
