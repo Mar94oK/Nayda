@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include "gamesettings.h"
+#include <QPushButton>
 
 
 namespace Ui {
@@ -29,10 +30,18 @@ private:
     void setUpUiGeometricRelations();
     void applyNewSettings(GameSettings settings);
     void setUpCreatorsName(const QString& name);
+    void SetUpPicturesAddressses();
+    void setUpButtonPicture(QPushButton* const btn, const QString& picturePath, double widthCoeff, double heightWidthRelatio);
+
 
 private:
 
     GameSettings _gameSettings;
+
+    const double buttonsWidthCoefficient = 0.1;
+    const double buttonsHeightWidthRelatio = 1.0000;
+
+    QString _mainPlayerPictureAddress;
 
 public:
 
