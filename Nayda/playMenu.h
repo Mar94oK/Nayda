@@ -92,6 +92,7 @@ public slots:
 
     void SlotSendClientRoomCreationRequest() { emit SignalSendClientRoomCreationRequest(); }
 
+    void SlotAbortingConnectionByUserInitiative();
 
 //erorrs processing
 

@@ -110,6 +110,18 @@ void playMenu::SlotProcessServerQueryReplyData(ServerQueryReplyData data)
     setUpButtonPicture(ui->btn_Connection, _connectionButtonPictureAddressConnected, buttonsWidthCoefficient, buttonsHeightWidthRelatio);
 }
 
+void playMenu::SlotAbortingConnectionByUserInitiative()
+{
+    QObject::disconnect(ui->btn_Connection, &QPushButton::clicked, this, &playMenu::SlotSetUpConnection);
+    QObject::connect(ui->btn_Connection, &QPushButton::clicked, this, &playMenu::SlotShowServerSettings);
+    ui->lbl_Connection->setText("Вы отключились от сервера! Соединитесь заново, пожалуйста.");
+    setUpButtonPicture(ui->btn_Connection, _connectionButtonPictureAddressDefault, buttonsWidthCoefficient, buttonsHeightWidthRelatio);
+    ui->btn_CreateLobby->setEnabled(false);
+    setUpButtonPicture(ui->btn_CreateLobby, _createRoomButtonPictureAddressDefault, buttonsWidthCoefficient, buttonsHeightWidthRelatio);
+    ui->btn_JoinToExistingLobby->setEnabled(false);
+    setUpButtonPicture(ui->btn_JoinToExistingLobby, _joinRoomButtonPictureAddressDefault, buttonsWidthCoefficient, buttonsHeightWidthRelatio);
+}
+
 void playMenu::SlotProcessRemoteHostClosedErrorReport()
 {
     ui->btn_Connection->setEnabled(true);

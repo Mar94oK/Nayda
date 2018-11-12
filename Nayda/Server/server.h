@@ -90,6 +90,7 @@ public slots:
 
     void SlotUserHaveChangedGameSettings(const GameSettings& settings);
     void SlotSendClientRoomCreationRequest();
+    void SlotCloseConnectionByUserInitiative();
 
 
 signals:

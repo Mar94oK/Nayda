@@ -67,6 +67,8 @@ signals:
 
     void SignalSendClientRoomCreationRequest();
 
+    void SignalAbortingConnectionByUserInitiative();
+
 public slots:
 
     void dbg_switch_to_game_mode_button_pressed(void);
@@ -82,6 +84,8 @@ public slots:
     void SlotSendClientRoomCreationRequest() { emit SignalSendClientRoomCreationRequest(); } //DEBUG FOR A VIEW ONLY!!!
 
     void SlotCreateNewRoomCreationWaitingLobby();
+
+    void SlotAbortingConnectionByUserInitiative() {emit SignalAbortingConnectionByUserInitiative(); }
 
 //error processing
     void SlotProcessRemoteHostClosedErrorReport() { emit SignalRemoteHostClosedErrorReport(); }

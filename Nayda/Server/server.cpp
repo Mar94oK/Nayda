@@ -246,6 +246,12 @@ void Server::SlotSendClientRoomCreationRequest()
     ConnectionSendOutgoingData(FormClientRoomCreationRequest());
 }
 
+void Server::SlotCloseConnectionByUserInitiative()
+{
+    qDebug() << "NAY-001: Aborting connection by user initiative.";
+    tcpSocket->abort();
+}
+
 void Server::MessageParser(const QByteArray &data, int socketDescriptor)
 {
 

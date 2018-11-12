@@ -26,6 +26,7 @@ SystemManager::SystemManager(Before_The_Game * beforeTheGame,
     QObject::connect(m_serverPtr, &Server::SignalUnlockConnectionButtonAfterConnection, m_beforeTheGamePtr, &Before_The_Game::SlotProcessUnlockConnectionButtonAfterConnection);
     QObject::connect(m_beforeTheGamePtr, &Before_The_Game::SignalSendClientRoomCreationRequest, m_serverPtr, &Server::SlotSendClientRoomCreationRequest);
     QObject::connect(m_serverPtr, &Server::SignalReportClientRoomCreationReplyData, m_beforeTheGamePtr, &Before_The_Game::SlotProcessClientRoomCreationReplyData);
+    QObject::connect(m_beforeTheGamePtr, &Before_The_Game::SignalAbortingConnectionByUserInitiative, m_serverPtr, &Server::SlotCloseConnectionByUserInitiative);
 
 
 }
