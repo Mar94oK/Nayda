@@ -10,6 +10,7 @@ ServerHadClosedConnectionWindow::ServerHadClosedConnectionWindow(QWidget *parent
     SetUpPicturesAddresses();
     setUpButtonPicture(ui->btnServeClosedPicture, _serverClosedPictureAddress, buttonsWidthCoefficient, buttonsHeightWidthRelatio);
     ui->btnServeClosedPicture->setEnabled(false);
+    ui->label->setText(_serverHadClosedConnectionBaseText);
 }
 
 ServerHadClosedConnectionWindow::~ServerHadClosedConnectionWindow()
@@ -32,8 +33,6 @@ void ServerHadClosedConnectionWindow::setUpButtonPicture(QPushButton * const btn
 
     btn->setMinimumWidth(geometry().width()*widthCoeff);
     btn->setMinimumHeight(geometry().width()*widthCoeff*heightWidthRelatio);
-    btn->setMaximumWidth(geometry().width()*widthCoeff);
-    btn->setMaximumHeight(geometry().width()*widthCoeff*heightWidthRelatio);
     btn->setFlat(true);
     btn->setAutoFillBackground(true);
     btn->setPalette(plteBtnMainRepresenter);

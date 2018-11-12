@@ -188,4 +188,5 @@ void Before_The_Game::SlotProcessRemoteHostClosedErrorReport()
     emit SignalRemoteHostClosedErrorReport();
     _serverHadClosedConnectionWindow = new ServerHadClosedConnectionWindow(this);
     _serverHadClosedConnectionWindow->setModal(true);
+    _serverHadClosedConnectionWindow->show();
 }

@@ -23,9 +23,9 @@ private:
 private:
 
     QString _serverClosedPictureAddress;
-    QString _serverHadClosedConnectionBaseText = "Уууупс. Кажется, сервер разорвал соединение./n"
+    QString _serverHadClosedConnectionBaseText = "Уууупс. Кажется, сервер разорвал соединение.\n"
                                                  "Попробуйте подключиться снова!";
-    const double buttonsWidthCoefficient = 0.1;
+    const double buttonsWidthCoefficient = 0.3;
     const double buttonsHeightWidthRelatio = 1.0000;
 
 
