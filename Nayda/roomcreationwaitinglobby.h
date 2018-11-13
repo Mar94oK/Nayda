@@ -4,7 +4,7 @@
 #include <QWidget>
 #include "gamesettings.h"
 #include <QPushButton>
-
+#include <QTimer>
 
 #define FIRST_OPPONENT_AWAITING 0
 //#define ALL_OPPONENTS_ARE_HERE 6
@@ -47,6 +47,8 @@ private:
 
     QString _mainPlayerPictureAddress;
 
+    QTimer* _backCountTimer;
+
 public:
 
     void SetUpInitalState(GameSettings settings);
@@ -72,6 +74,11 @@ private:
     uint32_t _currentOpponentAwaiting;
     std::vector<QString> _opponentsNames;
 
+private slots:
+
+
+    void EnbleBackCounterToTheGameStart();
+    void SlotBackCounterSetNewValue(QString value);
 
 
 };

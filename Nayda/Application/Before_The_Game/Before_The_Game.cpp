@@ -166,7 +166,6 @@ void Before_The_Game::setUpSignalsSlotsConnections()
     QObject::connect(this, &Before_The_Game::SignalRoomCreationAllowed, this, &Before_The_Game::close);
     QObject::connect(this, &Before_The_Game::SignalAbortingConnectionByUserInitiative, newRoomDialog, &playMenu::SlotAbortingConnectionByUserInitiative);
 
-
 }
 
 void Before_The_Game::SlotCreateNewRoomCreationWaitingLobby()

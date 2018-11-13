@@ -11,6 +11,7 @@ RoomCreationWaitingLobby::RoomCreationWaitingLobby(QWidget *parent) :
     ui->setupUi(this);
     SetUpPicturesAddressses();
     setCurrentOpponentAwaiting(FIRST_OPPONENT_AWAITING);
+    ui->lcd_BackCounter->setVisible(false);
 }
 
 RoomCreationWaitingLobby::~RoomCreationWaitingLobby()
@@ -199,6 +200,17 @@ void RoomCreationWaitingLobby::SlotProcessServerReportsOpponentIsEnteringRoom(co
 void RoomCreationWaitingLobby::SlotProcessRemoteHostClosedErrorReport()
 {
     close();
+}
+
+void RoomCreationWaitingLobby::EnbleBackCounterToTheGameStart()
+{
+    ui->lcd_BackCounter->setVisible(true);
+    _backCountTimer = new QTimer();
+}
+
+void RoomCreationWaitingLobby::SlotBackCounterSetNewValue(QString value)
+{
+    ui->lcd_BackCounter->display(value);
 }
 
 uint32_t RoomCreationWaitingLobby::currentOpponentAwaiting() const
