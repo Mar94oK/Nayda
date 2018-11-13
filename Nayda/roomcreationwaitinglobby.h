@@ -6,6 +6,9 @@
 #include <QPushButton>
 
 
+#define FIRST_OPPONENT_AWAITING 0
+//#define ALL_OPPONENTS_ARE_HERE 6
+
 namespace Ui {
 class RoomCreationWaitingLobby;
 }
@@ -32,7 +35,8 @@ private:
     void setUpCreatorsName(const QString& name);
     void SetUpPicturesAddressses();
     void setUpButtonPicture(QPushButton* const btn, const QString& picturePath, double widthCoeff, double heightWidthRelatio);
-
+    void SetUpOpponentsName(QPushButton* btn, const QString& name);
+    bool CheckOpponentNameIsUnique(const QString& name);
 
 private:
 
@@ -47,9 +51,13 @@ public:
 
     void SetUpInitalState(GameSettings settings);
 
+    uint32_t currentOpponentAwaiting() const;
+    void setCurrentOpponentAwaiting(const uint32_t &currentOpponentAwaiting);
+
 signals:
 
     void SignalUserIsClosingRoomCreationLobby();
+    void SignalAllThePlayersAreHere();
 
 public slots:
 
@@ -60,7 +68,10 @@ public slots:
 
 private:
 
-    std::vector<QPushButton* btn> _opponnets;
+    std::vector<QPushButton*> _opponnets;
+    uint32_t _currentOpponentAwaiting;
+    std::vector<QString> _opponentsNames;
+
 
 
 };

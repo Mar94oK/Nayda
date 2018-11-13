@@ -10,6 +10,7 @@ RoomCreationWaitingLobby::RoomCreationWaitingLobby(QWidget *parent) :
 {
     ui->setupUi(this);
     SetUpPicturesAddressses();
+    setCurrentOpponentAwaiting(FIRST_OPPONENT_AWAITING);
 }
 
 RoomCreationWaitingLobby::~RoomCreationWaitingLobby()
@@ -89,6 +90,34 @@ void RoomCreationWaitingLobby::setUpButtonPicture(QPushButton * const btn, const
     btn->setPalette(plteBtnMainRepresenter);
 }
 
+void RoomCreationWaitingLobby::SetUpOpponentsName(QPushButton *btn, const QString &name)
+{
+    btn->setText(name);
+}
+
+bool RoomCreationWaitingLobby::CheckOpponentNameIsUnique(const QString &name)
+{
+    //Do not allow the server to involve clients with non-unique names;
+    //instead sending each time the strings there might be a spcial identifier
+    //sent for each client (ment opponent), so the game clients can distinguish them
+    //from each other.
+    //Nonetheless, nowadays it is doesn't matter whether it will be string or
+    //a specified digit.
+    //Count - 10 Rooms, 6 Clients each. 60 Sockets, 60 Strings.
+    //Assume name not longer 13 Symbols.. Count.
+    //But mark as expected improvement anyway.The first one I meant.
+    //NAY-001:MARK_EXPECTED_IMPROVEMENT
+    for (int var = 0; var < _opponentsNames.size(); ++var)
+    {
+        if (_opponentsNames[var] == name)
+        {
+            qDebug() << "NAY-001: Warning: Opponent's Name is not unique!";
+            //return false;
+        }
+    }
+    return true;
+}
+
 void RoomCreationWaitingLobby::SetUpInitalState(GameSettings settings)
 {
     _gameSettings.applyNewSettings(settings);
@@ -137,10 +166,47 @@ void RoomCreationWaitingLobby::SetUpInitalState(GameSettings settings)
 
 void RoomCreationWaitingLobby::SlotProcessServerReportsOpponentIsEnteringRoom(const QString &opponentName)
 {
+    if (_currentOpponentAwaiting == (_gameSettings.maximumNumberOfPlayers() - 1))
+    {
+        qDebug() << "NAY-001: Error while Opponent's entering! More then expected!";
+        return;
+    }
 
+    if (_currentOpponentAwaiting < _opponnets.size())
+    {
+        if (CheckOpponentNameIsUnique(opponentName))
+        {
+            SetUpOpponentsName( _opponnets[_currentOpponentAwaiting], opponentName);
+            _opponentsNames.push_back(opponentName);
+            ++_currentOpponentAwaiting;
+            if (_currentOpponentAwaiting == _opponnets.size())
+                emit SignalAllThePlayersAreHere();
+            return;
+        }
+        qDebug() << "NAY-001: Opponent's name is not unique! ";
+    }
+    else
+    {
+        qDebug() << "NAY-001: Error while Opponent's entering! More then expected! Incorrect opponents number IN GUI! Check GUI!";
+        //NAY-001: MARK_EXPECTED_ERROR
+        //this number - _opponnets.size() should be set with respect to maximum number of players allowed by the game!
+        //so add gui buttons for them!
+        //this ussue also true for The_Game itself.
+        return;
+    }
 }
 
 void RoomCreationWaitingLobby::SlotProcessRemoteHostClosedErrorReport()
 {
     close();
+}
+
+uint32_t RoomCreationWaitingLobby::currentOpponentAwaiting() const
+{
+    return _currentOpponentAwaiting;
+}
+
+void RoomCreationWaitingLobby::setCurrentOpponentAwaiting(const uint32_t &currentOpponentAwaiting)
+{
+    _currentOpponentAwaiting = currentOpponentAwaiting;
 }

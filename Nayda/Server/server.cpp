@@ -289,6 +289,13 @@ void Server::MessageParser(const QByteArray &data, int socketDescriptor)
                     case serverMessageSystem::ConnectionSubSysCommandsID::CLIENT_CONNECTION_TO_ROOM_REPLY:
                     break;
 
+                    case serverMessageSystem::ConnectionSubSysCommandsID::SERVER_REPORTS_OPPONENT_IS_ENTERING_ROOM:
+                    {
+                        ProcessServerReportsOpponentIsEnteringRoom(data, socketDescriptor);
+                    }
+                    break;
+
+
                     default:
                         qDebug() << ("NAY-0001: Unsupported Command in CONNECTION_SUBSYSTEM with CmdID: " + QString::number(header.commandid()));
                     break;
@@ -382,10 +389,10 @@ void Server::ProcessServerReportsOpponentIsEnteringRoom(const QByteArray &data, 
         return;
     }
 
-    qDebug() << "NAY-001: message: Opponent's name: " << message.opponentname();
+    qDebug() << "NAY-001: message: Opponent's name: " << QString::fromStdString(message.opponentname());
     qDebug() << "NAY-001: message: Room's id: " << message.roomid();
 
-    emit SignalServerReportsOpponentIsEnteringRoom(QString::fromUtf8(message.opponentname()));
+    emit SignalServerReportsOpponentIsEnteringRoom(QString::fromStdString(message.opponentname()));
 
 }
 

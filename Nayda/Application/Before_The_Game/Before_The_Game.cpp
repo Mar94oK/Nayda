@@ -166,6 +166,7 @@ void Before_The_Game::setUpSignalsSlotsConnections()
     QObject::connect(this, &Before_The_Game::SignalRoomCreationAllowed, this, &Before_The_Game::close);
     QObject::connect(this, &Before_The_Game::SignalAbortingConnectionByUserInitiative, newRoomDialog, &playMenu::SlotAbortingConnectionByUserInitiative);
 
+
 }
 
 void Before_The_Game::SlotCreateNewRoomCreationWaitingLobby()
@@ -176,10 +177,8 @@ void Before_The_Game::SlotCreateNewRoomCreationWaitingLobby()
     QObject::connect(_roomCreationWaitingLobby, &RoomCreationWaitingLobby::SignalUserIsClosingRoomCreationLobby, newRoomDialog, &playMenu::show);
     QObject::connect(_roomCreationWaitingLobby, &RoomCreationWaitingLobby::SignalUserIsClosingRoomCreationLobby, this, &Before_The_Game::SlotAbortingConnectionByUserInitiative);
     QObject::connect(this, &Before_The_Game::SignalRemoteHostClosedErrorReport, _roomCreationWaitingLobby, &RoomCreationWaitingLobby::SlotProcessRemoteHostClosedErrorReport);
+    QObject::connect(this, &Before_The_Game::SignalServerReportsOpponentIsEnteringRoom, _roomCreationWaitingLobby, &RoomCreationWaitingLobby::SlotProcessServerReportsOpponentIsEnteringRoom);
 
-    //SignalSetUpInitialStateRoomCreationWaitingLobby
-    //SlotSetUpInitalState
-//    QObject::connect(_roomCreationWaitingLobby, &RoomCreationWaitingLobby::destroyed, this, &Before_The_Game::show);
 }
 
 void Before_The_Game::SlotProcessRemoteHostClosedErrorReport()
