@@ -45,7 +45,7 @@ void ServerHadClosedConnectionWindow::SetUpPicturesAddresses()
 
 #ifdef Q_OS_WIN
 //NAY-001: MARK_EXPECTED_ERROR
-     QString uiPlayMenuFilesLocation = "Munchkin/Nayda/Pictures/gameSettingsWidget";
+     QString uiServerHadClosedConnectionFilesLocation = "Munchkin/Nayda/Pictures/gameSettingsWidget";
      homeDirectory = "D:/";
 #elif defined Q_OS_UNIX
      QString uiServerHadClosedConnectionFilesLocation = "Munchkin/Nayda/Nayda/Pictures/serverHadClosedConnectionWindow";
