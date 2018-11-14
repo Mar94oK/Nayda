@@ -18,6 +18,7 @@
 #include "gamesettings.h"
 #include "MessagesDefinitions.h"
 
+
 QT_BEGIN_NAMESPACE
 class QTcpSocket;
 class QNetworkSession;
@@ -57,6 +58,7 @@ private:
 private:
 
     RoomPosessionType _roomPosessionType;
+    uint32_t _roomID = ROOM_ID_NOT_DEFINED;
 
 public:
 
@@ -91,6 +93,7 @@ public slots:
     void SlotUserHaveChangedGameSettings(const GameSettings& settings);
     void SlotSendClientRoomCreationRequest();
     void SlotCloseConnectionByUserInitiative();
+    void SlotSendChartMessage(const QString& message);
 
 
 signals:
@@ -102,6 +105,8 @@ signals:
     void SignalReportServerQueryReplyData(ServerQueryReplyData data);
     void SignalReportClientRoomCreationReplyData(ClientRoomCreationReplyData data);
     void SignalServerReportsOpponentIsEnteringRoom(const QString& clientName);
+
+    void SignalChartMessageReceived(const QString& message);
 
 //error signals
 
@@ -117,10 +122,12 @@ private:
 
 private:
 
-    void MessageParser(const QByteArray& data, int socketDescriptor);
+    void ProtobufMessageParser(const QByteArray& data, int socketDescriptor);
     void ProcessServerInputQueryReply(const QByteArray &data, int socketDescriptor);
     void ProcessClientRoomCreationReply(const QByteArray &data, int socketDescriptor);
     void ProcessServerReportsOpponentIsEnteringRoom(const QByteArray &data, int socketDescriptor);
+    void ProcessChartMessage(const QByteArray &data, int socketDescriptor);
+
     void SocketErorHandler(QAbstractSocket::SocketError socketError);
     void SetUpConnectionTImeoutTimer();
     void ConnectionUnexpectedBehaviourHandler();
@@ -132,6 +139,7 @@ public:
 
     QByteArray FormServerInputQueryRequest();
     QByteArray FormClientRoomCreationRequest();
+    QByteArray FormChartMessage(const QString& textMessage);
 
 };
 

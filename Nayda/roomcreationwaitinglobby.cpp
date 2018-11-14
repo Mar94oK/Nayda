@@ -13,6 +13,7 @@ RoomCreationWaitingLobby::RoomCreationWaitingLobby(QWidget *parent) :
     setCurrentOpponentAwaiting(FIRST_OPPONENT_AWAITING);
     ui->lcd_BackCounter->setVisible(false);
     ui->lbl_TimeLeftBeforeStart->setVisible(false);
+    SetUpSignalsSlotsConnections();
 }
 
 RoomCreationWaitingLobby::~RoomCreationWaitingLobby()
@@ -68,6 +69,12 @@ void RoomCreationWaitingLobby::SetUpPicturesAddressses()
 
      _mainPlayerPictureAddress = picturesLocationBasis + "Crown.png";
 
+}
+
+void RoomCreationWaitingLobby::SetUpSignalsSlotsConnections()
+{
+    QObject::connect(this, &RoomCreationWaitingLobby::SignalChartMessageReceived, ui->widget, &MunchkinDialog::SlotShowMessage);
+    QObject::connect(ui->widget, &MunchkinDialog::SignalSendMessage, this, &RoomCreationWaitingLobby::SlotProcessChartMessageSending);
 }
 
 void RoomCreationWaitingLobby::setUpButtonPicture(QPushButton * const btn, const QString &picturePath, double widthCoeff, double heightWidthRelatio)

@@ -12,6 +12,7 @@
 #define DEBUG_MESSAGES
 
 
+
 enum class StateOfBeforeTheGame
 {
     InitialMenu,
@@ -72,6 +73,9 @@ signals:
 
     void SignalServerReportsOpponentIsEnteringRoom(const QString& opponentName);
 
+    void SignalChartMessageReceived(const QString& message);
+    void SignalChartMessageSending(const QString& message);
+
 public slots:
 
     void dbg_switch_to_game_mode_button_pressed(void);
@@ -92,6 +96,12 @@ public slots:
 
     void SlotProcessServerReportsOpponentIsEnteringRoom(const QString& opponentName)
     { emit SignalServerReportsOpponentIsEnteringRoom(opponentName); }
+
+    void SlotProcessChartMessageReceived(const QString& message)
+    { emit  SignalChartMessageReceived(message); }
+
+    void SlotProcessChartMessageSending(const QString& message)
+    { emit SignalChartMessageSending(message);}
 
 //error processing
     void SlotProcessRemoteHostClosedErrorReport();
@@ -117,6 +127,8 @@ private:
 
     RoomCreationWaitingLobby* _roomCreationWaitingLobby = nullptr;
     ServerHadClosedConnectionWindow* _serverHadClosedConnectionWindow = nullptr;
+
+    uint32_t roomID = ROOM_ID_NOT_DEFINED;
 
 private:
 

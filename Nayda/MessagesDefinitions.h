@@ -63,4 +63,7 @@ struct ClientRoomCreationReplyData
     { }
 };
 
+
+#define ROOM_ID_NOT_DEFINED 9999
+
 #endif // PROTOBUFMESSAGESIDENTIFICATORS_H

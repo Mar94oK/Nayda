@@ -34,6 +34,8 @@ private:
     void applyNewSettings(GameSettings settings);
     void setUpCreatorsName(const QString& name);
     void SetUpPicturesAddressses();
+    void SetUpSignalsSlotsConnections();
+
     void setUpButtonPicture(QPushButton* const btn, const QString& picturePath, double widthCoeff, double heightWidthRelatio);
     void SetUpOpponentsName(QPushButton* btn, const QString& name);
     bool CheckOpponentNameIsUnique(const QString& name);
@@ -60,6 +62,9 @@ signals:
 
     void SignalUserIsClosingRoomCreationLobby();
     void SignalAllThePlayersAreHere();
+    void SignalChartMessageReceived(const QString& message);
+    void SignalChartMessageToBeSend(const QString& message);
+
 
 public slots:
 
@@ -67,6 +72,12 @@ public slots:
 
     //Error processing
     void SlotProcessRemoteHostClosedErrorReport();
+
+    void SlotProcessChartMessageReceived(const QString& message)
+    { emit SignalChartMessageReceived(message); }
+
+    void SlotProcessChartMessageSending(const QString& message)
+    { emit SignalChartMessageToBeSend(message); }
 
 private:
 

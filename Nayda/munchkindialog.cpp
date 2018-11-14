@@ -9,6 +9,7 @@ MunchkinDialog::MunchkinDialog(QWidget *parent) :
 {
     ui->setupUi(this);
     SetUpMunckinDialog();
+    SetUpConnections();
 }
 
 MunchkinDialog::~MunchkinDialog()
@@ -36,6 +37,7 @@ void MunchkinDialog::SlotClearLog()
 
 void MunchkinDialog::SlotSendMessage(const QString &message)
 {
+    qDebug() << "NAY-001: Executing SlotSendMessage() in MunckinDialog!";
     if (!message.isEmpty())
         emit SignalSendMessage(message);
 }
@@ -57,5 +59,6 @@ bool MunchkinDialog::eventFilter(QObject *o, QEvent *e)
 
 void MunchkinDialog::ShowMessage(const QString &message)
 {
+
     ui->txtBrowser_TextLog->setText(message);
 }

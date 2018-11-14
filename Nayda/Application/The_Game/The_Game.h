@@ -25,6 +25,8 @@
 #include <QPropertyAnimation>
 #include <QAbstractAnimation>
 
+#include "MessagesDefinitions.h"
+
 #define PC_VERSION //begin with PC
 #define DEBUG_MESSAGES //start with debug enabled
 #define DEBUG_NO_SERVER
@@ -340,6 +342,10 @@ public:
 private:
 
     GameSettings _gameSettings;
+
+private:
+
+    uint32_t _roomID = ROOM_ID_NOT_DEFINED;
 
 };
 
