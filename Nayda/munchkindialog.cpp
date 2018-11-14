@@ -59,6 +59,6 @@ bool MunchkinDialog::eventFilter(QObject *o, QEvent *e)
 
 void MunchkinDialog::ShowMessage(const QString &message)
 {
-
-    ui->txtBrowser_TextLog->setText(message);
+    ui->txtBrowser_TextLog->append(message);
+    //ui->txtBrowser_TextLog->setText(message);
 }
