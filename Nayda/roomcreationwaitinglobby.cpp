@@ -12,6 +12,7 @@ RoomCreationWaitingLobby::RoomCreationWaitingLobby(QWidget *parent) :
     SetUpPicturesAddressses();
     setCurrentOpponentAwaiting(FIRST_OPPONENT_AWAITING);
     ui->lcd_BackCounter->setVisible(false);
+    ui->lbl_TimeLeftBeforeStart->setVisible(false);
 }
 
 RoomCreationWaitingLobby::~RoomCreationWaitingLobby()

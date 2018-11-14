@@ -24,12 +24,20 @@ void MunchkinDialog::SetUpMunckinDialog()
 
 void MunchkinDialog::SetUpConnections()
 {
+
     QObject::connect(ui->btn_ClearLog, &QPushButton::clicked, this, &MunchkinDialog::SlotClearLog);
+    QObject::connect(ui->btn_Send, &QPushButton::clicked, [this] {SlotSendMessage(ui->txtEdit_UserText->toPlainText());});
 }
 
 void MunchkinDialog::SlotClearLog()
 {
     ui->txtBrowser_TextLog->clear();
+}
+
+void MunchkinDialog::SlotSendMessage(const QString &message)
+{
+    if (!message.isEmpty())
+        emit SignalSendMessage(message);
 }
 
 bool MunchkinDialog::eventFilter(QObject *o, QEvent *e)
@@ -45,4 +53,9 @@ bool MunchkinDialog::eventFilter(QObject *o, QEvent *e)
     }
     else
         return QWidget::eventFilter(o, e);
+}
+
+void MunchkinDialog::ShowMessage(const QString &message)
+{
+    ui->txtBrowser_TextLog->setText(message);
 }

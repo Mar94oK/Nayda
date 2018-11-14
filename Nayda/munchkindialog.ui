@@ -31,7 +31,7 @@
    <item row="4" column="0">
     <widget class="QCheckBox" name="chckBox_SendOnEnterPress">
      <property name="text">
-      <string>Отправлять по нажатию &quot;Eneter&quot;</string>
+      <string>Отправлять по нажатию &quot;Enter&quot;</string>
      </property>
     </widget>
    </item>
