@@ -11,6 +11,7 @@ MunchkinDialog::MunchkinDialog(QWidget *parent) :
     ui->setupUi(this);
     SetUpMunckinDialog();
     SetUpConnections();
+    ui->txtEdit_UserText->installEventFilter(this);
 }
 
 MunchkinDialog::~MunchkinDialog()
@@ -41,18 +42,23 @@ void MunchkinDialog::SlotSendMessage(const QString &message)
     qDebug() << "NAY-001: Executing SlotSendMessage() in MunckinDialog!";
     if (!message.isEmpty())
         emit SignalSendMessage(message);
+    ui->txtEdit_UserText->clear();
 }
 
 bool MunchkinDialog::eventFilter(QObject *o, QEvent *e)
 {
+    if (!ui->chckBox_SendOnEnterPress->isChecked())
+        return QWidget::eventFilter(o, e);
     if (e->type() == QEvent::KeyPress && o == ui->txtEdit_UserText)
     {
        QKeyEvent* event =  static_cast<QKeyEvent*>(e);
-       if (event->key() == Qt::Key_Enter)
+       if (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return)
        {
            emit SignalSendMessage(ui->txtEdit_UserText->toPlainText());
+           ui->txtEdit_UserText->clear();
+           return true;
        }
-       return true;
+       return QWidget::eventFilter(o, e);
     }
     else
         return QWidget::eventFilter(o, e);
@@ -60,9 +66,13 @@ bool MunchkinDialog::eventFilter(QObject *o, QEvent *e)
 
 void MunchkinDialog::ShowMessage(const QStringList &message)
 {
+    //useful here
+    //https://stackoverflow.com/questions/13559990/how-to-append-text-to-qplaintextedit-without-adding-newline-and-keep-scroll-at
+
     ui->txtBrowser_TextLog->setFontWeight(QFont::Bold);
-    ui->txtBrowser_TextLog->append(message.first());
-    ui->txtBrowser_TextLog->append(" : ");
+    ui->txtBrowser_TextLog->append(message.first() + " : ");
     ui->txtBrowser_TextLog->setFontWeight(QFont::Normal);
-    ui->txtBrowser_TextLog->append(message.last());
+    ui->txtBrowser_TextLog->moveCursor(QTextCursor::End);
+    ui->txtBrowser_TextLog->insertPlainText(message.last());
+    ui->txtBrowser_TextLog->moveCursor(QTextCursor::End);
 }
