@@ -36,10 +36,24 @@
     </widget>
    </item>
    <item row="0" column="0">
-    <widget class="QTextBrowser" name="txtBrowser_TextLog"/>
+    <widget class="QTextBrowser" name="txtBrowser_TextLog">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+       <horstretch>0</horstretch>
+       <verstretch>5</verstretch>
+      </sizepolicy>
+     </property>
+    </widget>
    </item>
    <item row="1" column="0">
-    <widget class="QTextEdit" name="txtEdit_UserText"/>
+    <widget class="QTextEdit" name="txtEdit_UserText">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>1</verstretch>
+      </sizepolicy>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>
