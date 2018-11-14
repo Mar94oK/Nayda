@@ -17,6 +17,7 @@
 #include <QDebug>
 #include "gamesettings.h"
 #include "MessagesDefinitions.h"
+#include <QStringList>
 
 
 QT_BEGIN_NAMESPACE
@@ -106,7 +107,7 @@ signals:
     void SignalReportClientRoomCreationReplyData(ClientRoomCreationReplyData data);
     void SignalServerReportsOpponentIsEnteringRoom(const QString& clientName);
 
-    void SignalChartMessageReceived(const QString& message);
+    void SignalChartMessageReceived(const QStringList& message);
 
 //error signals
 

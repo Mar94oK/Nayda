@@ -2,6 +2,7 @@
 #include "ui_munchkindialog.h"
 #include <QKeyEvent>
 #include <QDebug>
+#include <QFont>
 
 MunchkinDialog::MunchkinDialog(QWidget *parent) :
     QWidget(parent),
@@ -57,8 +58,11 @@ bool MunchkinDialog::eventFilter(QObject *o, QEvent *e)
         return QWidget::eventFilter(o, e);
 }
 
-void MunchkinDialog::ShowMessage(const QString &message)
+void MunchkinDialog::ShowMessage(const QStringList &message)
 {
-    ui->txtBrowser_TextLog->append(message);
-    //ui->txtBrowser_TextLog->setText(message);
+    ui->txtBrowser_TextLog->setFontWeight(QFont::Bold);
+    ui->txtBrowser_TextLog->append(message.first());
+    ui->txtBrowser_TextLog->append(" : ");
+    ui->txtBrowser_TextLog->setFontWeight(QFont::Normal);
+    ui->txtBrowser_TextLog->append(message.last());
 }

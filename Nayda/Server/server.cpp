@@ -439,7 +439,8 @@ void Server::ProcessChartMessage(const QByteArray &data, int socketDescriptor)
     textMessage += " : ";
     textMessage += QString::fromStdString(message.chartmessage());
 
-    emit SignalChartMessageReceived(textMessage);
+    emit SignalChartMessageReceived(QStringList{QString::fromStdString(message.sendername()),
+                                                QString::fromStdString(message.chartmessage())});
 }
 
 

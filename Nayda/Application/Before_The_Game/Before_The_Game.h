@@ -73,7 +73,7 @@ signals:
 
     void SignalServerReportsOpponentIsEnteringRoom(const QString& opponentName);
 
-    void SignalChartMessageReceived(const QString& message);
+    void SignalChartMessageReceived(const QStringList& message);
     void SignalChartMessageSending(const QString& message);
 
 public slots:
@@ -97,7 +97,7 @@ public slots:
     void SlotProcessServerReportsOpponentIsEnteringRoom(const QString& opponentName)
     { emit SignalServerReportsOpponentIsEnteringRoom(opponentName); }
 
-    void SlotProcessChartMessageReceived(const QString& message)
+    void SlotProcessChartMessageReceived(const QStringList& message)
     { emit  SignalChartMessageReceived(message); }
 
     void SlotProcessChartMessageSending(const QString& message)

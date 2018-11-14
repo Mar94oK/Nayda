@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QString>
+#include <QStringList>
 
 namespace Ui {
 class MunchkinDialog;
@@ -23,7 +24,7 @@ private:
 
     void SetUpMunckinDialog();
     void SetUpConnections();
-    void ShowMessage(const QString& message);
+    void ShowMessage(const QStringList& message);
 
 signals:
 
@@ -36,7 +37,7 @@ private slots:
 
 public slots:
 
-    void SlotShowMessage(const QString& message) { ShowMessage(message);}
+    void SlotShowMessage(const QStringList& message) { ShowMessage(message);}
 
 public:
 
