@@ -178,6 +178,8 @@ void Before_The_Game::SlotCreateNewRoomCreationWaitingLobby()
     QObject::connect(this, &Before_The_Game::SignalRemoteHostClosedErrorReport, _roomCreationWaitingLobby, &RoomCreationWaitingLobby::SlotProcessRemoteHostClosedErrorReport);
     QObject::connect(this, &Before_The_Game::SignalChartMessageReceived, _roomCreationWaitingLobby, &RoomCreationWaitingLobby::SlotProcessChartMessageReceived);
     QObject::connect(_roomCreationWaitingLobby, &RoomCreationWaitingLobby::SignalChartMessageToBeSend, this, &Before_The_Game::SlotProcessChartMessageSending);
+    QObject::connect(this, &Before_The_Game::SignalServerReportsOpponentIsEnteringRoom, _roomCreationWaitingLobby, &RoomCreationWaitingLobby::SlotProcessServerReportsOpponentIsEnteringRoom);
+
 }
 
 void Before_The_Game::SlotProcessRemoteHostClosedErrorReport()

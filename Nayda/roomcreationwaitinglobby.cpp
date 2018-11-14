@@ -59,7 +59,7 @@ void RoomCreationWaitingLobby::SetUpPicturesAddressses()
 
 #ifdef Q_OS_WIN
 //NAY-001: MARK_EXPECTED_ERROR
-     QString uiWaitingForOpponentsLobbyFilesLocation = "Munchkin/Nayda/Pictures/gameSettingsWidget";
+     QString uiWaitingForOpponentsLobbyFilesLocation = "Munchkin/Nayda/Pictures/waitingForOpponentsLobby";
      homeDirectory = "D:/";
 #elif defined Q_OS_UNIX
      QString uiWaitingForOpponentsLobbyFilesLocation = "Munchkin/Nayda/Nayda/Pictures/waitingForOpponentsLobby";
