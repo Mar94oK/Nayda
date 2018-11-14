@@ -589,8 +589,6 @@ QByteArray Server::FormChartMessage(const QString &textMessage)
     //De-facto, now it is needed only by the server.
     message.set_roomid(_roomID);
 
-    message.PrintDebugString();
-
     QByteArray block;
     block.resize(message.ByteSize());
     message.SerializeToArray(block.data(), block.size());

@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QString>
 #include <QStringList>
+#include <QTimer>
 
 namespace Ui {
 class MunchkinDialog;
@@ -34,6 +35,7 @@ private slots:
 
     void SlotClearLog();
     void SlotSendMessage(const QString& message);
+    void SlotDeSpamReset();
 
 public slots:
 
@@ -42,6 +44,13 @@ public slots:
 public:
 
     bool eventFilter(QObject *o, QEvent *e);
+
+private:
+
+    QTimer* _deSpamTimer;
+    void DeSpamTimerInit(uint32_t timeSeconds);
+    bool _sendingAllowed = true;
+
 
 };
 
