@@ -47,15 +47,21 @@ void MunchkinDialog::SlotSendMessage(const QString &message)
 
 bool MunchkinDialog::eventFilter(QObject *o, QEvent *e)
 {
-    if (!ui->chckBox_SendOnEnterPress->isChecked())
-        return QWidget::eventFilter(o, e);
+
     if (e->type() == QEvent::KeyPress && o == ui->txtEdit_UserText)
     {
        QKeyEvent* event =  static_cast<QKeyEvent*>(e);
+
+       if ((event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return) && !ui->chckBox_SendOnEnterPress->isChecked())
+           return true; //disabling enter!
+
        if (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return)
-       {
-           emit SignalSendMessage(ui->txtEdit_UserText->toPlainText());
-           ui->txtEdit_UserText->clear();
+       {          
+           if (!ui->txtEdit_UserText->toPlainText().isEmpty())
+           {
+               emit SignalSendMessage(ui->txtEdit_UserText->toPlainText());
+               ui->txtEdit_UserText->clear();
+           }
            return true;
        }
        return QWidget::eventFilter(o, e);
