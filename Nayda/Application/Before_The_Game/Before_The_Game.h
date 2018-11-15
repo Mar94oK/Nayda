@@ -76,6 +76,8 @@ signals:
     void SignalChartMessageReceived(const QStringList& message);
     void SignalChartMessageSending(const QString& message);
 
+    void SignalSendClientConnectionToRoomRequest(ClientConnectToRoomSettingsData data);
+
 public slots:
 
     void dbg_switch_to_game_mode_button_pressed(void);
@@ -102,6 +104,11 @@ public slots:
 
     void SlotProcessChartMessageSending(const QString& message)
     { emit SignalChartMessageSending(message);}
+
+    void SlotSendClientConnectionToRoomRequest(ClientConnectToRoomSettingsData data)
+    {
+        emit SignalSendClientConnectionToRoomRequest(data);
+    }
 
 //error processing
     void SlotProcessRemoteHostClosedErrorReport();

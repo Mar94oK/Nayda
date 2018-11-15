@@ -256,6 +256,12 @@ void Server::SlotSendChartMessage(const QString &message)
     ConnectionSendOutgoingData(FormChartMessage(message));
 }
 
+void Server::SlotSendClientConnectionToRoomRequest(ClientConnectToRoomSettingsData data)
+{
+    qDebug() << "NAY-001: Send ClientConnectionToRoomRequest";
+    ConnectionSendOutgoingData(FromClientConnectionToRoomRequest(data));
+}
+
 void Server::ProtobufMessageParser(const QByteArray &data, int socketDescriptor)
 {
 
@@ -573,15 +579,22 @@ QByteArray Server::FormClientRoomCreationRequest()
     return block;
 }
 
-QByteArray Server::FromClientConnectionToRoomRequest()
+QByteArray Server::FromClientConnectionToRoomRequest(ClientConnectToRoomSettingsData data)
 {
-    serverMessageSystem::ClientRoomCreationRequest message;
+    serverMessageSystem::ClientConnectionToRoomRequest message;
     serverMessageSystem::CommonHeader *header(message.mutable_header());
     header->set_subsystem(serverMessageSystem::SubSystemID::CONNECTION_SUBSYSTEM);
     header->set_commandid(static_cast<uint32_t>(serverMessageSystem::ConnectionSubSysCommandsID::CLIENT_CONNECTION_TO_ROOM_REQUEST));
     message.set_connectioncmdid(serverMessageSystem::ConnectionSubSysCommandsID::CLIENT_CONNECTION_TO_ROOM_REQUEST);
     message.set_clientname(_gameSettings.clientName().toUtf8().constData());
+    message.set_agreetowait(data.agreeToWait);
+    message.set_connecttoanyroom(data.connectToAnyRoom);
 
+    QByteArray block;
+    block.resize(message.ByteSize());
+    message.SerializeToArray(block.data(), block.size());
+    qDebug() << "NAY-001: Serialized FromClientConnectionToRoomRequest is ready.";
+    return block;
 }
 
 QByteArray Server::FormChartMessage(const QString &textMessage)

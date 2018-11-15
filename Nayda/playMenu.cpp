@@ -47,7 +47,7 @@ void playMenu::SlotShowRoomConnectionQuestions()
 
 void playMenu::SlotSendClientConnectionToRoomRequest(ClientConnectToRoomSettingsData data)
 {
-
+    emit SignalSendClientConnectionToRoomRequest(data);
 }
 
 

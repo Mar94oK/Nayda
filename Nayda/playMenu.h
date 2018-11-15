@@ -79,6 +79,8 @@ signals:
 
     void SignalSendClientRoomCreationRequest();
 
+    void SignalSendClientConnectionToRoomRequest(ClientConnectToRoomSettingsData data);
+
 private slots:
 
     void SlotShowRoomConnectionQuestions();

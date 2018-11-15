@@ -24,7 +24,7 @@ void ConnectionToRoomQuestions::SetUpPicturesAddresses()
 
 #ifdef Q_OS_WIN
 //NAY-001: MARK_EXPECTED_ERROR
-     QString uiServerHadClosedConnectionFilesLocation = "Munchkin/Nayda/Pictures/connectionToRoomQuestions";
+     QString uiConnectionToRoomQuestionsFilesLocation = "Munchkin/Nayda/Pictures/connectionToRoomQuestions";
      homeDirectory = "D:/";
 #elif defined Q_OS_UNIX
      QString uiConnectionToRoomQuestionsFilesLocation = "Munchkin/Nayda/Nayda/Pictures/connectionToRoomQuestions";

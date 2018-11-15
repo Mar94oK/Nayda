@@ -95,6 +95,7 @@ public slots:
     void SlotSendClientRoomCreationRequest();
     void SlotCloseConnectionByUserInitiative();
     void SlotSendChartMessage(const QString& message);
+    void SlotSendClientConnectionToRoomRequest(ClientConnectToRoomSettingsData data);
 
 
 signals:
@@ -140,7 +141,7 @@ public:
 
     QByteArray FormServerInputQueryRequest();
     QByteArray FormClientRoomCreationRequest();
-    QByteArray FromClientConnectionToRoomRequest();
+    QByteArray FromClientConnectionToRoomRequest(ClientConnectToRoomSettingsData data);
     QByteArray FormChartMessage(const QString& textMessage);
 
 };
