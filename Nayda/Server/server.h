@@ -140,6 +140,7 @@ public:
 
     QByteArray FormServerInputQueryRequest();
     QByteArray FormClientRoomCreationRequest();
+    QByteArray FromClientConnectionToRoomRequest();
     QByteArray FormChartMessage(const QString& textMessage);
 
 };

@@ -36,6 +36,20 @@ playMenu::~playMenu()
     delete ui;
 }
 
+void playMenu::SlotShowRoomConnectionQuestions()
+{
+    connectionToRoomQuestions = new ConnectionToRoomQuestions();
+    connectionToRoomQuestions->setModal(true);
+
+    QObject::connect(connectionToRoomQuestions, &ConnectionToRoomQuestions::SignalSendClientConnectionToRoomRequest, this, &playMenu::SlotSendClientConnectionToRoomRequest);
+
+}
+
+void playMenu::SlotSendClientConnectionToRoomRequest(ClientConnectToRoomSettingsData data)
+{
+
+}
+
 
 void playMenu::slot_startGameWithDefaults()
 {

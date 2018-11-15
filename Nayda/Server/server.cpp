@@ -573,6 +573,17 @@ QByteArray Server::FormClientRoomCreationRequest()
     return block;
 }
 
+QByteArray Server::FromClientConnectionToRoomRequest()
+{
+    serverMessageSystem::ClientRoomCreationRequest message;
+    serverMessageSystem::CommonHeader *header(message.mutable_header());
+    header->set_subsystem(serverMessageSystem::SubSystemID::CONNECTION_SUBSYSTEM);
+    header->set_commandid(static_cast<uint32_t>(serverMessageSystem::ConnectionSubSysCommandsID::CLIENT_CONNECTION_TO_ROOM_REQUEST));
+    message.set_connectioncmdid(serverMessageSystem::ConnectionSubSysCommandsID::CLIENT_CONNECTION_TO_ROOM_REQUEST);
+    message.set_clientname(_gameSettings.clientName().toUtf8().constData());
+
+}
+
 QByteArray Server::FormChartMessage(const QString &textMessage)
 {
     serverMessageSystem::ChartMessage message;

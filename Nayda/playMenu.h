@@ -8,6 +8,7 @@
 #include <gamesettingswindow.h>
 #include <gamesettings.h>
 #include <MessagesDefinitions.h>
+#include "connectiontoroomquestions.h"
 
 namespace Ui {
 class startNewRoom;
@@ -27,6 +28,8 @@ private:
     Ui::startNewRoom *ui;
     ServerSettings* serverSettingsWindow = nullptr;
     GameSettingsWindow* gameSettingsWindow = nullptr;
+    ConnectionToRoomQuestions* connectionToRoomQuestions = nullptr;
+
     void closeEvent(QCloseEvent *event);
 
     QString _gameSettingsButtonPictureAddressDefault;
@@ -78,6 +81,9 @@ signals:
 
 private slots:
 
+    void SlotShowRoomConnectionQuestions();
+    void SlotSendClientConnectionToRoomRequest(ClientConnectToRoomSettingsData data);
+
 public slots:
 
     void slot_startGameWithDefaults(void);
@@ -113,6 +119,8 @@ private:
     void setUpButtonPicture(QPushButton* const btn, const QString& picturePath, double widthCoeff, double heightWidthRelatio);
     void setUpUiVisualizationParameters();
     void SetUpInitilButtonsStates();
+
+
 };
 
 #endif // START_NEW_ROOM_H

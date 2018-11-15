@@ -63,6 +63,16 @@ struct ClientRoomCreationReplyData
     { }
 };
 
+struct ClientConnectToRoomSettingsData
+{
+    bool agreeToWait;
+    bool connectToAnyRoom;
+
+    ClientConnectToRoomSettingsData(bool agree, bool connectToAny) :
+        agreeToWait(agree), connectToAnyRoom(connectToAny)
+    { }
+};
+
 
 #define ROOM_ID_NOT_DEFINED 9999
 
