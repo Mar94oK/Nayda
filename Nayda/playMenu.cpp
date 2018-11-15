@@ -218,6 +218,7 @@ void playMenu::setUpSignalsSlotsConnections()
     QObject::connect(ui->btn_SendTestData, &QPushButton::clicked, this, &playMenu::slot_sendTestDataToServer);
     QObject::connect(ui->btn_Connection, &QPushButton::clicked, this, &playMenu::SlotShowServerSettings);
     QObject::connect(ui->btn_CreateLobby, &QPushButton::clicked, this, &playMenu::SlotSendClientRoomCreationRequest);
+    QObject::connect(ui->btn_JoinToExistingLobby, &QPushButton::clicked, this, &playMenu::SlotShowRoomConnectionQuestions);
 }
 
 void playMenu::setUpUiPicturesAddresses()
