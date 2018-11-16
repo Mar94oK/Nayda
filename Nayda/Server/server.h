@@ -129,6 +129,7 @@ private:
     void ProcessClientRoomCreationReply(const QByteArray &data, int socketDescriptor);
     void ProcessServerReportsOpponentIsEnteringRoom(const QByteArray &data, int socketDescriptor);
     void ProcessChartMessage(const QByteArray &data, int socketDescriptor);
+    void ProcessClientConnectionToRoomReply(const QByteArray &data, int socketDescriptor);
 
     void SocketErorHandler(QAbstractSocket::SocketError socketError);
     void SetUpConnectionTImeoutTimer();

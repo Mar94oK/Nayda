@@ -297,6 +297,7 @@ void Server::ProtobufMessageParser(const QByteArray &data, int socketDescriptor)
                     break;
 
                     case serverMessageSystem::ConnectionSubSysCommandsID::CLIENT_CONNECTION_TO_ROOM_REPLY:
+                    ProcessClientConnectionToRoomReply(data, socketDescriptor);
                     break;
 
                     case serverMessageSystem::ConnectionSubSysCommandsID::SERVER_REPORTS_OPPONENT_IS_ENTERING_ROOM:
@@ -447,6 +448,25 @@ void Server::ProcessChartMessage(const QByteArray &data, int socketDescriptor)
 
     emit SignalChartMessageReceived(QStringList{QString::fromStdString(message.sendername()),
                                                 QString::fromStdString(message.chartmessage())});
+}
+
+void Server::ProcessClientConnectionToRoomReply(const QByteArray &data, int socketDescriptor)
+{
+    serverMessageSystem::ClientConnectionToRoomReply message;
+
+    if (!message.ParseFromArray(data.data(), data.size()))
+    {
+        qDebug() << ("NAY-001: Error while ProcessClientConnectionToRoomReply() ");
+        return;
+    }
+
+    qDebug() << "NAY-001: message: noRoomsAvailable: " << QString::number(message.noroomsavailable());
+    qDebug() << "NAY-001: message: Message: " << QString::number(message.freeslotsleft());
+    qDebug() << "NAY-001: message: queryOrder: " << QString::number(message.queryOrder());
+
+    for (int var = 0; var < message.roomid_size(); ++var)
+        qDebug() << "NAY-001: message: roomid: " << QString::number(message.roomid(var));
+
 }
 
 

@@ -58,7 +58,8 @@ SOURCES += main.cpp\
     gamesettingswidget.cpp \
     serverhadclosedconnectionwindow.cpp \
     munchkindialog.cpp \
-    connectiontoroomquestions.cpp
+    connectiontoroomquestions.cpp \
+    connectiontoroomrejectedmessagewindow.cpp
 
 HEADERS  += main_application.h \
     Application/Before_The_Game/Before_The_Game.h \
@@ -91,7 +92,8 @@ HEADERS  += main_application.h \
     gamesettingswidget.h \
     serverhadclosedconnectionwindow.h \
     munchkindialog.h \
-    connectiontoroomquestions.h
+    connectiontoroomquestions.h \
+    connectiontoroomrejectedmessagewindow.h
 
 FORMS    += main_application.ui \
     Application/Before_The_Game/Before_The_Game.ui \
@@ -115,7 +117,8 @@ FORMS    += main_application.ui \
     gamesettingswidget.ui \
     serverhadclosedconnectionwindow.ui \
     munchkindialog.ui \
-    connectiontoroomquestions.ui
+    connectiontoroomquestions.ui \
+    connectiontoroomrejectedmessagewindow.ui
 
 RESOURCES += \
     tables.qrc \

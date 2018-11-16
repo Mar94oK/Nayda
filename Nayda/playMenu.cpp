@@ -137,6 +137,13 @@ void playMenu::SlotAbortingConnectionByUserInitiative()
     setUpButtonPicture(ui->btn_JoinToExistingLobby, _joinRoomButtonPictureAddressDefault, buttonsWidthCoefficient, buttonsHeightWidthRelatio);
 }
 
+void playMenu::SlotShowConnectionToRoomRejectedWindow(bool noRooms)
+{
+    connectionRejected = new ConnectionToRoomRejectedMessageWindow();
+    connectionRejected->setModal(true);
+    connectionRejected->show();
+}
+
 void playMenu::SlotProcessRemoteHostClosedErrorReport()
 {
     ui->btn_Connection->setEnabled(true);

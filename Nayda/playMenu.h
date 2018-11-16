@@ -9,6 +9,7 @@
 #include <gamesettings.h>
 #include <MessagesDefinitions.h>
 #include "connectiontoroomquestions.h"
+#include "connectiontoroomrejectedmessagewindow.h"
 
 namespace Ui {
 class startNewRoom;
@@ -29,6 +30,7 @@ private:
     ServerSettings* serverSettingsWindow = nullptr;
     GameSettingsWindow* gameSettingsWindow = nullptr;
     ConnectionToRoomQuestions* connectionToRoomQuestions = nullptr;
+    ConnectionToRoomRejectedMessageWindow* connectionRejected = nullptr;
 
     void closeEvent(QCloseEvent *event);
 
@@ -86,6 +88,7 @@ private slots:
     void SlotShowRoomConnectionQuestions();
     void SlotSendClientConnectionToRoomRequest(ClientConnectToRoomSettingsData data);
 
+
 public slots:
 
     void slot_startGameWithDefaults(void);
@@ -101,6 +104,8 @@ public slots:
     void SlotSendClientRoomCreationRequest() { emit SignalSendClientRoomCreationRequest(); }
 
     void SlotAbortingConnectionByUserInitiative();
+
+    void SlotShowConnectionToRoomRejectedWindow(bool noRooms);
 
 //erorrs processing
 
