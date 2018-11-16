@@ -10,6 +10,7 @@ ConnectionToRoomQuestions::ConnectionToRoomQuestions(QWidget *parent) :
     ui->setupUi(this);
     SetUpPicturesAddresses();
     setUpButtonPicture(ui->pushButton, _QuestionPictureAddress, buttonsWidthCoefficient, buttonsHeightWidthRelatio);
+    SetUpConnections();
 }
 
 ConnectionToRoomQuestions::~ConnectionToRoomQuestions()
@@ -74,5 +75,6 @@ void ConnectionToRoomQuestions::SlotChangedAgreeToWait(bool value)
 
 void ConnectionToRoomQuestions::SlotSendClientConnectionToRoomRequest()
 {
+    qDebug() << "NAY-001: Sending signal from Questions Dialog: ";
     emit SignalSendClientConnectionToRoomRequest(ClientConnectToRoomSettingsData(_agreeToWait, _connectToAnyRoom));
 }
