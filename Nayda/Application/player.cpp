@@ -84,7 +84,7 @@ void player::setSuperMunchkin_without_second_profession(bool superMunchkin_witho
 void player::addCardToHands(SimpleCard cardToBeAdded)
 {
     _cardsOnHands.push_back(cardToBeAdded);
-    qDebug() << "Card"<< (cardToBeAdded.first == 0 ? "Door" : "Treasure") << "with cardID = " << cardToBeAdded.second << "was successfully added to _cardsOnHands!";
+    //qDebug() << "Card"<< (cardToBeAdded.first == 0 ? "Door" : "Treasure") << "with cardID = " << cardToBeAdded.second << "was successfully added to _cardsOnHands!";
 
 }
 
