@@ -11,6 +11,11 @@ ConnectionToRoomQuestions::ConnectionToRoomQuestions(QWidget *parent) :
     SetUpPicturesAddresses();
     setUpButtonPicture(ui->pushButton, _QuestionPictureAddress, buttonsWidthCoefficient, buttonsHeightWidthRelatio);
     SetUpConnections();
+    ui->chckBox_AgreeToWait->setEnabled(false);
+    ui->chckBox_AgreeToWait->setCheckState(Qt::CheckState::Checked);
+
+    _connectToAnyRoom = ui->chckBox_ConnectToAnyRoom->isChecked();
+    _agreeToWait = ui->chckBox_AgreeToWait->isChecked();
 }
 
 ConnectionToRoomQuestions::~ConnectionToRoomQuestions()

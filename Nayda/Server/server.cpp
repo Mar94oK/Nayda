@@ -461,8 +461,8 @@ void Server::ProcessClientConnectionToRoomReply(const QByteArray &data, int sock
     }
 
     qDebug() << "NAY-001: message: noRoomsAvailable: " << QString::number(message.noroomsavailable());
-    qDebug() << "NAY-001: message: Message: " << QString::number(message.freeslotsleft());
-    qDebug() << "NAY-001: message: queryOrder: " << QString::number(message.queryOrder());
+    qDebug() << "NAY-001: message: FreeSlotsLeft: " << QString::number(message.freeslotsleft());
+    qDebug() << "NAY-001: message: queryOrder: " << QString::number(message.queryorder());
 
     for (int var = 0; var < message.roomid_size(); ++var)
         qDebug() << "NAY-001: message: roomid: " << QString::number(message.roomid(var));
