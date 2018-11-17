@@ -65,5 +65,18 @@ export PATH=/c/Qt/Tools/mingw530_32/bin/:$PATH
 /d/Munchkin/Nayda/Libs/protoc.exe --cpp_out=. serverMessageSystem.proto
 /d/Munchkin/Viluy/Libs/protoc.exe --cpp_out=. serverMessageSystem.proto
 
+Continued 17.11.2018
+Now protobuf is added, messages are coming there and back again, roomcreationlobby and the other issues are imlemented.
 
+Now to:
+
+ProcessConnectionToRoomReply. Now to:
+1) Show The User expected Window
+2) Disconnect Buttons Connect To Room and Create Room while Sending ConnectionToRoomRequest + adding there timeout (if server do not reply)??? - not sure if necessary.
+3) Adding QueryPostitonWindow (It should be close able, but if the user closes it, he disconnect's from the server)
+4) Adding EnterRoomRepy from server side. It may be the same message, but with special parameters. After it the user should see RoomCreationWaitingLobby as not the master but as the Opponent.
+5) Emit Client is Entering the room on server side when the server sconnect the player to room.
+6) On the RoomSelections Window send the signal to connect to the existing Room. Check it on the Servers side.
+7) When all the Opponents have entered, set the GameBegins message
+and finally switch to THE GAME!!!!!
 
