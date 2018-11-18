@@ -27,6 +27,7 @@ void GameSettingsWindow::SignalsSlotsConnector()
     QObject::connect(ui->chkBox_HasAddonWildAxe, &QCheckBox::clicked, this, &GameSettingsWindow::SlotUserHaveChangedHasAddonWildAxe);
     QObject::connect(ui->chckBox_HasAddonClericalErrors, &QCheckBox::clicked, this, &GameSettingsWindow::SlotUserHaveChangedHasAddonClericalErrors);
     QObject::connect(ui->lineEdit_UserName, &QLineEdit::textChanged, this, &GameSettingsWindow::SlotUserHaveChangedClientName);
+    QObject::connect(ui->lineEdit_RoomName, &QLineEdit::textChanged, this, &GameSettingsWindow::SlotUserHaveChangedRoomName);
     QObject::connect(ui->verticalScrollBar, &QScrollBar::sliderMoved, this, &GameSettingsWindow::SlotUserHaveChangedRulesType);
     QObject::connect(ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok), &QPushButton::clicked, this, &GameSettingsWindow::SlotUserApplyedChangedSettings);
     QObject::connect(ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel), &QPushButton::clicked, this, &GameSettingsWindow::SlotUserRejectedChangedSettings);
@@ -62,6 +63,7 @@ void GameSettingsWindow::SetupInitialAllowedFeatures()
     ui->spBox_TimeToThink->setValue(_gameSettings.timeToThink());
     ui->spBox_TotalTimeToMove->setValue(_gameSettings.totalTimeToMove());
     ui->lineEdit_UserName->setText(_gameSettings.clientName());
+    ui->lineEdit_RoomName->setText(_gameSettings.roomName());
 
     ui->lbl_DiplomacyTime->setText(_DiplomacyTimeBaseText + QString::number(_gameSettings.diplomacyTime()) + " секунд.");
     ui->lbl_TimeForOpponentsDecision->setText(_TimeForOpponentsDecisionBaseText + QString::number(_gameSettings.timeForOpponentsDecision()) + " секунд.");
@@ -146,6 +148,13 @@ void GameSettingsWindow::SlotUserHaveChangedClientName(const QString & clientNam
 {
     _gameSettings.setClientName(clientName);
     ui->lbl_UserName->setText(_UserNameBaseText + clientName);
+    //emit SignalUserHaveChangedSettings(_gameSettings);
+}
+
+void GameSettingsWindow::SlotUserHaveChangedRoomName(const QString &roomName)
+{
+    _gameSettings.setRoomName(roomName);
+    ui->lbl_RoomName->setText(_RoomNameBaseText + roomName);
     //emit SignalUserHaveChangedSettings(_gameSettings);
 }
 

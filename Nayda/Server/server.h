@@ -112,6 +112,8 @@ signals:
 
     void SignalServerQueryOversize();
 
+    void SignalProcessClientConnectionToRoomReply(const ClientConnectionToRoomReplyData& data);
+
 //error signals
 
     void SignalRemoteHostClosedErrorReport();

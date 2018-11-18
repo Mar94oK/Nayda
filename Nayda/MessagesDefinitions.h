@@ -73,15 +73,25 @@ struct ClientConnectToRoomSettingsData
     { }
 };
 
-struct ServerRoomReadyToConnectReportData
+struct ServerRoomReadyToConnectData
 {
     uint32_t roomID;
     QString roomName;
     uint32_t players;
     uint32_t maximumNumberOfPlayers;
 
-    ServerRoomReadyToConnectReportData(uint32_t id, const QString& name, uint32_t pl, uint32_t maxNumber):
+    ServerRoomReadyToConnectData(uint32_t id, const QString& name, uint32_t pl, uint32_t maxNumber):
         roomID(id), roomName(name), players(pl), maximumNumberOfPlayers (maxNumber)
+    { }
+};
+
+struct ClientConnectionToRoomReplyData
+{
+    std::vector<ServerRoomReadyToConnectData> _rooms;
+    uint32_t _queryOrder;
+
+    ClientConnectionToRoomReplyData(const std::vector<ServerRoomReadyToConnectData>& data, uint32_t order):
+        _rooms(data), _queryOrder(order)
     { }
 };
 

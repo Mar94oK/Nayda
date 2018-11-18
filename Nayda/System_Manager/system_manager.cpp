@@ -32,5 +32,6 @@ SystemManager::SystemManager(Before_The_Game * beforeTheGame,
     QObject::connect(m_beforeTheGamePtr, &Before_The_Game::SignalChartMessageSending, m_serverPtr, &Server::SlotSendChartMessage);
     QObject::connect(m_beforeTheGamePtr, &Before_The_Game::SignalSendClientConnectionToRoomRequest, m_serverPtr, &Server::SlotSendClientConnectionToRoomRequest);
     QObject::connect(m_serverPtr, &Server::SignalServerQueryOversize, m_beforeTheGamePtr, &Before_The_Game::SlotServerQueryOversize);
+    QObject::connect(m_serverPtr, &Server::SignalProcessClientConnectionToRoomReply, m_beforeTheGamePtr, &Before_The_Game::SlotProcessClientConnectionToRoomReply);
 
 }

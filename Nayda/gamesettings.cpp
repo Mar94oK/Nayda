@@ -101,6 +101,16 @@ void GameSettings::setSettingsCorrectionAllowed(bool settingCorrectionAllowed)
     _settingsCorrectionAllowed = settingCorrectionAllowed;
 }
 
+QString GameSettings::roomName() const
+{
+    return _roomName;
+}
+
+void GameSettings::setRoomName(const QString &roomName)
+{
+    _roomName = roomName;
+}
+
 GameSettings::GameSettings()
 {
     _maximumNumberOfPlayers = 6;
@@ -114,6 +124,7 @@ GameSettings::GameSettings()
     qsrand(static_cast<quint64>(QTime::currentTime().msecsSinceStartOfDay()));
     QString::number(qrand() % ((99999 + 1) - 1) + 1);
     _clientName = "EmpERRoR" + QString::number(qrand() % ((99999 + 1) - 1) + 1);
+    _roomName = "Room" + QString::number(qrand() % ((99999 + 1) - 1) + 1);
 
     _rulesType = RulesType::Automatic;
 }
@@ -142,6 +153,7 @@ void GameSettings::applyNewSettings(const GameSettings &settings)
     _hasAddonClericalErrors = settings.hasAddonClericalErrors();
     _hasAddonWildAxe = settings.hasAddonWildAxe();
     _clientName = settings.clientName();
+    _roomName = settings.roomName();
     _rulesType = settings.rulesType();
     _settingsCorrectionAllowed = settings.settingsCorrectionAllowed();
 }

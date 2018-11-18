@@ -34,6 +34,7 @@ private slots:
     void SlotUserHaveChangedHasAddonClericalErrors(bool has);
     void SlotUserHaveChangedHasAddonWildAxe(bool has);
     void SlotUserHaveChangedClientName(const QString& clientName);
+    void SlotUserHaveChangedRoomName(const QString& roomName);
     void SlotUserHaveChangedRulesType(int automatic);
     void SlotUserHaveChangedSettingsChangesAllowance(bool);
     void SlotUserApplyedChangedSettings(bool);
@@ -49,6 +50,7 @@ private:
     QString _RulesTypeBaseText = "Тип правил: ";
     QString _TotalTimeToMoveBaseText = "Время, отведённое на ход: ";
     QString _UserNameBaseText = "Имя пользователя: ";
+    QString _RoomNameBaseText = "Имя комнаты: ";
     QString _HasAddonWildAxeBaseText = "Дополнение Дикий Топор: ";
     QString _HasAddonClericalErrorsBaseText = "Дополнение Клирические Ошибки: ";
     QString _SettingsChangesBaseText = "Изменение настроек в процессе подготовки к игре: ";

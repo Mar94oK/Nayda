@@ -29,7 +29,7 @@ public:
 private:
     Ui::RoomSelectionLobby *ui;
 
-    std::vector <ServerRoomReadyToConnectReportData> _selectableRooms;
+    std::vector <ServerRoomReadyToConnectData> _selectableRooms;
     std::vector <QPushButton* > _selectableButtons;
 
 private:
@@ -50,13 +50,13 @@ signals:
 
 public slots:
 
-    void SlotAddRoomToSelectableList(ServerRoomReadyToConnectReportData room);
-    void SlotRemoveRoomFromSelectableList(ServerRoomReadyToConnectReportData room);
+    void SlotAddRoomToSelectableList(ServerRoomReadyToConnectData room);
+    void SlotRemoveRoomFromSelectableList(ServerRoomReadyToConnectData room);
     void SlotSendConnectToSelectedRoomRequest(uint32_t roomID);
 
 private:
 
-    void AddSelectableRoomToGUI(ServerRoomReadyToConnectReportData data);
+    void AddSelectableRoomToGUI(ServerRoomReadyToConnectData data);
     ButtonsPosition FindPositionFornewButton();
     QPushButton* FindRoomById(uint32_t id);
     bool RemoveRoomById(uint32_t id);

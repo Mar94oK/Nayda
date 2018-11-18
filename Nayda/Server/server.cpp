@@ -464,8 +464,23 @@ void Server::ProcessClientConnectionToRoomReply(const QByteArray &data, int sock
     qDebug() << "NAY-001: message: FreeSlotsLeft: " << QString::number(message.freeslotsleft());
     qDebug() << "NAY-001: message: queryOrder: " << QString::number(message.queryorder());
 
-    for (int var = 0; var < message.roomid_size(); ++var)
-        qDebug() << "NAY-001: message: roomid: " << QString::number(message.roomid(var));
+    std::vector<ServerRoomReadyToConnectData> messageData;
+
+
+
+    for (int var = 0; var < message.room_size(); ++var)
+    {
+         qDebug() << "NAY-001: message: ClientConnectionToRoomReply: Players: " << QString::number(message.room(var).players());
+         qDebug() << "NAY-001: message: ClientConnectionToRoomReply: RoomID: " << QString::number(message.room(var).roomid());
+         qDebug() << "NAY-001: message: ClientConnectionToRoomReply: RoomName: " << QString::fromStdString(message.room(var).roomname());
+         qDebug() << "NAY-001: message: ClientConnectionToRoomReply: MaximumNumberOfPlayers: " << QString::number(message.room(var).maximumnumberofplayers());
+         messageData.push_back(ServerRoomReadyToConnectData(message.room(var).roomid(),
+                                                                  QString::fromStdString(message.room(var).roomname()),
+                                                                  message.room(var).players(),
+                                                                  message.room(var).maximumnumberofplayers()));
+    }
+
+    ClientConnectionToRoomReplyData replyData(messageData, message.queryorder());
 
     //check Query order first. If oversized: report immidiately and return;
     if (message.queryorder() == QUERY_OVERSIZE)
@@ -473,6 +488,10 @@ void Server::ProcessClientConnectionToRoomReply(const QByteArray &data, int sock
         emit SignalServerQueryOversize();
         qDebug() << "NAY-001:  ProcessClientConnectionToRoomReply() QueryOversize!";
         return;
+    }
+    else
+    {
+        emit SignalProcessClientConnectionToRoomReply(replyData);
     }
 
 
@@ -586,6 +605,7 @@ QByteArray Server::FormClientRoomCreationRequest()
     header->set_commandid(static_cast<uint32_t>(serverMessageSystem::ConnectionSubSysCommandsID::CLIENT_ROOM_CREATION_REQUEST));
     message.set_connectioncmdid(serverMessageSystem::ConnectionSubSysCommandsID::CLIENT_ROOM_CREATION_REQUEST);
     message.set_clientname(_gameSettings.clientName().toUtf8().constData());
+    message.set_roomname(_gameSettings.roomName().toUtf8().constData());
 
     serverMessageSystem::GameSettings *settings(message.mutable_gamesettings());
     settings->set_settingscorrectionallowed(_gameSettings.settingsCorrectionAllowed());

@@ -17,6 +17,7 @@ private:
     bool         _hasAddonClericalErrors;
     bool         _hasAddonWildAxe;
     QString      _clientName;
+    QString      _roomName;
     RulesType    _rulesType;
     bool         _settingsCorrectionAllowed;
 
@@ -25,11 +26,12 @@ public:
     GameSettings(unsigned int maxNumberOfPlayers, unsigned int totaltimeToMove,
                  unsigned int timeToThink, unsigned int timeForOpponentsDecision,
                  unsigned int diplomacyTime, bool AddonClericalErrors, bool hasAddonWildAxe,
-                 const QString& clientName, RulesType rulesType, bool correctionAllowed = true) :
+                 const QString& clientName, const QString& roomName, RulesType rulesType, bool correctionAllowed = true) :
         _maximumNumberOfPlayers(maxNumberOfPlayers), _totalTimeToMove(totaltimeToMove),
         _timeToThink(timeToThink), _timeForOpponentsDecision(timeForOpponentsDecision),
         _diplomacyTime(diplomacyTime), _hasAddonClericalErrors(AddonClericalErrors),
-        _hasAddonWildAxe(hasAddonWildAxe), _clientName(clientName), _rulesType(rulesType), _settingsCorrectionAllowed(correctionAllowed)
+        _hasAddonWildAxe(hasAddonWildAxe), _clientName(clientName), _roomName(roomName),
+        _rulesType(rulesType), _settingsCorrectionAllowed(correctionAllowed)
     {}
     GameSettings(const GameSettings& settings);
 
@@ -55,6 +57,8 @@ public:
     void setTimeToThink(unsigned int timeToThink);
     bool settingsCorrectionAllowed() const;
     void setSettingsCorrectionAllowed(bool settingCorrectionAllowed);
+    QString roomName() const;
+    void setRoomName(const QString &roomName);
 };
 
 #endif // GAMESETTINGS_H

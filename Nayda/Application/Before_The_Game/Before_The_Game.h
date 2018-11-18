@@ -81,7 +81,8 @@ signals:
 
     void SignalServerQueryOversize();
 
-    void SignalProcessClientConnectionToRoomReply(ServerRoomReadyToConnectReportData data);
+    void SignalProcessClientConnectionToRoomReply(ServerRoomReadyToConnectData data);
+    void SignalUpdateQueryOrder(uint32_t queryOrder);
 
 public slots:
 
@@ -118,7 +119,8 @@ public slots:
     void SlotServerQueryOversize() { emit SignalServerQueryOversize(); }
 
     //in fact, it report to gui if only eberything is ok and there are rooms, and it is necessary to show
-    void SlotProcessClientConnectionToRoomReply(const std::vector<ServerRoomReadyToConnectReportData> &data);
+    void SlotProcessClientConnectionToRoomReply(ClientConnectionToRoomReplyData data);
+    void SlotProcessUpdateQueryOrder(ClientConnectionToRoomReplyData data);
 
 //error processing
     void SlotProcessRemoteHostClosedErrorReport();

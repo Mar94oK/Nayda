@@ -184,12 +184,19 @@ void Before_The_Game::SlotCreateNewRoomCreationWaitingLobby()
 
 }
 
-void Before_The_Game::SlotProcessClientConnectionToRoomReply(const std::vector<ServerRoomReadyToConnectReportData> &data)
+void Before_The_Game::SlotProcessClientConnectionToRoomReply(ClientConnectionToRoomReplyData data)
 {
-    for (uint32_t var = 0; var < data.size(); ++var)
+    for (uint32_t var = 0; var < data._rooms.size(); ++var)
     {
-        emit SignalProcessClientConnectionToRoomReply(data[var]);
+        emit SignalProcessClientConnectionToRoomReply(data._rooms[var]);
     }
+
+    emit SignalUpdateQueryOrder(data._queryOrder);
+}
+
+void Before_The_Game::SlotProcessUpdateQueryOrder(ClientConnectionToRoomReplyData data)
+{
+    emit SignalUpdateQueryOrder(data._queryOrder);
 }
 
 void Before_The_Game::SlotProcessRemoteHostClosedErrorReport()

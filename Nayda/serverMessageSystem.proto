@@ -32,6 +32,7 @@ enum ConnectionSubSysCommandsID
     CLIENT_CONNECTION_TO_ROOM_REQUEST = 4;
     CLIENT_CONNECTION_TO_ROOM_REPLY = 5;
     SERVER_REPORTS_OPPONENT_IS_ENTERING_ROOM = 6;
+    SERVER_ROOM_WAS_REMOVED_FROM_SELECTABLE_LIST = 7;
 }
 
 enum ChartSubSysCommandsID
@@ -98,10 +99,10 @@ message RoomCreationErrors
 // CreatedRoom (Sub-Message, DO NOT USE for sending)
 message CreatedRoom
 {
-    uint32_t roomID;
-    std::string roomName;
-    uint32_t players;
-    uint32_t maximumNumberOfPlayers;
+    uint32 roomID = 1;
+    string roomName = 2;
+    uint32 players = 3;
+    uint32 maximumNumberOfPlayers = 4;
 }
 
 //#1 Idea: Check whether server is ready to work...
@@ -130,7 +131,8 @@ message ClientRoomCreationRequest
     CommonHeader header = 1;                        //allways included
     ConnectionSubSysCommandsID connectionCmdID = 2; //command ID
     string clientName = 3;
-    GameSettings gameSettings = 4;
+    string roomName = 4;
+    GameSettings gameSettings = 5;
 }
 
 //#4 Room Creation Reply

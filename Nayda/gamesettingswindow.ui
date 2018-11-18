@@ -14,48 +14,54 @@
    <string>Настройки игры</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="7" column="1">
+   <item row="8" column="1">
     <widget class="QCheckBox" name="chkBox_HasAddonWildAxe">
      <property name="text">
       <string/>
      </property>
     </widget>
    </item>
-   <item row="5" column="1">
+   <item row="6" column="1">
     <widget class="QSpinBox" name="spBox_DiplomacyTime"/>
    </item>
    <item row="8" column="2">
-    <widget class="QLabel" name="lbl_HasAddonClericalErrors">
-     <property name="text">
-      <string>TextLabel</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="2">
-    <widget class="QLabel" name="lbl_TotalTimeToMove">
-     <property name="text">
-      <string>TextLabel</string>
-     </property>
-    </widget>
-   </item>
-   <item row="7" column="2">
     <widget class="QLabel" name="lbl_HasAddonWildAxe">
      <property name="text">
       <string>TextLabel</string>
      </property>
     </widget>
    </item>
-   <item row="2" column="1">
+   <item row="3" column="1">
     <widget class="QSpinBox" name="spBox_TotalTimeToMove"/>
    </item>
-   <item row="10" column="2">
+   <item row="9" column="2">
+    <widget class="QLabel" name="lbl_HasAddonClericalErrors">
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="2">
+    <widget class="QLabel" name="lbl_TotalTimeToMove">
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QLineEdit" name="lineEdit_UserName"/>
+   </item>
+   <item row="4" column="1">
+    <widget class="QSpinBox" name="spBox_TimeToThink"/>
+   </item>
+   <item row="11" column="2">
     <widget class="QLabel" name="lbl_RulesType">
      <property name="text">
       <string>TextLabel</string>
      </property>
     </widget>
    </item>
-   <item row="10" column="1">
+   <item row="11" column="1">
     <widget class="QScrollBar" name="verticalScrollBar">
      <property name="maximum">
       <number>1</number>
@@ -68,27 +74,24 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="1">
-    <widget class="QLineEdit" name="lineEdit_UserName"/>
-   </item>
-   <item row="3" column="1">
-    <widget class="QSpinBox" name="spBox_TimeToThink"/>
-   </item>
-   <item row="1" column="2">
+   <item row="2" column="2">
     <widget class="QLabel" name="lbl_MaximumNumberOfPLayers">
      <property name="text">
       <string>TextLabel</string>
      </property>
     </widget>
    </item>
-   <item row="3" column="2">
+   <item row="4" column="2">
     <widget class="QLabel" name="lbl_TimeToThink">
      <property name="text">
       <string>TextLabel</string>
      </property>
     </widget>
    </item>
-   <item row="4" column="1">
+   <item row="2" column="1">
+    <widget class="QSpinBox" name="spBox_MaximumNumberOfPlayers"/>
+   </item>
+   <item row="5" column="1">
     <widget class="QSpinBox" name="spBox_TimeForOpponentsDecision"/>
    </item>
    <item row="0" column="2">
@@ -98,46 +101,53 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="1">
-    <widget class="QSpinBox" name="spBox_MaximumNumberOfPlayers"/>
-   </item>
-   <item row="4" column="2">
+   <item row="5" column="2">
     <widget class="QLabel" name="lbl_TimeForOpponentsDecision">
      <property name="text">
       <string>TextLabel</string>
      </property>
     </widget>
    </item>
-   <item row="5" column="2">
+   <item row="6" column="2">
     <widget class="QLabel" name="lbl_DiplomacyTime">
      <property name="text">
       <string>TextLabel</string>
      </property>
     </widget>
    </item>
-   <item row="8" column="1">
-    <widget class="QCheckBox" name="chckBox_HasAddonClericalErrors">
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-   </item>
-   <item row="11" column="1">
+   <item row="12" column="1">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="standardButtons">
       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
      </property>
     </widget>
    </item>
-   <item row="6" column="1">
+   <item row="9" column="1">
+    <widget class="QCheckBox" name="chckBox_HasAddonClericalErrors">
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="1">
     <widget class="QCheckBox" name="chckBox_AllowSettingsChanges">
      <property name="text">
       <string/>
      </property>
     </widget>
    </item>
-   <item row="6" column="2">
+   <item row="7" column="2">
     <widget class="QLabel" name="lbl_AllowSettingsChanges">
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QLineEdit" name="lineEdit_RoomName"/>
+   </item>
+   <item row="1" column="2">
+    <widget class="QLabel" name="lbl_RoomName">
      <property name="text">
       <string>TextLabel</string>
      </property>

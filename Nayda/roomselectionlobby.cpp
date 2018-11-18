@@ -63,13 +63,13 @@ void RoomSelectionLobby::setBackgroudImage(QString pictureAddress)
     setPalette(plt);
 }
 
-void RoomSelectionLobby::SlotAddRoomToSelectableList(ServerRoomReadyToConnectReportData room)
+void RoomSelectionLobby::SlotAddRoomToSelectableList(ServerRoomReadyToConnectData room)
 {
     _selectableRooms.push_back(room);
     AddSelectableRoomToGUI(room);
 }
 
-void RoomSelectionLobby::SlotRemoveRoomFromSelectableList(ServerRoomReadyToConnectReportData room)
+void RoomSelectionLobby::SlotRemoveRoomFromSelectableList(ServerRoomReadyToConnectData room)
 {
     if (FindRoomById(room.roomID) != nullptr)
     {
@@ -83,7 +83,7 @@ void RoomSelectionLobby::SlotSendConnectToSelectedRoomRequest(uint32_t roomID)
     emit SignalSendConnectToSelectedRoomRequest(roomID);
 }
 
-void RoomSelectionLobby::AddSelectableRoomToGUI(ServerRoomReadyToConnectReportData data)
+void RoomSelectionLobby::AddSelectableRoomToGUI(ServerRoomReadyToConnectData data)
 {
     QPushButton* btn = new QPushButton();
     ui->layoutRooms->addWidget(btn, FindPositionFornewButton().row,
