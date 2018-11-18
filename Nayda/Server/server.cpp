@@ -306,6 +306,11 @@ void Server::ProtobufMessageParser(const QByteArray &data, int socketDescriptor)
                     }
                     break;
 
+                    case serverMessageSystem::ConnectionSubSysCommandsID::SERVER_ROOM_CHANGES_IN_SELECTABLE_LIST:
+                    {
+                        ProcessServerRoomChangesInSelectableList(data, socketDescriptor);
+                    }
+
 
                     default:
                         qDebug() << ("NAY-0001: Unsupported Command in CONNECTION_SUBSYSTEM with CmdID: " + QString::number(defaultMessage.header().commandid()));
@@ -495,6 +500,28 @@ void Server::ProcessClientConnectionToRoomReply(const QByteArray &data, int sock
     }
 
 
+}
+
+void Server::ProcessServerRoomChangesInSelectableList(const QByteArray &data, int socketDescriptor)
+{
+    serverMessageSystem::ServerRoomChangesInSelectableList message;
+
+    if (!message.ParseFromArray(data.data(), data.size()))
+    {
+        qDebug() << ("NAY-001: Error while ProcessServerRoomChangesInSelectableList() ");
+        return;
+    }
+
+    qDebug() << "NAY-001: deleteUpdate Flag: " << message.deletedorupdateflag();
+
+    if (message.deletedorupdateflag())
+    {
+        qDebug() << "NAY-001: Room: ID: " << QString::number(message.room().roomid());
+        qDebug() << "NAY-001: Room: Max number of players: " << QString::number(message.room().maximumnumberofplayers());
+        qDebug() << "NAY-001: Room: Plaers: " << QString::number(message.room().players());
+        qDebug() << "NAY-001: Room: Name: " << QString::fromStdString(message.room().roomname());
+
+    }
 }
 
 

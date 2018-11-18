@@ -186,12 +186,34 @@ void Before_The_Game::SlotCreateNewRoomCreationWaitingLobby()
 
 void Before_The_Game::SlotProcessClientConnectionToRoomReply(ClientConnectionToRoomReplyData data)
 {
+    _roomSelectionLobby = new RoomSelectionLobby();
+    _roomSelectionLobby->setModal(true);
+
+    newRoomDialog->hide();
+    QObject::connect(this, &Before_The_Game::SignalProcessClientConnectionToRoomReply,
+                     _roomSelectionLobby, &RoomSelectionLobby::SlotAddRoomToSelectableList);
+    QObject::connect(this, &Before_The_Game::SignalUpdateQuerySize,
+                     _roomSelectionLobby, &RoomSelectionLobby::SlotUpdateQuerySize);
+    QObject::connect(this, &Before_The_Game::SignalUpdateQueryOrder,
+                     _roomSelectionLobby, &RoomSelectionLobby::SlotUpdateQueryOrder);
+
+
+    QObject::connect(_roomSelectionLobby, &RoomSelectionLobby::SignalUserIsClosingRoomSelectionLobby,
+                     newRoomDialog, &playMenu::show);
+    QObject::connect(_roomSelectionLobby, &RoomSelectionLobby::SignalUserIsClosingRoomSelectionLobby,
+                     newRoomDialog, &playMenu::show);
+    QObject::connect(_roomSelectionLobby, &RoomSelectionLobby::SignalUserIsClosingRoomSelectionLobby,
+                     newRoomDialog, &playMenu::SlotAbortingConnectionByUserInitiative);
+
     for (uint32_t var = 0; var < data._rooms.size(); ++var)
     {
         emit SignalProcessClientConnectionToRoomReply(data._rooms[var]);
     }
 
     emit SignalUpdateQueryOrder(data._queryOrder);
+    emit SignalUpdateQuerySize(data._querySize);
+
+    _roomSelectionLobby->show();
 }
 
 void Before_The_Game::SlotProcessUpdateQueryOrder(ClientConnectionToRoomReplyData data)

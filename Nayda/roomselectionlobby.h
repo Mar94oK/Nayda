@@ -37,6 +37,8 @@ private:
     QString _coverPictureAddress;
     QString _doorsCoverPicureAddress;
     QString _buttonsBaseText = "Комната № ";
+    QString _querySizeBaseText = "Манчкинов, готовых отправиться во мрак подземелий: ";
+    QString _queryOrderBaseText = "Номер в очереди: ";
 
 private:
 
@@ -46,6 +48,7 @@ private:
 
 signals:
     void SignalSendConnectToSelectedRoomRequest(uint32_t roomID);
+    void SignalUserIsClosingRoomSelectionLobby();
 
 
 public slots:
@@ -53,6 +56,8 @@ public slots:
     void SlotAddRoomToSelectableList(ServerRoomReadyToConnectData room);
     void SlotRemoveRoomFromSelectableList(ServerRoomReadyToConnectData room);
     void SlotSendConnectToSelectedRoomRequest(uint32_t roomID);
+    void SlotUpdateQuerySize(uint32_t querySize);
+    void SlotUpdateQueryOrder(uint32_t queryOrder);
 
 private:
 
@@ -60,6 +65,15 @@ private:
     ButtonsPosition FindPositionFornewButton();
     QPushButton* FindRoomById(uint32_t id);
     bool RemoveRoomById(uint32_t id);
+
+private:
+
+    void closeEvent(QCloseEvent *event);
+
+private:
+
+    uint32_t _queryPosition;
+    uint32_t _querySize;
 
 
 

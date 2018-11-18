@@ -83,6 +83,7 @@ signals:
 
     void SignalProcessClientConnectionToRoomReply(ServerRoomReadyToConnectData data);
     void SignalUpdateQueryOrder(uint32_t queryOrder);
+    void SignalUpdateQuerySize(uint32_t querySize);
 
 public slots:
 

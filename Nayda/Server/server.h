@@ -134,6 +134,7 @@ private:
     void ProcessServerReportsOpponentIsEnteringRoom(const QByteArray &data, int socketDescriptor);
     void ProcessChartMessage(const QByteArray &data, int socketDescriptor);
     void ProcessClientConnectionToRoomReply(const QByteArray &data, int socketDescriptor);
+    void ProcessServerRoomChangesInSelectableList(const QByteArray &data, int socketDescriptor);
 
     void SocketErorHandler(QAbstractSocket::SocketError socketError);
     void SetUpConnectionTImeoutTimer();

@@ -83,6 +83,16 @@ void RoomSelectionLobby::SlotSendConnectToSelectedRoomRequest(uint32_t roomID)
     emit SignalSendConnectToSelectedRoomRequest(roomID);
 }
 
+void RoomSelectionLobby::SlotUpdateQuerySize(uint32_t querySize)
+{
+    ui->lbl_QueueOrder->setText(_querySizeBaseText + QString::number(querySize));
+}
+
+void RoomSelectionLobby::SlotUpdateQueryOrder(uint32_t queryOrder)
+{
+    ui->lbl_QueueOrder->setText(_queryOrderBaseText + QString::number(queryOrder));
+}
+
 void RoomSelectionLobby::AddSelectableRoomToGUI(ServerRoomReadyToConnectData data)
 {
     QPushButton* btn = new QPushButton();
@@ -135,4 +145,9 @@ bool RoomSelectionLobby::RemoveRoomById(uint32_t id)
     qDebug() << "NAY-001 : Error while RemoveRoomById()! ";
     return false;
 
+}
+
+void RoomSelectionLobby::closeEvent(QCloseEvent *event)
+{
+    emit SignalUserIsClosingRoomSelectionLobby();
 }
