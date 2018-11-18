@@ -480,7 +480,7 @@ void Server::ProcessClientConnectionToRoomReply(const QByteArray &data, int sock
                                                                   message.room(var).maximumnumberofplayers()));
     }
 
-    ClientConnectionToRoomReplyData replyData(messageData, message.queryorder());
+    ClientConnectionToRoomReplyData replyData(messageData, message.queryorder(), message.querysize());
 
     //check Query order first. If oversized: report immidiately and return;
     if (message.queryorder() == QUERY_OVERSIZE)

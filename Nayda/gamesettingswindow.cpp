@@ -81,6 +81,8 @@ void GameSettingsWindow::SetupInitialAllowedFeatures()
     ui->lbl_RulesType->setText(_RulesTypeBaseText + (_gameSettings.rulesType() == RulesType::Automatic ? "Автоматические." : "Ручные!"));
     ui->lbl_TotalTimeToMove->setText(_TotalTimeToMoveBaseText +QString::number(_gameSettings.totalTimeToMove()) + " секунд.");
     ui->lbl_UserName->setText(_UserNameBaseText + _gameSettings.clientName());
+    ui->lbl_RoomName->setText(_RoomNameBaseText + _gameSettings.roomName());
+
     ui->lbl_HasAddonWildAxe->setText(_HasAddonWildAxeBaseText + (_gameSettings.hasAddonWildAxe() ? "используется." : "отключен."));
     ui->lbl_HasAddonClericalErrors->setText(_HasAddonClericalErrorsBaseText + (_gameSettings.hasAddonClericalErrors() ? "используется." : "отключен."));
     ui->lbl_AllowSettingsChanges->setText(_SettingsChangesBaseText + (_gameSettings.settingsCorrectionAllowed() ? "разрешено" : "запрещено"));

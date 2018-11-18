@@ -139,8 +139,9 @@ GameSettings::GameSettings(const GameSettings &settings)
     _hasAddonClericalErrors = settings.hasAddonClericalErrors();
     _hasAddonWildAxe = settings.hasAddonWildAxe();
     _clientName = settings.clientName();
+    _roomName = settings.roomName();
     _rulesType = settings.rulesType();
-    _settingsCorrectionAllowed = settings.settingsCorrectionAllowed();
+    _settingsCorrectionAllowed = settings.settingsCorrectionAllowed();  
 }
 
 void GameSettings::applyNewSettings(const GameSettings &settings)

@@ -167,6 +167,7 @@ message ClientConnectionToRoomReply
     uint32 freeSlotsLeft = 4;                       //how many free Slots are left
     repeated CreatedRoom room = 5;                  //how Rooms IDs are provided
     uint32 queryOrder = 6;                          //place in order
+    uint32 querySize = 7;                           //total waiters
 }
 
 //#7
@@ -213,5 +214,18 @@ message ServerRoomWasRemovedFromSelectableList
     CreatedRoom room = 4;                           //room was removed (doesn't matter - started or closed)
 }
 
+message ClientWantedToEnterTheRoom
+{
+    CommonHeader header = 1;                        //allways included
+    ConnectionSubSysCommandsID connectionCmdID = 2; //command ID
+    string clientName = 3;                          //client's name
+    uint32 roomID = 4;                              //roomID to enter
+}
 
+message ServerClientWantedToEnterTheRoomReply
+{
+    CommonHeader header = 1;                        //allways included
+    ConnectionSubSysCommandsID connectionCmdID = 2; //command ID
+    bool entranceAllowed = 3;                       //Allowed or Rejected
+}
 

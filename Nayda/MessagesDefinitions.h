@@ -89,9 +89,11 @@ struct ClientConnectionToRoomReplyData
 {
     std::vector<ServerRoomReadyToConnectData> _rooms;
     uint32_t _queryOrder;
+    uint32_t _querySize;
 
-    ClientConnectionToRoomReplyData(const std::vector<ServerRoomReadyToConnectData>& data, uint32_t order):
-        _rooms(data), _queryOrder(order)
+    ClientConnectionToRoomReplyData(const std::vector<ServerRoomReadyToConnectData>& data,
+                                    uint32_t order, uint32_t size):
+        _rooms(data), _queryOrder(order), _querySize(size)
     { }
 };
 
