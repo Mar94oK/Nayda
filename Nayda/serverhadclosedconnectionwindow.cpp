@@ -33,6 +33,8 @@ void ServerHadClosedConnectionWindow::setUpButtonPicture(QPushButton * const btn
 
     btn->setMinimumWidth(geometry().width()*widthCoeff);
     btn->setMinimumHeight(geometry().width()*widthCoeff*heightWidthRelatio);
+    btn->setMaximumWidth(geometry().width()*widthCoeff);
+    btn->setMaximumHeight(geometry().width()*widthCoeff*heightWidthRelatio);
     btn->setFlat(true);
     btn->setAutoFillBackground(true);
     btn->setPalette(plteBtnMainRepresenter);
@@ -45,7 +47,7 @@ void ServerHadClosedConnectionWindow::SetUpPicturesAddresses()
 
 #ifdef Q_OS_WIN
 //NAY-001: MARK_EXPECTED_ERROR
-     QString uiServerHadClosedConnectionFilesLocation = "Munchkin/Nayda/Pictures/gameSettingsWidget";
+     QString uiServerHadClosedConnectionFilesLocation = "Munchkin/Nayda/Pictures/serverHadClosedConnectionWindow";
      homeDirectory = "D:/";
 #elif defined Q_OS_UNIX
      QString uiServerHadClosedConnectionFilesLocation = "Munchkin/Nayda/Nayda/Pictures/serverHadClosedConnectionWindow";
