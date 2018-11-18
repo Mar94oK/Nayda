@@ -73,6 +73,19 @@ struct ClientConnectToRoomSettingsData
     { }
 };
 
+struct ServerRoomReadyToConnectReportData
+{
+    bool readyToConnect;
+    uint32_t roomID;
+    QString roomName;
+    uint32_t players;
+    uint32_t maximumNumberOfPlayers;
+
+    ServerRoomReadyToConnectReportData(bool connectable, uint32_t id):
+        readyToConnect(connectable), roomID(id)
+    { }
+};
+
 
 #define ROOM_ID_NOT_DEFINED 9999
 
