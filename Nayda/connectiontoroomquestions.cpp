@@ -11,8 +11,14 @@ ConnectionToRoomQuestions::ConnectionToRoomQuestions(QWidget *parent) :
     SetUpPicturesAddresses();
     setUpButtonPicture(ui->pushButton, _QuestionPictureAddress, buttonsWidthCoefficient, buttonsHeightWidthRelatio);
     SetUpConnections();
+
+    //NAY-001:MARK_EXPECTED_IMPROVEMENT
+    //Not to disable these options, allowing user only to see them.
     ui->chckBox_AgreeToWait->setEnabled(false);
     ui->chckBox_AgreeToWait->setCheckState(Qt::CheckState::Checked);
+
+    ui->chckBox_ConnectToAnyRoom->setEnabled(false);
+    ui->chckBox_ConnectToAnyRoom->setCheckState(Qt::CheckState::Unchecked);
 
     _connectToAnyRoom = ui->chckBox_ConnectToAnyRoom->isChecked();
     _agreeToWait = ui->chckBox_AgreeToWait->isChecked();
