@@ -78,6 +78,8 @@ signals:
 
     void SignalSendClientConnectionToRoomRequest(ClientConnectToRoomSettingsData data);
 
+    void SignalServerQueryOversize();
+
 public slots:
 
     void dbg_switch_to_game_mode_button_pressed(void);
@@ -109,6 +111,8 @@ public slots:
     {
         emit SignalSendClientConnectionToRoomRequest(data);
     }
+
+    void SlotServerQueryOversize() { emit SignalServerQueryOversize(); }
 
 //error processing
     void SlotProcessRemoteHostClosedErrorReport();

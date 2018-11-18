@@ -22,6 +22,8 @@ ConnectionToRoomQuestions::ConnectionToRoomQuestions(QWidget *parent) :
 
     _connectToAnyRoom = ui->chckBox_ConnectToAnyRoom->isChecked();
     _agreeToWait = ui->chckBox_AgreeToWait->isChecked();
+
+    ui->pushButton->setEnabled(false);
 }
 
 ConnectionToRoomQuestions::~ConnectionToRoomQuestions()

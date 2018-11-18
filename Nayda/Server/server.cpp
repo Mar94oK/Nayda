@@ -467,6 +467,15 @@ void Server::ProcessClientConnectionToRoomReply(const QByteArray &data, int sock
     for (int var = 0; var < message.roomid_size(); ++var)
         qDebug() << "NAY-001: message: roomid: " << QString::number(message.roomid(var));
 
+    //check Query order first. If oversized: report immidiately and return;
+    if (message.queryorder() == QUERY_OVERSIZE)
+    {
+        emit SignalServerQueryOversize();
+        qDebug() << "NAY-001:  ProcessClientConnectionToRoomReply() QueryOversize!";
+        return;
+    }
+
+
 }
 
 

@@ -48,6 +48,9 @@ void playMenu::SlotShowRoomConnectionQuestions()
 
 void playMenu::SlotSendClientConnectionToRoomRequest(ClientConnectToRoomSettingsData data)
 {
+    ui->btn_Connection->setEnabled(false);
+    ui->btn_CreateLobby->setEnabled(false);
+    ui->btn_JoinToExistingLobby->setEnabled(false);
     emit SignalSendClientConnectionToRoomRequest(data);
 }
 
@@ -142,6 +145,22 @@ void playMenu::SlotShowConnectionToRoomRejectedWindow(bool noRooms)
     connectionRejected = new ConnectionToRoomRejectedMessageWindow();
     connectionRejected->setModal(true);
     connectionRejected->show();
+}
+
+void playMenu::SlotShowServerQueueOversizedWindow()
+{
+    serverQueryOversized = new ServerQueryOversizedWindow();
+    serverQueryOversized->setModal(true);
+    serverQueryOversized->show();
+    QObject::connect(serverQueryOversized, &ServerQueryOversizedWindow::SignalUnlockUserButtonsAfterConnectionToRoomReply,
+                     this, &playMenu::SlotUnlockUserButtonsAfterConnectingToRoomReply);
+}
+
+void playMenu::SlotUnlockUserButtonsAfterConnectingToRoomReply()
+{
+    ui->btn_Connection->setEnabled(true);
+    ui->btn_CreateLobby->setEnabled(true);
+    ui->btn_JoinToExistingLobby->setEnabled(true);
 }
 
 void playMenu::SlotProcessRemoteHostClosedErrorReport()

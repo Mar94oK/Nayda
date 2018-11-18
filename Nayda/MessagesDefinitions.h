@@ -76,4 +76,7 @@ struct ClientConnectToRoomSettingsData
 
 #define ROOM_ID_NOT_DEFINED 9999
 
+#define NO_QUERY_POSITION 777
+#define QUERY_OVERSIZE 999
+
 #endif // PROTOBUFMESSAGESIDENTIFICATORS_H

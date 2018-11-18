@@ -10,6 +10,7 @@
 #include <MessagesDefinitions.h>
 #include "connectiontoroomquestions.h"
 #include "connectiontoroomrejectedmessagewindow.h"
+#include "serverqueryoversizedwindow.h"
 
 namespace Ui {
 class startNewRoom;
@@ -31,6 +32,8 @@ private:
     GameSettingsWindow* gameSettingsWindow = nullptr;
     ConnectionToRoomQuestions* connectionToRoomQuestions = nullptr;
     ConnectionToRoomRejectedMessageWindow* connectionRejected = nullptr;
+    ServerQueryOversizedWindow* serverQueryOversized = nullptr;
+
 
     void closeEvent(QCloseEvent *event);
 
@@ -82,11 +85,13 @@ signals:
     void SignalSendClientRoomCreationRequest();
 
     void SignalSendClientConnectionToRoomRequest(ClientConnectToRoomSettingsData data);
+    void SignalLockUserButtonsWhileConnnectingToRoom();
 
 private slots:
 
     void SlotShowRoomConnectionQuestions();
     void SlotSendClientConnectionToRoomRequest(ClientConnectToRoomSettingsData data);
+
 
 
 public slots:
@@ -106,6 +111,9 @@ public slots:
     void SlotAbortingConnectionByUserInitiative();
 
     void SlotShowConnectionToRoomRejectedWindow(bool noRooms);
+    void SlotShowServerQueueOversizedWindow();
+
+    void SlotUnlockUserButtonsAfterConnectingToRoomReply();
 
 //erorrs processing
 

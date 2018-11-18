@@ -110,6 +110,8 @@ signals:
 
     void SignalChartMessageReceived(const QStringList& message);
 
+    void SignalServerQueryOversize();
+
 //error signals
 
     void SignalRemoteHostClosedErrorReport();
