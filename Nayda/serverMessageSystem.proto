@@ -95,6 +95,15 @@ message RoomCreationErrors
     bool incorrectSettings = 3;
 }
 
+// CreatedRoom (Sub-Message, DO NOT USE for sending)
+message CreatedRoom
+{
+    uint32_t roomID;
+    std::string roomName;
+    uint32_t players;
+    uint32_t maximumNumberOfPlayers;
+}
+
 //#1 Idea: Check whether server is ready to work...
 message ServerInputQuery
 {
@@ -154,7 +163,7 @@ message ClientConnectionToRoomReply
     ConnectionSubSysCommandsID connectionCmdID = 2; //command ID
     bool noRoomsAvailable = 3;                      //if no Rooms Available, set thi field
     uint32 freeSlotsLeft = 4;                       //how many free Slots are left
-    repeated uint32 roomID = 5;                     //how many Rooms IDs are provided
+    repeated CreatedRoom room = 5;                  //how Rooms IDs are provided
     uint32 queryOrder = 6;                          //place in order
 }
 
@@ -192,5 +201,15 @@ message DefaultMessage //Used for message-type distinguish cast.
     CommonHeader header = 1;
     ChartSubSysCommandsID chartCmdID = 2;
 }
+
+//#11
+message ServerRoomWasRemovedFromSelectableList
+{
+    CommonHeader header = 1;                        //allways included
+    bool deletedOrUpdateFlag = 2;                   //Shows what to do with the room - Update info or Delete;
+    ConnectionSubSysCommandsID connectionCmdID = 3; //command ID
+    CreatedRoom room = 4;                           //room was removed (doesn't matter - started or closed)
+}
+
 
 

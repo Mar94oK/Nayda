@@ -9,6 +9,7 @@
 #include "MessagesDefinitions.h"
 #include "roomcreationwaitinglobby.h"
 #include "serverhadclosedconnectionwindow.h"
+#include "roomcreationwaitinglobby.h"
 #define DEBUG_MESSAGES
 
 
@@ -80,6 +81,8 @@ signals:
 
     void SignalServerQueryOversize();
 
+    void SignalProcessClientConnectionToRoomReply(ServerRoomReadyToConnectReportData data);
+
 public slots:
 
     void dbg_switch_to_game_mode_button_pressed(void);
@@ -114,6 +117,9 @@ public slots:
 
     void SlotServerQueryOversize() { emit SignalServerQueryOversize(); }
 
+    //in fact, it report to gui if only eberything is ok and there are rooms, and it is necessary to show
+    void SlotProcessClientConnectionToRoomReply(const std::vector<ServerRoomReadyToConnectReportData> &data);
+
 //error processing
     void SlotProcessRemoteHostClosedErrorReport();
     void SlotProcessRemoteHostConnectionRefusedErrorReport() { emit SignalRemoteHostConnectionRefusedErrorReport();
@@ -138,6 +144,7 @@ private:
 
     RoomCreationWaitingLobby* _roomCreationWaitingLobby = nullptr;
     ServerHadClosedConnectionWindow* _serverHadClosedConnectionWindow = nullptr;
+    RoomSelectionLobby* _roomSelectionLobby = nullptr;
 
     uint32_t roomID = ROOM_ID_NOT_DEFINED;
 

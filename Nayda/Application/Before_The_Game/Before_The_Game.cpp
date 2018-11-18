@@ -184,6 +184,14 @@ void Before_The_Game::SlotCreateNewRoomCreationWaitingLobby()
 
 }
 
+void Before_The_Game::SlotProcessClientConnectionToRoomReply(const std::vector<ServerRoomReadyToConnectReportData> &data)
+{
+    for (uint32_t var = 0; var < data.size(); ++var)
+    {
+        emit SignalProcessClientConnectionToRoomReply(data[var]);
+    }
+}
+
 void Before_The_Game::SlotProcessRemoteHostClosedErrorReport()
 {
     qDebug() << "NAY-001: Processing HostClosedConnectionError!";

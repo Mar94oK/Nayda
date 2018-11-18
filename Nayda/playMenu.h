@@ -11,6 +11,7 @@
 #include "connectiontoroomquestions.h"
 #include "connectiontoroomrejectedmessagewindow.h"
 #include "serverqueryoversizedwindow.h"
+#include "roomselectionlobby.h"
 
 namespace Ui {
 class startNewRoom;
@@ -33,7 +34,6 @@ private:
     ConnectionToRoomQuestions* connectionToRoomQuestions = nullptr;
     ConnectionToRoomRejectedMessageWindow* connectionRejected = nullptr;
     ServerQueryOversizedWindow* serverQueryOversized = nullptr;
-
 
     void closeEvent(QCloseEvent *event);
 

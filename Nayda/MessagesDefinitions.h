@@ -75,14 +75,13 @@ struct ClientConnectToRoomSettingsData
 
 struct ServerRoomReadyToConnectReportData
 {
-    bool readyToConnect;
     uint32_t roomID;
     QString roomName;
     uint32_t players;
     uint32_t maximumNumberOfPlayers;
 
-    ServerRoomReadyToConnectReportData(bool connectable, uint32_t id):
-        readyToConnect(connectable), roomID(id)
+    ServerRoomReadyToConnectReportData(uint32_t id, const QString& name, uint32_t pl, uint32_t maxNumber):
+        roomID(id), roomName(name), players(pl), maximumNumberOfPlayers (maxNumber)
     { }
 };
 
