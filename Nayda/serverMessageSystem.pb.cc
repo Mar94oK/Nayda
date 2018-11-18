@@ -767,7 +767,7 @@ void AddDescriptorsImpl() {
       "\000\022\n\n\006Manual\020\001*y\n\013SubSystemID\022\030\n\024CONNECTI"
       "ON_SUBSYSTEM\020\000\022\032\n\026GAME_ACTIONS_SUBSYSTEM"
       "\020\001\022\037\n\033GAME_NOTIFICATION_SUBSYSTEM\020\002\022\023\n\017C"
-      "HART_SUBSYSTEM\020\003*\310\002\n\032ConnectionSubSysCom"
+      "HART_SUBSYSTEM\020\003*\237\003\n\032ConnectionSubSysCom"
       "mandsID\022\036\n\032SERVER_INPUT_QUERY_REQUEST\020\000\022"
       "\034\n\030SERVER_INPUT_QUERY_REPLY\020\001\022 \n\034CLIENT_"
       "ROOM_CREATION_REQUEST\020\002\022\036\n\032CLIENT_ROOM_C"
@@ -775,14 +775,16 @@ void AddDescriptorsImpl() {
       "ROOM_REQUEST\020\004\022#\n\037CLIENT_CONNECTION_TO_R"
       "OOM_REPLY\020\005\022,\n(SERVER_REPORTS_OPPONENT_I"
       "S_ENTERING_ROOM\020\006\0220\n,SERVER_ROOM_WAS_REM"
-      "OVED_FROM_SELECTABLE_LIST\020\007*B\n\025ChartSubS"
-      "ysCommandsID\022\021\n\rCHART_MESSAGE\020\000\022\026\n\022CHART"
-      "_NOTIFICATION\020\001*9\n\023GameCreationRequest\022\017"
-      "\n\013JoinTheGame\020\000\022\021\n\rCreateTheGame\020\001b\006prot"
-      "o3"
+      "OVED_FROM_SELECTABLE_LIST\020\007\022#\n\037CLIENT_WA"
+      "NTED_TO_ENTER_THE_ROOM\020\010\0220\n,SERVER_CLIEN"
+      "T_WANTED_TO_ENTER_THE_ROOM_REPLY\020\t*B\n\025Ch"
+      "artSubSysCommandsID\022\021\n\rCHART_MESSAGE\020\000\022\026"
+      "\n\022CHART_NOTIFICATION\020\001*9\n\023GameCreationRe"
+      "quest\022\017\n\013JoinTheGame\020\000\022\021\n\rCreateTheGame\020"
+      "\001b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 4202);
+      descriptor, 4289);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "serverMessageSystem.proto", &protobuf_RegisterTypes);
 }
@@ -843,6 +845,8 @@ bool ConnectionSubSysCommandsID_IsValid(int value) {
     case 5:
     case 6:
     case 7:
+    case 8:
+    case 9:
       return true;
     default:
       return false;

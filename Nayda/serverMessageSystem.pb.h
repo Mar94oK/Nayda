@@ -183,12 +183,14 @@ enum ConnectionSubSysCommandsID {
   CLIENT_CONNECTION_TO_ROOM_REPLY = 5,
   SERVER_REPORTS_OPPONENT_IS_ENTERING_ROOM = 6,
   SERVER_ROOM_WAS_REMOVED_FROM_SELECTABLE_LIST = 7,
+  CLIENT_WANTED_TO_ENTER_THE_ROOM = 8,
+  SERVER_CLIENT_WANTED_TO_ENTER_THE_ROOM_REPLY = 9,
   ConnectionSubSysCommandsID_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
   ConnectionSubSysCommandsID_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
 bool ConnectionSubSysCommandsID_IsValid(int value);
 const ConnectionSubSysCommandsID ConnectionSubSysCommandsID_MIN = SERVER_INPUT_QUERY_REQUEST;
-const ConnectionSubSysCommandsID ConnectionSubSysCommandsID_MAX = SERVER_ROOM_WAS_REMOVED_FROM_SELECTABLE_LIST;
+const ConnectionSubSysCommandsID ConnectionSubSysCommandsID_MAX = SERVER_CLIENT_WANTED_TO_ENTER_THE_ROOM_REPLY;
 const int ConnectionSubSysCommandsID_ARRAYSIZE = ConnectionSubSysCommandsID_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* ConnectionSubSysCommandsID_descriptor();
