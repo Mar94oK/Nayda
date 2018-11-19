@@ -262,7 +262,13 @@ void Server::SlotSendChartMessage(const QString &message)
 void Server::SlotSendClientConnectionToRoomRequest(ClientConnectToRoomSettingsData data)
 {
     qDebug() << "NAY-001: Send ClientConnectionToRoomRequest";
-    ConnectionSendOutgoingData(FromClientConnectionToRoomRequest(data));
+    ConnectionSendOutgoingData(FormClientConnectionToRoomRequest(data));
+}
+
+void Server::SlotSendClientWantedToEnterTheRoom(uint32_t roomId)
+{
+    qDebug() << "NAY-001: Send SlotSendClientWantedToEnterTheRoom";
+    ConnectionSendOutgoingData(FormClientWantedToEnterTheRoom(roomId));
 }
 
 void Server::ProtobufMessageParser(const QByteArray &data, int socketDescriptor)
@@ -668,7 +674,7 @@ QByteArray Server::FormClientRoomCreationRequest()
     return block;
 }
 
-QByteArray Server::FromClientConnectionToRoomRequest(ClientConnectToRoomSettingsData data)
+QByteArray Server::FormClientConnectionToRoomRequest(ClientConnectToRoomSettingsData data)
 {
     serverMessageSystem::ClientConnectionToRoomRequest message;
     serverMessageSystem::CommonHeader *header(message.mutable_header());
@@ -707,4 +713,22 @@ QByteArray Server::FormChartMessage(const QString &textMessage)
     message.SerializeToArray(block.data(), block.size());
     qDebug() << "NAY-001: Serialized FormChartMessage is ready.";
     return block;
+}
+
+QByteArray Server::FormClientWantedToEnterTheRoom(uint32_t roomId)
+{
+    serverMessageSystem::ClientWantedToEnterTheRoom message;
+    serverMessageSystem::CommonHeader *header(message.mutable_header());
+    header->set_subsystem(serverMessageSystem::SubSystemID::CONNECTION_SUBSYSTEM);
+    header->set_commandid(static_cast<uint32_t>(serverMessageSystem::ConnectionSubSysCommandsID::CLIENT_WANTED_TO_ENTER_THE_ROOM));
+    message.set_connectioncmdid(serverMessageSystem::ConnectionSubSysCommandsID::CLIENT_WANTED_TO_ENTER_THE_ROOM);
+    message.set_clientname(_gameSettings.clientName().toUtf8().constData());
+    message.set_roomid(roomId);
+
+    QByteArray block;
+    block.resize(message.ByteSize());
+    message.SerializeToArray(block.data(), block.size());
+    qDebug() << "NAY-001: Serialized FormClientWantedToEnterTheRoom is ready.";
+    return block;
+
 }

@@ -46,6 +46,9 @@ private:
     void setUpButtonPicture(QPushButton* const btn, const QString& picturePath, double widthCoeff, double heightWidthRelatio);
     void setBackgroudImage(QString pictureAddress);
 
+    void LockAllButtons();
+    void UnlockAllButtons();
+
 signals:
     void SignalSendConnectToSelectedRoomRequest(uint32_t roomID);
     void SignalUserIsClosingRoomSelectionLobby();

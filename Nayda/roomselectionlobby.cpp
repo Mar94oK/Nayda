@@ -64,6 +64,22 @@ void RoomSelectionLobby::setBackgroudImage(QString pictureAddress)
     setPalette(plt);
 }
 
+void RoomSelectionLobby::LockAllButtons()
+{
+    foreach (QPushButton* btn, _selectableButtons)
+    {
+        btn->setEnabled(false);
+    }
+}
+
+void RoomSelectionLobby::UnlockAllButtons()
+{
+    foreach (QPushButton* btn, _selectableButtons)
+    {
+        btn->setEnabled(true);
+    }
+}
+
 void RoomSelectionLobby::SlotAddRoomToSelectableList(ServerRoomReadyToConnectData room)
 {
     _selectableRooms.push_back(room);
@@ -83,6 +99,7 @@ void RoomSelectionLobby::SlotRemoveRoomFromSelectableList(ServerRoomReadyToConne
 
 void RoomSelectionLobby::SlotSendConnectToSelectedRoomRequest(uint32_t roomID)
 {
+    LockAllButtons();
     emit SignalSendConnectToSelectedRoomRequest(roomID);
 }
 

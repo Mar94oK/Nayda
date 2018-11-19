@@ -209,6 +209,9 @@ void Before_The_Game::SlotProcessClientConnectionToRoomReply(ClientConnectionToR
     QObject::connect(this, &Before_The_Game::SignalProcessServerRoomChangesInSelectableList,
                      _roomSelectionLobby, &RoomSelectionLobby::SlotProcessServerRoomChangesInSelectableList);
 
+    QObject::connect(_roomSelectionLobby, &RoomSelectionLobby::SignalSendConnectToSelectedRoomRequest,
+                     this, &Before_The_Game::SlotProcessClientWantedToEnterTheRoom);
+
     for (uint32_t var = 0; var < data._rooms.size(); ++var)
     {
         emit SignalProcessServerRoomChangesInSelectableList(data._rooms[var]); //true is set in the receiving

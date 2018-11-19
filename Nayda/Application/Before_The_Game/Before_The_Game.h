@@ -85,6 +85,7 @@ signals:
     void SignalUpdateQuerySize(uint32_t querySize);
 
     void SignalProcessServerRoomChangesInSelectableList(const ServerRoomReadyToConnectData& data );
+    void SignalProcessClientWantedToEnterTheRoom(uint32_t roomId);
 
 public slots:
 
@@ -117,6 +118,9 @@ public slots:
     {
         emit SignalSendClientConnectionToRoomRequest(data);
     }
+
+    void SlotProcessClientWantedToEnterTheRoom(uint32_t roomId)
+    { emit SignalProcessClientWantedToEnterTheRoom(roomId); }
 
     void SlotServerQueryOversize() { emit SignalServerQueryOversize(); }
 
