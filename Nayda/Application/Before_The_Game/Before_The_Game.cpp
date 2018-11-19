@@ -203,8 +203,6 @@ void Before_The_Game::SlotProcessClientConnectionToRoomReply(ClientConnectionToR
     QObject::connect(_roomSelectionLobby, &RoomSelectionLobby::SignalUserIsClosingRoomSelectionLobby,
                      newRoomDialog, &playMenu::show);
     QObject::connect(_roomSelectionLobby, &RoomSelectionLobby::SignalUserIsClosingRoomSelectionLobby,
-                     newRoomDialog, &playMenu::SlotAbortingConnectionByUserInitiative);
-    QObject::connect(_roomSelectionLobby, &RoomSelectionLobby::SignalUserIsClosingRoomSelectionLobby,
                      newRoomDialog, &playMenu::SlotProcessUnlockConnectionButtonAfterConnection);
 
     QObject::connect(_roomSelectionLobby, &RoomSelectionLobby::SignalUserIsClosingRoomSelectionLobby,

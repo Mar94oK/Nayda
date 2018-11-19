@@ -247,6 +247,9 @@ void Server::SlotSendClientRoomCreationRequest()
 void Server::SlotCloseConnectionByUserInitiative()
 {
     qDebug() << "NAY-001: Aborting connection by user initiative.";
+    if (connectionUnexpectedBehaviorTimer->isActive())
+        connectionUnexpectedBehaviorTimer->stop();
+
     tcpSocket->abort();
 }
 

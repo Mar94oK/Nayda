@@ -60,6 +60,7 @@ void playMenu::slot_startGameWithDefaults()
 
 void playMenu::SlotShowServerSettings()
 {
+    qDebug() << "Slot SlotShowServerSettings() called once.";
     serverSettingsWindow = new ServerSettings();
     QObject::connect(serverSettingsWindow, &ServerSettings::sig_userHaveChangedServerSettings, this, &playMenu::SlotUserHaveChangedServerSettings);
     serverSettingsWindow->setModal(true);
@@ -72,6 +73,7 @@ void playMenu::SlotUserHaveChangedServerSettings(serverSettings settings)
     setUpButtonPicture(ui->btn_Connection, _connectionButtonPictureAddressSetUp, buttonsWidthCoefficient, buttonsHeightWidthRelatio);
     QObject::connect(ui->btn_Connection, &QPushButton::clicked, this, &playMenu::SlotSetUpConnection);
     QObject::disconnect(ui->btn_Connection, &QPushButton::clicked, this, &playMenu::SlotShowServerSettings);
+    qDebug() << "NAY-001 SlotShowServerSettings() disconnected! ";
     ui->lbl_Connection->setText("Сервер: " + settings.first + '\n'+
                                 "Порт: " + settings.second + '\n' +
                                 "Нажмите ещё раз для соединения с сервером!");
@@ -129,7 +131,9 @@ void playMenu::SlotProcessServerQueryReplyData(ServerQueryReplyData data)
 void playMenu::SlotAbortingConnectionByUserInitiative()
 {
     QObject::disconnect(ui->btn_Connection, &QPushButton::clicked, this, &playMenu::SlotSetUpConnection);
+//?
     QObject::connect(ui->btn_Connection, &QPushButton::clicked, this, &playMenu::SlotShowServerSettings);
+    qDebug() << "NAY-001: SlotShowServerSettings() connected! SlotAbortingConnectionByUserInitiative()";
     ui->lbl_Connection->setText("Вы отключились от сервера! Соединитесь заново, пожалуйста.");
     setUpButtonPicture(ui->btn_Connection, _connectionButtonPictureAddressDefault, buttonsWidthCoefficient, buttonsHeightWidthRelatio);
     ui->btn_CreateLobby->setEnabled(false);
@@ -174,6 +178,7 @@ void playMenu::SlotProcessRemoteHostClosedErrorReport()
     setUpButtonPicture(ui->btn_Connection, _connectionButtonPictureAddressDefault, buttonsWidthCoefficient, buttonsHeightWidthRelatio);
     QObject::disconnect(ui->btn_Connection, &QPushButton::clicked, this, &playMenu::SlotSetUpConnection);
     QObject::connect(ui->btn_Connection, &QPushButton::clicked, this, &playMenu::SlotShowServerSettings);
+    qDebug() << "NAY-001: SlotShowServerSettings() connected! SlotProcessRemoteHostClosedErrorReport()";
     ui->btn_CreateLobby->setEnabled(false);
     setUpButtonPicture(ui->btn_CreateLobby, _createRoomButtonPictureAddressDefault, buttonsWidthCoefficient, buttonsHeightWidthRelatio);
     ui->btn_JoinToExistingLobby->setEnabled(false);
@@ -187,6 +192,7 @@ void playMenu::SlotProcessRemoteHostConnectionRefusedErrorReport()
     setUpButtonPicture(ui->btn_Connection, _connectionButtonPictureAddressDefault, buttonsWidthCoefficient, buttonsHeightWidthRelatio);
     QObject::disconnect(ui->btn_Connection, &QPushButton::clicked, this, &playMenu::SlotSetUpConnection);
     QObject::connect(ui->btn_Connection, &QPushButton::clicked, this, &playMenu::SlotShowServerSettings);
+    qDebug() << "NAY-001: SlotShowServerSettings() connected! SlotProcessRemoteHostConnectionRefusedErrorReport()";
     ui->lbl_Connection->setText("Сервер отклонил попытку соединения!\n Пожалуйста, убедитесь, что подключаетесь к нужному серверу\n"
                                 "и проверьте порт подключения.");
 }
@@ -197,6 +203,7 @@ void playMenu::SlotProcessRemoteHostNotFoundErrorReport()
     setUpButtonPicture(ui->btn_Connection, _connectionButtonPictureAddressDefault, buttonsWidthCoefficient, buttonsHeightWidthRelatio);
     QObject::disconnect(ui->btn_Connection, &QPushButton::clicked, this, &playMenu::SlotSetUpConnection);
     QObject::connect(ui->btn_Connection, &QPushButton::clicked, this, &playMenu::SlotShowServerSettings);
+    qDebug() << "NAY-001: SlotShowServerSettings() connected! SlotProcessRemoteHostNotFoundErrorReport()";
     ui->lbl_Connection->setText("Сервер не обнаружен!\nПожалуйста, укажите другой сервер, или проверьте доступность текущего.\n"
                                 "Возможно, на нём не запущен Манчкин?");
 }
@@ -249,6 +256,7 @@ void playMenu::setUpSignalsSlotsConnections()
     QObject::connect(ui->btn_GameSettings, &QPushButton::clicked, this, &playMenu::SlotShowGameSettingsWindow);
     QObject::connect(ui->btn_SendTestData, &QPushButton::clicked, this, &playMenu::slot_sendTestDataToServer);
     QObject::connect(ui->btn_Connection, &QPushButton::clicked, this, &playMenu::SlotShowServerSettings);
+    qDebug() << "NAY-001: SlotShowServerSettings() connected! setUpSignalsSlotsConnections()";
     QObject::connect(ui->btn_CreateLobby, &QPushButton::clicked, this, &playMenu::SlotSendClientRoomCreationRequest);
     QObject::connect(ui->btn_JoinToExistingLobby, &QPushButton::clicked, this, &playMenu::SlotShowRoomConnectionQuestions);
     QObject::connect(this, &playMenu::SignalLockUserButtonsWhileConnnectingToRoom, this, &playMenu::SlotLockUserButtonsWhileConnnectingToRoom);
