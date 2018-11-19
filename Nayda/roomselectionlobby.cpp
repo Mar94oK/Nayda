@@ -94,6 +94,18 @@ void RoomSelectionLobby::SlotUpdateQueryOrder(uint32_t queryOrder)
     ui->lbl_QueueOrder->setText(_queryOrderBaseText + QString::number(queryOrder));
 }
 
+void RoomSelectionLobby::SlotProcessServerRoomChangesInSelectableList(const ServerRoomReadyToConnectData &data)
+{
+    if (data.deleteUpdateFlag)
+    {
+        SlotAddRoomToSelectableList(data);
+    }
+    else
+    {
+        SlotRemoveRoomFromSelectableList(data);
+    }
+}
+
 void RoomSelectionLobby::AddSelectableRoomToGUI(ServerRoomReadyToConnectData data)
 {
     QPushButton* btn = new QPushButton();

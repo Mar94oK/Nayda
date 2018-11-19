@@ -190,8 +190,6 @@ void Before_The_Game::SlotProcessClientConnectionToRoomReply(ClientConnectionToR
     _roomSelectionLobby->setModal(true);
 
     newRoomDialog->hide();
-    QObject::connect(this, &Before_The_Game::SignalProcessClientConnectionToRoomReply,
-                     _roomSelectionLobby, &RoomSelectionLobby::SlotAddRoomToSelectableList);
     QObject::connect(this, &Before_The_Game::SignalUpdateQuerySize,
                      _roomSelectionLobby, &RoomSelectionLobby::SlotUpdateQuerySize);
     QObject::connect(this, &Before_The_Game::SignalUpdateQueryOrder,
@@ -208,9 +206,12 @@ void Before_The_Game::SlotProcessClientConnectionToRoomReply(ClientConnectionToR
     QObject::connect(_roomSelectionLobby, &RoomSelectionLobby::SignalUserIsClosingRoomSelectionLobby,
                      this, &Before_The_Game::SlotAbortingConnectionByUserInitiative);
 
+    QObject::connect(this, &Before_The_Game::SignalProcessServerRoomChangesInSelectableList,
+                     _roomSelectionLobby, &RoomSelectionLobby::SlotProcessServerRoomChangesInSelectableList);
+
     for (uint32_t var = 0; var < data._rooms.size(); ++var)
     {
-        emit SignalProcessClientConnectionToRoomReply(data._rooms[var]);
+        emit SignalProcessServerRoomChangesInSelectableList(data._rooms[var]); //true is set in the receiving
     }
 
     emit SignalUpdateQueryOrder(data._queryOrder);

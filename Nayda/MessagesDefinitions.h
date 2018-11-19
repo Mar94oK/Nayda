@@ -79,9 +79,10 @@ struct ServerRoomReadyToConnectData
     QString roomName;
     uint32_t players;
     uint32_t maximumNumberOfPlayers;
+    bool     deleteUpdateFlag;
 
-    ServerRoomReadyToConnectData(uint32_t id, const QString& name, uint32_t pl, uint32_t maxNumber):
-        roomID(id), roomName(name), players(pl), maximumNumberOfPlayers (maxNumber)
+    ServerRoomReadyToConnectData(uint32_t id, const QString& name, uint32_t pl, uint32_t maxNumber, bool flag):
+        roomID(id), roomName(name), players(pl), maximumNumberOfPlayers (maxNumber), deleteUpdateFlag(flag)
     { }
 };
 

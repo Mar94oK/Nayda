@@ -81,9 +81,10 @@ signals:
 
     void SignalServerQueryOversize();
 
-    void SignalProcessClientConnectionToRoomReply(ServerRoomReadyToConnectData data);
     void SignalUpdateQueryOrder(uint32_t queryOrder);
     void SignalUpdateQuerySize(uint32_t querySize);
+
+    void SignalProcessServerRoomChangesInSelectableList(const ServerRoomReadyToConnectData& data );
 
 public slots:
 
@@ -122,6 +123,9 @@ public slots:
     //in fact, it report to gui if only eberything is ok and there are rooms, and it is necessary to show
     void SlotProcessClientConnectionToRoomReply(ClientConnectionToRoomReplyData data);
     void SlotProcessUpdateQueryOrder(ClientConnectionToRoomReplyData data);
+
+    void SlotProcessServerRoomChangesInSelectableList(const ServerRoomReadyToConnectData& data)
+    { emit SignalProcessServerRoomChangesInSelectableList(data); }
 
 //error processing
     void SlotProcessRemoteHostClosedErrorReport();

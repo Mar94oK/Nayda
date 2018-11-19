@@ -53,11 +53,14 @@ signals:
 
 public slots:
 
-    void SlotAddRoomToSelectableList(ServerRoomReadyToConnectData room);
-    void SlotRemoveRoomFromSelectableList(ServerRoomReadyToConnectData room);
     void SlotSendConnectToSelectedRoomRequest(uint32_t roomID);
     void SlotUpdateQuerySize(uint32_t querySize);
     void SlotUpdateQueryOrder(uint32_t queryOrder);
+
+    void SlotProcessServerRoomChangesInSelectableList(const ServerRoomReadyToConnectData& data);
+
+    void SlotAddRoomToSelectableList(ServerRoomReadyToConnectData room);
+    void SlotRemoveRoomFromSelectableList(ServerRoomReadyToConnectData room);
 
 private:
 
@@ -65,6 +68,8 @@ private:
     ButtonsPosition FindPositionFornewButton();
     QPushButton* FindRoomById(uint32_t id);
     bool RemoveRoomById(uint32_t id);
+
+
 
 private:
 

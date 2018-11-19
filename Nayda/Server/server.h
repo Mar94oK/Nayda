@@ -114,6 +114,8 @@ signals:
 
     void SignalProcessClientConnectionToRoomReply(const ClientConnectionToRoomReplyData& data);
 
+    void SignalProcessServerRoomChangesInSelectableList(const ServerRoomReadyToConnectData& data);
+
 //error signals
 
     void SignalRemoteHostClosedErrorReport();

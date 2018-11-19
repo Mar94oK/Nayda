@@ -312,6 +312,7 @@ void Server::ProtobufMessageParser(const QByteArray &data, int socketDescriptor)
                     case serverMessageSystem::ConnectionSubSysCommandsID::SERVER_ROOM_CHANGES_IN_SELECTABLE_LIST:
                     {
                         ProcessServerRoomChangesInSelectableList(data, socketDescriptor);
+                        break;
                     }
 
 
@@ -483,9 +484,10 @@ void Server::ProcessClientConnectionToRoomReply(const QByteArray &data, int sock
          qDebug() << "NAY-001: message: ClientConnectionToRoomReply: RoomName: " << QString::fromStdString(message.room(var).roomname());
          qDebug() << "NAY-001: message: ClientConnectionToRoomReply: MaximumNumberOfPlayers: " << QString::number(message.room(var).maximumnumberofplayers());
          messageData.push_back(ServerRoomReadyToConnectData(message.room(var).roomid(),
-                                                                  QString::fromStdString(message.room(var).roomname()),
-                                                                  message.room(var).players(),
-                                                                  message.room(var).maximumnumberofplayers()));
+                                                            QString::fromStdString(message.room(var).roomname()),
+                                                            message.room(var).players(),
+                                                            message.room(var).maximumnumberofplayers(),
+                                                             true));
     }
 
     ClientConnectionToRoomReplyData replyData(messageData, message.queryorder(), message.querysize());
@@ -523,8 +525,14 @@ void Server::ProcessServerRoomChangesInSelectableList(const QByteArray &data, in
         qDebug() << "NAY-001: Room: Max number of players: " << QString::number(message.room().maximumnumberofplayers());
         qDebug() << "NAY-001: Room: Plaers: " << QString::number(message.room().players());
         qDebug() << "NAY-001: Room: Name: " << QString::fromStdString(message.room().roomname());
-
     }
+
+    emit SignalProcessServerRoomChangesInSelectableList(ServerRoomReadyToConnectData(message.room().roomid(),
+                                                                                     QString::fromStdString(message.room().roomname()),
+                                                                                     message.room().players(),
+                                                                                     message.room().maximumnumberofplayers(),
+                                                                                     message.deletedorupdateflag()));
+
 }
 
 
