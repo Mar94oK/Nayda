@@ -13,6 +13,7 @@ RoomSelectionLobby::RoomSelectionLobby(QWidget *parent) :
     ui->setupUi(this);
     setUpUiPicturesAddresses();
     setBackgroudImage(_coverPictureAddress);
+    SetUpConnections();
 }
 
 RoomSelectionLobby::~RoomSelectionLobby()
@@ -150,4 +151,10 @@ bool RoomSelectionLobby::RemoveRoomById(uint32_t id)
 void RoomSelectionLobby::closeEvent(QCloseEvent *event)
 {
     emit SignalUserIsClosingRoomSelectionLobby();
+}
+
+void RoomSelectionLobby::SetUpConnections()
+{
+    QObject::connect(ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel), &QPushButton::clicked, this, &RoomSelectionLobby::SignalUserIsClosingRoomSelectionLobby);
+
 }

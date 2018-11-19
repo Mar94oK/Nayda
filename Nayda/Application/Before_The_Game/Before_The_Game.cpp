@@ -204,6 +204,11 @@ void Before_The_Game::SlotProcessClientConnectionToRoomReply(ClientConnectionToR
                      newRoomDialog, &playMenu::show);
     QObject::connect(_roomSelectionLobby, &RoomSelectionLobby::SignalUserIsClosingRoomSelectionLobby,
                      newRoomDialog, &playMenu::SlotAbortingConnectionByUserInitiative);
+    QObject::connect(_roomSelectionLobby, &RoomSelectionLobby::SignalUserIsClosingRoomSelectionLobby,
+                     newRoomDialog, &playMenu::SlotProcessUnlockConnectionButtonAfterConnection);
+
+    QObject::connect(_roomSelectionLobby, &RoomSelectionLobby::SignalUserIsClosingRoomSelectionLobby,
+                     this, &Before_The_Game::SlotAbortingConnectionByUserInitiative);
 
     for (uint32_t var = 0; var < data._rooms.size(); ++var)
     {

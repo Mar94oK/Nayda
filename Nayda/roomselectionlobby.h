@@ -70,6 +70,8 @@ private:
 
     void closeEvent(QCloseEvent *event);
 
+    void SetUpConnections();
+
 private:
 
     uint32_t _queryPosition;

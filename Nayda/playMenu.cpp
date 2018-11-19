@@ -48,9 +48,7 @@ void playMenu::SlotShowRoomConnectionQuestions()
 
 void playMenu::SlotSendClientConnectionToRoomRequest(ClientConnectToRoomSettingsData data)
 {
-    ui->btn_Connection->setEnabled(false);
-    ui->btn_CreateLobby->setEnabled(false);
-    ui->btn_JoinToExistingLobby->setEnabled(false);
+    emit SignalLockUserButtonsWhileConnnectingToRoom();
     emit SignalSendClientConnectionToRoomRequest(data);
 }
 
@@ -163,6 +161,13 @@ void playMenu::SlotUnlockUserButtonsAfterConnectingToRoomReply()
     ui->btn_JoinToExistingLobby->setEnabled(true);
 }
 
+void playMenu::SlotLockUserButtonsWhileConnnectingToRoom()
+{
+    ui->btn_Connection->setEnabled(false);
+    ui->btn_CreateLobby->setEnabled(false);
+    ui->btn_JoinToExistingLobby->setEnabled(false);
+}
+
 void playMenu::SlotProcessRemoteHostClosedErrorReport()
 {
     ui->btn_Connection->setEnabled(true);
@@ -246,6 +251,7 @@ void playMenu::setUpSignalsSlotsConnections()
     QObject::connect(ui->btn_Connection, &QPushButton::clicked, this, &playMenu::SlotShowServerSettings);
     QObject::connect(ui->btn_CreateLobby, &QPushButton::clicked, this, &playMenu::SlotSendClientRoomCreationRequest);
     QObject::connect(ui->btn_JoinToExistingLobby, &QPushButton::clicked, this, &playMenu::SlotShowRoomConnectionQuestions);
+    QObject::connect(this, &playMenu::SignalLockUserButtonsWhileConnnectingToRoom, this, &playMenu::SlotLockUserButtonsWhileConnnectingToRoom);
 }
 
 void playMenu::setUpUiPicturesAddresses()

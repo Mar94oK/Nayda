@@ -114,6 +114,7 @@ public slots:
     void SlotShowServerQueueOversizedWindow();
 
     void SlotUnlockUserButtonsAfterConnectingToRoomReply();
+    void SlotLockUserButtonsWhileConnnectingToRoom();
 
 //erorrs processing
 
