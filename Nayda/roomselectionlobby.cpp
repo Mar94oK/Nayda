@@ -12,7 +12,7 @@ RoomSelectionLobby::RoomSelectionLobby(QWidget *parent) :
 {
     ui->setupUi(this);
     setUpUiPicturesAddresses();
-    setBackgroudImage(_coverPictureAddress);
+    //setBackgroudImage(_coverPictureAddress);
     SetUpConnections();
 }
 
@@ -88,7 +88,8 @@ void RoomSelectionLobby::SlotSendConnectToSelectedRoomRequest(uint32_t roomID)
 
 void RoomSelectionLobby::SlotUpdateQuerySize(uint32_t querySize)
 {
-    ui->lbl_QueueOrder->setText(_querySizeBaseText + QString::number(querySize));
+    qDebug() << "NAY-001: Update Query sie: " << querySize;
+    ui->lbl_QueueSize->setText(_querySizeBaseText + QString::number(querySize));
 }
 
 void RoomSelectionLobby::SlotUpdateQueryOrder(uint32_t queryOrder)
@@ -114,8 +115,8 @@ void RoomSelectionLobby::AddSelectableRoomToGUI(ServerRoomReadyToConnectData dat
     ui->layoutRooms->addWidget(btn, FindPositionFornewButton().row,
                                FindPositionFornewButton().column);
 
-    btn->setText("Комнта: " + data.roomName + "\n"
-                 +"Количество игроков:  " + data.players + "\n"
+    btn->setText("Комната: " + data.roomName + "\n"
+                 +"Количество игроков:  " + QString::number(data.players) + "\n"
                  +"Номер комнаты: " + QString::number(data.roomID) + "\n"
                  +"Максимальное число игроков: " + QString::number(data.maximumNumberOfPlayers));
 

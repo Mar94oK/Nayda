@@ -472,6 +472,7 @@ void Server::ProcessClientConnectionToRoomReply(const QByteArray &data, int sock
     qDebug() << "NAY-001: message: noRoomsAvailable: " << QString::number(message.noroomsavailable());
     qDebug() << "NAY-001: message: FreeSlotsLeft: " << QString::number(message.freeslotsleft());
     qDebug() << "NAY-001: message: queryOrder: " << QString::number(message.queryorder());
+    qDebug() << "NAY-001: message: queryOrder: " << QString::number(message.querysize());
 
     std::vector<ServerRoomReadyToConnectData> messageData;
 
