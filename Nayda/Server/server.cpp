@@ -519,13 +519,14 @@ void Server::ProcessServerRoomChangesInSelectableList(const QByteArray &data, in
 
     qDebug() << "NAY-001: deleteUpdate Flag: " << message.deletedorupdateflag();
 
-    if (message.deletedorupdateflag())
-    {
+
         qDebug() << "NAY-001: Room: ID: " << QString::number(message.room().roomid());
         qDebug() << "NAY-001: Room: Max number of players: " << QString::number(message.room().maximumnumberofplayers());
         qDebug() << "NAY-001: Room: Plaers: " << QString::number(message.room().players());
         qDebug() << "NAY-001: Room: Name: " << QString::fromStdString(message.room().roomname());
-    }
+
+
+
 
     emit SignalProcessServerRoomChangesInSelectableList(ServerRoomReadyToConnectData(message.room().roomid(),
                                                                                      QString::fromStdString(message.room().roomname()),

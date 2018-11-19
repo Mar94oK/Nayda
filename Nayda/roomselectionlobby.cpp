@@ -72,9 +72,11 @@ void RoomSelectionLobby::SlotAddRoomToSelectableList(ServerRoomReadyToConnectDat
 
 void RoomSelectionLobby::SlotRemoveRoomFromSelectableList(ServerRoomReadyToConnectData room)
 {
+    qDebug() << "NAY-001: SlotRemoveRoomFromSelectableList room.roomID: " << room.roomID;
     if (FindRoomById(room.roomID) != nullptr)
     {
-        ui->layoutRooms->removeWidget(FindRoomById(room.roomID));
+        qDebug() << "NAY-001: SlotRemoveRoomFromSelectableList room.roomID: removing Widget";
+        delete FindRoomById(room.roomID);
         RemoveRoomById(room.roomID);
     }
 }
@@ -134,6 +136,7 @@ ButtonsPosition RoomSelectionLobby::FindPositionFornewButton()
 
 QPushButton *RoomSelectionLobby::FindRoomById(uint32_t id)
 {
+    qDebug() << "NAY-001: RoomID passed for the room to be deleted: " << id;
     for (uint32_t var = 0; var < _selectableRooms.size(); ++var)
     {
         if (_selectableRooms[var].roomID == id)
