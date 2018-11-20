@@ -270,6 +270,9 @@ void Before_The_Game::SlotProcessServerClientWantedToEnterTheRoomReply(const Ser
         QObject::connect(this, &Before_The_Game::SignalChartMessageReceived, _roomCreationWaitingLobby, &RoomCreationWaitingLobby::SlotProcessChartMessageReceived);
         QObject::connect(_roomCreationWaitingLobby, &RoomCreationWaitingLobby::SignalChartMessageToBeSend, this, &Before_The_Game::SlotProcessChartMessageSending);
         QObject::connect(this, &Before_The_Game::SignalServerReportsOpponentIsEnteringRoom, _roomCreationWaitingLobby, &RoomCreationWaitingLobby::SlotProcessServerReportsOpponentIsEnteringRoom);
+
+        _roomSelectionLobby->close();
+        _roomCreationWaitingLobby->deleteLater();
         _roomCreationWaitingLobby->show();
     }
     else

@@ -237,7 +237,7 @@ message ServerClientWantedToEnterTheRoomReply
     CommonHeader header = 1;                        //allways included
     ConnectionSubSysCommandsID connectionCmdID = 2; //command ID
     bool entranceAllowed = 3;                       //Allowed or Rejected
-    string masterName = 4;
+    string masterName = 4;                          //Master's name
     CreatedRoom room = 5;                           //Room to be joined - for the GUI to draw it.
     GameSettings settings = 6;                      //Settings selected by user, created the room
 }
