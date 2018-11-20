@@ -97,10 +97,29 @@ void RoomSelectionLobby::SlotRemoveRoomFromSelectableList(ServerRoomReadyToConne
     }
 }
 
+void RoomSelectionLobby::SLotProcessEntranceToSelectedRoomRestricted()
+{
+    //Disable Selected Room:
+    QPushButton* roomBtn = FindRoomById(_currentSelectedRoomId);
+    if (roomBtn != nullptr)
+    {
+        roomBtn->setEnabled(false);
+        _currentSelectedRoomId = UNSELECTED_ROOM;
+        roomBtn->setText("Во время подключения к этой комнате произошла ошибка!");
+        UnlockAllButtons();
+    }
+    else
+    {
+        qDebug() << "NAY-001:: Error while SLotProcessEntranceToSelectedRoomRestricted()";
+        UnlockAllButtons();
+    }
+}
+
 void RoomSelectionLobby::SlotSendConnectToSelectedRoomRequest(uint32_t roomID)
 {
     LockAllButtons();
     emit SignalSendConnectToSelectedRoomRequest(roomID);
+    _currentSelectedRoomId = roomID;
 }
 
 void RoomSelectionLobby::SlotUpdateQuerySize(uint32_t querySize)

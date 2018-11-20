@@ -212,6 +212,10 @@ void Before_The_Game::SlotProcessClientConnectionToRoomReply(ClientConnectionToR
     QObject::connect(_roomSelectionLobby, &RoomSelectionLobby::SignalSendConnectToSelectedRoomRequest,
                      this, &Before_The_Game::SlotProcessClientWantedToEnterTheRoom);
 
+    QObject::connect(this, &Before_The_Game::SignalEntranceToSelectedRoomRestricted,
+                     _roomSelectionLobby, &RoomSelectionLobby::SLotProcessEntranceToSelectedRoomRestricted);
+
+
     for (uint32_t var = 0; var < data._rooms.size(); ++var)
     {
         emit SignalProcessServerRoomChangesInSelectableList(data._rooms[var]); //true is set in the receiving
@@ -226,6 +230,52 @@ void Before_The_Game::SlotProcessClientConnectionToRoomReply(ClientConnectionToR
 void Before_The_Game::SlotProcessUpdateQueryOrder(ClientConnectionToRoomReplyData data)
 {
     emit SignalUpdateQueryOrder(data._queryOrder);
+}
+
+void Before_The_Game::SlotProcessServerClientWantedToEnterTheRoomReply(const ServerClientWantedToEnterTheRoomReplyData &data)
+{
+    //Если всё окей:
+    //Закрыть меню  выбора комнаты (и удалить!)
+    //Меню старта игры, увы, не удаляется, т.к. создаётся в конструкторе,
+    //но в данный момент оно закрыто
+    //Далее создать такое же окно, как создаёт @RoomCreation кнопка,
+    //Но лидером комнаты будет игрок с id = 0;
+    //Просто вызвать соотвествующий (!) метод класса, который обращает
+    //Мастер-комнату в комнату, в которую входит игрок
+    //Соответственно, потом надо будет добавить обратный метод - для
+    //обработки того момента, когда сервер передаст сообщение о смене мастера на текущего игрока.
+    //Смену мастера также надо будет обработать и для других игроков
+    //Причём требуется передавать в т.ч. и настройки игры, чтобы можно было записать их во все требуемые места
+
+
+    //Если нет (к комнате невозможно подключиться)
+    //Задизейблить эту кнопку, значит скоро придёт сигнал от сервера,
+    //Что к ней невозможно подключиться
+    //Вывести сообщение для пользователя в виде всплывающего окна (потом)
+    //Сейчас просто задизейблить эту кнопку с надписью "невозможно подключиться".
+
+    if (data.entranceAllowed)
+    {
+        //1. Apply New Settings (these settings are provided by another user)
+        //Maybe better to save defaults.
+        //_gameSettings.applyNewSettings(data.providedSettings);
+
+        //2. Create New RoomCreation Lobby but with specified parameters;
+        _roomCreationWaitingLobby = new RoomCreationWaitingLobby();
+
+        _roomCreationWaitingLobby->SetUpForNotMasterPossessionType(data);
+        QObject::connect(_roomCreationWaitingLobby, &RoomCreationWaitingLobby::SignalUserIsClosingRoomCreationLobby, newRoomDialog, &playMenu::show);
+        QObject::connect(_roomCreationWaitingLobby, &RoomCreationWaitingLobby::SignalUserIsClosingRoomCreationLobby, this, &Before_The_Game::SlotAbortingConnectionByUserInitiative);
+        QObject::connect(this, &Before_The_Game::SignalRemoteHostClosedErrorReport, _roomCreationWaitingLobby, &RoomCreationWaitingLobby::SlotProcessRemoteHostClosedErrorReport);
+        QObject::connect(this, &Before_The_Game::SignalChartMessageReceived, _roomCreationWaitingLobby, &RoomCreationWaitingLobby::SlotProcessChartMessageReceived);
+        QObject::connect(_roomCreationWaitingLobby, &RoomCreationWaitingLobby::SignalChartMessageToBeSend, this, &Before_The_Game::SlotProcessChartMessageSending);
+        QObject::connect(this, &Before_The_Game::SignalServerReportsOpponentIsEnteringRoom, _roomCreationWaitingLobby, &RoomCreationWaitingLobby::SlotProcessServerReportsOpponentIsEnteringRoom);
+        _roomCreationWaitingLobby->show();
+    }
+    else
+    {
+        emit SignalEntranceToSelectedRoomRestricted();
+    }
 }
 
 void Before_The_Game::SlotProcessRemoteHostClosedErrorReport()

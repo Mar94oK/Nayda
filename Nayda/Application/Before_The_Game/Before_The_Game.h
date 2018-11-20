@@ -87,6 +87,10 @@ signals:
     void SignalProcessServerRoomChangesInSelectableList(const ServerRoomReadyToConnectData& data );
     void SignalProcessClientWantedToEnterTheRoom(uint32_t roomId);
 
+    void SignalProcessServerClientWantedToEnterTheRoomReply(const ServerClientWantedToEnterTheRoomReplyData& data);
+
+    void SignalEntranceToSelectedRoomRestricted();
+
 public slots:
 
     void dbg_switch_to_game_mode_button_pressed(void);
@@ -130,6 +134,10 @@ public slots:
 
     void SlotProcessServerRoomChangesInSelectableList(const ServerRoomReadyToConnectData& data)
     { emit SignalProcessServerRoomChangesInSelectableList(data); }
+
+    void SlotProcessServerClientWantedToEnterTheRoomReply(const ServerClientWantedToEnterTheRoomReplyData& data);
+
+
 
 //error processing
     void SlotProcessRemoteHostClosedErrorReport();

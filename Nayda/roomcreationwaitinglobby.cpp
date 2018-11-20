@@ -230,3 +230,74 @@ void RoomCreationWaitingLobby::setCurrentOpponentAwaiting(const uint32_t &curren
 {
     _currentOpponentAwaiting = currentOpponentAwaiting;
 }
+
+void RoomCreationWaitingLobby::SetUpForNotMasterPossessionType(const ServerClientWantedToEnterTheRoomReplyData &data)
+{
+    //1. Apply new settings:
+
+    data.players[0].playerName;
+
+    _gameSettings.applyNewSettings(data.providedSettings);
+    setUpCreatorsName(data.masterName);
+    setUpButtonPicture(ui->btn_Creator, _mainPlayerPictureAddress, buttonsWidthCoefficient, buttonsHeightWidthRelatio);
+    ui->wdgt_GameSettings->ApplyNewSettings(data.providedSettings);
+    ui->wdgt_GameSettings->setUpInitialState();
+
+    //2. Check maximum number of players to disable unnecessary buttons;
+    switch (data.providedSettings.maximumNumberOfPlayers())
+    {
+    case 3:
+        ui->btn_Opponent_3->hide();
+        ui->btn_Opponent_4->hide();
+        ui->btn_Opponent_5->hide();
+        _opponnets.push_back(ui->btn_Opponent_1);
+        _opponnets.push_back(ui->btn_Opponent_2);
+    break;
+    case 4:
+        ui->btn_Opponent_4->hide();
+        ui->btn_Opponent_5->hide();
+        _opponnets.push_back(ui->btn_Opponent_1);
+        _opponnets.push_back(ui->btn_Opponent_2);
+        _opponnets.push_back(ui->btn_Opponent_3);
+        break;
+    case 5:
+        ui->btn_Opponent_5->hide();
+        _opponnets.push_back(ui->btn_Opponent_1);
+        _opponnets.push_back(ui->btn_Opponent_2);
+        _opponnets.push_back(ui->btn_Opponent_3);
+        _opponnets.push_back(ui->btn_Opponent_4);
+        break;
+    case 6:
+        _opponnets.push_back(ui->btn_Opponent_1);
+        _opponnets.push_back(ui->btn_Opponent_2);
+        _opponnets.push_back(ui->btn_Opponent_3);
+        _opponnets.push_back(ui->btn_Opponent_4);
+        _opponnets.push_back(ui->btn_Opponent_5);
+        break;
+    default:
+        qDebug() << "NAY-001: number of player is set to " << data.providedSettings.maximumNumberOfPlayers() << " Too much. Rework the procedure!!!";
+        break;
+    }
+
+    //3. SetUp Opponent's names (on Server's side it is necessary to add the player
+    // too room just before this message was sent - to be sure he recieved the ID necessary):
+
+    //check wheteher players size is equel or less maximum number of opponents - 1 (1 - Leader)
+    if (data.players.size() <= (_gameSettings.maximumNumberOfPlayers() - 1))
+    {
+        qDebug() << "NAY-001: SetUpForNotMasterPossessionType() data.players.size() Size OK!";
+    }
+    else
+    {
+        qDebug() << "NAY-001: SetUpForNotMasterPossessionType() Eror While checking size";
+        qDebug() << "NAY-001: data.players.size() > (_gameSettings.maximumNumberOfPlayers() - 1)";
+        return;
+    }
+
+    for (uint32_t var = 0; var < data.players.size(); ++var)
+    {
+        _opponnets[var]->setText(data.players[var].playerName + " " + QString::number(data.players[var].playerID));
+    }
+
+
+}

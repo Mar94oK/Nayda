@@ -4,6 +4,10 @@
 #include <QDialog>
 #include "MessagesDefinitions.h"
 
+//NAY-001: MARK_EXPECTED_ERROR
+//Later to improve this value
+#define UNSELECTED_ROOM 9000
+
 namespace Ui {
 class RoomSelectionLobby;
 }
@@ -65,6 +69,8 @@ public slots:
     void SlotAddRoomToSelectableList(ServerRoomReadyToConnectData room);
     void SlotRemoveRoomFromSelectableList(ServerRoomReadyToConnectData room);
 
+    void SLotProcessEntranceToSelectedRoomRestricted();
+
 private:
 
     void AddSelectableRoomToGUI(ServerRoomReadyToConnectData data);
@@ -84,6 +90,10 @@ private:
 
     uint32_t _queryPosition;
     uint32_t _querySize;
+
+private:
+
+    uint32_t _currentSelectedRoomId = UNSELECTED_ROOM;
 
 
 

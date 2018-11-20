@@ -5,6 +5,7 @@
 #include "gamesettings.h"
 #include <QPushButton>
 #include <QTimer>
+#include "MessagesDefinitions.h"
 
 #define FIRST_OPPONENT_AWAITING 0
 //#define ALL_OPPONENTS_ARE_HERE 6
@@ -58,6 +59,9 @@ public:
     uint32_t currentOpponentAwaiting() const;
     void setCurrentOpponentAwaiting(const uint32_t &currentOpponentAwaiting);
 
+    void SetUpForNotMasterPossessionType(const ServerClientWantedToEnterTheRoomReplyData& data);
+    void RedrawForMasterPossessionType(const ServerClientWantedToEnterTheRoomReplyData& data);
+
 signals:
 
     void SignalUserIsClosingRoomCreationLobby();
@@ -87,10 +91,8 @@ private:
 
 private slots:
 
-
     void EnbleBackCounterToTheGameStart();
     void SlotBackCounterSetNewValue(QString value);
-
 
 };
 

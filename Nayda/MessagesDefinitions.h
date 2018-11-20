@@ -2,6 +2,7 @@
 #define PROTOBUFMESSAGESIDENTIFICATORS_H
 
 #include <QString>
+#include "gamesettings.h"
 
 namespace MessageSystem {
 
@@ -96,6 +97,45 @@ struct ClientConnectionToRoomReplyData
                                     uint32_t order, uint32_t size):
         _rooms(data), _queryOrder(order), _querySize(size)
     { }
+};
+
+
+struct PlayerData
+{
+    QString playerName;
+    uint32_t playerID;
+
+    explicit PlayerData( const QString& name, uint32_t id) :
+        playerName(name), playerID(id)
+    {}
+};
+
+struct ServerClientWantedToEnterTheRoomReplyData
+{
+    bool entranceAllowed;
+
+    uint32_t roomID;
+    QString roomName;
+    QString masterName;
+    uint32_t numberOfPlayers;
+    uint32_t maximumNumberOfPlayers;
+
+    std::vector <PlayerData> players;
+
+    GameSettings providedSettings;
+
+    explicit ServerClientWantedToEnterTheRoomReplyData(bool allowed,
+                                              uint32_t id,
+                                              const QString& name,
+                                              const QString& mstrName,
+                                              uint32_t nmbrPlaers,
+                                              uint32_t maxPlayers,
+                                              const std::vector<PlayerData>& playersData,
+                                              GameSettings settings):
+        entranceAllowed(allowed), roomID(id), roomName(name), masterName(mstrName),
+        numberOfPlayers(nmbrPlaers), maximumNumberOfPlayers(maxPlayers),
+        players(playersData), providedSettings(settings)
+    {}
 };
 
 

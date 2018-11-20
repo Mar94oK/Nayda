@@ -543,6 +543,61 @@ void Server::ProcessServerRoomChangesInSelectableList(const QByteArray &data, in
 
 }
 
+void Server::ProcessServerClientWantedToEnterTheRoomReply(const QByteArray &data, int socketDescriptor)
+{
+    serverMessageSystem::ServerClientWantedToEnterTheRoomReply message;
+
+    if (!message.ParseFromArray(data.data(), data.size()))
+    {
+        qDebug() << ("NAY-001: Error while ProcessServerRoomChangesInSelectableList() ");
+        return;
+    }
+
+    qDebug() << "NAY-001: Entrance allowed: " << message.entranceallowed();
+
+    qDebug() << "NAY-001: Created Room Credentials: ";
+    qDebug() << "NAY-001: Room Name: " << QString::fromStdString(message.room().roomname());
+    qDebug() << "NAY-001: Room ID: " << QString::number(message.room().roomid());
+    qDebug() << "NAY-001: Players: " << QString::number(message.room().players());
+    qDebug() << "NAY-001: Maximum number of players: " << QString::number(message.room().maximumnumberofplayers());
+
+    std::vector<PlayerData> playersData;
+    GameSettings givenSettings(message.settings().maximumnumberofplayers(),
+                               message.settings().timesettings().totaltimetomove(),
+                               message.settings().timesettings().timetothink(),
+                               message.settings().timesettings().timeforopponentsdecision(),
+                               message.settings().timesettings().diplomacytime(),
+                               message.settings().gametype().hasaddonclericalerrors(),
+                               message.settings().gametype().hasaddonwildaxe(),
+                               QString::fromStdString(message.mastername()),
+                               QString::fromStdString(message.room().roomname()),
+                               static_cast<RulesType>(message.settings().gametype().rulestype()),
+                               message.settings().settingscorrectionallowed());
+
+    for (uint32_t var = 0; var < message.room().player_size(); ++var)
+    {
+        qDebug() << "NAY-001 : Player ID: " << QString::number(message.room().player(var).playerid());
+        qDebug() << "NAY-001 : Player ID: " << QString::fromStdString(message.room().player(var).playername());
+        playersData.push_back(PlayerData(QString::fromStdString(message.room().player(var).playername()),
+                                         message.room().player(var).playerid()));
+    }
+
+    //ServerClientWantedToEnterTheRoomReplyData
+    //PlayerData
+
+    emit SignalProcessServerClientWantedToEnterTheRoomReply(ServerClientWantedToEnterTheRoomReplyData(message.entranceallowed(),
+                                                                                                      message.room().roomid(),
+                                                                                                      QString::fromStdString(message.room().roomname()),
+                                                                                                      QString::fromStdString(message.mastername()),
+                                                                                                      message.room().players(),
+                                                                                                      message.room().maximumnumberofplayers(),
+                                                                                                      playersData,
+                                                                                                      givenSettings
+                                                                                                      ));
+
+
+}
+
 
 void Server::SocketErorHandler(QAbstractSocket::SocketError socketError)
 {
