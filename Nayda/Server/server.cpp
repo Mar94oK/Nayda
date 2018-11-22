@@ -96,6 +96,11 @@ void Server::slotConnectionReadIncomingData()
 //    uint32_t lenghtInt = lengthStr.toUInt();
 //    qDebug() << "Message Lenght: " << lenghtInt;
 
+    //NAY-001: MARK_EXPECTED_ERROR
+    //Server now uses flush and wait for bytesWritten;
+    //To ensure everything has come;
+    //Not sure whether it will work stable all the times;
+
     array = tcpSocket->readAll();
     qDebug() << "Buffer Lenght: " << array.length();
 

@@ -271,8 +271,12 @@ void Before_The_Game::SlotProcessServerClientWantedToEnterTheRoomReply(const Ser
         QObject::connect(_roomCreationWaitingLobby, &RoomCreationWaitingLobby::SignalChartMessageToBeSend, this, &Before_The_Game::SlotProcessChartMessageSending);
         QObject::connect(this, &Before_The_Game::SignalServerReportsOpponentIsEnteringRoom, _roomCreationWaitingLobby, &RoomCreationWaitingLobby::SlotProcessServerReportsOpponentIsEnteringRoom);
 
+        //disconnecting this slot just before the widget will be closed and deleted.
+        QObject::disconnect(_roomSelectionLobby, &RoomSelectionLobby::SignalUserIsClosingRoomSelectionLobby,
+                         this, &Before_The_Game::SlotAbortingConnectionByUserInitiative);
+
         _roomSelectionLobby->close();
-        _roomCreationWaitingLobby->deleteLater();
+        _roomSelectionLobby->deleteLater();
         _roomCreationWaitingLobby->show();
     }
     else
