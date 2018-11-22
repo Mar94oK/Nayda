@@ -321,6 +321,10 @@ void Server::ProtobufMessageParser(const QByteArray &data, int socketDescriptor)
                         break;
                     }
 
+                case serverMessageSystem::ConnectionSubSysCommandsID::SERVER_CLIENT_WANTED_TO_ENTER_THE_ROOM_REPLY:
+                    ProcessServerClientWantedToEnterTheRoomReply(data,socketDescriptor);
+                    break;
+
 
                     default:
                         qDebug() << ("NAY-0001: Unsupported Command in CONNECTION_SUBSYSTEM with CmdID: " + QString::number(defaultMessage.header().commandid()));
