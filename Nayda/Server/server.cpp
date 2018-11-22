@@ -88,7 +88,17 @@ void Server::slotConnectionReadIncomingData()
     qDebug() << ("Trying to read the info...");
     QByteArray array;
     qDebug() << "NAY-0001: Before message parsing! ";
+    qDebug() << "Bytes available: " << tcpSocket->bytesAvailable();
+
+    //the first one wiil be lenght;
+//    QByteArray lenght = tcpSocket->readAll();
+//    QString lengthStr = tr(lenght);
+//    uint32_t lenghtInt = lengthStr.toUInt();
+//    qDebug() << "Message Lenght: " << lenghtInt;
+
     array = tcpSocket->readAll();
+    qDebug() << "Buffer Lenght: " << array.length();
+
     ProtobufMessageParser(array, tcpSocket->socketDescriptor());
 }
 
@@ -357,6 +367,14 @@ void Server::ProtobufMessageParser(const QByteArray &data, int socketDescriptor)
            default:
 
                qDebug() << ("NAY-0001: Unsupported Command in CHART_SUBSYSTEM with CmdID: " + QString::number(defaultMessage.header().commandid()));
+               serverMessageSystem::ServerClientWantedToEnterTheRoomReply message;
+
+               if (!message.ParseFromArray(data.data(), data.size()))
+               {
+                   qDebug() << ("NAY-001: Error while ProcessServerRoomChangesInSelectableList() ");
+                   return;
+               }
+               message.PrintDebugString();
                break;
            }
            break;
