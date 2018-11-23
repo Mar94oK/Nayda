@@ -169,10 +169,28 @@ void Server::slotConnectionReadIncomingData()
 
 uint32_t Server::ReadIncomingLenght()
 {
-    uint32_t lenght;
+    quint32 lenght;
     QByteArray readedLenght;
     readedLenght = tcpSocket->read(sizeof(uint32_t));
-    lenght = qFromBigEndian<uint32_t>(readedLenght.data());
+    lenght = qFromBigEndian<quint32 >((const uchar*)readedLenght.constData());
+    qDebug() << "Lenght from Big Endian : " << lenght;
+    qDebug() << "Lenght from little Endian : " << qFromLittleEndian<quint32 >(readedLenght.data());
+
+    QDataStream stream(readedLenght);
+    quint32  lenghtValue;
+
+    lenghtValue |= readedLenght.at(3)       |
+                   readedLenght.at(2) << 8  |
+                   readedLenght.at(1) << 16 |
+                   readedLenght.at(0) << 24;
+
+    uint32_t convValue = 0;
+    for (int i = 0; i < readedLenght.size(); i++)
+        convValue = (convValue << 8) | static_cast<unsigned char>(readedLenght[i]);
+
+    qDebug() << "Lenght from QDataStream: " << lenghtValue;
+    qDebug() << "Lenght from AnotherConversion: " << convValue;
+
     return lenght;
 }
 
