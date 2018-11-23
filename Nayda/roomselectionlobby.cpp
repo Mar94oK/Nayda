@@ -168,7 +168,6 @@ ButtonsPosition RoomSelectionLobby::FindPositionFornewButton()
     uint32_t nextColumn = _selectableRooms.size() % 4;
 
     return ButtonsPosition(currentRow, nextColumn);
-
 }
 
 QPushButton *RoomSelectionLobby::FindRoomById(uint32_t id)
