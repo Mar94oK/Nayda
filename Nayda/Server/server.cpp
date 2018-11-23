@@ -86,37 +86,40 @@ bool Server::ConnectionSendOutgoingData(const QByteArray &data)
 void Server::slotConnectionReadIncomingData()
 {
     qDebug() << ("Reading Data.");
+    //1. Disconnect readyRead signal to be sure the packet will come here, in handler.
+    disconnect(tcpSocket, &QIODevice::readyRead, this, &Server::slotConnectionReadIncomingData);
+
     QByteArray initialArray;
+    //2. Check the bytes available (They will allways be since there's ReadyRead here.)
     qDebug() << "Total Bytes available: " << tcpSocket->bytesAvailable();
 
-    //the first one will be lenght;
+    //3. the first one will be lenght;
     qDebug() << "Read lenght first";
     uint32_t lenght = ReadIncomingLenght();
     qDebug() << "Given lenght: " << lenght;
 
-    //check if there's lenght
+    //4. check if there's lenght (should never get here)
     if (!lenght)
     {
         qDebug() << "Rejecting packet!";
         QByteArray rejectedArray = tcpSocket->readAll();
         qDebug() << "Bytes rejected due to error: " << rejectedArray.size();
         rejectedArray.clear();
+        connect(tcpSocket, &QIODevice::readyRead, this, &Server::slotConnectionReadIncomingData);
         return;
     }
 
     //NAY-001: MARK_EXPECTED_ERROR
-    //Server now uses flush and wait for bytesWritten;
-    //To ensure everything has come;
-    //Not sure whether it will work stable all the times;
 
-    //then read message
-    //NAY-001: May be place here improvement with time waiting?
+    //then wait for ReadyRead if there are no bytes in message.
+    if (!tcpSocket->bytesAvailable())
+        tcpSocket->waitForReadyRead(1000); //some wait here (non-blocking? - blocking...)
+
+    //then read again, we habe here data
     initialArray = tcpSocket->read(lenght);
 
     //check BufferSize
     qDebug() << "Initial Buffer Lenght: " << initialArray.length();
-
-
 
     //if there are some bytes still:
     std::vector<QByteArray> theReallyHardVector;
@@ -151,6 +154,8 @@ void Server::slotConnectionReadIncomingData()
         //waiting for a 300 ms without messages
         QObject().thread()->wait(300);
     }
+    //re-enable Reading
+    connect(tcpSocket, &QIODevice::readyRead, this, &Server::slotConnectionReadIncomingData);
 
     //Take a long time. So first read all till there's nothing to read;
     ProtobufMessageParser(initialArray, tcpSocket->socketDescriptor());
