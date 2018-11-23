@@ -235,8 +235,6 @@ void RoomCreationWaitingLobby::SetUpForNotMasterPossessionType(const ServerClien
 {
     //1. Apply new settings:
 
-    data.players[0].playerName;
-
     _gameSettings.applyNewSettings(data.providedSettings);
     setUpCreatorsName(data.masterName);
     setUpButtonPicture(ui->btn_Creator, _mainPlayerPictureAddress, buttonsWidthCoefficient, buttonsHeightWidthRelatio);
@@ -282,7 +280,7 @@ void RoomCreationWaitingLobby::SetUpForNotMasterPossessionType(const ServerClien
     //3. SetUp Opponent's names (on Server's side it is necessary to add the player
     // too room just before this message was sent - to be sure he recieved the ID necessary):
 
-    //check wheteher players size is equel or less maximum number of opponents - 1 (1 - Leader)
+    //check wheteher players size is equфl or less maximum number of opponents - 1 (1 - Leader)
     if (data.players.size() <= (_gameSettings.maximumNumberOfPlayers() - 1))
     {
         qDebug() << "NAY-001: SetUpForNotMasterPossessionType() data.players.size() Size OK!";
@@ -294,9 +292,12 @@ void RoomCreationWaitingLobby::SetUpForNotMasterPossessionType(const ServerClien
         return;
     }
 
-    for (uint32_t var = 0; var < data.players.size(); ++var)
+    qDebug() << "Players size: " << data.players.size();
+
+    for (uint32_t var = 1; var < data.players.size(); ++var)
     {
-        _opponnets[var]->setText(data.players[var].playerName + " " + QString::number(data.players[var].playerID));
+        if (data.players[var].playerID != 0) //0 - first Player (Master ID)
+            _opponnets[var-1]->setText(data.players[var].playerName + " " + QString::number(data.players[var].playerID));
     }
 
 
