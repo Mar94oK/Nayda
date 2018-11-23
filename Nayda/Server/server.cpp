@@ -85,14 +85,14 @@ bool Server::ConnectionSendOutgoingData(const QByteArray &data)
 
 void Server::slotConnectionReadIncomingData()
 {
-    qDebug() << ("Trying to read the info...");
-    QByteArray array;
-    qDebug() << "NAY-0001: Before message parsing! ";
-    qDebug() << "Bytes available: " << tcpSocket->bytesAvailable();
+    qDebug() << ("Reading Data.");
+    QByteArray initialArray;
+    qDebug() << "Total Bytes available: " << tcpSocket->bytesAvailable();
 
     //the first one will be lenght;
     qDebug() << "Read lenght first";
     uint32_t lenght = ReadIncomingLenght();
+    qDebug() << "Given lenght: " << lenght;
 
     //check if there's lenght
     if (!lenght)
@@ -104,7 +104,6 @@ void Server::slotConnectionReadIncomingData()
         return;
     }
 
-
     //NAY-001: MARK_EXPECTED_ERROR
     //Server now uses flush and wait for bytesWritten;
     //To ensure everything has come;
@@ -112,14 +111,21 @@ void Server::slotConnectionReadIncomingData()
 
     //then read message
     //NAY-001: May be place here improvement with time waiting?
-    array = tcpSocket->read(lenght);
-    qDebug() << "Buffer Lenght: " << array.length();
-    ProtobufMessageParser(array, tcpSocket->socketDescriptor());
+    initialArray = tcpSocket->read(lenght);
 
+    //check BufferSize
+    qDebug() << "Initial Buffer Lenght: " << initialArray.length();
+
+
+
+    //if there are some bytes still:
+    std::vector<QByteArray> theReallyHardVector;
     while (tcpSocket->bytesAvailable())
     {
+        qDebug() << "Enter buffering!";
+        qDebug() << "Bytes left: " << tcpSocket->bytesAvailable();
         uint32_t lenght = ReadIncomingLenght();
-        QByteArray dataArray;
+        QByteArray bufferedArray;
         //check if there's lenght
         if (!lenght)
         {
@@ -127,25 +133,39 @@ void Server::slotConnectionReadIncomingData()
             QByteArray rejectedArray = tcpSocket->readAll();
             qDebug() << "Bytes rejected due to error: " << rejectedArray.size();
             rejectedArray.clear();
-            return;
+        }
+        else
+        {
+            bufferedArray = tcpSocket->read(lenght);
+            uint32_t bufferedArrayLenght = bufferedArray.length();
+            qDebug() << "Buffer Lenght: " << bufferedArrayLenght;
+            if (bufferedArrayLenght)
+              theReallyHardVector.push_back(bufferedArray);
+            else
+            {
+                qDebug() << "There's lenght but no message. Reject message.";
+                return;
+            }
         }
 
-        dataArray = tcpSocket->read(lenght);
-        qDebug() << "Buffer Lenght: " << array.length();
-        ProtobufMessageParser(array, tcpSocket->socketDescriptor());
+        //waiting for a 300 ms without messages
+        QObject().thread()->wait(300);
     }
+
+    //Take a long time. So first read all till there's nothing to read;
+    ProtobufMessageParser(initialArray, tcpSocket->socketDescriptor());
+    for (uint32_t var = 0; var < theReallyHardVector.size(); ++var) {
+        ProtobufMessageParser(theReallyHardVector[var], tcpSocket->socketDescriptor());
+    }
+
 }
 
 uint32_t Server::ReadIncomingLenght()
 {
-    qDebug() << "Enter buffering!";
-    //the first one will be lenght;
-    qDebug() << "Read lenght first";
     uint32_t lenght;
     QByteArray readedLenght;
     readedLenght = tcpSocket->read(sizeof(uint32_t));
     lenght = qFromBigEndian<uint32_t>(readedLenght.data());
-    qDebug() << "Given lenght: " << lenght;
     return lenght;
 }
 
