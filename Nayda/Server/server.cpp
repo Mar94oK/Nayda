@@ -163,6 +163,8 @@ void Server::slotConnectionReadIncomingData()
         ProtobufMessageParser(theReallyHardVector[var], tcpSocket->socketDescriptor());
     }
 
+    //this improvement works!!!
+
 }
 
 uint32_t Server::ReadIncomingLenght()
