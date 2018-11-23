@@ -14,27 +14,23 @@
    <string>Ожидание оппонентов</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
-   <item row="11" column="3" colspan="3">
-    <widget class="GameSettingsWidget" name="wdgt_GameSettings" native="true">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
-       <horstretch>0</horstretch>
-       <verstretch>3</verstretch>
-      </sizepolicy>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="0" rowspan="7" colspan="3">
-    <widget class="MunchkinDialog" name="widget" native="true">
+   <item row="11" column="4">
+    <widget class="QLabel" name="lbl_TimeLeftBeforeStart">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
+     <property name="text">
+      <string>Время до начала игры</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
     </widget>
    </item>
-   <item row="9" column="4">
+   <item row="10" column="4">
     <widget class="QLCDNumber" name="lcd_BackCounter">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
@@ -65,22 +61,6 @@
      </property>
      <property name="intValue" stdset="0">
       <number>25</number>
-     </property>
-    </widget>
-   </item>
-   <item row="10" column="4">
-    <widget class="QLabel" name="lbl_TimeLeftBeforeStart">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="text">
-      <string>Время до начала игры</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
      </property>
     </widget>
    </item>
@@ -121,14 +101,34 @@
        </property>
       </widget>
      </item>
-     <item row="4" column="1">
-      <widget class="QPushButton" name="btn_Creator">
-       <property name="text">
-        <string>Creator</string>
-       </property>
-      </widget>
-     </item>
     </layout>
+   </item>
+   <item row="5" column="0" rowspan="8" colspan="3">
+    <widget class="MunchkinDialog" name="widget" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+    </widget>
+   </item>
+   <item row="12" column="3" colspan="3">
+    <widget class="GameSettingsWidget" name="wdgt_GameSettings" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+       <horstretch>0</horstretch>
+       <verstretch>3</verstretch>
+      </sizepolicy>
+     </property>
+    </widget>
+   </item>
+   <item row="9" column="3" colspan="3">
+    <widget class="QPushButton" name="btn_Creator">
+     <property name="text">
+      <string>Creator</string>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

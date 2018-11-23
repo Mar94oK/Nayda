@@ -173,7 +173,6 @@ void Before_The_Game::setUpSignalsSlotsConnections()
 void Before_The_Game::SlotCreateNewRoomCreationWaitingLobby()
 {
     _roomCreationWaitingLobby = new RoomCreationWaitingLobby();
-    _roomCreationWaitingLobby->show();
     _roomCreationWaitingLobby->SetUpInitalState(_gameSettings);
     QObject::connect(_roomCreationWaitingLobby, &RoomCreationWaitingLobby::SignalUserIsClosingRoomCreationLobby, newRoomDialog, &playMenu::show);
     QObject::connect(_roomCreationWaitingLobby, &RoomCreationWaitingLobby::SignalUserIsClosingRoomCreationLobby, this, &Before_The_Game::SlotAbortingConnectionByUserInitiative);
@@ -181,7 +180,7 @@ void Before_The_Game::SlotCreateNewRoomCreationWaitingLobby()
     QObject::connect(this, &Before_The_Game::SignalChartMessageReceived, _roomCreationWaitingLobby, &RoomCreationWaitingLobby::SlotProcessChartMessageReceived);
     QObject::connect(_roomCreationWaitingLobby, &RoomCreationWaitingLobby::SignalChartMessageToBeSend, this, &Before_The_Game::SlotProcessChartMessageSending);
     QObject::connect(this, &Before_The_Game::SignalServerReportsOpponentIsEnteringRoom, _roomCreationWaitingLobby, &RoomCreationWaitingLobby::SlotProcessServerReportsOpponentIsEnteringRoom);
-
+    _roomCreationWaitingLobby->show();
 }
 
 void Before_The_Game::SlotProcessClientConnectionToRoomReply(ClientConnectionToRoomReplyData data)

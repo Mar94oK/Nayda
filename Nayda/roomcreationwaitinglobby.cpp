@@ -92,8 +92,8 @@ void RoomCreationWaitingLobby::setUpButtonPicture(QPushButton * const btn, const
 
     btn->setMinimumWidth(geometry().width()*widthCoeff);
     btn->setMinimumHeight(geometry().width()*widthCoeff*heightWidthRelatio);
-    btn->setMaximumWidth(geometry().width()*widthCoeff);
-    btn->setMaximumHeight(geometry().width()*widthCoeff*heightWidthRelatio);
+    //btn->setMaximumWidth(geometry().width()*widthCoeff);
+    //btn->setMaximumHeight(geometry().width()*widthCoeff*heightWidthRelatio);
     btn->setFlat(true);
     btn->setAutoFillBackground(true);
     btn->setPalette(plteBtnMainRepresenter);
@@ -129,7 +129,7 @@ bool RoomCreationWaitingLobby::CheckOpponentNameIsUnique(const QString &name)
 
 void RoomCreationWaitingLobby::SetUpInitalState(GameSettings settings)
 {
-    _gameSettings.applyNewSettings(settings);
+    applyNewSettings(settings);
     setUpCreatorsName(settings.clientName());
     setUpButtonPicture(ui->btn_Creator, _mainPlayerPictureAddress, buttonsWidthCoefficient, buttonsHeightWidthRelatio);
     ui->wdgt_GameSettings->ApplyNewSettings(settings);
