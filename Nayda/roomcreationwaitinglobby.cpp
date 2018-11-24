@@ -86,8 +86,8 @@ void RoomCreationWaitingLobby::setUpButtonPicture(QPushButton * const btn, const
                                             geometry().width()*widthCoeff*heightWidthRelatio,
                                             Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
 
-    qDebug() << "Size width picture: " << geometry().width()*widthCoeff;
-    qDebug() << "Size height picture: " << geometry().width()*widthCoeff*heightWidthRelatio;
+    //qDebug() << "Size width picture: " << geometry().width()*widthCoeff;
+    //qDebug() << "Size height picture: " << geometry().width()*widthCoeff*heightWidthRelatio;
 
 
     btn->setMinimumWidth(geometry().width()*widthCoeff);

@@ -75,13 +75,13 @@ GamerWidget::GamerWidget(QWidget *parent) :
     _cardsRacesClassesGamerWidgetProperty.push_back({0,0}); //put there NoRace
     _cardsRacesClassesGamerWidgetProperty.push_back({0,1777}); //put there NoClass
 
-    qDebug() <<"Size of the pixmap.scaled, Width: " << pxmp_icon_race_1.scaled(118,180,
-                                                                               Qt::IgnoreAspectRatio, Qt::SmoothTransformation).size().width();
-    qDebug() << "Size of the pixmap.scaled, Height: " << pxmp_icon_race_1.scaled(118,180,
-                                                                               Qt::IgnoreAspectRatio, Qt::SmoothTransformation).size().height();
+    //qDebug() <<"Size of the pixmap.scaled, Width: " << pxmp_icon_race_1.scaled(118,180,
+    //                                                                           Qt::IgnoreAspectRatio, Qt::SmoothTransformation).size().width();
+    //qDebug() << "Size of the pixmap.scaled, Height: " << pxmp_icon_race_1.scaled(118,180,
+    //                                                                           Qt::IgnoreAspectRatio, Qt::SmoothTransformation).size().height();
 
-    qDebug() << "Size of the button, Width: " << _race_class_btn_size_width*HW_Screen_Size_Width;
-    qDebug() << "Size of the button, Height: " << _race_class_btn_size_height*HW_Screen_Size_Height;
+    //qDebug() << "Size of the button, Width: " << _race_class_btn_size_width*HW_Screen_Size_Width;
+   // qDebug() << "Size of the button, Height: " << _race_class_btn_size_height*HW_Screen_Size_Height;
 
     //Initialize the timer for cards show
     _showCardsTimer = new QTimer(this);

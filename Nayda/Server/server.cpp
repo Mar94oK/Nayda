@@ -515,6 +515,8 @@ void Server::ProcessClientRoomCreationReply(const QByteArray &data, int socketDe
         errors.incorrectSettings = false;
 
     _roomID = message.slotid();
+    qDebug() << "NAY-001: After room creation: _roomID: " << _roomID;
+
     ClientRoomCreationReplyData replyData(message.connectionallowed(), message.slotid(), message.freeslotsleft(), errors);
     emit SignalReportClientRoomCreationReplyData(replyData);
 }
@@ -658,6 +660,9 @@ void Server::ProcessServerClientWantedToEnterTheRoomReply(const QByteArray &data
     qDebug() << "NAY-001: Room ID: " << QString::number(message.room().roomid());
     qDebug() << "NAY-001: Players: " << QString::number(message.room().players());
     qDebug() << "NAY-001: Maximum number of players: " << QString::number(message.room().maximumnumberofplayers());
+
+    //Setting roomId!
+    _roomID = message.room().roomid();
 
     std::vector<PlayerData> playersData;
     GameSettings givenSettings(message.settings().maximumnumberofplayers(),
