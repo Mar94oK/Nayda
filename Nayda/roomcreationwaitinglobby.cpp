@@ -185,7 +185,7 @@ void RoomCreationWaitingLobby::SlotProcessServerReportsOpponentIsEnteringRoom(co
     {
         if (CheckOpponentNameIsUnique(opponentName))
         {
-            SetUpOpponentsName( _opponnets[_currentOpponentAwaiting], opponentName + " " + QString::number(_currentOpponentAwaiting));
+            SetUpOpponentsName( _opponnets[_currentOpponentAwaiting], opponentName + " " + QString::number(_currentOpponentAwaiting + 1));
             _opponentsNames.push_back(opponentName);
             ++_currentOpponentAwaiting;
             if (_currentOpponentAwaiting == _opponnets.size())
