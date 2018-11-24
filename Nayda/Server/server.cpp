@@ -701,6 +701,23 @@ void Server::ProcessServerClientWantedToEnterTheRoomReply(const QByteArray &data
 
 }
 
+void Server::ProcessServerReportsClientIsLeaving(const QByteArray &data, int socketDescriptor)
+{
+    serverMessageSystem::ServerReportsClientIsLeaving message;
+
+    if (!message.ParseFromArray(data.data(), data.size()))
+    {
+        qDebug() << ("NAY-001: Error while ProcessServerRoomChangesInSelectableList() ");
+        return;
+    }
+
+    qDebug() << "NAY-001: ProcessServerReportsClientIsLeaving() ClientName: " << QString::fromStdString(message.clientname());
+    qDebug() << "NAY-001: ProcessServerReportsClientIsLeaving() SocketDescriptor: " << QString::number(message.socketdescriptor());
+
+    emit SignalProcessServerReportsClientIsLeaving(QString::fromStdString(message.clientname()));
+
+}
+
 
 void Server::SocketErorHandler(QAbstractSocket::SocketError socketError)
 {

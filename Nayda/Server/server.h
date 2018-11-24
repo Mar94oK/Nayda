@@ -121,6 +121,8 @@ signals:
 
     void SignalProcessServerClientWantedToEnterTheRoomReply(const ServerClientWantedToEnterTheRoomReplyData& data);
 
+    void SignalProcessServerReportsClientIsLeaving(const QString& name);
+
 //error signals
 
     void SignalRemoteHostClosedErrorReport();
@@ -143,6 +145,7 @@ private:
     void ProcessClientConnectionToRoomReply(const QByteArray &data, int socketDescriptor);
     void ProcessServerRoomChangesInSelectableList(const QByteArray &data, int socketDescriptor);
     void ProcessServerClientWantedToEnterTheRoomReply(const QByteArray &data, int socketDescriptor);
+    void ProcessServerReportsClientIsLeaving(const QByteArray &data, int socketDescriptor);
 
     void SocketErorHandler(QAbstractSocket::SocketError socketError);
     void SetUpConnectionTImeoutTimer();

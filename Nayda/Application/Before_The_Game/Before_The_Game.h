@@ -91,6 +91,8 @@ signals:
 
     void SignalEntranceToSelectedRoomRestricted();
 
+    void SignalProcessServerReportsClientIsLeaving(const QString& clientName);
+
 public slots:
 
     void dbg_switch_to_game_mode_button_pressed(void);
@@ -136,6 +138,9 @@ public slots:
     { emit SignalProcessServerRoomChangesInSelectableList(data); }
 
     void SlotProcessServerClientWantedToEnterTheRoomReply(const ServerClientWantedToEnterTheRoomReplyData& data);
+
+    void SlotProcessServerReportsClientIsLeaving(const QString& clientName)
+    { emit SignalProcessServerReportsClientIsLeaving(clientName); }
 
 
 
