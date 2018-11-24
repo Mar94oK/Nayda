@@ -18,7 +18,7 @@ GameSettingsWidget::~GameSettingsWidget()
 
 void GameSettingsWidget::ApplyNewSettings(GameSettings settings)
 {
-
+    _gameSettings.applyNewSettings(settings);
 }
 
 void GameSettingsWidget::setUpUiPicturesAddresses()

@@ -42,7 +42,9 @@ void playMenu::SlotShowRoomConnectionQuestions()
 {
     connectionToRoomQuestions = new ConnectionToRoomQuestions();
     connectionToRoomQuestions->setModal(true);
+    emit SignalUserHaveChangedGameSettings(_gameSettings);
     connectionToRoomQuestions->show();
+
 
     QObject::connect(connectionToRoomQuestions, &ConnectionToRoomQuestions::SignalSendClientConnectionToRoomRequest, this, &playMenu::SlotSendClientConnectionToRoomRequest);
 
