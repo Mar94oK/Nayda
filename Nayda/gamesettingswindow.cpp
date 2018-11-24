@@ -11,7 +11,6 @@ GameSettingsWindow::GameSettingsWindow(GameSettings settings, QWidget *parent) :
     SetupInitialAllowedFeatures();
     SignalsSlotsConnector();
 
-    emit SignalUserHaveChangedSettings(_gameSettings);
 }
 
 GameSettingsWindow::~GameSettingsWindow()

@@ -29,6 +29,8 @@ playMenu::playMenu(QWidget *parent) :
 
     _connectionState = ConnectionState::NoServerSettingsProvided;
     SetUpInitilButtonsStates();
+
+    emit SignalUserHaveChangedGameSettings(_gameSettings);
 }
 
 playMenu::~playMenu()

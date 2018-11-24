@@ -4,8 +4,8 @@
 #include <QDesktopWidget>
 #include <QDebug>
 
-RoomCreationWaitingLobby::RoomCreationWaitingLobby(QWidget *parent) :
-    QWidget(parent),
+RoomCreationWaitingLobby::RoomCreationWaitingLobby(const GameSettings &settings, QWidget *parent) :
+    _gameSettings(settings), QWidget(parent),
     ui(new Ui::RoomCreationWaitingLobby)
 {
     ui->setupUi(this);

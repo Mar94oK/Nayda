@@ -19,7 +19,7 @@ class RoomCreationWaitingLobby : public QWidget
     Q_OBJECT
 
 public:
-    explicit RoomCreationWaitingLobby(QWidget *parent = 0);
+    explicit RoomCreationWaitingLobby(const GameSettings& settings, QWidget *parent = 0);
     ~RoomCreationWaitingLobby();
 
 private:

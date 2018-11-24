@@ -51,6 +51,7 @@ void Before_The_Game::slot_userHaveChangedServerSettings(serverSettings settings
 
 void Before_The_Game::SlotSetUpConnection()
 {
+    emit SignalUserHaveChagedGameSettigs(_gameSettings);
     emit SignalSetUpConnection();
 }
 
@@ -172,7 +173,7 @@ void Before_The_Game::setUpSignalsSlotsConnections()
 
 void Before_The_Game::SlotCreateNewRoomCreationWaitingLobby()
 {
-    _roomCreationWaitingLobby = new RoomCreationWaitingLobby();
+    _roomCreationWaitingLobby = new RoomCreationWaitingLobby(_gameSettings);
     _roomCreationWaitingLobby->SetUpInitalState(_gameSettings);
     QObject::connect(_roomCreationWaitingLobby, &RoomCreationWaitingLobby::SignalUserIsClosingRoomCreationLobby, newRoomDialog, &playMenu::show);
     QObject::connect(_roomCreationWaitingLobby, &RoomCreationWaitingLobby::SignalUserIsClosingRoomCreationLobby, this, &Before_The_Game::SlotAbortingConnectionByUserInitiative);
@@ -260,7 +261,7 @@ void Before_The_Game::SlotProcessServerClientWantedToEnterTheRoomReply(const Ser
         //_gameSettings.applyNewSettings(data.providedSettings);
 
         //2. Create New RoomCreation Lobby but with specified parameters;
-        _roomCreationWaitingLobby = new RoomCreationWaitingLobby();
+        _roomCreationWaitingLobby = new RoomCreationWaitingLobby(_gameSettings);
 
         _roomCreationWaitingLobby->SetUpForNotMasterPossessionType(data);
         QObject::connect(_roomCreationWaitingLobby, &RoomCreationWaitingLobby::SignalUserIsClosingRoomCreationLobby, newRoomDialog, &playMenu::show);
