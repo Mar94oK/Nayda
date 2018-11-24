@@ -86,7 +86,7 @@ public slots:
 private:
 
     std::vector<QPushButton*> _opponnets;
-    uint32_t _currentOpponentAwaiting;
+    uint32_t _currentOpponentAwaiting = 0;
     std::vector<QString> _opponentsNames;
 
 private slots:

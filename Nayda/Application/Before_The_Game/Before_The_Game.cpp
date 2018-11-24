@@ -277,6 +277,7 @@ void Before_The_Game::SlotProcessServerClientWantedToEnterTheRoomReply(const Ser
 
         _roomSelectionLobby->close();
         _roomSelectionLobby->deleteLater();
+        newRoomDialog->hide();
         _roomCreationWaitingLobby->show();
     }
     else

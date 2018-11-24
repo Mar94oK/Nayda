@@ -185,7 +185,7 @@ void RoomCreationWaitingLobby::SlotProcessServerReportsOpponentIsEnteringRoom(co
     {
         if (CheckOpponentNameIsUnique(opponentName))
         {
-            SetUpOpponentsName( _opponnets[_currentOpponentAwaiting], opponentName);
+            SetUpOpponentsName( _opponnets[_currentOpponentAwaiting], opponentName + " " + QString::number(_currentOpponentAwaiting));
             _opponentsNames.push_back(opponentName);
             ++_currentOpponentAwaiting;
             if (_currentOpponentAwaiting == _opponnets.size())
@@ -297,8 +297,9 @@ void RoomCreationWaitingLobby::SetUpForNotMasterPossessionType(const ServerClien
     for (uint32_t var = 1; var < data.players.size(); ++var)
     {
         if (data.players[var].playerID != 0) //0 - first Player (Master ID)
+        {
             _opponnets[var-1]->setText(data.players[var].playerName + " " + QString::number(data.players[var].playerID));
+            ++_currentOpponentAwaiting;
+        }
     }
-
-
 }

@@ -45,9 +45,7 @@ void playMenu::SlotShowRoomConnectionQuestions()
     emit SignalUserHaveChangedGameSettings(_gameSettings);
     connectionToRoomQuestions->show();
 
-
     QObject::connect(connectionToRoomQuestions, &ConnectionToRoomQuestions::SignalSendClientConnectionToRoomRequest, this, &playMenu::SlotSendClientConnectionToRoomRequest);
-
 }
 
 void playMenu::SlotSendClientConnectionToRoomRequest(ClientConnectToRoomSettingsData data)
