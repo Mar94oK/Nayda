@@ -235,11 +235,14 @@ void RoomCreationWaitingLobby::SlotProcessServerReportsRoomHasChangedOwner(const
     //2. Clear the name of the opponent on wchin it was stend before;
     //3. Adjust all the other players names and replace them to the other buttons
 
+    //Первый игрок - это мастер. Его не надо отражать в списке оппонентов.
+
     for (uint32_t var = 0; var < _opponentsNames.size(); ++var)
     {
         if (_opponentsNames[var] == currentOwner)
         {
             //rename new master
+            qDebug() << "NAY-001: Renaming new master: ";
             _opponnets[var]->setText("Opponent " + QString::number(var + 1));
             //rename last
             _opponnets[_opponentsNames.size() - 1]->setText("Opponent " + QString::number(_opponentsNames.size()));
