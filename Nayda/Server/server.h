@@ -123,6 +123,8 @@ signals:
 
     void SignalProcessServerReportsClientIsLeaving(const QString& name);
 
+    void SignalProcessServerReportsRoomHasChangedOwner(const QString& previousOwner, const QString& currentOwner);
+
 //error signals
 
     void SignalRemoteHostClosedErrorReport();
@@ -146,6 +148,7 @@ private:
     void ProcessServerRoomChangesInSelectableList(const QByteArray &data, int socketDescriptor);
     void ProcessServerClientWantedToEnterTheRoomReply(const QByteArray &data, int socketDescriptor);
     void ProcessServerReportsClientIsLeaving(const QByteArray &data, int socketDescriptor);
+    void ProcessServerReportsRoomHasChangedOwner(const QByteArray &data, int socketDescriptor);
 
     void SocketErorHandler(QAbstractSocket::SocketError socketError);
     void SetUpConnectionTImeoutTimer();

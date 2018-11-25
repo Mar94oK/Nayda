@@ -412,7 +412,13 @@ void Server::ProtobufMessageParser(const QByteArray &data, int socketDescriptor)
                         break;
                     }
 
-                case serverMessageSystem::ConnectionSubSysCommandsID::SERVER_CLIENT_WANTED_TO_ENTER_THE_ROOM_REPLY:
+                    case serverMessageSystem::ConnectionSubSysCommandsID::SERVER_REPORTS_ROOM_HAS_CHANGED_OWNER:
+                    {
+                        ProcessServerReportsRoomHasChangedOwner(data, socketDescriptor);
+                        break;
+                    }
+
+                    case serverMessageSystem::ConnectionSubSysCommandsID::SERVER_CLIENT_WANTED_TO_ENTER_THE_ROOM_REPLY:
                     ProcessServerClientWantedToEnterTheRoomReply(data,socketDescriptor);
                     break;
 
@@ -420,7 +426,7 @@ void Server::ProtobufMessageParser(const QByteArray &data, int socketDescriptor)
                     default:
                         qDebug() << ("NAY-0001: Unsupported Command in CONNECTION_SUBSYSTEM with CmdID: " + QString::number(defaultMessage.header().commandid()));
                     break;
-                 }
+                }
             }
             break;
        case serverMessageSystem::SubSystemID::GAME_ACTIONS_SUBSYSTEM:
@@ -722,6 +728,23 @@ void Server::ProcessServerReportsClientIsLeaving(const QByteArray &data, int soc
 
     emit SignalProcessServerReportsClientIsLeaving(QString::fromStdString(message.clientname()));
 
+}
+
+void Server::ProcessServerReportsRoomHasChangedOwner(const QByteArray &data, int socketDescriptor)
+{
+    serverMessageSystem::ServerReportsRoomHasChangedOwner message;
+
+    if (!message.ParseFromArray(data.data(), data.size()))
+    {
+        qDebug() << ("NAY-001: Error while ProcessServerRoomChangesInSelectableList() ");
+        return;
+    }
+
+    qDebug() << "NAY-001: ProcessServerReportsRoomHasChangedOwner() PreviousOwner: " << QString::fromStdString(message.previousowner());
+    qDebug() << "NAY-001: ProcessServerReportsRoomHasChangedOwner() CurrentOwner: " << QString::fromStdString(message.currentowner());
+
+    emit SignalProcessServerReportsRoomHasChangedOwner(QString::fromStdString(message.previousowner()),
+                                                        QString::fromStdString(message.currentowner()));
 }
 
 

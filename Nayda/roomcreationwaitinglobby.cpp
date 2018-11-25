@@ -227,6 +227,47 @@ void RoomCreationWaitingLobby::SlotProcessServerReportsClientIsLeaving(const QSt
 
 }
 
+void RoomCreationWaitingLobby::SlotProcessServerReportsRoomHasChangedOwner(const QString &previousOwner, const QString &currentOwner)
+{
+    //Algorythm;
+    //1. Change owner's name:
+    setUpCreatorsName(currentOwner);
+    //2. Clear the name of the opponent on wchin it was stend before;
+    //3. Adjust all the other players names and replace them to the other buttons
+
+    for (uint32_t var = 0; var < _opponentsNames.size(); ++var)
+    {
+        if (_opponentsNames[var] == currentOwner)
+        {
+            //rename last
+            _opponnets[_opponentsNames.size() - 1]->setText("Opponent " + QString::number(_opponentsNames.size()));
+            //remember the size which opponentNames have had
+            uint32_t sizeWas = _opponentsNames.size();
+            //remove deleted (who has becoe master) and adjust names
+            _opponentsNames.erase(_opponentsNames.begin() + var);
+            if (var < sizeWas - 1)
+            {
+                //redraw all the names left.
+                //1. define how many to redraw
+                uint32_t upToRedraw = sizeWas - var - 1; // the last one will be simply renamed to "Opponent (number)"
+                for (int y = 0; y < upToRedraw; ++y)
+                {
+                    try
+                    {
+                        _opponnets[var+y]->setText(_opponentsNames[var+y]);
+                    }
+                    catch (...)
+                    {
+                        qDebug() << "CATCH: ERROR While SlotProcessServerReportsRoomHasChangedOwner() ";
+                    }
+                }
+            }
+            return;
+        }
+
+    }
+}
+
 void RoomCreationWaitingLobby::EnbleBackCounterToTheGameStart()
 {
     ui->lcd_BackCounter->setVisible(true);

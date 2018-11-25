@@ -93,6 +93,8 @@ signals:
 
     void SignalProcessServerReportsClientIsLeaving(const QString& clientName);
 
+    void SignalProcessServerReportsRoomHasChangedOwner(const QString& previousOwner, const QString& currentOwner);
+
 public slots:
 
     void dbg_switch_to_game_mode_button_pressed(void);
@@ -141,6 +143,9 @@ public slots:
 
     void SlotProcessServerReportsClientIsLeaving(const QString& clientName)
     { emit SignalProcessServerReportsClientIsLeaving(clientName); }
+
+    void SlotProcessServerReportsRoomHasChangedOwner(const QString& previousOwner, const QString& currentOwner)
+    { SignalProcessServerReportsRoomHasChangedOwner(previousOwner, currentOwner); }
 
 
 //error processing

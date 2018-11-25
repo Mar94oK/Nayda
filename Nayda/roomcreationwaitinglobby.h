@@ -85,6 +85,8 @@ public slots:
 
     void SlotProcessServerReportsClientIsLeaving(const QString& name);
 
+    void SlotProcessServerReportsRoomHasChangedOwner(const QString& previousOwner, const QString& currentOwner);
+
 private:
 
     std::vector<QPushButton*> _opponnets;
