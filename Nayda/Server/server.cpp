@@ -406,6 +406,12 @@ void Server::ProtobufMessageParser(const QByteArray &data, int socketDescriptor)
                         break;
                     }
 
+                    case serverMessageSystem::ConnectionSubSysCommandsID::SERVER_REPORTS_CLIENT_IS_LEAVING:
+                    {
+                        ProcessServerReportsClientIsLeaving(data, socketDescriptor);
+                        break;
+                    }
+
                 case serverMessageSystem::ConnectionSubSysCommandsID::SERVER_CLIENT_WANTED_TO_ENTER_THE_ROOM_REPLY:
                     ProcessServerClientWantedToEnterTheRoomReply(data,socketDescriptor);
                     break;
