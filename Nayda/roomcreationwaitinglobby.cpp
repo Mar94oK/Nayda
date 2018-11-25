@@ -239,6 +239,8 @@ void RoomCreationWaitingLobby::SlotProcessServerReportsRoomHasChangedOwner(const
     {
         if (_opponentsNames[var] == currentOwner)
         {
+            //rename new master
+            _opponnets[var]->setText("Opponent " + QString::number(var + 1));
             //rename last
             _opponnets[_opponentsNames.size() - 1]->setText("Opponent " + QString::number(_opponentsNames.size()));
             //remember the size which opponentNames have had
