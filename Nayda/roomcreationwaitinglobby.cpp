@@ -239,6 +239,11 @@ void RoomCreationWaitingLobby::SlotProcessServerReportsRoomHasChangedOwner(const
 
     for (uint32_t var = 0; var < _opponentsNames.size(); ++var)
     {
+        qDebug() << "Names: " << _opponentsNames[var];
+    }
+
+    for (uint32_t var = 0; var < _opponentsNames.size(); ++var)
+    {
         if (_opponentsNames[var] == currentOwner)
         {
             //rename new master
