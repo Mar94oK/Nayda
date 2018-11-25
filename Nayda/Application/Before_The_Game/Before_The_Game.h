@@ -145,7 +145,10 @@ public slots:
     { emit SignalProcessServerReportsClientIsLeaving(clientName); }
 
     void SlotProcessServerReportsRoomHasChangedOwner(const QString& previousOwner, const QString& currentOwner)
-    { emit SignalProcessServerReportsRoomHasChangedOwner(previousOwner, currentOwner); }
+    {
+        qDebug() << "NAY-001: Sending from BeforeTheGame SignalProcessServerReportsRoomHasChangedOwner()";
+        emit SignalProcessServerReportsRoomHasChangedOwner(previousOwner, currentOwner);
+    }
 
 
 //error processing

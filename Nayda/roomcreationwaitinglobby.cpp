@@ -367,6 +367,11 @@ void RoomCreationWaitingLobby::SetUpForNotMasterPossessionType(const ServerClien
         if (data.players[var].playerID != 0) //0 - first Player (Master ID)
         {
             _opponnets[var-1]->setText(data.players[var].playerName + " " + QString::number(data.players[var].playerID));
+            //Add also to the _opponentsNames;
+            //And DO NOT send Master connection form the server as OponnetIsEnetering.
+            //It is an opponent, but should not be in the vector - vector of opponentNames is responsible only for
+            //OPPONENTS
+            _opponentsNames.push_back(data.players[var].playerName);
             ++_currentOpponentAwaiting;
         }
     }
