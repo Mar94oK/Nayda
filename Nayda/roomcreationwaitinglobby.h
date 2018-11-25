@@ -83,6 +83,8 @@ public slots:
     void SlotProcessChartMessageSending(const QString& message)
     { emit SignalChartMessageToBeSend(message); }
 
+    void SlotProcessServerReportsClientIsLeaving(const QString& name);
+
 private:
 
     std::vector<QPushButton*> _opponnets;

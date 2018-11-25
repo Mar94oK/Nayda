@@ -210,6 +210,23 @@ void RoomCreationWaitingLobby::SlotProcessRemoteHostClosedErrorReport()
     close();
 }
 
+void RoomCreationWaitingLobby::SlotProcessServerReportsClientIsLeaving(const QString &name)
+{
+    //Find this name thrue opponent's names:
+    for (uint32_t var = 0; var < _opponentsNames.size(); ++var)
+    {
+        if (_opponentsNames[var] == name)
+        {
+            _opponnets[var]->setText("");
+            --_currentOpponentAwaiting;
+            _opponentsNames.erase(_opponentsNames.begin() + var);
+            qDebug() << "NAY-001: Deleted opponnet with name: " << name << " in postion " << var;
+            return;
+        }
+    }
+
+}
+
 void RoomCreationWaitingLobby::EnbleBackCounterToTheGameStart()
 {
     ui->lcd_BackCounter->setVisible(true);

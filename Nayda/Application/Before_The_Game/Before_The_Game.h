@@ -143,7 +143,6 @@ public slots:
     { emit SignalProcessServerReportsClientIsLeaving(clientName); }
 
 
-
 //error processing
     void SlotProcessRemoteHostClosedErrorReport();
     void SlotProcessRemoteHostConnectionRefusedErrorReport() { emit SignalRemoteHostConnectionRefusedErrorReport();
