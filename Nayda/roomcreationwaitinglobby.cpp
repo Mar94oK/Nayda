@@ -217,7 +217,7 @@ void RoomCreationWaitingLobby::SlotProcessServerReportsClientIsLeaving(const QSt
     {
         if (_opponentsNames[var] == name)
         {
-            _opponnets[var]->setText("");
+            _opponnets[var]->setText("Opponent " + QString::number(var+1));
             --_currentOpponentAwaiting;
             _opponentsNames.erase(_opponentsNames.begin() + var);
             qDebug() << "NAY-001: Deleted opponnet with name: " << name << " in postion " << var;
