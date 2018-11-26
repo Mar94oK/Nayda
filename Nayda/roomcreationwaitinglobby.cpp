@@ -245,6 +245,12 @@ void RoomCreationWaitingLobby::SlotProcessServerReportsRoomHasChangedOwner(const
 
     //Первый игрок - это мастер. Его не надо отражать в списке оппонентов.
 
+    //А ещё требуется сбросить на единицу номер ожидающего оппонента -
+    //т.к. по сути это тоже репорт об удалении клиента, только мастера.
+    //Сервер не посылает сообщений "ушёл клиент" если ушёл мастер.
+    //И сменился владелец комнаты
+    --_currentOpponentAwaiting;
+
     for (uint32_t var = 0; var < _opponentsNames.size(); ++var)
     {
         qDebug() << "Names: " << _opponentsNames[var];
