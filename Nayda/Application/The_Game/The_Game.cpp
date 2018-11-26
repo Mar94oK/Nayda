@@ -276,6 +276,25 @@ The_Game::The_Game(QWidget *parent) :
     passDecksToBattleField();
     passDecksToPlayerWidgets();
 
+
+    //Алгоритм на будущее (когда настройки дополнений действительно будут работать)
+    //Игра получает от Предыгры настройки
+    //Далее далее каждый раз парсит их
+    //В итоге на момент запуска Игры она уже знает все свои настройки
+    //И на самом деле перерисована, следовательно запускается мгновенно
+    //В данный момент времени Аддоны будут просто забиты цифрами в сервер
+
+    //По-правильному: игра при запуске сразу парсит все поддерживаемые колоды.
+    //При апдейте настроек перестраивает колоды
+    //Запускается с уже известными настройками
+    //Сервер выполняет лишь начальную рандомизацию.
+
+    //Сейчас:
+    //"Приколотить" цифры к серверу. 225 - двери и 163 сокровища
+    //При начале игры передать эти цифры каждому клиенту
+    //Далее ими управляет уже непосредственно клиент
+
+
     formingInitialDecks();
     givingCardsToPlayers();
     showInitialCardsOnHands();
@@ -1839,6 +1858,13 @@ void The_Game::formingInitialDecks()
 
     unsigned int totalDoors = _monstersDeck.size() + _amplifiersDeck.size() + _cursesDeck.size() + _professionsDeck.size() +
             _racesDeck.size() + _specialMechanicsDeck.size();
+
+   //NAY-001: MARK_EXPECTED_ERROR
+   //These sizes ARE USED AS DEFINES ON SERVER SIDE.
+   //HERE TO CHECK AND THROW AN EXCEPTION IF THEY ARE NOT CORRECT
+   //I do not want to place all the code on the server's side - with cards and so on;
+   //This data should be given by master to the server while passing settings
+   //(Not visible to user)
 
    if (!totalTreasures)  qDebug() << "Error during Treasures Stack Initialization. Stack is Empty! ";
    qDebug() << "Size of Treasures Stack Report: " << totalTreasures;

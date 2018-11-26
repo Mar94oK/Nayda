@@ -60,40 +60,28 @@ signals:
 
     void SignalRoomCreationAllowed(ClientRoomCreationReplyData data);
     void SignalRoomCreationForbidden(ClientRoomCreationReplyData data);
-
     void SignalRemoteHostClosedErrorReport();
     void SignalRemoteHostConnectionRefusedErrorReport();
     void SignalRemoteHostNotFoundErrorReport();
-
     void SignalLockConnectionButtonWhileConnecting();
     void SignalUnclockConnectionButtonAfterConnection();
-
     void SignalSendClientRoomCreationRequest();
-
     void SignalAbortingConnectionByUserInitiative();
-
     void SignalServerReportsOpponentIsEnteringRoom(const QString& opponentName);
-
     void SignalChartMessageReceived(const QStringList& message);
     void SignalChartMessageSending(const QString& message);
-
     void SignalSendClientConnectionToRoomRequest(ClientConnectToRoomSettingsData data);
-
     void SignalServerQueryOversize();
-
     void SignalUpdateQueryOrder(uint32_t queryOrder);
     void SignalUpdateQuerySize(uint32_t querySize);
-
     void SignalProcessServerRoomChangesInSelectableList(const ServerRoomReadyToConnectData& data );
     void SignalProcessClientWantedToEnterTheRoom(uint32_t roomId);
-
     void SignalProcessServerClientWantedToEnterTheRoomReply(const ServerClientWantedToEnterTheRoomReplyData& data);
-
     void SignalEntranceToSelectedRoomRestricted();
-
     void SignalProcessServerReportsClientIsLeaving(const QString& clientName);
-
     void SignalProcessServerReportsRoomHasChangedOwner(const QString& previousOwner, const QString& currentOwner);
+
+    void SignalServerReportsTheGameIsAboutToStart(const TheGameIsAboutToStartData& data);
 
 public slots:
 
@@ -148,6 +136,11 @@ public slots:
     {
         qDebug() << "NAY-001: Sending from BeforeTheGame SignalProcessServerReportsRoomHasChangedOwner()";
         emit SignalProcessServerReportsRoomHasChangedOwner(previousOwner, currentOwner);
+    }
+
+    void SlotServerReportsTheGameIsAboutToStart(const TheGameIsAboutToStartData& data)
+    {
+        emit SignalServerReportsTheGameIsAboutToStart(data);
     }
 
 

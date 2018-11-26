@@ -139,6 +139,21 @@ struct ServerClientWantedToEnterTheRoomReplyData
 };
 
 
+
+struct TheGameIsAboutToStartData
+{
+    bool start;
+    std::vector<uint32_t>positionsDoors;
+    std::vector<uint32_t>positionsTreasures;
+
+    explicit TheGameIsAboutToStartData(bool strt,
+                                       const std::vector<uint32_t>& posDoors,
+                                       const std::vector<uint32_t>& posTreasures) :
+        start(strt), positionsDoors(posDoors), positionsTreasures(posTreasures)
+    { }
+};
+
+
 #define ROOM_ID_NOT_DEFINED 9999
 
 #define NO_QUERY_POSITION 777

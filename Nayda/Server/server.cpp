@@ -422,6 +422,10 @@ void Server::ProtobufMessageParser(const QByteArray &data, int socketDescriptor)
                     ProcessServerClientWantedToEnterTheRoomReply(data,socketDescriptor);
                     break;
 
+                    case serverMessageSystem::ConnectionSubSysCommandsID::SERVER_REPORTS_THE_GAME_IS_ABOUT_TO_START:
+                    ProcessServerReportsTheGameIsAboutToStart(data, socketDescriptor);
+                    break;
+
 
                     default:
                         qDebug() << ("NAY-0001: Unsupported Command in CONNECTION_SUBSYSTEM with CmdID: " + QString::number(defaultMessage.header().commandid()));
@@ -744,7 +748,38 @@ void Server::ProcessServerReportsRoomHasChangedOwner(const QByteArray &data, int
     qDebug() << "NAY-001: ProcessServerReportsRoomHasChangedOwner() CurrentOwner: " << QString::fromStdString(message.currentowner());
 
     emit SignalProcessServerReportsRoomHasChangedOwner(QString::fromStdString(message.previousowner()),
-                                                        QString::fromStdString(message.currentowner()));
+                                                       QString::fromStdString(message.currentowner()));
+}
+
+void Server::ProcessServerReportsTheGameIsAboutToStart(const QByteArray &data, int socketDescriptor)
+{
+    serverMessageSystem::ServerReportsTheGameIsAboutToStart message;
+
+    if (!message.ParseFromArray(data.data(), data.size()))
+    {
+        qDebug() << ("NAY-001: Error while ProcessServerRoomChangesInSelectableList() ");
+        return;
+    }
+
+    qDebug() << "NAY-001: ProcessServerReportsTheGameIsAboutToStart() start: " << message.start();
+
+    std::vector<uint32_t> positionsDoors;
+    for (uint32_t var = 0; var < message.posdoors_size(); ++var)
+    {
+        positionsDoors.push_back(message.posdoors(var));
+        qDebug() << QString::number(message.posdoors(var));
+    }
+
+    std::vector<uint32_t> positionsTreasures;
+    for (uint32_t var = 0; var < message.postreasures_size(); ++var)
+    {
+        positionsTreasures.push_back(message.postreasures(var));
+        qDebug() << QString::number(message.postreasures(var));
+    }
+
+    emit SignalServerReportsTheGameIsAboutToStart(TheGameIsAboutToStartData(message.start(),
+                                                  positionsDoors,
+                                                  positionsTreasures));
 }
 
 

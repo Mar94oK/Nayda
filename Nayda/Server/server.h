@@ -125,6 +125,8 @@ signals:
 
     void SignalProcessServerReportsRoomHasChangedOwner(const QString& previousOwner, const QString& currentOwner);
 
+    void SignalServerReportsTheGameIsAboutToStart(const TheGameIsAboutToStartData& data);
+
 //error signals
 
     void SignalRemoteHostClosedErrorReport();
@@ -149,6 +151,8 @@ private:
     void ProcessServerClientWantedToEnterTheRoomReply(const QByteArray &data, int socketDescriptor);
     void ProcessServerReportsClientIsLeaving(const QByteArray &data, int socketDescriptor);
     void ProcessServerReportsRoomHasChangedOwner(const QByteArray &data, int socketDescriptor);
+
+    void ProcessServerReportsTheGameIsAboutToStart(const QByteArray &data, int socketDescriptor);
 
     void SocketErorHandler(QAbstractSocket::SocketError socketError);
     void SetUpConnectionTImeoutTimer();

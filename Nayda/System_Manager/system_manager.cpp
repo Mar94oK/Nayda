@@ -38,5 +38,6 @@ SystemManager::SystemManager(Before_The_Game * beforeTheGame,
     QObject::connect(m_serverPtr, &Server::SignalProcessServerClientWantedToEnterTheRoomReply, m_beforeTheGamePtr, &Before_The_Game::SlotProcessServerClientWantedToEnterTheRoomReply);
     QObject::connect(m_serverPtr, &Server::SignalProcessServerReportsClientIsLeaving, m_beforeTheGamePtr, &Before_The_Game::SlotProcessServerReportsClientIsLeaving);
     QObject::connect(m_serverPtr, &Server::SignalProcessServerReportsRoomHasChangedOwner, m_beforeTheGamePtr, &Before_The_Game::SlotProcessServerReportsRoomHasChangedOwner);
+    QObject::connect(m_serverPtr, &Server::SignalServerReportsTheGameIsAboutToStart, m_beforeTheGamePtr, &Before_The_Game::SlotServerReportsTheGameIsAboutToStart);
 
 }
