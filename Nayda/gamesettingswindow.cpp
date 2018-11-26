@@ -53,7 +53,8 @@ void GameSettingsWindow::SetupInitialAllowedFeatures()
     ui->spBox_TotalTimeToMove->setMaximum(420);
 
     ui->spBox_DiplomacyTime->setMinimum(10);
-    ui->spBox_MaximumNumberOfPlayers->setMinimum(3);
+    //For debug only. 2 Will be used for only debug gamers.
+    ui->spBox_MaximumNumberOfPlayers->setMinimum(2);
     ui->spBox_TimeForOpponentsDecision->setMinimum(10);
     ui->spBox_TimeToThink->setMinimum(30);
     ui->spBox_TotalTimeToMove->setMinimum(20);
@@ -94,6 +95,8 @@ void GameSettingsWindow::SlotUserHaveChangedMaximumNumberOfPlayers(unsigned int 
     _gameSettings.setMaximumNumberOfPlayers(val);
     switch (val)
     {
+    //Debug value 2
+    case 2:
     case 3:
     case 4:
         ui->lbl_MaximumNumberOfPLayers->setText(_MaximumNumberOfPLayersBaseText + QString::number(val) + " игрока");

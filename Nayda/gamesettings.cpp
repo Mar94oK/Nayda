@@ -113,7 +113,8 @@ void GameSettings::setRoomName(const QString &roomName)
 
 GameSettings::GameSettings()
 {
-    _maximumNumberOfPlayers = 6;
+    //to Debug set this value to 2!
+    _maximumNumberOfPlayers = 2;
     _totalTimeToMove = 120;
     _timeToThink = 15;
     _timeForOpponentsDecision = 10;

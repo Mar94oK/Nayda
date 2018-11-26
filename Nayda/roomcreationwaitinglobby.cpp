@@ -138,6 +138,14 @@ void RoomCreationWaitingLobby::SetUpInitalState(GameSettings settings)
     //check how many opponents buttons to show
     switch (settings.maximumNumberOfPlayers())
     {
+    //Debug - for only testing purposes
+    case 2:
+        ui->btn_Opponent_2->hide();
+        ui->btn_Opponent_3->hide();
+        ui->btn_Opponent_4->hide();
+        ui->btn_Opponent_5->hide();
+        _opponnets.push_back(ui->btn_Opponent_1);
+    break;
     case 3:
         ui->btn_Opponent_3->hide();
         ui->btn_Opponent_4->hide();
