@@ -364,7 +364,7 @@ void RoomCreationWaitingLobby::SetUpForNotMasterPossessionType(const ServerClien
     // too room just before this message was sent - to be sure he recieved the ID necessary):
 
     //check wheteher players size is equфl or less maximum number of opponents - 1 (1 - Leader)
-    if (data.players.size() <= (_gameSettings.maximumNumberOfPlayers() - 1))
+    if (data.players.size() <= _gameSettings.maximumNumberOfPlayers())
     {
         qDebug() << "NAY-001: SetUpForNotMasterPossessionType() data.players.size() Size OK!";
     }
