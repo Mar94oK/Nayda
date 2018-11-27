@@ -7,7 +7,7 @@
 
 
 
-class player
+class Player
 {
     bool _isMainPlayer;
 
@@ -54,7 +54,7 @@ class player
 
 public:
 
-    player();
+    Player();
 
     void addRaceActiveAbility(Race_Active_Abilities raceActiveAbility, Abilities_Keys_Races raceAbilityKey);
     void addRacePassiveAbility(Race_Passive_Abilities racePassiveAbility, Abilities_Keys_Races raceAbilityKey);

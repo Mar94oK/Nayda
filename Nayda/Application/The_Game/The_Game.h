@@ -210,7 +210,7 @@ public:
     //But for now, in Debug version, the procedure is executed on the clients' side.
 
     //SERVREW
-    void formingInitialDecks();
+    void DEBUGformingInitialDecks();
 
     unsigned int randUnsignedInt(unsigned int low, unsigned int high);
 
@@ -254,15 +254,15 @@ private:
     //special option will allow to be more than 5 opponents
     std::vector <GamerWidget*> _widgets4Opponents; //make as controlled unique_ptr;
 
-    player _main_player;
+    Player _main_player;
 
-    player _opponent0;
-    player _opponent1;
-    player _opponent2;
-    player _opponent3;
-    player _opponent4;
+    Player _opponent0;
+    Player _opponent1;
+    Player _opponent2;
+    Player _opponent3;
+    Player _opponent4;
 
-    std::vector <player> _players_opponents; //5 at all
+    std::vector <Player> _players_opponents; //5 at all - Maximum according to current settings.
 
     //this stock depends on the Game Mode;
     //Nonetheless, it is allways the same through all the game, since its only function is
@@ -343,9 +343,39 @@ private:
 
     GameSettings _gameSettings;
 
+public slots:
+
+    //Initializing cards and etc
+    void SlotGameInitialization(TheGameIsAboutToStartData data);
+
+    //The_Game should allways have correct settings
+    void SlotSetUpGameSettings(const GameSettings& settings)
+    { _gameSettings.applyNewSettings(settings); }
+
+
+private:
+
+    void FormingInitialDecks(const std::vector<uint32_t>& doorsVector,
+                             const std::vector<uint32_t>& treasuresVector);
+
+    void DEBUGSetUpOpponents(uint32_t windowHeight, uint32_t windowWidth);
+
 private:
 
     uint32_t _roomID = ROOM_ID_NOT_DEFINED;
+
+private:
+
+    //Setting up coefficients
+    constexpr static float koeff_GameField_size = 0.5f;
+
+    constexpr static float koeff_GamerWidget_size_Height = (1 - koeff_GameField_size)/2;
+    constexpr static float koeff_GamerWidget_size_Width = koeff_GameField_size/3;
+
+    constexpr static float koeff_GameTimers_size_Height = koeff_GamerWidget_size_Height; // should be the same
+    constexpr static float koeff_GameTimers_size_Width = koeff_GameField_size/3;
+    constexpr static float koeff_GameInfoBox_size_Height = 0.66f; //why it is impossible 2/3???
+    constexpr static float koeff_GameInfoBox_size_Width = (1 - koeff_GameField_size) / 2;
 
 };
 

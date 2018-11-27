@@ -40,4 +40,10 @@ SystemManager::SystemManager(Before_The_Game * beforeTheGame,
     QObject::connect(m_serverPtr, &Server::SignalProcessServerReportsRoomHasChangedOwner, m_beforeTheGamePtr, &Before_The_Game::SlotProcessServerReportsRoomHasChangedOwner);
     QObject::connect(m_serverPtr, &Server::SignalServerReportsTheGameIsAboutToStart, m_beforeTheGamePtr, &Before_The_Game::SlotServerReportsTheGameIsAboutToStart);
 
+
+    //Set-Up Settings
+    QObject::connect(m_serverPtr, &Server::SignalServerHasChangedGameSettings, m_theGamePtr, &The_Game::SlotSetUpGameSettings);
+    QObject::connect(m_beforeTheGamePtr, &Before_The_Game::SignalUserHaveChagedGameSettigs, m_theGamePtr, &The_Game::SlotSetUpGameSettings);
+
+
 }
