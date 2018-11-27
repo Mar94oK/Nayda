@@ -112,54 +112,6 @@ struct isOnlyFor_Weapon
 };
 
 
-struct DecksPointersData
-{
-
-    const std::map<int, gameCardDoorMonster> *_monstersDeck;
-    const std::map<int, gameCardDoorAmplifier> *_amplifiersDeck;
-    const std::map<int, gameCardDoorCurse> *_cursesDeck;
-    const std::map<int, gameCardDoorProfession> *_professionsDeck;
-    const std::map<int, gameCardDoorRace> *_racesDeck;
-    const std::map<int, gameCardDoorSpecialMechanic> *_specialMechanicsDeck;
-
-    const std::map<int, gameCardTreasureArmor> *_armorDeck;
-    const std::map<int, gameCardTreasureArmorAmplifier> *_armorAmplifiersDeck;
-    const std::map<int, gameCardTreasureBattleAmplifier> *_battleAmplifiersDeck;
-    const std::map<int, gameCardTreasureLevelUp> *_levelUpDeck;
-    const std::map<int, gameCardTreasureSpecialMechanic> *_specialMechanicsTreasureDeck;
-    const std::map<int, gameCardTreasureThingsAmplifiers> *_thingsAmplifiersDeck;
-    const std::map<int, gameCardTreasureWeapon> *_weaponsDeck;
-
-
-public:
-    const std::map<int, gameCardDoorMonster> *monstersDeck() const;
-    void setMonstersDeck(const std::map<int, gameCardDoorMonster> *monstersDeck);
-    const std::map<int, gameCardDoorAmplifier> *amplifiersDeck() const;
-    void setAmplifiersDeck(const std::map<int, gameCardDoorAmplifier> *amplifiersDeck);
-    const std::map<int, gameCardDoorCurse> *cursesDeck() const;
-    void setCursesDeck(const std::map<int, gameCardDoorCurse> *cursesDeck);
-    const std::map<int, gameCardDoorProfession> *professionsDeck() const;
-    void setProfessionsDeck(const std::map<int, gameCardDoorProfession> *professionsDeck);
-    const std::map<int, gameCardDoorRace> *racesDeck() const;
-    void setRacesDeck(const std::map<int, gameCardDoorRace> *racesDeck);
-    const std::map<int, gameCardDoorSpecialMechanic> *specialMechanicsDeck() const;
-    void setSpecialMechanicsDeck(const std::map<int, gameCardDoorSpecialMechanic> *specialMechanicsDeck);
-    const std::map<int, gameCardTreasureArmor> *armorDeck() const;
-    void setArmorDeck(const std::map<int, gameCardTreasureArmor> *armorDeck);
-    const std::map<int, gameCardTreasureArmorAmplifier> *armorAmplifiersDeck() const;
-    void setArmorAmplifiersDeck(const std::map<int, gameCardTreasureArmorAmplifier> *armorAmplifiersDeck);
-    const std::map<int, gameCardTreasureBattleAmplifier> *battleAmplifiersDeck() const;
-    void setBattleAmplifiersDeck(const std::map<int, gameCardTreasureBattleAmplifier> *battleAmplifiersDeck);
-    const std::map<int, gameCardTreasureLevelUp> *levelUpDeck() const;
-    void setLevelUpDeck(const std::map<int, gameCardTreasureLevelUp> *levelUpDeck);
-    const std::map<int, gameCardTreasureSpecialMechanic> *specialMechanicsTreasureDeck() const;
-    void setSpecialMechanicsTreasureDeck(const std::map<int, gameCardTreasureSpecialMechanic> *specialMechanicsTreasureDeck);
-    const std::map<int, gameCardTreasureThingsAmplifiers> *thingsAmplifiersDeck() const;
-    void setThingsAmplifiersDeck(const std::map<int, gameCardTreasureThingsAmplifiers> *thingsAmplifiersDeck);
-    const std::map<int, gameCardTreasureWeapon> *weaponsDeck() const;
-    void setWeaponsDeck(const std::map<int, gameCardTreasureWeapon> *weaponsDeck);
-};
-
 class The_Game :  public QMainWindow
 {
     Q_OBJECT

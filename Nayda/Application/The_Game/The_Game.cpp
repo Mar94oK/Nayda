@@ -80,7 +80,7 @@ The_Game::The_Game(QWidget *parent) :
     //hide Secondary Hand Widget;
     ui->MainGamer->_hideHandSecondaryPlayerWidget();
 
-//    DEBUGSetUpWidgetsRelations(HW_Screen_Size_Heigh, HW_Screen_Size_Width);
+    DEBUGSetUpWidgetsRelations(HW_Screen_Size_Heigh, HW_Screen_Size_Width);
 
     DEBUGSetUpOpponents(HW_Screen_Size_Heigh, HW_Screen_Size_Width);
 
@@ -173,6 +173,8 @@ The_Game::The_Game(QWidget *parent) :
     passDecksToPlayerWidgets();
     PassDecksToCardsInspectorWidget();
 
+
+
     //Алгоритм на будущее (когда настройки дополнений действительно будут работать)
     //Игра получает от Предыгры настройки
     //Далее далее каждый раз парсит их
@@ -236,12 +238,7 @@ The_Game::The_Game(QWidget *parent) :
 
 #endif
 
-
-
-
-
-
-    //trying to adjust the size of...
+   //trying to adjust the size of...
     connect(ui->MainGamer, &GamerWidget::_signalAdjustSize, this, &The_Game::_adjustSizeOfTheGamerWidgetToMakeCardsToBeInPlace);
 
 
@@ -1590,22 +1587,19 @@ void The_Game::passDecksToCardsStacksWidget()
 
 void The_Game::PassDecksToCardsInspectorWidget()
 {
-    DecksPointersData data;
-    data.setMonstersDeck(monstersDeck());
-    data.setAmplifiersDeck(amplifiersDeck());
-    data.setArmorAmplifiersDeck(armorAmplifiersDeck());
-    data.setArmorDeck(armorDeck());
-    data.setBattleAmplifiersDeck(battleAmplifiersDeck());
-    data.setCursesDeck(cursesDeck());
-    data.setLevelUpDeck(levelUpDeck());
-    data.setProfessionsDeck(professionsDeck());
-    data.setRacesDeck(racesDeck());
-    data.setSpecialMechanicsDeck(specialMechanicsDeck());
-    data.setSpecialMechanicsTreasureDeck(specialMechanicsTreasureDeck());
-    data.setThingsAmplifiersDeck(thingsAmplifiersDeck());
-    data.setWeaponsDeck(weaponsDeck());
-
-    ui->wdgt_CardInspector->SetUpPopUpCard(data);
+    ui->wdgt_CardInspector->setMonsersDeck(monstersDeck());
+    ui->wdgt_CardInspector->setAmplifiersDeck(amplifiersDeck());
+    ui->wdgt_CardInspector->setArmorAmplifiersDeck(armorAmplifiersDeck());
+    ui->wdgt_CardInspector->setArmorDeck(armorDeck());
+    ui->wdgt_CardInspector->setBattleAmplifiersDeck(battleAmplifiersDeck());
+    ui->wdgt_CardInspector->setCursesDeck(cursesDeck());
+    ui->wdgt_CardInspector->setLevelUpDeck(levelUpDeck());
+    ui->wdgt_CardInspector->setProfessionsDeck(professionsDeck());
+    ui->wdgt_CardInspector->setRacesDeck(racesDeck());
+    ui->wdgt_CardInspector->setSpecialMechanicsDeck(specialMechanicsDeck());
+    ui->wdgt_CardInspector->setSpecialMechanicsTreasureDeck(specialMechanicsTreasureDeck());
+    ui->wdgt_CardInspector->setThingsAmplifiersDeck(thingsAmplifiersDeck());
+    ui->wdgt_CardInspector->setWeaponsDeck(weaponsDeck());
 }
 
 
@@ -2278,137 +2272,4 @@ unsigned int The_Game::treasuresLeft() const
 void The_Game::setTreasuresLeft(unsigned int treasuresLeft)
 {
     _treasuresLeft = treasuresLeft;
-}
-
-
-
-
-const std::map<int, gameCardDoorAmplifier> *DecksPointersData::amplifiersDeck() const
-{
-    return _amplifiersDeck;
-}
-
-void DecksPointersData::setAmplifiersDeck(const std::map<int, gameCardDoorAmplifier> *amplifiersDeck)
-{
-    _amplifiersDeck = amplifiersDeck;
-}
-
-const std::map<int, gameCardDoorCurse> *DecksPointersData::cursesDeck() const
-{
-    return _cursesDeck;
-}
-
-void DecksPointersData::setCursesDeck(const std::map<int, gameCardDoorCurse> *cursesDeck)
-{
-    _cursesDeck = cursesDeck;
-}
-
-const std::map<int, gameCardDoorProfession> *DecksPointersData::professionsDeck() const
-{
-    return _professionsDeck;
-}
-
-void DecksPointersData::setProfessionsDeck(const std::map<int, gameCardDoorProfession> *professionsDeck)
-{
-    _professionsDeck = professionsDeck;
-}
-
-const std::map<int, gameCardDoorRace> *DecksPointersData::racesDeck() const
-{
-    return _racesDeck;
-}
-
-void DecksPointersData::setRacesDeck(const std::map<int, gameCardDoorRace> *racesDeck)
-{
-    _racesDeck = racesDeck;
-}
-
-const std::map<int, gameCardDoorSpecialMechanic> *DecksPointersData::specialMechanicsDeck() const
-{
-    return _specialMechanicsDeck;
-}
-
-void DecksPointersData::setSpecialMechanicsDeck(const std::map<int, gameCardDoorSpecialMechanic> *specialMechanicsDeck)
-{
-    _specialMechanicsDeck = specialMechanicsDeck;
-}
-
-const std::map<int, gameCardTreasureArmor> *DecksPointersData::armorDeck() const
-{
-    return _armorDeck;
-}
-
-void DecksPointersData::setArmorDeck(const std::map<int, gameCardTreasureArmor> *armorDeck)
-{
-    _armorDeck = armorDeck;
-}
-
-const std::map<int, gameCardTreasureArmorAmplifier> *DecksPointersData::armorAmplifiersDeck() const
-{
-    return _armorAmplifiersDeck;
-}
-
-void DecksPointersData::setArmorAmplifiersDeck(const std::map<int, gameCardTreasureArmorAmplifier> *armorAmplifiersDeck)
-{
-    _armorAmplifiersDeck = armorAmplifiersDeck;
-}
-
-const std::map<int, gameCardTreasureBattleAmplifier> *DecksPointersData::battleAmplifiersDeck() const
-{
-    return _battleAmplifiersDeck;
-}
-
-void DecksPointersData::setBattleAmplifiersDeck(const std::map<int, gameCardTreasureBattleAmplifier> *battleAmplifiersDeck)
-{
-    _battleAmplifiersDeck = battleAmplifiersDeck;
-}
-
-const std::map<int, gameCardTreasureLevelUp> *DecksPointersData::levelUpDeck() const
-{
-    return _levelUpDeck;
-}
-
-void DecksPointersData::setLevelUpDeck(const std::map<int, gameCardTreasureLevelUp> *levelUpDeck)
-{
-    _levelUpDeck = levelUpDeck;
-}
-
-const std::map<int, gameCardTreasureSpecialMechanic> *DecksPointersData::specialMechanicsTreasureDeck() const
-{
-    return _specialMechanicsTreasureDeck;
-}
-
-void DecksPointersData::setSpecialMechanicsTreasureDeck(const std::map<int, gameCardTreasureSpecialMechanic> *specialMechanicsTreasureDeck)
-{
-    _specialMechanicsTreasureDeck = specialMechanicsTreasureDeck;
-}
-
-const std::map<int, gameCardTreasureThingsAmplifiers> *DecksPointersData::thingsAmplifiersDeck() const
-{
-    return _thingsAmplifiersDeck;
-}
-
-void DecksPointersData::setThingsAmplifiersDeck(const std::map<int, gameCardTreasureThingsAmplifiers> *thingsAmplifiersDeck)
-{
-    _thingsAmplifiersDeck = thingsAmplifiersDeck;
-}
-
-const std::map<int, gameCardTreasureWeapon> *DecksPointersData::weaponsDeck() const
-{
-    return _weaponsDeck;
-}
-
-void DecksPointersData::setWeaponsDeck(const std::map<int, gameCardTreasureWeapon> *weaponsDeck)
-{
-    _weaponsDeck = weaponsDeck;
-}
-
-const std::map<int, gameCardDoorMonster> *DecksPointersData::monstersDeck() const
-{
-    return _monstersDeck;
-}
-
-void DecksPointersData::setMonstersDeck(const std::map<int, gameCardDoorMonster> *monstersDeck)
-{
-    _monstersDeck = monstersDeck;
 }
