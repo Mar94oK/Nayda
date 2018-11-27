@@ -44,6 +44,14 @@ Hand::Hand(QWidget *parent) :
 //    connect(_showCardsTimer, &QTimer::timeout ,this, &Hand::_showTheCardNearItsPositionSlot);
     connect(this, &Hand::_cardIsPreparedToBePlayed, this, &Hand::_slotCardIsPreparedToBePlayedFromHand);
 //    qDebug() << "The Size Of Cards On Hands, Height: " << size().height();
+
+#ifdef __linux__
+    _debounceTimer = new QTimer(this);
+    _debounceTimer->setSingleShot(true);
+    connect(_debounceTimer, &QTimer::timeout, this, &Hand::SlotDebounceTimerHandler);
+#endif
+
+
 }
 
 
@@ -289,6 +297,10 @@ bool Hand::eventFilter(QObject *o, QEvent *e)
 
             if (e->type() == QEvent::Enter) {
                 qDebug() << "Mouse Enters Area!";
+#ifdef __linux__
+                if (_debounceTimer->isActive())
+                    _debounceTimer->stop();
+#endif
                 _currentCardToShowInCentre = _cardsOnHandsHandsWidgetProperty[var]; //no Class
 //                qDebug() << "Size of the card, X: " << QWidget::mapToGlobal(_cardsVector[var]->pos()).x();
 //                qDebug() << "Size of the card, Y: " <<  QWidget::mapToGlobal(_cardsVector[var]->pos()).y();
@@ -309,9 +321,17 @@ bool Hand::eventFilter(QObject *o, QEvent *e)
             }
             else if (e->type() == QEvent::Leave) {
                 qDebug() << "Mouse Leaves Area!";
+
+#ifdef __linux__
+                _debounceTimer->start(_debounceTime);
+                //if (_showCardsTimer->isActive()) _showCardsTimer->stop();
+                return true;
+#else
+
                 if (_showCardsTimer->isActive()) _showCardsTimer->stop();
                 emit SignalHideTheCard(true);
                 return true;
+#endif
             }
             else if (e->type() == QEvent::MouseButtonPress) {
 

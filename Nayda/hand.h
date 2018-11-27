@@ -102,10 +102,22 @@ public:
 private:
 
     QTimer *_showCardsTimer;
-    unsigned int _timeToShowTheCard = 100; //ms
+    uint32_t _timeToShowTheCard = 100; //ms
     SimpleCard _currentCardToShowInCentre;
     PositionedCard _currentCardToShowNearItsPosition;
     std::vector<SimpleCard> _cardsOnHandsHandsWidgetProperty;
+
+#ifdef __linux__
+    QTimer  *_debounceTimer;
+    uint32_t _debounceTime = 500;
+
+    void SlotDebounceTimerHandler()
+    {
+        qDebug() << "Inside SlotDebounceTimerHandler(): ";
+        if (_showCardsTimer->isActive()) _showCardsTimer->stop();
+        emit SignalHideTheCard(true);
+    }
+#endif
 
 signals:
 
