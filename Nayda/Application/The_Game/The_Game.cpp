@@ -53,7 +53,7 @@ The_Game::The_Game(QWidget *parent) :
     QObject::connect(ui->btn_switch_back, SIGNAL(clicked(bool)), this, SLOT(dbg_return_to_the_main_window()));
 
     //Setting the in-Game connections with other Widgets
-    connect(ui->MainGamer, &GamerWidget::_representTheCardInCentre, this, &The_Game::showTheCardInCentre);
+    connect(ui->MainGamer, &GamerWidget::SignalRepresentTheCardInCentre, this, &The_Game::SlotShowTheCardInCentre);
     connect(ui->MainGamer, &GamerWidget::_hideTheCardInCentre, this, &The_Game::hideTheCardInCentre);
 
 //    connect(ui->MainGamer, &GamerWidget::_representTheCardNearItsPosition, this, &The_Game::showTheCardNearItsPosition);
@@ -198,8 +198,9 @@ The_Game::The_Game(QWidget *parent) :
     //_debugShowAllTheCards();
     //create popUpCard Widget
 
-    _popUpCardWidget = new PopUpCard();
-     //create CardPointerWidget
+    _popUpCardWidget = new PopUpCard(this);
+    //ui->gridLayout->addWidget(_popUpCardWidget);
+    //create CardPointerWidget
 
     _cardPointer = new TriangleCardPointer();
     //pass the cards to PopUp Widget
@@ -1840,14 +1841,21 @@ void The_Game::dbg_return_to_the_main_window()
     emit dbg_return_to_before_the_game(true);
 }
 
-void The_Game::showTheCardInCentre(PositionedCard card)
+void The_Game::SlotShowTheCardInCentre(PositionedCard card)
 {
+    card.AddBase(this->pos());
+    qDebug() << "Application Global Coordinates: " << "X: " <<  pos().x()<< " Y: " << pos().y();
     //pass the card to PopUpWidget
-    _popUpCardWidget->setUpPointsForPoly(card.positionTopLeft, card.positionBottomRight);
-    _popUpCardWidget->setUpPopUpCard(card.card);
-    _popUpCardWidget->show(card.positionTopLeft, card.positionBottomRight);
-    _cardPointer->setUpTriangleCardPointer(card.positionTopLeft, card.positionBottomRight);
-    _cardPointer->show(card.positionTopLeft, card.positionBottomRight);
+
+    _popUpCardWidget->setUpPointsForPoly(card.GetPositionTopLeft(), card.GetPositionBottomRight());
+    _popUpCardWidget->setUpPopUpCard(card.GetCard());
+    _popUpCardWidget->show(card.GetPositionTopLeft(), card.GetPositionBottomRight());
+    qDebug() << "SlotShowTheCardInCentre() cardPositionTopLeft = " << card.GetPositionTopLeft();
+    qDebug() << "SlotShowTheCardInCentre() positionBottomRight = " << card.GetPositionBottomRight();
+
+
+    _cardPointer->setUpTriangleCardPointer(card.GetPositionTopLeft(), card.GetPositionBottomRight());
+    _cardPointer->show(card.GetPositionTopLeft(), card.GetPositionBottomRight());
 }
 
 
@@ -1895,23 +1903,23 @@ void The_Game::_slotShowTheRejectedCardMessage(PositionedCard card)
 //                                        "Now!");
     _rejectionCardMessage->setPopupText("Сейчас нельзя сыграть \n"
                                         "эту карту!");
-    _rejectionCardMessage->show(card.positionTopLeft, card.positionBottomRight);
-    _handCardPointer->setUpHandCardPointer(card.positionTopLeft, card.positionBottomRight);
-    _handCardPointer->show(card.positionTopLeft, card.positionBottomRight);
+    _rejectionCardMessage->show(card.GetPositionTopLeft(), card.GetPositionBottomRight());
+    _handCardPointer->setUpHandCardPointer(card.GetPositionTopLeft(), card.GetPositionBottomRight());
+    _handCardPointer->show(card.GetPositionTopLeft(), card.GetPositionBottomRight());
 
 }
 
 void The_Game::_passTheCardToTheBattleField(PositionedCard card)
 {
     QPushButton* _movingCard = new QPushButton("Animated Button", this);
-    _movingCard->move(card.positionTopLeft.x(), card.positionTopLeft.y());
-     int sizeX = card.positionBottomRight.x() - card.positionTopLeft.x() ;
-     int sizeY = card.positionBottomRight.y() - card.positionTopLeft.y();
+    _movingCard->move(card.GetPositionTopLeft().x(), card.GetPositionTopLeft().y());
+     int sizeX = card.GetPositionBottomRight().x() - card.GetPositionTopLeft().x() ;
+     int sizeY = card.GetPositionBottomRight().y() - card.GetPositionTopLeft().y();
 
     qDebug() << "Size of the Card during moving: X: " << sizeX;
     qDebug() << "Size of the Card during moving: Y: " << sizeY;
 
-    QString picture = findTheCardPicture(card.card);
+    QString picture = findTheCardPicture(card.GetCard());
 
     QPixmap pxmp_movingCard(picture);
     QPalette plte_movingCard;
@@ -1933,7 +1941,7 @@ void The_Game::_passTheCardToTheBattleField(PositionedCard card)
 
     QPropertyAnimation *animation = new QPropertyAnimation(_movingCard, "geometry");
     animation->setDuration(1000);
-    animation->setStartValue(QRect(card.positionTopLeft.x(), card.positionTopLeft.y(), sizeX, sizeY));
+    animation->setStartValue(QRect(card.GetPositionTopLeft().x(), card.GetPositionTopLeft().y(), sizeX, sizeY));
     animation->setEndValue(QRect(width()/2 - sizeX, height()/2 - sizeY, sizeX*2, sizeY*2));
     animation->setEasingCurve(QEasingCurve::OutCubic);
 
@@ -2182,7 +2190,7 @@ void The_Game::DEBUGSetUpOpponents(uint32_t windowHeight, uint32_t windowWidth)
 
     for (unsigned int var = 0; var < _widgets4Opponents.size(); ++var)
     {
-        connect(_widgets4Opponents[var], &GamerWidget::_representTheCardInCentre, this, &The_Game::showTheCardInCentre);
+        connect(_widgets4Opponents[var], &GamerWidget::SignalRepresentTheCardInCentre, this, &The_Game::SlotShowTheCardInCentre);
         connect(_widgets4Opponents[var], &GamerWidget::_hideTheCardInCentre, this, &The_Game::hideTheCardInCentre);
     }
 

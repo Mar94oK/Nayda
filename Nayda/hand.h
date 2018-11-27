@@ -109,12 +109,12 @@ private:
 
 signals:
 
-    void _showTheCard(PositionedCard card);
-    void _hideTheCard(bool);
+    void SignalShowTheCard(PositionedCard card);
+    void SignalHideTheCard(bool);
 
 public slots:
 
-    void _showTheCardInCentreSlot();
+    void SlotShowTheCardInCentreSlot();
 
 public:
 

@@ -87,9 +87,9 @@ GamerWidget::GamerWidget(QWidget *parent) :
     _showCardsTimer = new QTimer(this);
     _showCardsTimer->setSingleShot(true);
     //connect timeout issue
-    connect(_showCardsTimer, &QTimer::timeout, this, &GamerWidget::_representTheCardInCenterSlot);
-    connect(ui->widget, &Hand::_showTheCard, this, &GamerWidget::_representTheCardFromHandsInCentre);
-    connect(ui->widget, &Hand::_hideTheCard, this, &GamerWidget::_hideTheCardInCentreSlot);
+    connect(_showCardsTimer, &QTimer::timeout, this, &GamerWidget::SlotRepresentTheCardInCentre);
+    connect(ui->widget, &Hand::SignalShowTheCard, this, &GamerWidget::SlotRepresentTheCardFromHandsInCentre);
+    connect(ui->widget, &Hand::SignalHideTheCard, this, &GamerWidget::_hideTheCardInCentreSlot);
 
 #ifdef DEBUG_GAMER_WIDGET
 
@@ -97,9 +97,9 @@ GamerWidget::GamerWidget(QWidget *parent) :
     _testTimer->setInterval(1000);
     _testTimer->setSingleShot(false);
 
-    connect(ui->btn_Test, &QPushButton::clicked, this, &GamerWidget::_slotStartTestCards);
-    connect(_testTimer, &QTimer::timeout, this, &GamerWidget::_slotTestGamerLevels);
-    connect(_testTimer, &QTimer::timeout, this, &GamerWidget::_slotTestGamerBattlePower);
+    connect(ui->btn_Test, &QPushButton::clicked, this, &GamerWidget::DEBUGSlotStartTestCards);
+    connect(_testTimer, &QTimer::timeout, this, &GamerWidget::DEBUGSlotTestGamerLevels);
+    connect(_testTimer, &QTimer::timeout, this, &GamerWidget::DEBUGSlotTestGamerBattlePower);
 
 #endif
     //forming the vector of pictures;
@@ -263,11 +263,11 @@ bool GamerWidget::eventFilter(QObject *o, QEvent *e)
             qDebug() << "Mouse Enters Area!";
             _currentCardToShowInCentre = {0,1777}; //no Class
             _showCardsTimer->start(static_cast<int>(_timeToShowTheCard));
-            _currentCardToShowNearItsPosition.card = {0,1777};
-            _currentCardToShowNearItsPosition.positionTopLeft = { QWidget::mapToGlobal(ui->btn_class_1->pos()).x(),
-                                                                  QWidget::mapToGlobal(ui->btn_class_1->pos()).y()};
-            _currentCardToShowNearItsPosition.positionBottomRight = { QWidget::mapToGlobal(ui->btn_class_1->pos()).x() + ui->btn_class_1->width(),
-                                                                  QWidget::mapToGlobal(ui->btn_class_1->pos()).y() + ui->btn_class_1->height()};
+            _currentCardToShowNearItsPosition.SetSimpleCard({0,1777});
+            _currentCardToShowNearItsPosition.SetPositionTopLeft({ ui->btn_class_1->pos().x(),
+                                                                   ui->btn_class_1->pos().y()});
+            _currentCardToShowNearItsPosition.SetPositionBottomRight({ ui->btn_class_1->pos().x() + ui->btn_class_1->width(),
+                                                                       ui->btn_class_1->pos().y() + ui->btn_class_1->height()});
 
             return true;
         }
@@ -287,11 +287,11 @@ bool GamerWidget::eventFilter(QObject *o, QEvent *e)
             qDebug() << "Mouse Enters Area!";
             _currentCardToShowInCentre = {0,0}; //no Race
             _showCardsTimer->start(static_cast<int>(_timeToShowTheCard));
-            _currentCardToShowNearItsPosition.card = {0,0};
-            _currentCardToShowNearItsPosition.positionTopLeft = { QWidget::mapToGlobal(ui->btn_race_1->pos()).x(),
-                                                                  QWidget::mapToGlobal(ui->btn_race_1->pos()).y()};
-            _currentCardToShowNearItsPosition.positionBottomRight = { QWidget::mapToGlobal(ui->btn_race_1->pos()).x() + ui->btn_class_1->width(),
-                                                                  QWidget::mapToGlobal(ui->btn_race_1->pos()).y() + ui->btn_class_1->height()};
+            _currentCardToShowNearItsPosition.SetSimpleCard({0,0});
+            _currentCardToShowNearItsPosition.SetPositionTopLeft({ ui->btn_race_1->pos().x(),
+                                                                   ui->btn_race_1->pos().y()});
+            _currentCardToShowNearItsPosition.SetPositionBottomRight({ ui->btn_race_1->pos().x() + ui->btn_class_1->width(),
+                                                                       ui->btn_race_1->pos().y() + ui->btn_class_1->height()});
             return true;
         }
         else if (e->type() == QEvent::Leave) {
@@ -309,14 +309,28 @@ bool GamerWidget::eventFilter(QObject *o, QEvent *e)
     }
 }
 
-void GamerWidget::_representTheCardInCenterSlot()
+void GamerWidget::SlotRepresentTheCardInCentre()
 {
-    emit _representTheCardInCentre(_currentCardToShowNearItsPosition);
+    qDebug() << "SlotRepresentTheCardInCentre(): ";
+    qDebug() << "POS X: " << ui->widget->pos().x();
+    qDebug() << "POS Y: " << ui->widget->pos().y();
+
+    _currentCardToShowNearItsPosition.AddBase(ui->wt_CardsInGame->pos());
+    _currentCardToShowNearItsPosition.AddBase(pos());
+    emit SignalRepresentTheCardInCentre(_currentCardToShowNearItsPosition);
 }
 
-void GamerWidget::_representTheCardFromHandsInCentre(PositionedCard card)
+void GamerWidget::SlotRepresentTheCardFromHandsInCentre(PositionedCard card)
 {
-    emit _representTheCardInCentre(card);
+    qDebug() << "NAY-001: SlotRepresentTheCardFromHandsInCentre():";
+    card.AddBase(ui->widget->pos());
+    card.AddBase(pos());
+    qDebug() << "Related position of Given Card in GamerWidget: ";
+    qDebug() << "NAY-001: SlotRepresentTheCardFromHandsInCentre Geometry POS TOP LEFT X: " << card.GetPositionTopLeft().x();
+    qDebug() << "NAY-001: SlotRepresentTheCardFromHandsInCentre Geometry POS TOP LEFT Y: " << card.GetPositionTopLeft().y();
+    qDebug() << "NAY-001: SlotRepresentTheCardFromHandsInCentre Geometry POS BOT RIGHT X: " << card.GetPositionBottomRight().x();
+    qDebug() << "NAY-001: SlotRepresentTheCardFromHandsInCentre Geometry POS BOT RIGHT Y: " << card.GetPositionBottomRight().y();
+    emit SignalRepresentTheCardInCentre(card);
 
 }
 
@@ -353,12 +367,12 @@ void GamerWidget::_changeTheGamerLevel(int levelDelta)
                                                Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 }
 
-void GamerWidget::_slotTestGamerLevels()
+void GamerWidget::DEBUGSlotTestGamerLevels()
 {
     _changeTheGamerLevel(1);
 }
 
-void GamerWidget::_slotStartTestCards()
+void GamerWidget::DEBUGSlotStartTestCards()
 {
     _testBtnIsPressed = !_testBtnIsPressed;
     if (_testBtnIsPressed) _testTimer->start();
@@ -424,7 +438,7 @@ void GamerWidget::_changeTheGamerBattlePower(int battlePowerDelta)
 
 //This slot doesn't imply current Level of the Gamer!
 
-void GamerWidget::_slotTestGamerBattlePower()
+void GamerWidget::DEBUGSlotTestGamerBattlePower()
 {
     ++_currentDeltaToBattlePower;
     if (_currentDeltaToBattlePower > 50) {

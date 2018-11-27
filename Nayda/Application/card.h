@@ -103,10 +103,55 @@ struct CardsKeysBorders {
 //use this as the elements of arrays, controlled by The Game.
 typedef std::pair<bool, unsigned int> SimpleCard;
 
-struct PositionedCard {
+class PositionedCard
+{
     SimpleCard card;
     QPoint positionTopLeft;
     QPoint positionBottomRight;
+
+public:
+
+    PositionedCard()
+    { }
+
+    //SHOULD BE EXPLICIT!
+    PositionedCard(SimpleCard crd,
+                            QPoint posTpLft,
+                            QPoint posBtRight) :
+        card(crd), positionTopLeft(posTpLft), positionBottomRight(posBtRight)
+    { }
+
+public:
+
+    void SetPositionTopLeft(QPoint pos)
+    { positionTopLeft = pos; }
+
+    void SetPositionBottomRight(QPoint pos)
+    { positionBottomRight = pos; }
+
+    void SetSimpleCard(SimpleCard crd)
+    {
+        card = crd;
+    }
+
+    void AddBase(QPoint Base)
+    {
+        positionTopLeft += Base;
+        positionBottomRight += Base;
+    }
+
+    SimpleCard GetCard() const
+    {
+        return card;
+    }
+    QPoint GetPositionTopLeft() const
+    {
+        return positionTopLeft;
+    }
+    QPoint GetPositionBottomRight() const
+    {
+        return positionBottomRight;
+    }
 };
 
 class GameCard

@@ -1934,3 +1934,5 @@ void gameCardTreasureWeapon::setCardID(int cardID)
 {
     _cardID = cardID;
 }
+
+

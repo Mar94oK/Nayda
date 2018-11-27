@@ -237,7 +237,7 @@ public slots:
 
 public slots:
 
-    void showTheCardInCentre(PositionedCard card);
+    void SlotShowTheCardInCentre(PositionedCard card);
     //void showTheCardNearItsPosition(PositionedCard card);
     void hideTheCardInCentre(bool);
     //void hideTheCardNearItsPosition(bool);

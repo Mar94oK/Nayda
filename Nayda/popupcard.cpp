@@ -142,6 +142,11 @@ void PopUpCard::show(QPoint positionTopLeft, QPoint positionBottomRight)
     _positionBottomRight = positionBottomRight;
     _positionTopLeft = positionTopLeft;
 
+    qDebug() << "NAY-001: PopUpCard::show() Geometry POS TOP LEFT X: " << _positionTopLeft.x();
+    qDebug() << "NAY-001: PopUpCard::show() Geometry POS TOP LEFT Y: " << _positionTopLeft.y();
+    qDebug() << "NAY-001: PopUpCard::show() Geometry POS BOT RIGHT X: " << _positionTopLeft.x();
+    qDebug() << "NAY-001: PopUpCard::show() Geometry POS BOT RIGHT Y: " << _positionBottomRight.y();
+
     //Check the position!
 
     if (positionTopLeft.y() - height() - 30 < 0) { //higher, than allowed
@@ -172,7 +177,17 @@ void PopUpCard::show(QPoint positionTopLeft, QPoint positionBottomRight)
                 width(),
                 height());
 
+    qDebug() << "NAY-001: PopUpCard::show() Geometry POS TOP LEFT X: " << xPos;
+    qDebug() << "NAY-001: PopUpCard::show() Geometry POS TOP LEFT Y: " << yPos;
+
+
+
     QWidget::show();                // Отображаем виджет, который полностью прозрачен
+
+
+    qDebug() << "NAY-001: PopUpCard::show() POS() X: " << pos().x();
+    qDebug() << "NAY-001: PopUpCard::show() POS() Y: " << pos().y();
+
 
     animation.start();              // И запускаем анимацию
 

@@ -102,13 +102,13 @@ private:
 
 signals:
 
-    void _representTheCardInCentre(PositionedCard);
+    void SignalRepresentTheCardInCentre(PositionedCard);
     void _hideTheCardInCentre(bool);
 
 public slots:
 
-    void _representTheCardInCenterSlot();
-    void _representTheCardFromHandsInCentre(PositionedCard);
+    void SlotRepresentTheCardInCentre();
+    void SlotRepresentTheCardFromHandsInCentre(PositionedCard);
     void _hideTheCardInCentreSlot(bool);
 
 private:
@@ -156,8 +156,8 @@ private:
 
 private slots:
 
-    void _slotTestGamerLevels();
-    void _slotStartTestCards();
+    void DEBUGSlotTestGamerLevels();
+    void DEBUGSlotStartTestCards();
 
 private:
 
@@ -187,7 +187,7 @@ public slots:
 
 private slots:
 
-    void _slotTestGamerBattlePower();
+    void DEBUGSlotTestGamerBattlePower();
 
 private:
 
