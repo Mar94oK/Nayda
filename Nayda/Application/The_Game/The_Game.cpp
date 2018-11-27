@@ -54,6 +54,7 @@ The_Game::The_Game(QWidget *parent) :
 
     //Setting the in-Game connections with other Widgets
     connect(ui->MainGamer, &GamerWidget::SignalRepresentTheCardInCentre, this, &The_Game::SlotShowTheCardInCentre);
+    connect(ui->MainGamer, &GamerWidget::SignalRepresentTheCardInCentre, this, &The_Game::SlotShowTheCardInGameInspector);
     connect(ui->MainGamer, &GamerWidget::_hideTheCardInCentre, this, &The_Game::hideTheCardInCentre);
 
 //    connect(ui->MainGamer, &GamerWidget::_representTheCardNearItsPosition, this, &The_Game::showTheCardNearItsPosition);
@@ -170,7 +171,7 @@ The_Game::The_Game(QWidget *parent) :
     //first pass there the Cards (after receiving them from server);
     passDecksToBattleField();
     passDecksToPlayerWidgets();
-
+    PassDecksToCardsInspectorWidget();
 
     //Алгоритм на будущее (когда настройки дополнений действительно будут работать)
     //Игра получает от Предыгры настройки
@@ -1587,6 +1588,26 @@ void The_Game::passDecksToCardsStacksWidget()
     ui->CardStacksWidget->setTotalDoors(_treasuresDeck.size());
 }
 
+void The_Game::PassDecksToCardsInspectorWidget()
+{
+    DecksPointersData data;
+    data.setMonstersDeck(monstersDeck());
+    data.setAmplifiersDeck(amplifiersDeck());
+    data.setArmorAmplifiersDeck(armorAmplifiersDeck());
+    data.setArmorDeck(armorDeck());
+    data.setBattleAmplifiersDeck(battleAmplifiersDeck());
+    data.setCursesDeck(cursesDeck());
+    data.setLevelUpDeck(levelUpDeck());
+    data.setProfessionsDeck(professionsDeck());
+    data.setRacesDeck(racesDeck());
+    data.setSpecialMechanicsDeck(specialMechanicsDeck());
+    data.setSpecialMechanicsTreasureDeck(specialMechanicsTreasureDeck());
+    data.setThingsAmplifiersDeck(thingsAmplifiersDeck());
+    data.setWeaponsDeck(weaponsDeck());
+
+    ui->wdgt_CardInspector->SetUpPopUpCard(data);
+}
+
 
 const std::map<int, gameCardDoorMonster> *The_Game::monstersDeck()
 {
@@ -1862,6 +1883,11 @@ void The_Game::SlotShowTheCardInCentre(PositionedCard card)
 
     _cardPointer->setUpTriangleCardPointer(card.GetPositionTopLeft(), card.GetPositionBottomRight());
     _cardPointer->show(card.GetPositionTopLeft(), card.GetPositionBottomRight());
+}
+
+void The_Game::SlotShowTheCardInGameInspector(PositionedCard card)
+{
+    ui->wdgt_CardInspector->SlotSetUpSimpleCardToShow(card);
 }
 
 
@@ -2256,3 +2282,133 @@ void The_Game::setTreasuresLeft(unsigned int treasuresLeft)
 
 
 
+
+const std::map<int, gameCardDoorAmplifier> *DecksPointersData::amplifiersDeck() const
+{
+    return _amplifiersDeck;
+}
+
+void DecksPointersData::setAmplifiersDeck(const std::map<int, gameCardDoorAmplifier> *amplifiersDeck)
+{
+    _amplifiersDeck = amplifiersDeck;
+}
+
+const std::map<int, gameCardDoorCurse> *DecksPointersData::cursesDeck() const
+{
+    return _cursesDeck;
+}
+
+void DecksPointersData::setCursesDeck(const std::map<int, gameCardDoorCurse> *cursesDeck)
+{
+    _cursesDeck = cursesDeck;
+}
+
+const std::map<int, gameCardDoorProfession> *DecksPointersData::professionsDeck() const
+{
+    return _professionsDeck;
+}
+
+void DecksPointersData::setProfessionsDeck(const std::map<int, gameCardDoorProfession> *professionsDeck)
+{
+    _professionsDeck = professionsDeck;
+}
+
+const std::map<int, gameCardDoorRace> *DecksPointersData::racesDeck() const
+{
+    return _racesDeck;
+}
+
+void DecksPointersData::setRacesDeck(const std::map<int, gameCardDoorRace> *racesDeck)
+{
+    _racesDeck = racesDeck;
+}
+
+const std::map<int, gameCardDoorSpecialMechanic> *DecksPointersData::specialMechanicsDeck() const
+{
+    return _specialMechanicsDeck;
+}
+
+void DecksPointersData::setSpecialMechanicsDeck(const std::map<int, gameCardDoorSpecialMechanic> *specialMechanicsDeck)
+{
+    _specialMechanicsDeck = specialMechanicsDeck;
+}
+
+const std::map<int, gameCardTreasureArmor> *DecksPointersData::armorDeck() const
+{
+    return _armorDeck;
+}
+
+void DecksPointersData::setArmorDeck(const std::map<int, gameCardTreasureArmor> *armorDeck)
+{
+    _armorDeck = armorDeck;
+}
+
+const std::map<int, gameCardTreasureArmorAmplifier> *DecksPointersData::armorAmplifiersDeck() const
+{
+    return _armorAmplifiersDeck;
+}
+
+void DecksPointersData::setArmorAmplifiersDeck(const std::map<int, gameCardTreasureArmorAmplifier> *armorAmplifiersDeck)
+{
+    _armorAmplifiersDeck = armorAmplifiersDeck;
+}
+
+const std::map<int, gameCardTreasureBattleAmplifier> *DecksPointersData::battleAmplifiersDeck() const
+{
+    return _battleAmplifiersDeck;
+}
+
+void DecksPointersData::setBattleAmplifiersDeck(const std::map<int, gameCardTreasureBattleAmplifier> *battleAmplifiersDeck)
+{
+    _battleAmplifiersDeck = battleAmplifiersDeck;
+}
+
+const std::map<int, gameCardTreasureLevelUp> *DecksPointersData::levelUpDeck() const
+{
+    return _levelUpDeck;
+}
+
+void DecksPointersData::setLevelUpDeck(const std::map<int, gameCardTreasureLevelUp> *levelUpDeck)
+{
+    _levelUpDeck = levelUpDeck;
+}
+
+const std::map<int, gameCardTreasureSpecialMechanic> *DecksPointersData::specialMechanicsTreasureDeck() const
+{
+    return _specialMechanicsTreasureDeck;
+}
+
+void DecksPointersData::setSpecialMechanicsTreasureDeck(const std::map<int, gameCardTreasureSpecialMechanic> *specialMechanicsTreasureDeck)
+{
+    _specialMechanicsTreasureDeck = specialMechanicsTreasureDeck;
+}
+
+const std::map<int, gameCardTreasureThingsAmplifiers> *DecksPointersData::thingsAmplifiersDeck() const
+{
+    return _thingsAmplifiersDeck;
+}
+
+void DecksPointersData::setThingsAmplifiersDeck(const std::map<int, gameCardTreasureThingsAmplifiers> *thingsAmplifiersDeck)
+{
+    _thingsAmplifiersDeck = thingsAmplifiersDeck;
+}
+
+const std::map<int, gameCardTreasureWeapon> *DecksPointersData::weaponsDeck() const
+{
+    return _weaponsDeck;
+}
+
+void DecksPointersData::setWeaponsDeck(const std::map<int, gameCardTreasureWeapon> *weaponsDeck)
+{
+    _weaponsDeck = weaponsDeck;
+}
+
+const std::map<int, gameCardDoorMonster> *DecksPointersData::monstersDeck() const
+{
+    return _monstersDeck;
+}
+
+void DecksPointersData::setMonstersDeck(const std::map<int, gameCardDoorMonster> *monstersDeck)
+{
+    _monstersDeck = monstersDeck;
+}

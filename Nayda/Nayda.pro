@@ -61,7 +61,8 @@ SOURCES += main.cpp\
     connectiontoroomquestions.cpp \
     connectiontoroomrejectedmessagewindow.cpp \
     serverqueryoversizedwindow.cpp \
-    roomselectionlobby.cpp
+    roomselectionlobby.cpp \
+    cardinspector.cpp
 
 HEADERS  += main_application.h \
     Application/Before_The_Game/Before_The_Game.h \
@@ -97,7 +98,8 @@ HEADERS  += main_application.h \
     connectiontoroomquestions.h \
     connectiontoroomrejectedmessagewindow.h \
     serverqueryoversizedwindow.h \
-    roomselectionlobby.h
+    roomselectionlobby.h \
+    cardinspector.h
 
 FORMS    += main_application.ui \
     Application/Before_The_Game/Before_The_Game.ui \
@@ -124,7 +126,8 @@ FORMS    += main_application.ui \
     connectiontoroomquestions.ui \
     connectiontoroomrejectedmessagewindow.ui \
     serverqueryoversizedwindow.ui \
-    roomselectionlobby.ui
+    roomselectionlobby.ui \
+    cardinspector.ui
 
 RESOURCES += \
     tables.qrc \
