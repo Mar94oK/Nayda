@@ -1849,10 +1849,16 @@ void The_Game::SlotShowTheCardInCentre(PositionedCard card)
 
     _popUpCardWidget->setUpPointsForPoly(card.GetPositionTopLeft(), card.GetPositionBottomRight());
     _popUpCardWidget->setUpPopUpCard(card.GetCard());
+
+#ifndef __linux__
     _popUpCardWidget->show(card.GetPositionTopLeft(), card.GetPositionBottomRight());
+#else
+    //_popUpCardWidget->show();
+    _popUpCardWidget->show(card.GetPositionTopLeft(), card.GetPositionBottomRight());
+#endif
+
     qDebug() << "SlotShowTheCardInCentre() cardPositionTopLeft = " << card.GetPositionTopLeft();
     qDebug() << "SlotShowTheCardInCentre() positionBottomRight = " << card.GetPositionBottomRight();
-
 
     _cardPointer->setUpTriangleCardPointer(card.GetPositionTopLeft(), card.GetPositionBottomRight());
     _cardPointer->show(card.GetPositionTopLeft(), card.GetPositionBottomRight());
