@@ -59,28 +59,6 @@ The_Game::The_Game(QWidget *parent) :
 //    connect(ui->MainGamer, &GamerWidget::_representTheCardNearItsPosition, this, &The_Game::showTheCardNearItsPosition);
 //    connect(ui->MainGamer, &GamerWidget::_hideTheCardNearItsPosition, this, &The_Game::hideTheCardInCentre);
 
-    //setting-up main Game Ico
-
-    //all of such kind is equal;
-    //1. create pixmap;
-    //2. rescale pixmap
-    //3. create palette
-    //4. set brush of palette as previously created pixmap
-    //5. set everything for button: fillbackground; palette; flat; fixed size;
-    //6. move to the expected position and leave it there
-    //7. define whether it could be movable???
-
-
-
-
-
-
-
-#ifdef DEBUG_MESSAGES
-    qDebug() << "GameInfoBox. setMinimumHeight = setMaximumHeight " << koeff_GameInfoBox_size_Height*HW_Screen_Size_Heigh << endl
-             <<" GameInfoBox.setMinimumWidth = " << koeff_GameInfoBox_size_Width*HW_Screen_Size_Width;
-#endif
-
     ui->btn_switch_back->setMinimumWidth(koeff_GameInfoBox_size_Width*HW_Screen_Size_Width);
     ui->btn_switch_back->setMaximumWidth(koeff_GameInfoBox_size_Width*HW_Screen_Size_Width);
 
@@ -101,7 +79,7 @@ The_Game::The_Game(QWidget *parent) :
     //hide Secondary Hand Widget;
     ui->MainGamer->_hideHandSecondaryPlayerWidget();
 
-    DEBUGSetUpWidgetsRelations(HW_Screen_Size_Heigh, HW_Screen_Size_Width);
+//    DEBUGSetUpWidgetsRelations(HW_Screen_Size_Heigh, HW_Screen_Size_Width);
 
     DEBUGSetUpOpponents(HW_Screen_Size_Heigh, HW_Screen_Size_Width);
 
@@ -2197,8 +2175,8 @@ void The_Game::DEBUGSetUpOpponents(uint32_t windowHeight, uint32_t windowWidth)
 
     }
 
-    qDebug() << "Maximum Height of the Gamer_Widget: " << koeff_GamerWidget_size_Height*windowHeight;
-    qDebug() << "Maximum Width of the Gamer_Widget: " << koeff_GamerWidget_size_Width*windowWidth;
+//    qDebug() << "Maximum Height of the Gamer_Widget: " << koeff_GamerWidget_size_Height*windowHeight;
+//    qDebug() << "Maximum Width of the Gamer_Widget: " << koeff_GamerWidget_size_Width*windowWidth;
 
 #ifdef DEBUG_NO_SERVER
 
