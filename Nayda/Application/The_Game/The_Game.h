@@ -359,6 +359,7 @@ private:
                              const std::vector<uint32_t>& treasuresVector);
 
     void DEBUGSetUpOpponents(uint32_t windowHeight, uint32_t windowWidth);
+    void DEBUGSetUpWidgetsRelations(uint32_t windowHeight, uint32_t windowWidth);
 
 private:
 

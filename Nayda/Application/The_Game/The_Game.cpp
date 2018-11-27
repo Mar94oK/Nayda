@@ -73,33 +73,7 @@ The_Game::The_Game(QWidget *parent) :
 
 
 
-    //setting up the GUI staff
-    //Defining its coefficients with respect to the total size of availible field;
 
-    ui->GameField->setMinimumWidth(koeff_GameField_size*HW_Screen_Size_Width);
-    ui->GameField->setMinimumHeight(koeff_GameField_size*HW_Screen_Size_Heigh);
-
-    ui->MainGamer->setMinimumHeight(koeff_GamerWidget_size_Height*HW_Screen_Size_Heigh);
-
-    //trying to disable the maximum size of the MainGamerHeight
-    //ui->MainGamer->setMaximumHeight(koeff_GamerWidget_size_Height*HW_Screen_Size_Heigh);
-
-    //with respect to the MainGamer, the height size won't be larger then allowed,
-    //but may take all the availible space if the width is concerned; Why not?
-    ui->MainGamer->setMinimumWidth(koeff_GamerWidget_size_Width*HW_Screen_Size_Width);
-    ui->MainGamer->setMaximumWidth((koeff_GamerWidget_size_Width+MainGamerWidgetWidthExpansion)*HW_Screen_Size_Width);
-
-    ui->TimersWidget->setMinimumHeight(koeff_GameTimers_size_Height*HW_Screen_Size_Heigh);
-    ui->TimersWidget->setMaximumHeight(koeff_GameTimers_size_Height*HW_Screen_Size_Heigh);
-
-    ui->TimersWidget->setMinimumWidth(koeff_GameTimers_size_Width*HW_Screen_Size_Width);
-    ui->TimersWidget->setMaximumWidth(koeff_GameTimers_size_Width*HW_Screen_Size_Width);
-
-    ui->GameInfoBox->setMinimumHeight(koeff_GameInfoBox_size_Height*HW_Screen_Size_Heigh);
-    ui->GameInfoBox->setMaximumHeight(koeff_GameInfoBox_size_Height*HW_Screen_Size_Heigh);
-
-    ui->GameInfoBox->setMinimumWidth(koeff_GameInfoBox_size_Width*HW_Screen_Size_Width);
-    ui->GameInfoBox->setMaximumWidth(koeff_GameInfoBox_size_Width*HW_Screen_Size_Width);
 
 
 #ifdef DEBUG_MESSAGES
@@ -127,6 +101,7 @@ The_Game::The_Game(QWidget *parent) :
     //hide Secondary Hand Widget;
     ui->MainGamer->_hideHandSecondaryPlayerWidget();
 
+    DEBUGSetUpWidgetsRelations(HW_Screen_Size_Heigh, HW_Screen_Size_Width);
 
     DEBUGSetUpOpponents(HW_Screen_Size_Heigh, HW_Screen_Size_Width);
 
@@ -2234,6 +2209,37 @@ void The_Game::DEBUGSetUpOpponents(uint32_t windowHeight, uint32_t windowWidth)
     }
 
 #endif
+}
+
+void The_Game::DEBUGSetUpWidgetsRelations(uint32_t windowHeight, uint32_t windowWidth)
+{
+    //setting up the GUI staff
+    //Defining its coefficients with respect to the total size of availible field;
+
+    ui->GameField->setMinimumWidth(koeff_GameField_size*windowWidth);
+    ui->GameField->setMinimumHeight(koeff_GameField_size*windowHeight);
+
+    ui->MainGamer->setMinimumHeight(koeff_GamerWidget_size_Height*windowHeight);
+
+    //trying to disable the maximum size of the MainGamerHeight
+    //ui->MainGamer->setMaximumHeight(koeff_GamerWidget_size_Height*HW_Screen_Size_Heigh);
+
+    //with respect to the MainGamer, the height size won't be larger then allowed,
+    //but may take all the availible space if the width is concerned; Why not?
+    ui->MainGamer->setMinimumWidth(koeff_GamerWidget_size_Width*windowWidth);
+    ui->MainGamer->setMaximumWidth((koeff_GamerWidget_size_Width+MainGamerWidgetWidthExpansion)*windowWidth);
+
+    ui->TimersWidget->setMinimumHeight(koeff_GameTimers_size_Height*windowHeight);
+    ui->TimersWidget->setMaximumHeight(koeff_GameTimers_size_Height*windowHeight);
+
+    ui->TimersWidget->setMinimumWidth(koeff_GameTimers_size_Width*windowWidth);
+    ui->TimersWidget->setMaximumWidth(koeff_GameTimers_size_Width*windowWidth);
+
+    ui->GameInfoBox->setMinimumHeight(koeff_GameInfoBox_size_Height*windowHeight);
+    ui->GameInfoBox->setMaximumHeight(koeff_GameInfoBox_size_Height*windowHeight);
+
+    ui->GameInfoBox->setMinimumWidth(koeff_GameInfoBox_size_Width*windowWidth);
+    ui->GameInfoBox->setMaximumWidth(koeff_GameInfoBox_size_Width*windowWidth);
 }
 
 unsigned int The_Game::doorsLeft() const
