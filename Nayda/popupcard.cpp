@@ -180,8 +180,6 @@ void PopUpCard::show(QPoint positionTopLeft, QPoint positionBottomRight)
     qDebug() << "NAY-001: PopUpCard::show() Geometry POS TOP LEFT X: " << xPos;
     qDebug() << "NAY-001: PopUpCard::show() Geometry POS TOP LEFT Y: " << yPos;
 
-
-
     QWidget::show();                // Отображаем виджет, который полностью прозрачен
 
 
