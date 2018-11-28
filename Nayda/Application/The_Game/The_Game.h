@@ -170,10 +170,10 @@ public:
     gameCardTreasureWeapon WeaponStringParser (const QString& weapons_string);
 
     void _debugShowAllTheCards();
-    void passDecksToBattleField();
+    void PassDecksToBattleField();
     void passDecksToPlayerWidgets();
-    void passDecksToPopUpCardWidget();
-    void passDecksToCardsStacksWidget();
+    void PassDecksToPopUpCardWidget();
+    void PassDecksToCardsStacksWidget();
 
     void PassDecksToCardsInspectorWidget();
 
@@ -249,11 +249,6 @@ public slots:
 private:
 
     Ui::The_Game *ui;
-
-    //game_settings
-    int m_time_to_think;
-    int m_time_for_move;
-    unsigned int m_number_of_players;
 
     //special option will allow to be more than 5 opponents
     std::vector <GamerWidget*> _widgets4Opponents; //make as controlled unique_ptr;
@@ -365,11 +360,9 @@ private:
                              const std::vector<uint32_t>& treasuresVector);
 
     void RedrawGUIAccordingToCurrentSettings(uint32_t windowHeight, uint32_t windowWidth);
-
-    void DEBUGSetUpOpponents(uint32_t windowHeight, uint32_t windowWidth);
     void SetUpOpponents(uint32_t windowHeight, uint32_t windowWidth);
-
-    void DEBUGSetUpWidgetsRelations(uint32_t windowHeight, uint32_t windowWidth);
+    void SetUpWidgetsProperties(uint32_t windowHeight, uint32_t windowWidth);
+    void MainParser();
 
 private:
 

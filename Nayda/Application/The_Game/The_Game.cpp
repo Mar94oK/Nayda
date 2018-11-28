@@ -60,7 +60,6 @@ The_Game::The_Game(QWidget *parent) :
     //qsrand((uint)time.msec());
     //Setting-up button's connections.
 
-    //QObject::connect( ui->btnHide, SIGNAL(clicked()), this, SLOT(hide()));
     QObject::connect(ui->btn_switch_back, SIGNAL(clicked()), this, SLOT(hide()));
     QObject::connect(this, SIGNAL(dbg_to_be_shown(bool)), this, SLOT(showFullScreen()));//SLOT(showFullScreen())) SLOT(show();
     QObject::connect(ui->btn_switch_back, SIGNAL(clicked(bool)), this, SLOT(dbg_return_to_the_main_window()));
@@ -70,123 +69,19 @@ The_Game::The_Game(QWidget *parent) :
     connect(ui->MainGamer, &GamerWidget::SignalRepresentTheCardInCentre, this, &The_Game::SlotShowTheCardInGameInspector);
     connect(ui->MainGamer, &GamerWidget::SignalHideTheCardInCentre, this, &The_Game::SlotHideTheCardInCentre);
 
-//    connect(ui->MainGamer, &GamerWidget::_representTheCardNearItsPosition, this, &The_Game::showTheCardNearItsPosition);
-//    connect(ui->MainGamer, &GamerWidget::_hideTheCardNearItsPosition, this, &The_Game::hideTheCardInCentre);
-
     ui->btn_switch_back->setMinimumWidth(koeff_GameInfoBox_size_Width*HW_Screen_Size_Width);
     ui->btn_switch_back->setMaximumWidth(koeff_GameInfoBox_size_Width*HW_Screen_Size_Width);
 
-    //receiving number of players;
-
-#ifdef DEBUG_NO_SERVER
-    //do not receive actual parameters from Before_the_Game, but start immidiately
-
-    this->m_number_of_players = 6; //default maximum (extended - special code entered by user will be needed)
-    this->m_time_for_move = 30; //seconds
-    this->m_time_to_think = 15; //seconds
-
-#endif
-
-    //setting MainGamer
-    ui->MainGamer->setIs_MainPlayer(true);
-
-    //hide Secondary Hand Widget;
-    ui->MainGamer->HideHandSecondaryPlayerWidget();
-
-    DEBUGSetUpWidgetsRelations(HW_Screen_Size_Heigh, HW_Screen_Size_Width);
+    SetUpWidgetsProperties(HW_Screen_Size_Heigh, HW_Screen_Size_Width);
     //DEBUGSetUpOpponents(HW_Screen_Size_Heigh, HW_Screen_Size_Width);
     RedrawGUIAccordingToCurrentSettings(HW_Screen_Size_Heigh, HW_Screen_Size_Width);
-
     //filling up the monsters' stock!
-
-#ifndef USE_RESOURCES
-
-    theMonstersParser("Tables/cards_doors_monsters.csv");
-    qDebug() << "Monsters parsing complete!";
-
-    theAmplifiersParser("Tables/cards_doors_amplifiers.csv");
-    qDebug() << "Amplifiers parsing complete!";
-
-    theCursesParser("Tables/cards_doors_curses.csv");
-    qDebug() << "Curses parsing complete!";
-
-    theProfessionsParser("Tables/cards_doors_professions.csv");
-    qDebug() << "Professions parsing complete!";
-
-    theRacesParser("Tables/cards_doors_races.csv");
-    qDebug() << "Races parsing complete!";
-
-    theSpecialMechanicsParser("Tables/cards_doors_specialmechanics.csv");
-    qDebug() << "Special mechanics parsing complete!";
-
-    theArmorsParser("Tables/cards_treasures_armor.csv");
-    qDebug() << "Armor parsing complete!";
-
-    theArmorAmplifiersParser("Tables/cards_treasures_armorAmplifiers.csv");
-    qDebug() << "ArmorAmplifiers parsing complete!";
-
-    theBattleAmplifiersParser("Tables/cards_treasures_battleAmplifiers.csv");
-    qDebug() << "BattleAmplifiers parsing complete!";
-
-    theLevelUpParser("Tables/cards_treasures_levelUp.csv");
-    qDebug() << "LevelUps parsing complete!";
-
-    theSpecialMechanicTreasureParser("Tables/cards_treasures_specialMechanics.csv");
-    qDebug() << "SpecialMechanicsTreasures parsing complete!";
-
-    theThingsAmplifiersParser("Tables/cards_treasures_thingsAmplifiers.csv");
-    qDebug() << "ThingsAmplifiers parsing complete!";
-
-    theWeaponParser("Tables/cards_treasures_Weapon.csv");
-    qDebug() << "Weapons parsing complete!";
-
-#else
-    theMonstersParser(":/Tables/cards_doors_monsters.csv");
-    qDebug() << "Monsters parsing complete!";
-
-    theAmplifiersParser(":/Tables/cards_doors_amplifiers.csv");
-    qDebug() << "Amplifiers parsing complete!";
-
-    theCursesParser(":/Tables/cards_doors_curses.csv");
-    qDebug() << "Curses parsing complete!";
-
-    theProfessionsParser(":/Tables/cards_doors_professions.csv");
-    qDebug() << "Professions parsing complete!";
-
-    theRacesParser(":/Tables/cards_doors_races.csv");
-    qDebug() << "Races parsing complete!";
-
-    theSpecialMechanicsParser(":/Tables/cards_doors_specialmechanics.csv");
-    qDebug() << "Special mechanics parsing complete!";
-
-    theArmorsParser(":/Tables/cards_treasures_armor.csv");
-    qDebug() << "Armor parsing complete!";
-
-    theArmorAmplifiersParser(":/Tables/cards_treasures_armorAmplifiers.csv");
-    qDebug() << "ArmorAmplifiers parsing complete!";
-
-    theBattleAmplifiersParser(":/Tables/cards_treasures_battleAmplifiers.csv");
-    qDebug() << "BattleAmplifiers parsing complete!";
-
-    theLevelUpParser(":/Tables/cards_treasures_levelUp.csv");
-    qDebug() << "LevelUps parsing complete!";
-
-    theSpecialMechanicTreasureParser(":/Tables/cards_treasures_specialMechanics.csv");
-    qDebug() << "SpecialMechanicsTreasures parsing complete!";
-
-    theThingsAmplifiersParser(":/Tables/cards_treasures_thingsAmplifiers.csv");
-    qDebug() << "ThingsAmplifiers parsing complete!";
-
-    theWeaponParser(":/Tables/cards_treasures_Weapon.csv");
-    qDebug() << "Weapons parsing complete!";
-#endif
+    MainParser();
 
     //first pass there the Cards (after receiving them from server);
-    passDecksToBattleField();
+    PassDecksToBattleField();
     passDecksToPlayerWidgets();
     PassDecksToCardsInspectorWidget();
-
-
 
     //Алгоритм на будущее (когда настройки дополнений действительно будут работать)
     //Игра получает от Предыгры настройки
@@ -205,7 +100,6 @@ The_Game::The_Game(QWidget *parent) :
     //При начале игры передать эти цифры каждому клиенту
     //Далее ими управляет уже непосредственно клиент
 
-
     DEBUGformingInitialDecks();
     GivingCardsToPlayers();
     ShowInitialCardsOnHands();
@@ -215,15 +109,12 @@ The_Game::The_Game(QWidget *parent) :
     //create popUpCard Widget
 
     _popUpCardWidget = new PopUpCard(this);
-    //ui->gridLayout->addWidget(_popUpCardWidget);
     //create CardPointerWidget
-
     _cardPointer = new TriangleCardPointer();
     //pass the cards to PopUp Widget
-    passDecksToPopUpCardWidget();
-
+    PassDecksToPopUpCardWidget();
     //pass the Cards to CardsStacks Widget
-    passDecksToCardsStacksWidget();
+    PassDecksToCardsStacksWidget();
 
 #ifndef USE_RESOURCES
     QPixmap pxmpBattleField("Pictures/JorneyCover.png");
@@ -1513,7 +1404,7 @@ void The_Game::_debugShowAllTheCards()
     ui->GameField->cardsRepresenter();
 }
 
-void The_Game::passDecksToBattleField()
+void The_Game::PassDecksToBattleField()
 {
     ui->GameField->setMonsersDeck(monstersDeck());
     ui->GameField->setAmplifiersDeck(amplifiersDeck());
@@ -1567,7 +1458,7 @@ void The_Game::passDecksToPlayerWidgets()
     }
 }
 
-void The_Game::passDecksToPopUpCardWidget()
+void The_Game::PassDecksToPopUpCardWidget()
 {
     _popUpCardWidget->setMonsersDeck(monstersDeck());
     _popUpCardWidget->setAmplifiersDeck(amplifiersDeck());
@@ -1584,7 +1475,7 @@ void The_Game::passDecksToPopUpCardWidget()
     _popUpCardWidget->setWeaponsDeck(weaponsDeck());
 }
 
-void The_Game::passDecksToCardsStacksWidget()
+void The_Game::PassDecksToCardsStacksWidget()
 {
     ui->CardStacksWidget->setMonsersDeck(monstersDeck());
     ui->CardStacksWidget->setAmplifiersDeck(amplifiersDeck());
@@ -1698,7 +1589,7 @@ void The_Game::GivingCardsToPlayers()
 
     //define, how many players are presented;
     //this value is received once from server side and can't be changed during the game if only the player is leaving the game;
-    uint32_t totalPlayers = _gameSettings.maximumNumberOfPlayers() - 1; //6 as default
+    uint32_t totalOpponents = _gameSettings.maximumNumberOfPlayers() - 1; //6 as default
     uint32_t cardsToGive = 4;
 
     //then it is necessary to give m_number_of_players*4 cards from doors stack, and
@@ -1717,7 +1608,7 @@ void The_Game::GivingCardsToPlayers()
 
     //giving cards to the other players...
 
-    for (uint32_t var = 0; var < totalPlayers; ++var) {
+    for (uint32_t var = 0; var < totalOpponents; ++var) {
 
         for (uint32_t j = 0; j < cardsToGive; ++j ) {
 
@@ -1726,7 +1617,7 @@ void The_Game::GivingCardsToPlayers()
         }
     }
 
-    ui->CardStacksWidget->updateDoorsLeft(initialSizeDoors - cardsToGive*m_number_of_players);
+    ui->CardStacksWidget->updateDoorsLeft(initialSizeDoors - cardsToGive*(_gameSettings.maximumNumberOfPlayers()));
     qDebug() << "Doors are given to the players!";
 
     //treasures..
@@ -1737,7 +1628,7 @@ void The_Game::GivingCardsToPlayers()
     }
 
     //giving cards to the other players...
-    for (unsigned int var = 0; var < totalPlayers; ++var) {
+    for (unsigned int var = 0; var < totalOpponents; ++var) {
 
         for (unsigned int j = 0; j < cardsToGive; ++j ) {
 
@@ -1747,7 +1638,7 @@ void The_Game::GivingCardsToPlayers()
     }
     qDebug() << "Treasures are given to the players!";
 
-    ui->CardStacksWidget->updateTreasuresLeft(initialSizeTreasures - cardsToGive*m_number_of_players);
+    ui->CardStacksWidget->updateTreasuresLeft(initialSizeTreasures - cardsToGive*_gameSettings.maximumNumberOfPlayers());
 #endif
 }
 
@@ -2197,60 +2088,6 @@ void The_Game::RedrawGUIAccordingToCurrentSettings(uint32_t windowHeight, uint32
     SetUpOpponents(windowHeight, windowWidth);
 }
 
-void The_Game::DEBUGSetUpOpponents(uint32_t windowHeight, uint32_t windowWidth)
-{
-    //creating opponents
-    //remember, opponents less by 1 than total amount of players
-    //opponets
-
-    _players_opponents.push_back(_opponent0);
-    _players_opponents.push_back(_opponent1);
-    _players_opponents.push_back(_opponent2);
-    _players_opponents.push_back(_opponent3);
-    _players_opponents.push_back(_opponent4);
-
-    //widgets for them
-    for (unsigned int j = 0; j < m_number_of_players - 1; j++)
-    {
-        _widgets4Opponents.push_back(new GamerWidget);
-        _widgets4Opponents.back()->redraw_as_a_secondary_player();
-        _widgets4Opponents.back()->setIs_MainPlayer(false);
-
-    }
-    //first two of them to the top layout
-    //fixed numbers, they are allways there
-    ui->top_opponents_layout->addWidget(_widgets4Opponents[0]);
-    ui->top_opponents_layout->addWidget(_widgets4Opponents[1]);
-
-    //if there is(are) some other players, add them to the right_side layout
-    if (m_number_of_players - 3 > 0) {
-        for (unsigned int i = 0; i < m_number_of_players - 3; i++) {
-            ui->right_side_opponents_layout->addWidget(_widgets4Opponents[2+i]);
-        }
-    }
-
-    //resizing 'em all
-    for (unsigned int j = 0; j < m_number_of_players - 1; j++) {
-
-        _widgets4Opponents[j]->setMinimumHeight(koeff_GamerWidget_size_Height*windowHeight);
-        _widgets4Opponents[j]->setMaximumHeight(koeff_GamerWidget_size_Height*windowHeight);
-        _widgets4Opponents[j]->setMaximumWidth((koeff_GamerWidget_size_Width+SecondaryGamerWidgetWidthExpansion)*windowWidth);
-
-    }
-
-//    qDebug() << "Maximum Height of the Gamer_Widget: " << koeff_GamerWidget_size_Height*windowHeight;
-//    qDebug() << "Maximum Width of the Gamer_Widget: " << koeff_GamerWidget_size_Width*windowWidth;
-
-#ifdef DEBUG_NO_SERVER
-
-    for (unsigned int var = 0; var < _widgets4Opponents.size(); ++var)
-    {
-        connect(_widgets4Opponents[var], &GamerWidget::SignalRepresentTheCardInCentre, this, &The_Game::SlotShowTheCardInCentre);
-        connect(_widgets4Opponents[var], &GamerWidget::SignalHideTheCardInCentre, this, &The_Game::SlotHideTheCardInCentre);
-    }
-
-#endif
-}
 
 void The_Game::SetUpOpponents(uint32_t windowHeight, uint32_t windowWidth)
 {
@@ -2330,10 +2167,15 @@ void The_Game::SetUpOpponents(uint32_t windowHeight, uint32_t windowWidth)
 #endif
 }
 
-void The_Game::DEBUGSetUpWidgetsRelations(uint32_t windowHeight, uint32_t windowWidth)
+void The_Game::SetUpWidgetsProperties(uint32_t windowHeight, uint32_t windowWidth)
 {
     //setting up the GUI staff
     //Defining its coefficients with respect to the total size of availible field;
+
+    //setting MainGamer
+    ui->MainGamer->setIs_MainPlayer(true);
+    //hide Secondary Hand Widget;
+    ui->MainGamer->HideHandSecondaryPlayerWidget();
 
     ui->GameField->setMinimumWidth(koeff_GameField_size*windowWidth);
     ui->GameField->setMinimumHeight(koeff_GameField_size*windowHeight);
@@ -2358,7 +2200,92 @@ void The_Game::DEBUGSetUpWidgetsRelations(uint32_t windowHeight, uint32_t window
 //    ui->GameInfoBox->setMaximumHeight(koeff_GameInfoBox_size_Height*windowHeight);
 
 //    ui->GameInfoBox->setMinimumWidth(koeff_GameInfoBox_size_Width*windowWidth);
-//    ui->GameInfoBox->setMaximumWidth(koeff_GameInfoBox_size_Width*windowWidth);
+    //    ui->GameInfoBox->setMaximumWidth(koeff_GameInfoBox_size_Width*windowWidth);
+}
+
+void The_Game::MainParser()
+{
+#ifndef USE_RESOURCES
+
+    theMonstersParser("Tables/cards_doors_monsters.csv");
+    qDebug() << "Monsters parsing complete!";
+
+    theAmplifiersParser("Tables/cards_doors_amplifiers.csv");
+    qDebug() << "Amplifiers parsing complete!";
+
+    theCursesParser("Tables/cards_doors_curses.csv");
+    qDebug() << "Curses parsing complete!";
+
+    theProfessionsParser("Tables/cards_doors_professions.csv");
+    qDebug() << "Professions parsing complete!";
+
+    theRacesParser("Tables/cards_doors_races.csv");
+    qDebug() << "Races parsing complete!";
+
+    theSpecialMechanicsParser("Tables/cards_doors_specialmechanics.csv");
+    qDebug() << "Special mechanics parsing complete!";
+
+    theArmorsParser("Tables/cards_treasures_armor.csv");
+    qDebug() << "Armor parsing complete!";
+
+    theArmorAmplifiersParser("Tables/cards_treasures_armorAmplifiers.csv");
+    qDebug() << "ArmorAmplifiers parsing complete!";
+
+    theBattleAmplifiersParser("Tables/cards_treasures_battleAmplifiers.csv");
+    qDebug() << "BattleAmplifiers parsing complete!";
+
+    theLevelUpParser("Tables/cards_treasures_levelUp.csv");
+    qDebug() << "LevelUps parsing complete!";
+
+    theSpecialMechanicTreasureParser("Tables/cards_treasures_specialMechanics.csv");
+    qDebug() << "SpecialMechanicsTreasures parsing complete!";
+
+    theThingsAmplifiersParser("Tables/cards_treasures_thingsAmplifiers.csv");
+    qDebug() << "ThingsAmplifiers parsing complete!";
+
+    theWeaponParser("Tables/cards_treasures_Weapon.csv");
+    qDebug() << "Weapons parsing complete!";
+
+#else
+    theMonstersParser(":/Tables/cards_doors_monsters.csv");
+    qDebug() << "Monsters parsing complete!";
+
+    theAmplifiersParser(":/Tables/cards_doors_amplifiers.csv");
+    qDebug() << "Amplifiers parsing complete!";
+
+    theCursesParser(":/Tables/cards_doors_curses.csv");
+    qDebug() << "Curses parsing complete!";
+
+    theProfessionsParser(":/Tables/cards_doors_professions.csv");
+    qDebug() << "Professions parsing complete!";
+
+    theRacesParser(":/Tables/cards_doors_races.csv");
+    qDebug() << "Races parsing complete!";
+
+    theSpecialMechanicsParser(":/Tables/cards_doors_specialmechanics.csv");
+    qDebug() << "Special mechanics parsing complete!";
+
+    theArmorsParser(":/Tables/cards_treasures_armor.csv");
+    qDebug() << "Armor parsing complete!";
+
+    theArmorAmplifiersParser(":/Tables/cards_treasures_armorAmplifiers.csv");
+    qDebug() << "ArmorAmplifiers parsing complete!";
+
+    theBattleAmplifiersParser(":/Tables/cards_treasures_battleAmplifiers.csv");
+    qDebug() << "BattleAmplifiers parsing complete!";
+
+    theLevelUpParser(":/Tables/cards_treasures_levelUp.csv");
+    qDebug() << "LevelUps parsing complete!";
+
+    theSpecialMechanicTreasureParser(":/Tables/cards_treasures_specialMechanics.csv");
+    qDebug() << "SpecialMechanicsTreasures parsing complete!";
+
+    theThingsAmplifiersParser(":/Tables/cards_treasures_thingsAmplifiers.csv");
+    qDebug() << "ThingsAmplifiers parsing complete!";
+
+    theWeaponParser(":/Tables/cards_treasures_Weapon.csv");
+    qDebug() << "Weapons parsing complete!";
+#endif
 }
 
 unsigned int The_Game::doorsLeft() const
