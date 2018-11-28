@@ -454,15 +454,15 @@ void GamerWidget::_adjustSizeSlot()
 {
     QWidget::adjustSize();
     //ui->widget->adjustSize(true);
-    emit _signalAdjustSize(true);
+    emit SignalAdjustSize(true);
 }
 
 void GamerWidget::_slotSendTheCardToTheGameCheck(PositionedCard card)
 {
-    emit _signalSendTheCardToTheGameCheck(card);
+    emit SignalSendTheCardToTheGameCheck(card);
 }
 
-void GamerWidget::_slotCardIsRejectedToBePlayed(bool rejected)
+void GamerWidget::SlotCardIsRejectedToBePlayed(bool rejected)
 {
     emit _signalCardIsRejectedToBePlayed(rejected);
 }

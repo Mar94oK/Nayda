@@ -200,7 +200,7 @@ public slots:
 
 signals:
 
-    void _signalAdjustSize(bool);
+    void SignalAdjustSize(bool);
 
 public slots:
 
@@ -208,11 +208,11 @@ public slots:
 
 signals:
 
-    void _signalSendTheCardToTheGameCheck(PositionedCard);
+    void SignalSendTheCardToTheGameCheck(PositionedCard);
 
 public slots:
 
-    void _slotCardIsRejectedToBePlayed(bool);
+    void SlotCardIsRejectedToBePlayed(bool);
 
 signals:
 

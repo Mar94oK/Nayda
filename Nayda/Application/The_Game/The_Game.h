@@ -306,11 +306,11 @@ private:
 
 public slots:
 
-    void _adjustSizeOfTheGamerWidgetToMakeCardsToBeInPlace();
+    void SlotAdjustSizeOfTheGamerWidgetToMakeCardsToBeInPlace();
 
 public slots:
 
-    void _slotCheckThePossibilityForTheCardToBePlayed(PositionedCard card);
+    void SlotCheckThePossibilityForTheCardToBePlayed(PositionedCard card);
 
 signals:
 
@@ -318,7 +318,7 @@ signals:
     //there are some sepecial functions, like Theft or upcoming fron the cards,
     //but all of them are targeted the cards to be fold or to be given to another Players.
     //Not To Be Played! (at least, as how it looks for me now, this moment)
-    void _signalCardIsRejectedToBePlayed(bool); //not necessary to send the card back;
+    void SignalCardIsRejectedToBePlayed(bool); //not necessary to send the card back;
                                           //the Hand property "CardIsReadyToBePlayed" is saving the current card;
 private:
 
@@ -327,11 +327,11 @@ private:
 
 private slots:
 
-    void _slotShowTheRejectedCardMessage(PositionedCard);
+    void SlotShowTheRejectedCardMessage(PositionedCard);
 
 private:
 
-    void _passTheCardToTheBattleField(PositionedCard);
+    void PassTheCardToTheBattleField(PositionedCard);
 
 public:
 
@@ -363,6 +363,11 @@ private:
     void SetUpOpponents(uint32_t windowHeight, uint32_t windowWidth);
     void SetUpWidgetsProperties(uint32_t windowHeight, uint32_t windowWidth);
     void MainParser();
+
+    void SetUpSignalSlotsConnections();
+    void InitializePopUpWidgets();
+    void SetUpBackgroundPicture();
+    void PassCardsToWidgets();
 
 private:
 

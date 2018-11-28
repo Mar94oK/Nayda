@@ -11,27 +11,13 @@ The_Game::The_Game(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    //Algorithm:
-    //1. Receive the size of the screen;
-    //2. Define sizes of an objects;
-    //3. Receive information about number of players from Before_the_Game
-    //                            and another game concepts;
-
-
-    //setup size before rescaling.
-    //resize will be allowed only for PC version and only for some preset definition
-
-#ifdef PC_VERSION
-    //some code
+    InitializePopUpWidgets();
+    SetUpBackgroundPicture();
 
     //find the HW size of the window
     QRect HW_Screen_Size = QApplication::desktop()->screenGeometry();
     uint32_t HW_Screen_Size_Width = HW_Screen_Size.width();
     uint32_t HW_Screen_Size_Heigh = HW_Screen_Size.height();
-
-#ifdef DEBUG_MESSAGES
-    qDebug() << "Available dimensions. Screen w = " << HW_Screen_Size_Width << " Screen h = " << HW_Screen_Size_Heigh;
-#endif
 
     //Regarding this note
     //https://stackoverflow.com/questions/44875309/why-does-qdesktopwidget-give-me-the-wrong-available-geometry-when-i-use-two-moni
@@ -39,49 +25,24 @@ The_Game::The_Game(QWidget *parent) :
     //make it 0.8 of height for example
 
 #ifdef __linux
-
     static_cast<uint32_t>(HW_Screen_Size_Heigh *= 0.9);
 //    static_cast<uint32_t>(HW_Screen_Size_Width *= 0.8);
-
-
 #endif
 
+    //1. SetUp Initial Signals-Slots connections
+    SetUpSignalSlotsConnections();
 
-#endif
-
-#ifdef MOBILE_VERSION
-    //some code
-#endif
-
-    //Settings-up the Randomization. Disable in the DEBUG
-    // Create seed for the random
-    // That is needed only once on application startup
-    //QTime time = QTime::currentTime();
-    //qsrand((uint)time.msec());
-    //Setting-up button's connections.
-
-    QObject::connect(ui->btn_switch_back, SIGNAL(clicked()), this, SLOT(hide()));
-    QObject::connect(this, SIGNAL(dbg_to_be_shown(bool)), this, SLOT(showFullScreen()));//SLOT(showFullScreen())) SLOT(show();
-    QObject::connect(ui->btn_switch_back, SIGNAL(clicked(bool)), this, SLOT(dbg_return_to_the_main_window()));
-
-    //Setting the in-Game connections with other Widgets
-    connect(ui->MainGamer, &GamerWidget::SignalRepresentTheCardInCentre, this, &The_Game::SlotShowTheCardInCentre);
-    connect(ui->MainGamer, &GamerWidget::SignalRepresentTheCardInCentre, this, &The_Game::SlotShowTheCardInGameInspector);
-    connect(ui->MainGamer, &GamerWidget::SignalHideTheCardInCentre, this, &The_Game::SlotHideTheCardInCentre);
-
-    ui->btn_switch_back->setMinimumWidth(koeff_GameInfoBox_size_Width*HW_Screen_Size_Width);
-    ui->btn_switch_back->setMaximumWidth(koeff_GameInfoBox_size_Width*HW_Screen_Size_Width);
-
+    //2. GUI Adjustment
     SetUpWidgetsProperties(HW_Screen_Size_Heigh, HW_Screen_Size_Width);
-    //DEBUGSetUpOpponents(HW_Screen_Size_Heigh, HW_Screen_Size_Width);
     RedrawGUIAccordingToCurrentSettings(HW_Screen_Size_Heigh, HW_Screen_Size_Width);
-    //filling up the monsters' stock!
+
+    //3. Parse cards
     MainParser();
 
-    //first pass there the Cards (after receiving them from server);
-    PassDecksToBattleField();
-    passDecksToPlayerWidgets();
-    PassDecksToCardsInspectorWidget();
+    // NAY-001: MARK_EXPECTED_IMPROVEMENT
+    //Here I should implement selection of the selected cards by the user.
+    //4. Pass cards to widgets to display
+    PassCardsToWidgets();
 
     //Алгоритм на будущее (когда настройки дополнений действительно будут работать)
     //Игра получает от Предыгры настройки
@@ -106,65 +67,6 @@ The_Game::The_Game(QWidget *parent) :
 
     //disbale CardRepresenter
     //_debugShowAllTheCards();
-    //create popUpCard Widget
-
-    _popUpCardWidget = new PopUpCard(this);
-    //create CardPointerWidget
-    _cardPointer = new TriangleCardPointer();
-    //pass the cards to PopUp Widget
-    PassDecksToPopUpCardWidget();
-    //pass the Cards to CardsStacks Widget
-    PassDecksToCardsStacksWidget();
-
-#ifndef USE_RESOURCES
-    QPixmap pxmpBattleField("Pictures/JorneyCover.png");
-#else
-    QPixmap pxmpBattleField(":/Pictures/JorneyCover.png");
-#endif
-
-    QPalette plte_battleField;
-    qDebug () << "Size: " << size();
-    plte_battleField.setBrush(QPalette::Background, QBrush(pxmpBattleField.scaled(HW_Screen_Size.width(),HW_Screen_Size.height(), Qt::KeepAspectRatio, Qt::SmoothTransformation)));
-    setPalette(plte_battleField);
-    setAutoFillBackground(true);
-
-
-#ifdef DEBUG_NO_DIALOG
-
-    //hide the Dialog
-    //ui->GameInfoBox->hide();
-
-#endif
-
-#ifdef DEBUG_NO_RETURN_TO_MENU
-
-    ui->btn_switch_back->hide();
-
-#endif
-
-   //trying to adjust the size of...
-    connect(ui->MainGamer, &GamerWidget::_signalAdjustSize, this, &The_Game::_adjustSizeOfTheGamerWidgetToMakeCardsToBeInPlace);
-
-
-
-    //connect theHand with checking the card slot;
-
-    connect(ui->MainGamer, &GamerWidget::_signalSendTheCardToTheGameCheck,
-            this, &The_Game::_slotCheckThePossibilityForTheCardToBePlayed);
-
-    //pass the answer form The_Game card check back to the Hand
-    connect(this, &The_Game::_signalCardIsRejectedToBePlayed,
-            ui->MainGamer, &GamerWidget::_slotCardIsRejectedToBePlayed);
-
-
-
-    //create RejectedCard Message
-
-    _rejectionCardMessage = new RejectedCardMessage();
-    _handCardPointer = new HandCardPointer();
-
-
-
 
     //change the Game Phase:
 
@@ -173,13 +75,6 @@ The_Game::The_Game(QWidget *parent) :
 
     //DEBUG!!!!
     _currentGamePhase = GamePhase::StartOfTheMove;
-
-
-    qDebug() << "NAY-001: Application available size X: " <<  QApplication::desktop()->availableGeometry().width();
-    qDebug() << "NAY-001: Application available size Y: " <<  QApplication::desktop()->availableGeometry().height();
-
-    qDebug() << "NAY-001: Application Screen Geometry size X: " <<  QApplication::desktop()->screenGeometry().width();
-    qDebug() << "NAY-001: Application Screen Geometry size Y: " <<  QApplication::desktop()->screenGeometry().height();
 
 }
 
@@ -1801,12 +1696,12 @@ void The_Game::SlotHideTheCardInCentre(bool)
     _cardPointer->hideAnimation();
 }
 
-void The_Game::_adjustSizeOfTheGamerWidgetToMakeCardsToBeInPlace()
+void The_Game::SlotAdjustSizeOfTheGamerWidgetToMakeCardsToBeInPlace()
 {
     ui->MainGamer->adjustSize();
 }
 
-void The_Game::_slotCheckThePossibilityForTheCardToBePlayed(PositionedCard card)
+void The_Game::SlotCheckThePossibilityForTheCardToBePlayed(PositionedCard card)
 {
     qDebug() << "The Card is checking!!!";
 
@@ -1818,21 +1713,21 @@ void The_Game::_slotCheckThePossibilityForTheCardToBePlayed(PositionedCard card)
         qDebug() << "The Game is in the GameInitialization or WaitingForAnOpponentToMove Phase. "
                     "Not possible to use cards!";
 
-        emit _signalCardIsRejectedToBePlayed(true);
+        emit SignalCardIsRejectedToBePlayed(true);
 
         //show the Rejection Message for the Card
-        _slotShowTheRejectedCardMessage(card);
+        SlotShowTheRejectedCardMessage(card);
     }
     else {
 
         //testing
 
-        _passTheCardToTheBattleField(card);
-        emit _signalCardIsRejectedToBePlayed(false);
+        PassTheCardToTheBattleField(card);
+        emit SignalCardIsRejectedToBePlayed(false);
     }
 }
 
-void The_Game::_slotShowTheRejectedCardMessage(PositionedCard card)
+void The_Game::SlotShowTheRejectedCardMessage(PositionedCard card)
 {
 //    _rejectionCardMessage->setPopupText("The Card Can not be played \n"
 //                                        "Now!");
@@ -1844,7 +1739,7 @@ void The_Game::_slotShowTheRejectedCardMessage(PositionedCard card)
 
 }
 
-void The_Game::_passTheCardToTheBattleField(PositionedCard card)
+void The_Game::PassTheCardToTheBattleField(PositionedCard card)
 {
     QPushButton* _movingCard = new QPushButton("Animated Button", this);
     _movingCard->move(card.GetPositionTopLeft().x(), card.GetPositionTopLeft().y());
@@ -2172,6 +2067,10 @@ void The_Game::SetUpWidgetsProperties(uint32_t windowHeight, uint32_t windowWidt
     //setting up the GUI staff
     //Defining its coefficients with respect to the total size of availible field;
 
+#ifdef DEBUG_NO_RETURN_TO_MENU
+    ui->btn_switch_back->hide();
+#endif
+
     //setting MainGamer
     ui->MainGamer->setIs_MainPlayer(true);
     //hide Secondary Hand Widget;
@@ -2181,6 +2080,9 @@ void The_Game::SetUpWidgetsProperties(uint32_t windowHeight, uint32_t windowWidt
     ui->GameField->setMinimumHeight(koeff_GameField_size*windowHeight);
 
     ui->MainGamer->setMinimumHeight(koeff_GamerWidget_size_Height*windowHeight);
+
+    ui->btn_switch_back->setMinimumWidth(koeff_GameInfoBox_size_Width*windowWidth);
+    ui->btn_switch_back->setMaximumWidth(koeff_GameInfoBox_size_Width*windowWidth);
 
     //trying to disable the maximum size of the MainGamerHeight
     //ui->MainGamer->setMaximumHeight(koeff_GamerWidget_size_Height*HW_Screen_Size_Heigh);
@@ -2286,6 +2188,66 @@ void The_Game::MainParser()
     theWeaponParser(":/Tables/cards_treasures_Weapon.csv");
     qDebug() << "Weapons parsing complete!";
 #endif
+}
+
+void The_Game::SetUpSignalSlotsConnections()
+{
+    QObject::connect(ui->btn_switch_back, SIGNAL(clicked()), this, SLOT(hide()));
+    QObject::connect(this, SIGNAL(dbg_to_be_shown(bool)), this, SLOT(showFullScreen()));//SLOT(showFullScreen())) SLOT(show();
+    QObject::connect(ui->btn_switch_back, SIGNAL(clicked(bool)), this, SLOT(dbg_return_to_the_main_window()));
+
+    //Setting the in-Game connections with other Widgets
+    connect(ui->MainGamer, &GamerWidget::SignalRepresentTheCardInCentre, this, &The_Game::SlotShowTheCardInCentre);
+    connect(ui->MainGamer, &GamerWidget::SignalRepresentTheCardInCentre, this, &The_Game::SlotShowTheCardInGameInspector);
+    connect(ui->MainGamer, &GamerWidget::SignalHideTheCardInCentre, this, &The_Game::SlotHideTheCardInCentre);
+
+    //trying to adjust the size of...
+    connect(ui->MainGamer, &GamerWidget::SignalAdjustSize, this, &The_Game::SlotAdjustSizeOfTheGamerWidgetToMakeCardsToBeInPlace);
+
+    //connect theHand with checking the card slot;
+    connect(ui->MainGamer, &GamerWidget::SignalSendTheCardToTheGameCheck, this, &The_Game::SlotCheckThePossibilityForTheCardToBePlayed);
+    //pass the answer form The_Game card check back to the Hand
+    connect(this, &The_Game::SignalCardIsRejectedToBePlayed, ui->MainGamer, &GamerWidget::SlotCardIsRejectedToBePlayed);
+}
+
+void The_Game::InitializePopUpWidgets()
+{
+    //create popUpCard Widget
+    _popUpCardWidget = new PopUpCard(this);
+    //create CardPointerWidget
+    _cardPointer = new TriangleCardPointer();
+
+    _rejectionCardMessage = new RejectedCardMessage();
+    _handCardPointer = new HandCardPointer();
+
+}
+
+void The_Game::SetUpBackgroundPicture()
+{
+#ifndef USE_RESOURCES
+    QPixmap pxmpBattleField("Pictures/JorneyCover.png");
+#else
+    QPixmap pxmpBattleField(":/Pictures/JorneyCover.png");
+#endif
+
+    //find the HW size of the window
+    QRect HW_Screen_Size = QApplication::desktop()->screenGeometry();
+
+    QPalette plte_battleField;
+    qDebug () << "Size: " << size();
+    plte_battleField.setBrush(QPalette::Background, QBrush(pxmpBattleField.scaled(HW_Screen_Size.width(),HW_Screen_Size.height(), Qt::KeepAspectRatio, Qt::SmoothTransformation)));
+    setPalette(plte_battleField);
+    setAutoFillBackground(true);
+
+}
+
+void The_Game::PassCardsToWidgets()
+{
+    PassDecksToBattleField();
+    passDecksToPlayerWidgets();
+    PassDecksToCardsInspectorWidget();
+    PassDecksToPopUpCardWidget();
+    PassDecksToCardsStacksWidget();
 }
 
 unsigned int The_Game::doorsLeft() const
