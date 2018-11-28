@@ -25,7 +25,7 @@ The_Game::The_Game(QWidget *parent) :
     //make it 0.8 of height for example
 
 #ifdef __linux
-    static_cast<uint32_t>(HW_Screen_Size_Heigh *= 0.9);
+//    static_cast<uint32_t>(HW_Screen_Size_Heigh *= 0.9);
 //    static_cast<uint32_t>(HW_Screen_Size_Width *= 0.8);
 #endif
 
@@ -61,19 +61,16 @@ The_Game::The_Game(QWidget *parent) :
     //При начале игры передать эти цифры каждому клиенту
     //Далее ими управляет уже непосредственно клиент
 
-    DEBUGformingInitialDecks();
-    GivingCardsToPlayers();
-    ShowInitialCardsOnHands();
+
+    //Here was the setting up of cards and showing initials.
+    //Now to make it in a special viewing Slots.
+
 
     //disbale CardRepresenter
     //_debugShowAllTheCards();
 
     //change the Game Phase:
-
-    //DEBUG!!!!
     _currentGamePhase = GamePhase::GameInitialization;
-
-    //DEBUG!!!!
     _currentGamePhase = GamePhase::StartOfTheMove;
 
 }
@@ -1640,10 +1637,8 @@ void The_Game::theMonstersParser(const QString &filename)
             QStringList lst = str.split(";");
 
             _monstersDeck.insert({(lst.first()).toInt(),monsterStringParser(str)});
-
         }
     }
-
     else
     {
         qDebug()<< "Cannot open this file!";
@@ -1651,14 +1646,17 @@ void The_Game::theMonstersParser(const QString &filename)
 }
 
 
-void The_Game::dbg_was_pushed_to_game_mode()
-{
-    emit dbg_to_be_shown(true);
+void The_Game::DEBUG_SlotWasPushedToGameMode()
+{   
+    DEBUGformingInitialDecks();
+    GivingCardsToPlayers();
+    ShowInitialCardsOnHands();
+    emit DEBUG_SignalToBeShown(true);
 }
 
 void The_Game::dbg_return_to_the_main_window()
 {
-    emit dbg_return_to_before_the_game(true);
+    emit DEBUG_ReturnToBeforeTheGame(true);
 }
 
 void The_Game::SlotShowTheCardInCentre(PositionedCard card)
@@ -1725,6 +1723,14 @@ void The_Game::SlotCheckThePossibilityForTheCardToBePlayed(PositionedCard card)
         PassTheCardToTheBattleField(card);
         emit SignalCardIsRejectedToBePlayed(false);
     }
+}
+
+void The_Game::SlotServerReportsTheGameIsAboutToStart(const TheGameIsAboutToStartData &data)
+{
+    FormingInitialDecks(data.positionsDoors, data.positionsTreasures);
+    GivingCardsToPlayers();
+    ShowInitialCardsOnHands();
+    showFullScreen();
 }
 
 void The_Game::SlotShowTheRejectedCardMessage(PositionedCard card)
@@ -2095,8 +2101,8 @@ void The_Game::SetUpWidgetsProperties(uint32_t windowHeight, uint32_t windowWidt
     ui->TimersWidget->setMinimumHeight(koeff_GameTimers_size_Height*windowHeight);
     ui->TimersWidget->setMaximumHeight(koeff_GameTimers_size_Height*windowHeight);
 
-    ui->TimersWidget->setMinimumWidth(koeff_GameTimers_size_Width*windowWidth);
-    ui->TimersWidget->setMaximumWidth(koeff_GameTimers_size_Width*windowWidth);
+    ui->wdgt_Chart->setMinimumWidth(koeff_GameTimers_size_Width*windowWidth);
+    ui->wdgt_Chart->setMaximumWidth(koeff_GameTimers_size_Width*windowWidth);
 
 //    ui->GameInfoBox->setMinimumHeight(koeff_GameInfoBox_size_Height*windowHeight);
 //    ui->GameInfoBox->setMaximumHeight(koeff_GameInfoBox_size_Height*windowHeight);
@@ -2193,7 +2199,7 @@ void The_Game::MainParser()
 void The_Game::SetUpSignalSlotsConnections()
 {
     QObject::connect(ui->btn_switch_back, SIGNAL(clicked()), this, SLOT(hide()));
-    QObject::connect(this, SIGNAL(dbg_to_be_shown(bool)), this, SLOT(showFullScreen()));//SLOT(showFullScreen())) SLOT(show();
+    QObject::connect(this, &The_Game::DEBUG_SignalToBeShown, this, &The_Game::showFullScreen);//SLOT(showFullScreen())) SLOT(show();
     QObject::connect(ui->btn_switch_back, SIGNAL(clicked(bool)), this, SLOT(dbg_return_to_the_main_window()));
 
     //Setting the in-Game connections with other Widgets

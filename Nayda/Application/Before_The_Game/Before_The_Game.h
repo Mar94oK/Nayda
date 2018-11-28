@@ -42,7 +42,7 @@ public:
 
 signals:
 
-    void dbg_switch_to_game_mode(bool);
+    void DEBUG_SignalSwitchToGameMode(bool);
     void dbg_the_game_begins(bool);
 
     void update_game_options_number_of_players (int number_of_players);

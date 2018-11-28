@@ -9,9 +9,8 @@ SystemManager::SystemManager(Before_The_Game * beforeTheGame,
     m_theGamePtr = theGame;
     
     //QObject::connect((m_before_the_game_ptr->getUi()));
-    QObject::connect(m_beforeTheGamePtr, SIGNAL(dbg_switch_to_game_mode(bool)),
-                     m_theGamePtr, SLOT(dbg_was_pushed_to_game_mode()));
-    QObject::connect(m_theGamePtr, SIGNAL(dbg_return_to_before_the_game(bool)),m_beforeTheGamePtr, SLOT(show()));
+    QObject::connect(m_beforeTheGamePtr, &Before_The_Game::DEBUG_SignalSwitchToGameMode, m_theGamePtr, &The_Game::DEBUG_SlotWasPushedToGameMode);
+    QObject::connect(m_theGamePtr, &The_Game::DEBUG_ReturnToBeforeTheGame, m_beforeTheGamePtr, &Before_The_Game::show);
     QObject::connect(m_beforeTheGamePtr, &Before_The_Game::sig_userHaveChangedServerSettings, m_serverPtr, &Server::slot_saveServerSettings);
     QObject::connect(m_beforeTheGamePtr, &Before_The_Game::SignalSetUpConnection, m_serverPtr, &Server::SlotSetUpConnection);
     QObject::connect(m_beforeTheGamePtr, &Before_The_Game::sig_sendTestDataToServer, m_serverPtr, &Server::SlotSendTestDataToServer);
@@ -40,10 +39,9 @@ SystemManager::SystemManager(Before_The_Game * beforeTheGame,
     QObject::connect(m_serverPtr, &Server::SignalProcessServerReportsRoomHasChangedOwner, m_beforeTheGamePtr, &Before_The_Game::SlotProcessServerReportsRoomHasChangedOwner);
     QObject::connect(m_serverPtr, &Server::SignalServerReportsTheGameIsAboutToStart, m_beforeTheGamePtr, &Before_The_Game::SlotServerReportsTheGameIsAboutToStart);
 
-
     //Set-Up Settings
     QObject::connect(m_serverPtr, &Server::SignalServerHasChangedGameSettings, m_theGamePtr, &The_Game::SlotSetUpGameSettings);
     QObject::connect(m_beforeTheGamePtr, &Before_The_Game::SignalUserHaveChagedGameSettigs, m_theGamePtr, &The_Game::SlotSetUpGameSettings);
-
+    QObject::connect(m_serverPtr, &Server::SignalServerReportsTheGameIsAboutToStart, m_theGamePtr, &The_Game::SlotServerReportsTheGameIsAboutToStart);
 
 }

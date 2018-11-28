@@ -230,12 +230,12 @@ public:
     void setDoorsLeft(unsigned int doorsLeft);
 
 signals:
-    void dbg_to_be_shown(bool);
-    void dbg_return_to_before_the_game(bool);
+    void DEBUG_SignalToBeShown(bool);
+    void DEBUG_ReturnToBeforeTheGame(bool);
 
 public slots:
 
-    void dbg_was_pushed_to_game_mode();
+    void DEBUG_SlotWasPushedToGameMode();
     void dbg_return_to_the_main_window();
 
 public slots:
@@ -307,19 +307,28 @@ private:
 public slots:
 
     void SlotAdjustSizeOfTheGamerWidgetToMakeCardsToBeInPlace();
-
-public slots:
-
     void SlotCheckThePossibilityForTheCardToBePlayed(PositionedCard card);
 
 signals:
 
     //looks like it is only the Hand from where the card can be played
-    //there are some sepecial functions, like Theft or upcoming fron the cards,
+    //there are some sepecial functions, like Theft or upcoming from the cards,
     //but all of them are targeted the cards to be fold or to be given to another Players.
     //Not To Be Played! (at least, as how it looks for me now, this moment)
     void SignalCardIsRejectedToBePlayed(bool); //not necessary to send the card back;
                                           //the Hand property "CardIsReadyToBePlayed" is saving the current card;
+
+//ServerRelated
+public slots:
+
+    void SlotServerReportsTheGameIsAboutToStart(const TheGameIsAboutToStartData& data);
+
+//ServerRelated
+signals:
+
+
+
+
 private:
 
     RejectedCardMessage* _rejectionCardMessage;
