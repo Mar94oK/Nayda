@@ -49,30 +49,13 @@
           </property>
          </widget>
         </item>
+        <item>
+         <widget class="MunchkinDialog" name="wdgt_Chart" native="true"/>
+        </item>
        </layout>
       </item>
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_6">
-        <item>
-         <widget class="GameTimers" name="TimersWidget" native="true">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>1</verstretch>
-           </sizepolicy>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="GameInfoWidget" name="GameInfoBox" native="true">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>3</verstretch>
-           </sizepolicy>
-          </property>
-         </widget>
-        </item>
         <item>
          <widget class="CardInspector" name="wdgt_CardInspector" native="true">
           <property name="sizePolicy">
@@ -82,6 +65,9 @@
            </sizepolicy>
           </property>
          </widget>
+        </item>
+        <item>
+         <widget class="GameTimers" name="TimersWidget" native="true"/>
         </item>
        </layout>
       </item>
@@ -154,12 +140,6 @@
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>GameInfoWidget</class>
-   <extends>QWidget</extends>
-   <header location="global">gameinfowidget.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>battleField</class>
    <extends>QWidget</extends>
    <header location="global">battlefield.h</header>
@@ -175,6 +155,12 @@
    <class>CardInspector</class>
    <extends>QWidget</extends>
    <header location="global">cardinspector.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>MunchkinDialog</class>
+   <extends>QWidget</extends>
+   <header location="global">munchkindialog.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

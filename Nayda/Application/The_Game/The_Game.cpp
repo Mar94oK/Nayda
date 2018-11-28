@@ -228,7 +228,7 @@ The_Game::The_Game(QWidget *parent) :
 #ifdef DEBUG_NO_DIALOG
 
     //hide the Dialog
-    ui->GameInfoBox->hide();
+    //ui->GameInfoBox->hide();
 
 #endif
 
@@ -2247,11 +2247,11 @@ void The_Game::DEBUGSetUpWidgetsRelations(uint32_t windowHeight, uint32_t window
     ui->TimersWidget->setMinimumWidth(koeff_GameTimers_size_Width*windowWidth);
     ui->TimersWidget->setMaximumWidth(koeff_GameTimers_size_Width*windowWidth);
 
-    ui->GameInfoBox->setMinimumHeight(koeff_GameInfoBox_size_Height*windowHeight);
-    ui->GameInfoBox->setMaximumHeight(koeff_GameInfoBox_size_Height*windowHeight);
+//    ui->GameInfoBox->setMinimumHeight(koeff_GameInfoBox_size_Height*windowHeight);
+//    ui->GameInfoBox->setMaximumHeight(koeff_GameInfoBox_size_Height*windowHeight);
 
-    ui->GameInfoBox->setMinimumWidth(koeff_GameInfoBox_size_Width*windowWidth);
-    ui->GameInfoBox->setMaximumWidth(koeff_GameInfoBox_size_Width*windowWidth);
+//    ui->GameInfoBox->setMinimumWidth(koeff_GameInfoBox_size_Width*windowWidth);
+//    ui->GameInfoBox->setMaximumWidth(koeff_GameInfoBox_size_Width*windowWidth);
 }
 
 unsigned int The_Game::doorsLeft() const
