@@ -33,6 +33,19 @@ The_Game::The_Game(QWidget *parent) :
     qDebug() << "Available dimensions. Screen w = " << HW_Screen_Size_Width << " Screen h = " << HW_Screen_Size_Heigh;
 #endif
 
+    //Regarding this note
+    //https://stackoverflow.com/questions/44875309/why-does-qdesktopwidget-give-me-the-wrong-available-geometry-when-i-use-two-moni
+    //It is necessary to adjust size while using Linux internally.
+    //make it 0.8 of height for example
+
+#ifdef __linux
+
+    static_cast<uint32_t>(HW_Screen_Size_Heigh *= 0.9);
+//    static_cast<uint32_t>(HW_Screen_Size_Width *= 0.8);
+
+
+#endif
+
 
 #endif
 
@@ -270,6 +283,12 @@ The_Game::The_Game(QWidget *parent) :
     //DEBUG!!!!
     _currentGamePhase = GamePhase::StartOfTheMove;
 
+
+    qDebug() << "NAY-001: Application available size X: " <<  QApplication::desktop()->availableGeometry().width();
+    qDebug() << "NAY-001: Application available size Y: " <<  QApplication::desktop()->availableGeometry().height();
+
+    qDebug() << "NAY-001: Application Screen Geometry size X: " <<  QApplication::desktop()->screenGeometry().width();
+    qDebug() << "NAY-001: Application Screen Geometry size Y: " <<  QApplication::desktop()->screenGeometry().height();
 
 }
 
@@ -1872,8 +1891,8 @@ void The_Game::SlotShowTheCardInCentre(PositionedCard card)
     _popUpCardWidget->show(card.GetPositionTopLeft(), card.GetPositionBottomRight());
 #endif
 
-    qDebug() << "SlotShowTheCardInCentre() cardPositionTopLeft = " << card.GetPositionTopLeft();
-    qDebug() << "SlotShowTheCardInCentre() positionBottomRight = " << card.GetPositionBottomRight();
+//    qDebug() << "SlotShowTheCardInCentre() cardPositionTopLeft = " << card.GetPositionTopLeft();
+//    qDebug() << "SlotShowTheCardInCentre() positionBottomRight = " << card.GetPositionBottomRight();
 
     _cardPointer->setUpTriangleCardPointer(card.GetPositionTopLeft(), card.GetPositionBottomRight());
     _cardPointer->show(card.GetPositionTopLeft(), card.GetPositionBottomRight());
@@ -1883,7 +1902,6 @@ void The_Game::SlotShowTheCardInGameInspector(PositionedCard card)
 {
     ui->wdgt_CardInspector->SlotSetUpSimpleCardToShow(card);
 }
-
 
 
 void The_Game::hideTheCardInCentre(bool)

@@ -140,10 +140,10 @@ void PopUpCard::show(QPoint positionTopLeft, QPoint positionBottomRight)
     _positionBottomRight = positionBottomRight;
     _positionTopLeft = positionTopLeft;
 
-    qDebug() << "NAY-001: PopUpCard::show() Geometry POS TOP LEFT X: " << _positionTopLeft.x();
-    qDebug() << "NAY-001: PopUpCard::show() Geometry POS TOP LEFT Y: " << _positionTopLeft.y();
-    qDebug() << "NAY-001: PopUpCard::show() Geometry POS BOT RIGHT X: " << _positionTopLeft.x();
-    qDebug() << "NAY-001: PopUpCard::show() Geometry POS BOT RIGHT Y: " << _positionBottomRight.y();
+//    qDebug() << "NAY-001: PopUpCard::show() Geometry POS TOP LEFT X: " << _positionTopLeft.x();
+//    qDebug() << "NAY-001: PopUpCard::show() Geometry POS TOP LEFT Y: " << _positionTopLeft.y();
+//    qDebug() << "NAY-001: PopUpCard::show() Geometry POS BOT RIGHT X: " << _positionTopLeft.x();
+//    qDebug() << "NAY-001: PopUpCard::show() Geometry POS BOT RIGHT Y: " << _positionBottomRight.y();
 
     //Check the position!
 
@@ -175,8 +175,8 @@ void PopUpCard::show(QPoint positionTopLeft, QPoint positionBottomRight)
                 width(),
                 height());
 
-    qDebug() << "NAY-001: PopUpCard::show() Geometry POS TOP LEFT X: " << xPos;
-    qDebug() << "NAY-001: PopUpCard::show() Geometry POS TOP LEFT Y: " << yPos;
+//    qDebug() << "NAY-001: PopUpCard::show() Geometry POS TOP LEFT X: " << xPos;
+//    qDebug() << "NAY-001: PopUpCard::show() Geometry POS TOP LEFT Y: " << yPos;
 
 //    resize(width(),
 //           height());
@@ -184,8 +184,8 @@ void PopUpCard::show(QPoint positionTopLeft, QPoint positionBottomRight)
     QWidget::show();                // Отображаем виджет, который полностью прозрачен
 
 
-    qDebug() << "NAY-001: PopUpCard::show() POS() X: " << pos().x();
-    qDebug() << "NAY-001: PopUpCard::show() POS() Y: " << pos().y();
+//    qDebug() << "NAY-001: PopUpCard::show() POS() X: " << pos().x();
+//    qDebug() << "NAY-001: PopUpCard::show() POS() Y: " << pos().y();
 
 
     animation.start();              // И запускаем анимацию
