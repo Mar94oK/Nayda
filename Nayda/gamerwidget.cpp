@@ -315,7 +315,7 @@ void GamerWidget::SlotRepresentTheCardInCentre()
     qDebug() << "POS X: " << ui->widget->pos().x();
     qDebug() << "POS Y: " << ui->widget->pos().y();
 
-    _currentCardToShowNearItsPosition.AddBase(ui->wt_CardsInGame->pos());
+//    _currentCardToShowNearItsPosition.AddBase(ui->wt_CardsInGame->pos());
     _currentCardToShowNearItsPosition.AddBase(pos());
     emit SignalRepresentTheCardInCentre(_currentCardToShowNearItsPosition);
 }
