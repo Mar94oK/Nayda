@@ -55,9 +55,8 @@ CardStacks::CardStacks(QWidget *parent) :
     ui->btn_TreasuresStack->setText("");
     //ui->btn_DoorsStack->installEventFilter(this);
 
-    if (_showTheNumberOfCardsLeft) {
+    if (_showTheNumberOfCardsLeft)
         ui->lbl_TreasuresStack->setText(QString::number(_treasuresLeft));
-    }
 
     //set Folds
 
