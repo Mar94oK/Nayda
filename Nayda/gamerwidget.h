@@ -103,7 +103,7 @@ private:
 signals:
 
     void SignalRepresentTheCardInCentre(PositionedCard);
-    void _hideTheCardInCentre(bool);
+    void SignalHideTheCardInCentre(bool);
 
 public slots:
 
@@ -195,7 +195,7 @@ private:
 
 public slots:
 
-    void _hideHandSecondaryPlayerWidget();
+    void HideHandSecondaryPlayerWidget();
     void _adjustSizeSlot();
 
 signals:

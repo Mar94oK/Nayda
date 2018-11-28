@@ -222,10 +222,6 @@ void GamerWidget::setWeaponsDeck(const std::map<int, gameCardTreasureWeapon> *we
     _weaponsDeck = weaponsDeck;
 }
 
-
-
-
-
 void GamerWidget::passCardsDecksToHandsWidget()
 {
 
@@ -274,7 +270,7 @@ bool GamerWidget::eventFilter(QObject *o, QEvent *e)
         else if (e->type() == QEvent::Leave) {
             qDebug() << "Mouse Leaves Area!";
             if (_showCardsTimer->isActive()) _showCardsTimer->stop();
-            emit _hideTheCardInCentre(true); //close the card!
+            emit SignalHideTheCardInCentre(true); //close the card!
             return true;
         }
         else {
@@ -297,7 +293,7 @@ bool GamerWidget::eventFilter(QObject *o, QEvent *e)
         else if (e->type() == QEvent::Leave) {
             qDebug() << "Mouse Leaves Area!";
             if (_showCardsTimer->isActive()) _showCardsTimer->stop();
-            emit _hideTheCardInCentre(true); //close the card!
+            emit SignalHideTheCardInCentre(true); //close the card!
             return true;
         }
         else {
@@ -336,7 +332,7 @@ void GamerWidget::SlotRepresentTheCardFromHandsInCentre(PositionedCard card)
 
 void GamerWidget::_hideTheCardInCentreSlot(bool)
 {
-    emit _hideTheCardInCentre(true);
+    emit SignalHideTheCardInCentre(true);
 }
 
 //Attention!!!
@@ -449,7 +445,7 @@ void GamerWidget::DEBUGSlotTestGamerBattlePower()
 
 }
 
-void GamerWidget::_hideHandSecondaryPlayerWidget()
+void GamerWidget::HideHandSecondaryPlayerWidget()
 {
     ui->wt_CardsOnHandsSecondary->hide();
 }

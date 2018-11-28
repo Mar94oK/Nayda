@@ -68,7 +68,7 @@ The_Game::The_Game(QWidget *parent) :
     //Setting the in-Game connections with other Widgets
     connect(ui->MainGamer, &GamerWidget::SignalRepresentTheCardInCentre, this, &The_Game::SlotShowTheCardInCentre);
     connect(ui->MainGamer, &GamerWidget::SignalRepresentTheCardInCentre, this, &The_Game::SlotShowTheCardInGameInspector);
-    connect(ui->MainGamer, &GamerWidget::_hideTheCardInCentre, this, &The_Game::hideTheCardInCentre);
+    connect(ui->MainGamer, &GamerWidget::SignalHideTheCardInCentre, this, &The_Game::SlotHideTheCardInCentre);
 
 //    connect(ui->MainGamer, &GamerWidget::_representTheCardNearItsPosition, this, &The_Game::showTheCardNearItsPosition);
 //    connect(ui->MainGamer, &GamerWidget::_hideTheCardNearItsPosition, this, &The_Game::hideTheCardInCentre);
@@ -91,11 +91,11 @@ The_Game::The_Game(QWidget *parent) :
     ui->MainGamer->setIs_MainPlayer(true);
 
     //hide Secondary Hand Widget;
-    ui->MainGamer->_hideHandSecondaryPlayerWidget();
+    ui->MainGamer->HideHandSecondaryPlayerWidget();
 
     DEBUGSetUpWidgetsRelations(HW_Screen_Size_Heigh, HW_Screen_Size_Width);
-
-    DEBUGSetUpOpponents(HW_Screen_Size_Heigh, HW_Screen_Size_Width);
+    //DEBUGSetUpOpponents(HW_Screen_Size_Heigh, HW_Screen_Size_Width);
+    RedrawGUIAccordingToCurrentSettings(HW_Screen_Size_Heigh, HW_Screen_Size_Width);
 
     //filling up the monsters' stock!
 
@@ -207,8 +207,8 @@ The_Game::The_Game(QWidget *parent) :
 
 
     DEBUGformingInitialDecks();
-    givingCardsToPlayers();
-    showInitialCardsOnHands();
+    GivingCardsToPlayers();
+    ShowInitialCardsOnHands();
 
     //disbale CardRepresenter
     //_debugShowAllTheCards();
@@ -1692,22 +1692,22 @@ const std::map<int, gameCardTreasureWeapon> *The_Game::weaponsDeck()
 //For the DEBUG version, it will give the numbers (cardIDs) to end-gamers directly.
 //No #ifdef directive for now.
 
-void The_Game::givingCardsToPlayers()
+void The_Game::GivingCardsToPlayers()
 {
 #ifdef DEBUG_NO_SERVER
 
     //define, how many players are presented;
     //this value is received once from server side and can't be changed during the game if only the player is leaving the game;
-    unsigned int totalPlayers = m_number_of_players; //6 as default
-    unsigned int cardsToGive = 4;
+    uint32_t totalPlayers = _gameSettings.maximumNumberOfPlayers() - 1; //6 as default
+    uint32_t cardsToGive = 4;
 
     //then it is necessary to give m_number_of_players*4 cards from doors stack, and
     //the same quantity from the Treasures stack.
 
     //start with the main player... (giving cards from the top)
 
-    unsigned int initialSizeDoors = _doorsDeck.size();
-    unsigned int initialSizeTreasures = _treasuresDeck.size();
+    uint32_t initialSizeDoors = _doorsDeck.size();
+    uint32_t initialSizeTreasures = _treasuresDeck.size();
 
     for (unsigned int var = 0; var < cardsToGive; ++var) {
 
@@ -1717,9 +1717,9 @@ void The_Game::givingCardsToPlayers()
 
     //giving cards to the other players...
 
-    for (unsigned int var = 0; var < m_number_of_players-1; ++var) {
+    for (uint32_t var = 0; var < totalPlayers; ++var) {
 
-        for (unsigned int j = 0; j < cardsToGive; ++j ) {
+        for (uint32_t j = 0; j < cardsToGive; ++j ) {
 
             _players_opponents[var].addCardToHands(_doorsDeck.front());
             _doorsDeck.erase(_doorsDeck.begin());
@@ -1730,14 +1730,14 @@ void The_Game::givingCardsToPlayers()
     qDebug() << "Doors are given to the players!";
 
     //treasures..
-    for (unsigned int var = 0; var < cardsToGive; ++var) {
-
+    for (uint32_t var = 0; var < cardsToGive; ++var)
+    {
         _main_player.addCardToHands(_treasuresDeck.front());
         _treasuresDeck.erase(_treasuresDeck.begin());
     }
 
     //giving cards to the other players...
-    for (unsigned int var = 0; var < m_number_of_players-1; ++var) {
+    for (unsigned int var = 0; var < totalPlayers; ++var) {
 
         for (unsigned int j = 0; j < cardsToGive; ++j ) {
 
@@ -1751,7 +1751,7 @@ void The_Game::givingCardsToPlayers()
 #endif
 }
 
-void The_Game::showInitialCardsOnHands()
+void The_Game::ShowInitialCardsOnHands()
 {
     qDebug() << "showInitialCardsOnHands:: Started";
     for (unsigned int var = 0; var < _main_player.cardsOnHandsVector()->size(); ++var)
@@ -1904,7 +1904,7 @@ void The_Game::SlotShowTheCardInGameInspector(PositionedCard card)
 }
 
 
-void The_Game::hideTheCardInCentre(bool)
+void The_Game::SlotHideTheCardInCentre(bool)
 {
     _popUpCardWidget->hideAnimation();
     _cardPointer->hideAnimation();
@@ -2129,6 +2129,9 @@ void The_Game::SlotGameInitialization(TheGameIsAboutToStartData data)
     //1. Initialize cards;
     FormingInitialDecks(data.positionsDoors, data.positionsTreasures);
 
+    //2. Redraw GUI regarding current GameSettings
+
+
 
 }
 
@@ -2186,6 +2189,14 @@ void The_Game::FormingInitialDecks(const std::vector<uint32_t> &doorsVector, con
 
 }
 
+void The_Game::RedrawGUIAccordingToCurrentSettings(uint32_t windowHeight, uint32_t windowWidth)
+{
+    //Hide absent players;
+    qDebug() << "NAY-001: GameSettings: Total Players: " << _gameSettings.maximumNumberOfPlayers();
+    //There should be opponents: N = MaximumNumberOFPLayers - 1;
+    SetUpOpponents(windowHeight, windowWidth);
+}
+
 void The_Game::DEBUGSetUpOpponents(uint32_t windowHeight, uint32_t windowWidth)
 {
     //creating opponents
@@ -2235,7 +2246,85 @@ void The_Game::DEBUGSetUpOpponents(uint32_t windowHeight, uint32_t windowWidth)
     for (unsigned int var = 0; var < _widgets4Opponents.size(); ++var)
     {
         connect(_widgets4Opponents[var], &GamerWidget::SignalRepresentTheCardInCentre, this, &The_Game::SlotShowTheCardInCentre);
-        connect(_widgets4Opponents[var], &GamerWidget::_hideTheCardInCentre, this, &The_Game::hideTheCardInCentre);
+        connect(_widgets4Opponents[var], &GamerWidget::SignalHideTheCardInCentre, this, &The_Game::SlotHideTheCardInCentre);
+    }
+
+#endif
+}
+
+void The_Game::SetUpOpponents(uint32_t windowHeight, uint32_t windowWidth)
+{
+    uint32_t totalOpponents = _gameSettings.maximumNumberOfPlayers() - 1;
+
+    qDebug() << "Total opponnets: " << totalOpponents;
+
+    switch (totalOpponents)
+    {
+    case 5:
+        _players_opponents.push_back(_opponent4);
+    case 4:
+        _players_opponents.push_back(_opponent3);
+    case 3:
+        _players_opponents.push_back(_opponent2);
+    case 2:
+        _players_opponents.push_back(_opponent1);
+    case 1:
+        _players_opponents.push_back(_opponent0);
+        break;
+    default:
+        qDebug() << "Unsupported number of players! : " << totalOpponents;
+        throw "Bad number of players. Unsupported!";
+        break;
+    }
+
+
+    //widgets for them
+    for (uint32_t var = 0; var < totalOpponents; var++)
+    {
+        _widgets4Opponents.push_back(new GamerWidget);
+        _widgets4Opponents.back()->redraw_as_a_secondary_player();
+        _widgets4Opponents.back()->setIs_MainPlayer(false);
+
+    }
+    //first two of them to the top layout
+    //fixed numbers, they are allways there
+    //other three on the left side.
+    //For debug there should be only 1 of opponents;
+
+    switch (totalOpponents)
+    {
+        case 2:
+            ui->top_opponents_layout->addWidget(_widgets4Opponents[1]);
+        case 1:
+            ui->top_opponents_layout->addWidget(_widgets4Opponents[0]);
+        break;
+
+    default:
+        qDebug() << "NAY-001: Go further, adding widgets to the right layout.";
+
+    }
+
+    //if there is(are) some other players, add them to the right_side layout
+    if (totalOpponents > 2)
+    {
+        for (uint32_t i = 0; i < totalOpponents - 3; i++)
+            ui->right_side_opponents_layout->addWidget(_widgets4Opponents[2+i]);
+    }
+
+    //resizing 'em all
+    for (uint32_t j = 0; j < totalOpponents - 1; j++)
+    {
+        _widgets4Opponents[j]->setMinimumHeight(koeff_GamerWidget_size_Height*windowHeight);
+        _widgets4Opponents[j]->setMaximumHeight(koeff_GamerWidget_size_Height*windowHeight);
+        _widgets4Opponents[j]->setMaximumWidth((koeff_GamerWidget_size_Width+SecondaryGamerWidgetWidthExpansion)*windowWidth);
+    }
+
+#ifdef DEBUG_NO_SERVER
+
+    for (unsigned int var = 0; var < _widgets4Opponents.size(); ++var)
+    {
+        connect(_widgets4Opponents[var], &GamerWidget::SignalRepresentTheCardInCentre, this, &The_Game::SlotShowTheCardInCentre);
+        connect(_widgets4Opponents[var], &GamerWidget::SignalHideTheCardInCentre, this, &The_Game::SlotHideTheCardInCentre);
     }
 
 #endif

@@ -219,9 +219,9 @@ public:
 
     //SERVREW
     //this method also sets the cards values (how many left in the deck)
-    void givingCardsToPlayers();
+    void GivingCardsToPlayers();
 
-    void showInitialCardsOnHands();
+    void ShowInitialCardsOnHands();
 
     unsigned int treasuresLeft() const;
     void setTreasuresLeft(unsigned int treasuresLeft);
@@ -243,7 +243,7 @@ public slots:
     void SlotShowTheCardInCentre(PositionedCard card);
     void SlotShowTheCardInGameInspector(PositionedCard card);
     //void showTheCardNearItsPosition(PositionedCard card);
-    void hideTheCardInCentre(bool);
+    void SlotHideTheCardInCentre(bool);
     //void hideTheCardNearItsPosition(bool);
     
 private:
@@ -265,6 +265,8 @@ private:
     Player _opponent2;
     Player _opponent3;
     Player _opponent4;
+
+    std::vector<Player* > _opponents;
 
     std::vector <Player> _players_opponents; //5 at all - Maximum according to current settings.
 
@@ -362,7 +364,11 @@ private:
     void FormingInitialDecks(const std::vector<uint32_t>& doorsVector,
                              const std::vector<uint32_t>& treasuresVector);
 
+    void RedrawGUIAccordingToCurrentSettings(uint32_t windowHeight, uint32_t windowWidth);
+
     void DEBUGSetUpOpponents(uint32_t windowHeight, uint32_t windowWidth);
+    void SetUpOpponents(uint32_t windowHeight, uint32_t windowWidth);
+
     void DEBUGSetUpWidgetsRelations(uint32_t windowHeight, uint32_t windowWidth);
 
 private:
