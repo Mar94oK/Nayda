@@ -171,6 +171,8 @@ and finally switch to THE GAME!!!!!
 Клиент сообщает о том, кто ходит первый.
 
 Первым ходит мастер.
+Завтра продолжить отсюда.
+connect(animation, &QPropertyAnimation::finished, [this, card] {SlotAddPlayedCardToTheBattleField(card.GetCard());});
 
 
 
