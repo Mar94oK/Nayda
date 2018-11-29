@@ -17,7 +17,7 @@ battleField::battleField(QWidget *parent) :
 
     SetWidgetsToStartUpPhase();
     SetUpSignalsSlotsConnections();
-    InitializeStartUpProcedureVisualization();
+    //InitializeStartUpProcedureVisualization();
 
 }
 

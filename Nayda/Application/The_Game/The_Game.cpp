@@ -1651,6 +1651,7 @@ void The_Game::DEBUG_SlotWasPushedToGameMode()
     DEBUGformingInitialDecks();
     GivingCardsToPlayers();
     ShowInitialCardsOnHands();
+    ui->GameField->InitializeStartUpProcedureVisualization();
     emit DEBUG_SignalToBeShown(true);
 }
 
@@ -1731,6 +1732,7 @@ void The_Game::SlotServerReportsTheGameIsAboutToStart(const TheGameIsAboutToStar
     GivingCardsToPlayers();
     ShowInitialCardsOnHands();
     showFullScreen();
+    ui->GameField->InitializeStartUpProcedureVisualization();
 }
 
 void The_Game::SlotShowTheRejectedCardMessage(PositionedCard card)

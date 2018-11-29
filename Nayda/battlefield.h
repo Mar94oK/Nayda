@@ -110,6 +110,8 @@ private:
    const uint32_t _startUpTimeSeconds = 5;
    uint32_t _startUpTimerTicksCounter = 0;
 
+public:
+
    void InitializeStartUpProcedureVisualization();
 
 private slots:
