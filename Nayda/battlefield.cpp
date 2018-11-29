@@ -443,11 +443,16 @@ void battleField::InitializeStartUpProcedureVisualization()
     _timeLeftBeforeStartUpLabel->setText(QString::number(_startUpTimeSeconds));
     _timeLeftBeforeStartUpLabel->setFont(_timeLeftBeforeStartUpLabelFont);
 
+    _startUpTimerTextLabel->setAlignment(Qt::AlignHCenter);
+    _timeLeftBeforeStartUpLabel->setAlignment(Qt::AlignHCenter);
+
     pixelWidth = _timeLeftBeforeStartUpLabelFontInterval.width(_timeLeftBeforeStartUpLabel->text());
     pixelHeight = _timeLeftBeforeStartUpLabelFontInterval.height();
 
     _timeLeftBeforeStartUpLabel->setFixedWidth(pixelWidth);
     _timeLeftBeforeStartUpLabel->setFixedHeight(pixelHeight);
+
+
 
 //    ui->lyt_Against->addWidget(_startUpTimerTextLabel);
 //    ui->lyt_Against->addWidget(_timeLeftBeforeStartUpLabel);
@@ -508,9 +513,32 @@ void battleField::SlotStartUpTimerHandler()
     _timeLeftBeforeStartUpLabel->setText(QString::number(_startUpTimeSeconds - 1*_startUpTimerTicksCounter));
     if (_startUpTimerTicksCounter < 5)
         _startUpTimer->start();
+    else if (_startUpTimerTicksCounter == 5)
+    {
+//        QFont curFont ("times", 75);
+//        _startUpTimerTextLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+//        _startUpTimerTextLabel->setFont(curFont);
+
+        QFont        _startUpTimerTextLabelFont ("Arial", 75);
+        QFontMetrics _startUpTimerTextLabelFontInterval (_startUpTimerTextLabelFont);
+        _startUpTimerTextLabel->setText(_startUpTimerText);
+        _startUpTimerTextLabel->setFont(_startUpTimerTextLabelFont);
+
+        uint32_t pixelWidth = _startUpTimerTextLabelFontInterval.width(_startUpTimerTextLabel->text());
+        uint32_t pixelHeight = _startUpTimerTextLabelFontInterval.height();
+
+        _startUpTimerTextLabel->setFixedWidth(pixelWidth);
+        _startUpTimerTextLabel->setFixedHeight(pixelHeight);
+        _startUpTimerTextLabel->setText("Вперёд, в пещеры!!!!");
+        _startUpTimerTextLabel->setAlignment(Qt::AlignHCenter);
+
+        _timeLeftBeforeStartUpLabel->setText("");
+
+
+        _startUpTimer->start();
+    }
     else
     {
-
         emit SignalStartUpAnimationCompleted();
     }
 
