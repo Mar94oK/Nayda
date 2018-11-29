@@ -8,6 +8,7 @@
 #include <QPushButton>
 #include <QTimer>
 #include <QLabel>
+#include <QSpacerItem>
 
 
 namespace Ui {
@@ -109,6 +110,8 @@ private:
    QTimer* _startUpTimer;
    const uint32_t _startUpTimeSeconds = 5;
    uint32_t _startUpTimerTicksCounter = 0;
+
+   QSpacerItem * _spacerBottom;
 
 public:
 

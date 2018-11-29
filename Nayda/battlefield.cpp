@@ -422,6 +422,9 @@ void battleField::InitializeStartUpProcedureVisualization()
 //    QTimer* _startUpTimer;
 //    const uint32_t _startUpTimeSeconds = 5;
 
+//    QSpacerItem *spacerBottom = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+//    QSpacerItem *spacerTop = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
     QFont        _startUpTimerTextLabelFont ("times", 24);
     QFontMetrics _startUpTimerTextLabelFontInterval (_startUpTimerTextLabelFont);
     _startUpTimerTextLabel = new QLabel(this);
@@ -452,12 +455,17 @@ void battleField::InitializeStartUpProcedureVisualization()
     QVBoxLayout* centeredLayout1 = new QVBoxLayout();
     QVBoxLayout* centeredLayout2 = new QVBoxLayout();
 
-
     ui->dbgLayout->addLayout(centeredLayout1);
     ui->dbgLayout->addLayout(centeredLayout2);
 
+    _spacerBottom = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Expanding);
+    ui->dbgLayout->addSpacerItem(_spacerBottom);
+
     centeredLayout1->addWidget(_startUpTimerTextLabel);
     centeredLayout2->addWidget(_timeLeftBeforeStartUpLabel);
+
+    ui->dbgLayout->setStretch(1,1);
+    ui->dbgLayout->setAlignment(Qt::AlignHCenter);
 
     //Initialize the Timer:
     _startUpTimer = new QTimer(this);
@@ -474,6 +482,8 @@ void battleField::SlotStartUpAnimationCompleted()
 
     _startUpTimerTextLabel->hide();
     _timeLeftBeforeStartUpLabel->hide();
+    ui->dbgLayout->removeItem(_spacerBottom);
+    delete _spacerBottom;
 
     ui->btn_MoveTimer->show();
     ui->btn_PhaseTimer->show();
@@ -499,7 +509,10 @@ void battleField::SlotStartUpTimerHandler()
     if (_startUpTimerTicksCounter < 5)
         _startUpTimer->start();
     else
+    {
+
         emit SignalStartUpAnimationCompleted();
+    }
 
 }
 
