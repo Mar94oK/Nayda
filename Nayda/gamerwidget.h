@@ -216,7 +216,7 @@ public slots:
 
 signals:
 
-    void _signalCardIsRejectedToBePlayed(bool);
+    void SignalCardIsRejectedToBePlayed(bool);
 
 };
 

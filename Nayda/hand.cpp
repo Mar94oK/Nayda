@@ -403,7 +403,7 @@ void Hand::_slotCardIsPreparedToBePlayedFromHand(unsigned int cardId)
     }
 }
 
-void Hand::_slotCardIsRejectedToBePlayed(bool rejected)
+void Hand::SlotCardIsRejectedToBePlayed(bool rejected)
 {
     qDebug() << "Is card rejected to be Played? " <<
                 (rejected ? "Yes, it was! " : "Not, it wasn't");
@@ -411,13 +411,14 @@ void Hand::_slotCardIsRejectedToBePlayed(bool rejected)
     //if we are here, we can be sure that there's card in the
     // "_cardIsReadyToBePlayed"
     //up to be debugged!
-    if (!rejected) {
-        _removeCardFromHand(_cardIsReadyToBePlayed.card);
+    if (!rejected)
+    {
+        RemoveCardFromHand(_cardIsReadyToBePlayed.card);
         _cardIsReadyToBePlayed.thereIsCardToBePulledDown = false;
     }
 }
 
-void Hand::_removeCardFromHand(SimpleCard card)
+void Hand::RemoveCardFromHand(SimpleCard card)
 {
     unsigned int position = 0;
     for (unsigned int var = 0; var < _cardsOnHandsHandsWidgetProperty.size(); ++var) {

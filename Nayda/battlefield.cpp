@@ -500,6 +500,7 @@ void battleField::SlotStartUpAnimationCompleted()
     ui->lbl_PhaseTimer->show();
     ui->lbl_Player->show();
     ui->lbl_PlayersPower->show();
+
 }
 
 void battleField::SetUpSignalsSlotsConnections()
@@ -570,6 +571,21 @@ void battleField::paintEvent(QPaintEvent *)
      painter.setOpacity(0.15);
      painter.drawPixmap(0,0, resultOpaque);
      painter.end();
+
+}
+
+void battleField::AddCardToForCards(SimpleCard card)
+{
+
+}
+
+void battleField::AddCardToAgainstCards(SimpleCard card)
+{
+
+}
+
+void battleField::InitializeBattle()
+{
 
 }
 

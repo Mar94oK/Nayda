@@ -127,7 +127,7 @@ GamerWidget::GamerWidget(QWidget *parent) :
     connect(ui->widget, &Hand::_cardIsSendedToTheGameCheck, this, &GamerWidget::_slotSendTheCardToTheGameCheck);
 
     //connect the Hand with the answer from The_Game Crad check slot;
-    connect(this, &GamerWidget::_signalCardIsRejectedToBePlayed, ui->widget, &Hand::_slotCardIsRejectedToBePlayed);
+    connect(this, &GamerWidget::SignalCardIsRejectedToBePlayed, ui->widget, &Hand::SlotCardIsRejectedToBePlayed);
 }
 
 GamerWidget::~GamerWidget()
@@ -464,7 +464,7 @@ void GamerWidget::_slotSendTheCardToTheGameCheck(PositionedCard card)
 
 void GamerWidget::SlotCardIsRejectedToBePlayed(bool rejected)
 {
-    emit _signalCardIsRejectedToBePlayed(rejected);
+    emit SignalCardIsRejectedToBePlayed(rejected);
 }
 
 

@@ -9,7 +9,7 @@
 #include <QTimer>
 #include <QLabel>
 #include <QSpacerItem>
-
+#include "Application/card.h"
 
 namespace Ui {
 class battleField;
@@ -133,6 +133,17 @@ private:
 private:
 
    void paintEvent(QPaintEvent*);
+
+private:
+
+   std::vector<QPushButton* > _forCards;
+   std::vector<QPushButton* > _againstCards;
+
+   void AddCardToForCards(SimpleCard card);
+   void AddCardToAgainstCards(SimpleCard card);
+   void AddCardToSpecialMechanics(SimpleCard card);
+
+   void InitializeBattle();
 
 };
 

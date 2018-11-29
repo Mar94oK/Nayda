@@ -71,8 +71,6 @@ The_Game::The_Game(QWidget *parent) :
 
     //change the Game Phase:
     _currentGamePhase = GamePhase::GameInitialization;
-    _currentGamePhase = GamePhase::StartOfTheMove;
-
 }
 
 The_Game::~The_Game()
@@ -1708,19 +1706,24 @@ void The_Game::SlotCheckThePossibilityForTheCardToBePlayed(PositionedCard card)
     //If the Phase is "WaitingForAnOpponentToMove", it is not possible to use any cards;
     //Even "Annihilation"
 
-    if ((_currentGamePhase == GamePhase::GameInitialization) || (_currentGamePhase == GamePhase::WaitingForAnOpponentToMove)) {
-        qDebug() << "The Game is in the GameInitialization or WaitingForAnOpponentToMove Phase. "
-                    "Not possible to use cards!";
+    if ((_currentGamePhase == GamePhase::GameInitialization)
+            || (_currentGamePhase == GamePhase::WaitingForAnOpponentToMove)
+            || (_currentGamePhase == GamePhase::Theft)
+            || (_currentGamePhase == GamePhase::HandAlignment)
+            || (_currentGamePhase == GamePhase::AfterOpenDoorNoMonster)
+            || (_currentGamePhase == GamePhase::Diplomacy))
+    {
+        qDebug() << "The Game is in Phase when it is not possible to use cards!";
 
         emit SignalCardIsRejectedToBePlayed(true);
 
         //show the Rejection Message for the Card
         SlotShowTheRejectedCardMessage(card);
     }
-    else {
+    else
+    {
 
         //testing
-
         PassTheCardToTheBattleField(card);
         emit SignalCardIsRejectedToBePlayed(false);
     }
@@ -1789,6 +1792,10 @@ void The_Game::PassTheCardToTheBattleField(PositionedCard card)
 
     connect(animation, &QPropertyAnimation::finished,
             _movingCard, &QPushButton::deleteLater);
+
+    //Соединить этот сигнал со слотом, который добавляет карту на поле боя.
+    connect(animation, &QPropertyAnimation::finished, [this, card] {SlotAddPlayedCardToTheBattleField(card.GetCard());});
+
     //_movingCard->deleteLater();
 }
 
@@ -2219,7 +2226,7 @@ void The_Game::SetUpSignalSlotsConnections()
 
     QObject::connect(this, &The_Game::SignalChartMessageReceived, ui->wdgt_Chart, &MunchkinDialog::SlotShowMessage);
     QObject::connect(ui->wdgt_Chart, &MunchkinDialog::SignalSendMessage, this, &The_Game::SlotProcessChartMessageSending);
-
+    QObject::connect(ui->GameField, &battleField::SignalStartUpAnimationCompleted, this, &The_Game::SlotInitialAnimationCompleted);
 
 }
 
@@ -2260,6 +2267,11 @@ void The_Game::PassCardsToWidgets()
     PassDecksToCardsInspectorWidget();
     PassDecksToPopUpCardWidget();
     PassDecksToCardsStacksWidget();
+}
+
+void The_Game::SlotAddPlayedCardToTheBattleField(SimpleCard card)
+{
+
 }
 
 unsigned int The_Game::doorsLeft() const

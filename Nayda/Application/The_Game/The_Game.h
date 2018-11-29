@@ -38,13 +38,18 @@
 #define MainGamerWidgetWidthExpansion 0.2
 #define SecondaryGamerWidgetWidthExpansion 0.05
 
-enum class GamePhase {StartOfTheMove,
-                      AfterOpenDoorNoMonster,
-                      Battle,
-                      WaitingForAnOpponentToMove,
-                      Theft,
-                      HandAlignment,
-                      GameInitialization};
+
+//For the Diplomacy there should be another timer.
+enum class GamePhase {  GameInitialization,
+                        StartOfTheMove,
+                        Theft,
+                        AfterOpenDoorNoMonster,
+                        Battle,
+                        Diplomacy,
+                        WaitingForAnOpponentToMove,
+                        HandAlignment,
+                        CardProcessing
+                      };
 
 namespace Ui
 {
@@ -333,7 +338,6 @@ signals:
     void SignalChartMessageReceived(const QStringList& message);
     void SignalChartMessageSending(const QString& message);
 
-
 private:
 
     RejectedCardMessage* _rejectionCardMessage;
@@ -367,6 +371,8 @@ public slots:
     void SlotSetUpGameSettings(const GameSettings& settings)
     { _gameSettings.applyNewSettings(settings); }
 
+    void SlotInitialAnimationCompleted()
+    { _currentGamePhase = GamePhase::StartOfTheMove; }
 
 private:
 
@@ -378,10 +384,44 @@ private:
     void SetUpWidgetsProperties(uint32_t windowHeight, uint32_t windowWidth);
     void MainParser();
 
+
+//Set-up Signal-Slots Connections
     void SetUpSignalSlotsConnections();
+
+
+
     void InitializePopUpWidgets();
     void SetUpBackgroundPicture();
     void PassCardsToWidgets();
+
+//Game Process
+//Процесс раздачи карт могут проводить клиенты, т.к. каждый клиент знает,
+//какие карты и в какой послеовательности лежат в колоде.
+//Требуется передавать через сервер только сыгранную карту.
+//Общий алгоритм определяется следующим образом:
+//Игрок нажимает на карту. Игра проверяет, можно ли её сыграть в настоящий момент.
+//Если нет - карта возвращается на место (можно ничего не сообщать об этом).
+//Если да - карта разыгрывается
+//          карта передаётся на сервер
+//          события по карте должны отражаться в графическом интерфейсе
+
+    bool CheckTheCardIsPossibleToBePlayed(SimpleCard card);
+
+signals:
+
+    void SignalTheCardWasPlayed(SimpleCard card);
+
+public:
+
+private slots:
+
+    void SlotAddPlayedCardToTheBattleField(SimpleCard card);
+
+
+
+
+
+
 
 private:
 

@@ -153,12 +153,12 @@ signals:
 
 public slots:
 
-    void _slotCardIsRejectedToBePlayed(bool rejected);
+    void SlotCardIsRejectedToBePlayed(bool rejected);
 
 
 public slots:
 
-    void _removeCardFromHand(SimpleCard card);
+    void RemoveCardFromHand(SimpleCard card);
 
 };
 
