@@ -7,6 +7,8 @@
 #include <Application/card.h>
 #include <QPushButton>
 #include <QTimer>
+#include <QLabel>
+
 
 namespace Ui {
 class battleField;
@@ -95,6 +97,33 @@ public slots:
 private:
 
    void SetBackgroundPicture();
+
+//Setting-up Start-Up Procedure.
+private:
+
+   void SetWidgetsToStartUpPhase();
+
+   QLabel* _startUpTimerTextLabel;
+   QLabel* _timeLeftBeforeStartUpLabel;
+   QString _startUpTimerText = "До начала игры осталось: ";
+   QTimer* _startUpTimer;
+   const uint32_t _startUpTimeSeconds = 5;
+   uint32_t _startUpTimerTicksCounter = 0;
+
+   void InitializeStartUpProcedureVisualization();
+
+private slots:
+
+   void SlotStartUpTimerHandler();
+   void SlotStartUpAnimationCompleted();
+
+signals:
+
+   void SignalStartUpAnimationCompleted();
+
+private:
+
+   void SetUpSignalsSlotsConnections();
 
 private:
 

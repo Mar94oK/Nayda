@@ -76,7 +76,7 @@
     </layout>
    </item>
    <item row="1" column="3" rowspan="2">
-    <layout class="QGridLayout" name="gridLayout_2"/>
+    <layout class="QGridLayout" name="lyt_SpecialFunctions"/>
    </item>
    <item row="3" column="0" colspan="4">
     <layout class="QHBoxLayout" name="dbgLayout">
@@ -123,7 +123,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="label">
+      <widget class="QLabel" name="lbl_PlayersPower">
        <property name="text">
         <string>Сила игрока</string>
        </property>

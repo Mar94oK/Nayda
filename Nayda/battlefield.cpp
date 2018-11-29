@@ -14,23 +14,11 @@ battleField::battleField(QWidget *parent) :
 
     //disable the button for cards' testing.
     ui->btnStartTestCards->hide();
-    //set the Cover-Picture
-    //SetBackgroundPicture();
 
-#ifndef USE_RESOURCES
-    QPixmap pxmpBattleField("Pictures/treeCover.jpg");
-#else
-    qDebug() << "BattleField cover picture processing";
-    QPixmap pxmpBattleField(":/Pictures/treeCover.jpg");
-#endif
+    SetWidgetsToStartUpPhase();
+    SetUpSignalsSlotsConnections();
+    InitializeStartUpProcedureVisualization();
 
-    QPalette plte_battleField;
-    plte_battleField.setBrush(QPalette::Background, QBrush(pxmpBattleField.scaled(size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
-    //setPalette(plte_battleField);
-    //setAutoFillBackground(true);
-    //setStyleSheet("background-image: url(Pictures/TreasuresCard.png)");
-
-    //SetBackgroundPicture();
 }
 
 battleField::~battleField()
@@ -409,9 +397,115 @@ void battleField::SetBackgroundPicture()
 
 }
 
+void battleField::SetWidgetsToStartUpPhase()
+{
+    //make 'em all invisible first...
+    ui->btnStartTestCards->hide();
+    ui->btn_MoveTimer->hide();
+    ui->btn_PhaseTimer->hide();
+    ui->lbl_Monster->hide();
+    ui->lbl_MonsterTotalPower->hide();
+    ui->lbl_MoveTime->hide();
+    ui->lbl_MoveTimer->hide();
+    ui->lbl_PhaseTime->hide();
+    ui->lbl_PhaseTimer->hide();
+    ui->lbl_Player->hide();
+    ui->lbl_PlayersPower->hide();
+
+}
+
+void battleField::InitializeStartUpProcedureVisualization()
+{
+//    QLabel* _startUpTimerTextLabel;
+//    QLabel* _timeLeftBeforeStartUpLabel;
+//    QString _startUpTimerText = "До начала игры осталось: ";
+//    QTimer* _startUpTimer;
+//    const uint32_t _startUpTimeSeconds = 5;
+
+    QFont        _startUpTimerTextLabelFont ("times", 24);
+    QFontMetrics _startUpTimerTextLabelFontInterval (_startUpTimerTextLabelFont);
+    _startUpTimerTextLabel = new QLabel(this);
+    _startUpTimerTextLabel->setText(_startUpTimerText);
+    _startUpTimerTextLabel->setFont(_startUpTimerTextLabelFont);
+
+    uint32_t pixelWidth = _startUpTimerTextLabelFontInterval.width(_startUpTimerTextLabel->text());
+    uint32_t pixelHeight = _startUpTimerTextLabelFontInterval.height();
+
+    _startUpTimerTextLabel->setFixedWidth(pixelWidth);
+    _startUpTimerTextLabel->setFixedHeight(pixelHeight);
+
+    QFont        _timeLeftBeforeStartUpLabelFont ("times", 112);
+    QFontMetrics _timeLeftBeforeStartUpLabelFontInterval (_timeLeftBeforeStartUpLabelFont);
+    _timeLeftBeforeStartUpLabel = new QLabel(this);
+    _timeLeftBeforeStartUpLabel->setText(QString::number(_startUpTimeSeconds));
+    _timeLeftBeforeStartUpLabel->setFont(_timeLeftBeforeStartUpLabelFont);
+
+    pixelWidth = _timeLeftBeforeStartUpLabelFontInterval.width(_timeLeftBeforeStartUpLabel->text());
+    pixelHeight = _timeLeftBeforeStartUpLabelFontInterval.height();
+
+    _timeLeftBeforeStartUpLabel->setFixedWidth(pixelWidth);
+    _timeLeftBeforeStartUpLabel->setFixedHeight(pixelHeight);
+
+//    ui->lyt_Against->addWidget(_startUpTimerTextLabel);
+//    ui->lyt_Against->addWidget(_timeLeftBeforeStartUpLabel);
+
+    QVBoxLayout* centeredLayout1 = new QVBoxLayout();
+    QVBoxLayout* centeredLayout2 = new QVBoxLayout();
+
+
+    ui->dbgLayout->addLayout(centeredLayout1);
+    ui->dbgLayout->addLayout(centeredLayout2);
+
+    centeredLayout1->addWidget(_startUpTimerTextLabel);
+    centeredLayout2->addWidget(_timeLeftBeforeStartUpLabel);
+
+    //Initialize the Timer:
+    _startUpTimer = new QTimer(this);
+    _startUpTimer->setInterval(1000);
+    _startUpTimer->setSingleShot(true);
+    connect(_startUpTimer, &QTimer::timeout, this, &battleField::SlotStartUpTimerHandler);
+    _startUpTimer->start();
+
+}
+
+void battleField::SlotStartUpAnimationCompleted()
+{
+    qDebug() << "SlotStartUpAnimationCompleted() ";
+
+    _startUpTimerTextLabel->hide();
+    _timeLeftBeforeStartUpLabel->hide();
+
+    ui->btn_MoveTimer->show();
+    ui->btn_PhaseTimer->show();
+    ui->lbl_Monster->show();
+    ui->lbl_MonsterTotalPower->show();
+    ui->lbl_MoveTime->show();
+    ui->lbl_MoveTimer->show();
+    ui->lbl_PhaseTime->show();
+    ui->lbl_PhaseTimer->show();
+    ui->lbl_Player->show();
+    ui->lbl_PlayersPower->show();
+}
+
+void battleField::SetUpSignalsSlotsConnections()
+{
+    connect(this, &battleField::SignalStartUpAnimationCompleted, this, &battleField::SlotStartUpAnimationCompleted);
+}
+
+void battleField::SlotStartUpTimerHandler()
+{
+    ++_startUpTimerTicksCounter;
+    _timeLeftBeforeStartUpLabel->setText(QString::number(_startUpTimeSeconds - 1*_startUpTimerTicksCounter));
+    if (_startUpTimerTicksCounter < 5)
+        _startUpTimer->start();
+    else
+        emit SignalStartUpAnimationCompleted();
+
+}
+
 void battleField::paintEvent(QPaintEvent *)
 {
-    qDebug() <<"NAY-0001: Application location: "<< QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory);
+//    qDebug() <<"NAY-0001: Application location: "<< QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory);
     QString homeDirectory = QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory);
 
 #ifdef Q_OS_WIN
@@ -433,7 +527,6 @@ void battleField::paintEvent(QPaintEvent *)
      QPixmap resultOpaque = pxmpBattleField.scaled(HW_Screen_Size.width() * The_Game::koeff_GameField_size,
                                                     HW_Screen_Size.height() * The_Game::koeff_GameField_size,
                                                     Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
- //    setPalette(plte_battleField);
      setAutoFillBackground(true);
 
      QPainter painter(this);
@@ -441,17 +534,6 @@ void battleField::paintEvent(QPaintEvent *)
      painter.setOpacity(0.15);
      painter.drawPixmap(0,0, resultOpaque);
      painter.end();
-
-     QPalette plte_battleField;
-     qDebug () << "Size: " << size();
-//     plte_battleField.setBrush(QPalette::Background, QBrush(resultOpaque.scaled(HW_Screen_Size.width() * The_Game::koeff_GameField_size,
-//                                                                                   HW_Screen_Size.height() * The_Game::koeff_GameField_size,
-//                                                                                   Qt::KeepAspectRatio, Qt::SmoothTransformation)));
-
-
-//     setPalette(plte_battleField);
-
-
 
 }
 
