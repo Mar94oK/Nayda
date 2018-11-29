@@ -155,9 +155,6 @@ public slots:
     void SlotProcessUnlockConnectionButtonAfterConnection() { emit SignalUnclockConnectionButtonAfterConnection();
                                                                 qDebug() << "Unlocking the Button! "; }
 
-
-
-
 private:
 
     Ui::Before_The_Game *ui;
