@@ -42,6 +42,11 @@ SystemManager::SystemManager(Before_The_Game * beforeTheGame,
     //Set-Up Settings
     QObject::connect(m_serverPtr, &Server::SignalServerHasChangedGameSettings, m_theGamePtr, &The_Game::SlotSetUpGameSettings);
     QObject::connect(m_beforeTheGamePtr, &Before_The_Game::SignalUserHaveChagedGameSettigs, m_theGamePtr, &The_Game::SlotSetUpGameSettings);
+    //Start The Game
     QObject::connect(m_serverPtr, &Server::SignalServerReportsTheGameIsAboutToStart, m_theGamePtr, &The_Game::SlotServerReportsTheGameIsAboutToStart);
+
+    //Chart System
+    QObject::connect(m_theGamePtr, &The_Game::SignalChartMessageSending, m_serverPtr, &Server::SlotSendChartMessage);
+    QObject::connect(m_serverPtr, &Server::SignalChartMessageReceived, m_theGamePtr, &The_Game::SlotProcessChartMessageReceived);
 
 }

@@ -2,6 +2,7 @@
 #include "ui_battlefield.h"
 #include "munchkinglobaldefines.h"
 #include <QDebug>
+#include "Application/The_Game/The_Game.h"
 
 battleField::battleField(QWidget *parent) :
     QWidget(parent),
@@ -14,6 +15,7 @@ battleField::battleField(QWidget *parent) :
     //disable the button for cards' testing.
     ui->btnStartTestCards->hide();
     //set the Cover-Picture
+    //SetBackgroundPicture();
 
 #ifndef USE_RESOURCES
     QPixmap pxmpBattleField("Pictures/treeCover.jpg");
@@ -27,6 +29,8 @@ battleField::battleField(QWidget *parent) :
     //setPalette(plte_battleField);
     //setAutoFillBackground(true);
     //setStyleSheet("background-image: url(Pictures/TreasuresCard.png)");
+
+    //SetBackgroundPicture();
 }
 
 battleField::~battleField()
@@ -355,5 +359,99 @@ void battleField::startCardsRepresentation()
     _showCardsTimer->start(_timerCount);
     _timerCount = _timerCount*2;
     if (_timerCount > 2000) _timerCount = 100;
+}
+
+void battleField::SetBackgroundPicture()
+{
+
+//#ifndef USE_RESOURCES
+//    QPixmap pxmpBattleField("Pictures/JorneyCover.png");
+//#else
+//    QPixmap pxmpBattleField(":/Pictures/JorneyCover.png");
+//#endif
+
+
+    qDebug() <<"NAY-0001: Application location: "<< QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory);
+    QString homeDirectory = QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory);
+
+#ifdef Q_OS_WIN
+//NAY-001: MARK_EXPECTED_ERROR
+     QString uiBattleFieldFilesLocation = "Munchkin/Nayda/Pictures/playMenu";
+     homeDirectory = "D:/";
+#elif defined Q_OS_UNIX
+     QString uiBattleFieldFilesLocation = "Munchkin/Nayda/Nayda/Pictures/battleField";
+#endif
+
+    qDebug() << "NAY-001: SetUp Cover Picture for BattleField.";
+    QPixmap pxmpBattleField(uiBattleFieldFilesLocation + QString("BattleFieldCover.png"));
+
+    //find the HW size of the window
+    QRect HW_Screen_Size = QApplication::desktop()->screenGeometry();
+
+    QPixmap resultOpaque = pxmpBattleField;
+//    setPalette(plte_battleField);
+    setAutoFillBackground(true);
+
+    QPainter painter(this);
+    painter.begin(&resultOpaque);
+    painter.setOpacity(0.3);
+    painter.drawPixmap(0,0, pxmpBattleField);
+    painter.end();
+
+    QPalette plte_battleField;
+    qDebug () << "Size: " << size();
+    plte_battleField.setBrush(QPalette::Background, QBrush(resultOpaque.scaled(HW_Screen_Size.width() * The_Game::koeff_GameField_size,
+                                                                                  HW_Screen_Size.height() * The_Game::koeff_GameField_size,
+                                                                                  Qt::KeepAspectRatio, Qt::SmoothTransformation)));
+
+
+    setPalette(plte_battleField);
+
+}
+
+void battleField::paintEvent(QPaintEvent *)
+{
+    qDebug() <<"NAY-0001: Application location: "<< QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory);
+    QString homeDirectory = QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory);
+
+#ifdef Q_OS_WIN
+//NAY-001: MARK_EXPECTED_ERROR
+     QString uiBattleFieldFilesLocation = "Munchkin/Nayda/Pictures/playMenu";
+     homeDirectory = "D:/";
+#elif defined Q_OS_UNIX
+     QString uiBattleFieldFilesLocation = "Munchkin/Nayda/Nayda/Pictures/battleField/";
+#endif
+
+     QString path = homeDirectory + uiBattleFieldFilesLocation;
+
+     qDebug() << "NAY-001: SetUp Cover Picture for BattleField.";
+     QPixmap pxmpBattleField(path + QString("BattleFieldCover.png"));
+
+     //find the HW size of the window
+     QRect HW_Screen_Size = QApplication::desktop()->screenGeometry();
+
+     QPixmap resultOpaque = pxmpBattleField.scaled(HW_Screen_Size.width() * The_Game::koeff_GameField_size,
+                                                    HW_Screen_Size.height() * The_Game::koeff_GameField_size,
+                                                    Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+ //    setPalette(plte_battleField);
+     setAutoFillBackground(true);
+
+     QPainter painter(this);
+     painter.begin(&resultOpaque);
+     painter.setOpacity(0.15);
+     painter.drawPixmap(0,0, resultOpaque);
+     painter.end();
+
+     QPalette plte_battleField;
+     qDebug () << "Size: " << size();
+//     plte_battleField.setBrush(QPalette::Background, QBrush(resultOpaque.scaled(HW_Screen_Size.width() * The_Game::koeff_GameField_size,
+//                                                                                   HW_Screen_Size.height() * The_Game::koeff_GameField_size,
+//                                                                                   Qt::KeepAspectRatio, Qt::SmoothTransformation)));
+
+
+//     setPalette(plte_battleField);
+
+
+
 }
 

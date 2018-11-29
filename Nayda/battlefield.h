@@ -92,6 +92,14 @@ public slots:
    void continueCardRepresentation();
    void startCardsRepresentation();
 
+private:
+
+   void SetBackgroundPicture();
+
+private:
+
+   void paintEvent(QPaintEvent*);
+
 };
 
 #endif // BATTLEFIELD_H

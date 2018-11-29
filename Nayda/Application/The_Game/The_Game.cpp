@@ -2214,6 +2214,11 @@ void The_Game::SetUpSignalSlotsConnections()
     connect(ui->MainGamer, &GamerWidget::SignalSendTheCardToTheGameCheck, this, &The_Game::SlotCheckThePossibilityForTheCardToBePlayed);
     //pass the answer form The_Game card check back to the Hand
     connect(this, &The_Game::SignalCardIsRejectedToBePlayed, ui->MainGamer, &GamerWidget::SlotCardIsRejectedToBePlayed);
+
+    QObject::connect(this, &The_Game::SignalChartMessageReceived, ui->wdgt_Chart, &MunchkinDialog::SlotShowMessage);
+    QObject::connect(ui->wdgt_Chart, &MunchkinDialog::SignalSendMessage, this, &The_Game::SlotProcessChartMessageSending);
+
+
 }
 
 void The_Game::InitializePopUpWidgets()
@@ -2230,17 +2235,16 @@ void The_Game::InitializePopUpWidgets()
 
 void The_Game::SetUpBackgroundPicture()
 {
+
 #ifndef USE_RESOURCES
     QPixmap pxmpBattleField("Pictures/JorneyCover.png");
 #else
     QPixmap pxmpBattleField(":/Pictures/JorneyCover.png");
 #endif
-
     //find the HW size of the window
     QRect HW_Screen_Size = QApplication::desktop()->screenGeometry();
 
     QPalette plte_battleField;
-    qDebug () << "Size: " << size();
     plte_battleField.setBrush(QPalette::Background, QBrush(pxmpBattleField.scaled(HW_Screen_Size.width(),HW_Screen_Size.height(), Qt::KeepAspectRatio, Qt::SmoothTransformation)));
     setPalette(plte_battleField);
     setAutoFillBackground(true);

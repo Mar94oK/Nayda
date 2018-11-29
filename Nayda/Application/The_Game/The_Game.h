@@ -174,7 +174,6 @@ public:
     void passDecksToPlayerWidgets();
     void PassDecksToPopUpCardWidget();
     void PassDecksToCardsStacksWidget();
-
     void PassDecksToCardsInspectorWidget();
 
     const std::map<int, gameCardDoorMonster> * monstersDeck();
@@ -318,15 +317,21 @@ signals:
     void SignalCardIsRejectedToBePlayed(bool); //not necessary to send the card back;
                                           //the Hand property "CardIsReadyToBePlayed" is saving the current card;
 
+
 //ServerRelated
 public slots:
 
     void SlotServerReportsTheGameIsAboutToStart(const TheGameIsAboutToStartData& data);
+    void SlotProcessChartMessageReceived(const QStringList& message)
+    { emit  SignalChartMessageReceived(message); }
+    void SlotProcessChartMessageSending(const QString& message)
+    { emit SignalChartMessageSending(message);}
 
 //ServerRelated
 signals:
 
-
+    void SignalChartMessageReceived(const QStringList& message);
+    void SignalChartMessageSending(const QString& message);
 
 
 private:
@@ -382,7 +387,7 @@ private:
 
     uint32_t _roomID = ROOM_ID_NOT_DEFINED;
 
-private:
+public:
 
     //Setting up coefficients
     constexpr static float koeff_GameField_size = 0.5f;
