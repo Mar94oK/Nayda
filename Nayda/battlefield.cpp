@@ -64,8 +64,8 @@ void battleField::cardsRepresenter()
                                                              race_class_btn_size_height*HW_Screen_Size_Height*2,
                                                              Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
 
-    ui->verticalLayout->addWidget(_theBtnMainRepresenter);
-    ui->verticalLayout->setAlignment(Qt::AlignHCenter);
+    ui->dbgLayout->addWidget(_theBtnMainRepresenter);
+    ui->dbgLayout->setAlignment(Qt::AlignHCenter);
     _theBtnMainRepresenter->setFlat(true);
     _theBtnMainRepresenter->setAutoFillBackground(true);
     _theBtnMainRepresenter->setPalette(plteBtnMainRepresenter);
@@ -88,7 +88,7 @@ void battleField::cardsRepresenter()
         representersVector[var]->setMinimumWidth(race_class_btn_size_width*HW_Screen_Size_Width);
         representersVector[var]->setMinimumHeight(race_class_btn_size_height*HW_Screen_Size_Height);
         representersVector[var]->setText("Hello!");
-        ui->horizontalLayout_2->addWidget(representersVector[var]);
+        ui->dbgLayout->addWidget(representersVector[var]);
 
         QPixmap pxmp_btn(iter->second.pictureAddress());
         if (iter != _monstersDeck->end()) iter++;
