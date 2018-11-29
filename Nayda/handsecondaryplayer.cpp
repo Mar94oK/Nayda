@@ -22,12 +22,15 @@ HandSecondaryPlayer::HandSecondaryPlayer(QWidget *parent) :
 
 
     QPalette plte_handSecondaryPlayer;
-    qDebug () << "Size: " << size();
+//    qDebug () << "Size: " << size();
     plte_handSecondaryPlayer.setBrush(QPalette::Background, QBrush(pxmpHandSecondaryPlayer.scaled(_race_class_btn_size_width*HW_Screen_Size_Width,
                                                                                   _race_class_btn_size_height*HW_Screen_Size_Height,
                                                                                   Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
     setPalette(plte_handSecondaryPlayer);
     setAutoFillBackground(true);
+
+    setMaximumSize(_race_class_btn_size_width*HW_Screen_Size_Width,
+                   _race_class_btn_size_height*HW_Screen_Size_Height);
 
 
     ui->btn_Doors->setStyleSheet("QPushButton{background:transparent;color:#0011FF;font:18pt;font:bold;}");

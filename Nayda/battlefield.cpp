@@ -515,11 +515,7 @@ void battleField::SlotStartUpTimerHandler()
         _startUpTimer->start();
     else if (_startUpTimerTicksCounter == 5)
     {
-//        QFont curFont ("times", 75);
-//        _startUpTimerTextLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-//        _startUpTimerTextLabel->setFont(curFont);
-
-        QFont        _startUpTimerTextLabelFont ("Arial", 75);
+        QFont        _startUpTimerTextLabelFont ("times", 75);
         QFontMetrics _startUpTimerTextLabelFontInterval (_startUpTimerTextLabelFont);
         _startUpTimerTextLabel->setText(_startUpTimerText);
         _startUpTimerTextLabel->setFont(_startUpTimerTextLabelFont);
@@ -533,7 +529,6 @@ void battleField::SlotStartUpTimerHandler()
         _startUpTimerTextLabel->setAlignment(Qt::AlignHCenter);
 
         _timeLeftBeforeStartUpLabel->setText("");
-
 
         _startUpTimer->start();
     }
