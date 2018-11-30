@@ -1492,7 +1492,7 @@ void The_Game::GivingCardsToPlayers()
 
     for (unsigned int var = 0; var < cardsToGive; ++var) {
 
-        _main_player.addCardToHands(_doorsDeck.front());
+        _mainPlayer.addCardToHands(_doorsDeck.front());
         _doorsDeck.erase(_doorsDeck.begin());
     }
 
@@ -1502,7 +1502,7 @@ void The_Game::GivingCardsToPlayers()
 
         for (uint32_t j = 0; j < cardsToGive; ++j ) {
 
-            _players_opponents[var].addCardToHands(_doorsDeck.front());
+            _playersOpponents[var].addCardToHands(_doorsDeck.front());
             _doorsDeck.erase(_doorsDeck.begin());
         }
     }
@@ -1513,7 +1513,7 @@ void The_Game::GivingCardsToPlayers()
     //treasures..
     for (uint32_t var = 0; var < cardsToGive; ++var)
     {
-        _main_player.addCardToHands(_treasuresDeck.front());
+        _mainPlayer.addCardToHands(_treasuresDeck.front());
         _treasuresDeck.erase(_treasuresDeck.begin());
     }
 
@@ -1522,7 +1522,7 @@ void The_Game::GivingCardsToPlayers()
 
         for (unsigned int j = 0; j < cardsToGive; ++j ) {
 
-            _players_opponents[var].addCardToHands(_treasuresDeck.front());
+            _playersOpponents[var].addCardToHands(_treasuresDeck.front());
             _treasuresDeck.erase(_treasuresDeck.begin());
         }
     }
@@ -1535,17 +1535,17 @@ void The_Game::GivingCardsToPlayers()
 void The_Game::ShowInitialCardsOnHands()
 {
     qDebug() << "showInitialCardsOnHands:: Started";
-    for (unsigned int var = 0; var < _main_player.cardsOnHandsVector()->size(); ++var)
+    for (unsigned int var = 0; var < _mainPlayer.cardsOnHandsVector()->size(); ++var)
     {
-        ui->MainGamer->addTheCardToHandsWidget(*((_main_player.cardsOnHandsVector())->begin() + static_cast<int>(var)));
+        ui->MainGamer->addTheCardToHandsWidget(*((_mainPlayer.cardsOnHandsVector())->begin() + static_cast<int>(var)));
     }
 
-    for (unsigned int var = 0; var < _players_opponents.size(); ++var)
+    for (unsigned int var = 0; var < _playersOpponents.size(); ++var)
     {
-        unsigned int totalCardsToShow = (_players_opponents[var].cardsOnHandsVector())->size();
+        unsigned int totalCardsToShow = (_playersOpponents[var].cardsOnHandsVector())->size();
         for (unsigned int j = 0; j < totalCardsToShow; ++j)
         {
-            _widgets4Opponents[var]->addTheCardToHandsWidget(*((_players_opponents[var].cardsOnHandsVector())->begin() + static_cast<int>(j)));
+            _widgets4Opponents[var]->addTheCardToHandsWidget(*((_playersOpponents[var].cardsOnHandsVector())->begin() + static_cast<int>(j)));
         }
     }
     qDebug() << "showInitialCardsOnHands:: Completed";
@@ -1646,6 +1646,13 @@ void The_Game::theMonstersParser(const QString &filename)
 
 void The_Game::DEBUG_SlotWasPushedToGameMode()
 {   
+    _playersOrder.push_back("DEBUG_MainGamer");
+    _playersOrder.push_back("DEBUG_Opponent");
+    if (_gameSettings.maximumNumberOfPlayers() != 2)
+        throw "DEBUG ERROR! _gameSettings.maximumNumberOfPlayers() != 2";
+
+    ui->GameField->setPlayersOrder(_playersOrder);
+
     DEBUGformingInitialDecks();
     GivingCardsToPlayers();
     ShowInitialCardsOnHands();
@@ -1731,6 +1738,20 @@ void The_Game::SlotCheckThePossibilityForTheCardToBePlayed(PositionedCard card)
 
 void The_Game::SlotServerReportsTheGameIsAboutToStart(const TheGameIsAboutToStartData &data)
 {
+    //Set Players Order;
+    _playersOrder = data.playersOrder;
+    qDebug() << "NAY-001: Checking playersOrder";
+    qDebug() << "NAY-001: Master's name: " << data.playersOrder[0];
+    for (uint32_t var = 1; var < data.playersOrder.size(); ++var)
+    {
+        qDebug() << "NAY-001: " << data.playersOrder[var];
+    }
+
+    if (data.playersOrder.empty())
+        throw "Bad playersOrder passed to The_Game!";
+
+    ui->GameField->setPlayersOrder(_playersOrder);
+
     FormingInitialDecks(data.positionsDoors, data.positionsTreasures);
     GivingCardsToPlayers();
     ShowInitialCardsOnHands();
@@ -1932,8 +1953,12 @@ void The_Game::SlotGameInitialization(TheGameIsAboutToStartData data)
 
     //2. Redraw GUI regarding current GameSettings
 
+}
 
-
+void The_Game::SlotSetUpGameSettings(const GameSettings &settings)
+{
+    _gameSettings.applyNewSettings(settings);
+    ui->GameField->ApplyNewSettings(settings);
 }
 
 void The_Game::FormingInitialDecks(const std::vector<uint32_t> &doorsVector, const std::vector<uint32_t> &treasuresVector)
@@ -2008,15 +2033,15 @@ void The_Game::SetUpOpponents(uint32_t windowHeight, uint32_t windowWidth)
     switch (totalOpponents)
     {
     case 5:
-        _players_opponents.push_back(_opponent4);
+        _playersOpponents.push_back(_opponent4);
     case 4:
-        _players_opponents.push_back(_opponent3);
+        _playersOpponents.push_back(_opponent3);
     case 3:
-        _players_opponents.push_back(_opponent2);
+        _playersOpponents.push_back(_opponent2);
     case 2:
-        _players_opponents.push_back(_opponent1);
+        _playersOpponents.push_back(_opponent1);
     case 1:
-        _players_opponents.push_back(_opponent0);
+        _playersOpponents.push_back(_opponent0);
         break;
     default:
         qDebug() << "Unsupported number of players! : " << totalOpponents;

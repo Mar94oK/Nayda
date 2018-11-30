@@ -15,9 +15,11 @@ battleField::battleField(QWidget *parent) :
     //disable the button for cards' testing.
     ui->btnStartTestCards->hide();
 
+    SetUpPictureAddresses();
     SetWidgetsToStartUpPhase();
     SetUpSignalsSlotsConnections();
     //InitializeStartUpProcedureVisualization();
+
 
 }
 
@@ -410,21 +412,13 @@ void battleField::SetWidgetsToStartUpPhase()
     ui->lbl_PhaseTime->hide();
     ui->lbl_PhaseTimer->hide();
     ui->lbl_Player->hide();
-    ui->lbl_PlayersPower->hide();
+    ui->lbl_PlayersPower->hide();    
+    ui->lbl_PhaseName->hide();
 
 }
 
 void battleField::InitializeStartUpProcedureVisualization()
 {
-//    QLabel* _startUpTimerTextLabel;
-//    QLabel* _timeLeftBeforeStartUpLabel;
-//    QString _startUpTimerText = "До начала игры осталось: ";
-//    QTimer* _startUpTimer;
-//    const uint32_t _startUpTimeSeconds = 5;
-
-//    QSpacerItem *spacerBottom = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-//    QSpacerItem *spacerTop = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
     QFont        _startUpTimerTextLabelFont ("times", 24);
     QFontMetrics _startUpTimerTextLabelFontInterval (_startUpTimerTextLabelFont);
     _startUpTimerTextLabel = new QLabel(this);
@@ -452,11 +446,6 @@ void battleField::InitializeStartUpProcedureVisualization()
     _timeLeftBeforeStartUpLabel->setFixedWidth(pixelWidth);
     _timeLeftBeforeStartUpLabel->setFixedHeight(pixelHeight);
 
-
-
-//    ui->lyt_Against->addWidget(_startUpTimerTextLabel);
-//    ui->lyt_Against->addWidget(_timeLeftBeforeStartUpLabel);
-
     QVBoxLayout* centeredLayout1 = new QVBoxLayout();
     QVBoxLayout* centeredLayout2 = new QVBoxLayout();
 
@@ -471,6 +460,19 @@ void battleField::InitializeStartUpProcedureVisualization()
 
     ui->dbgLayout->setStretch(1,1);
     ui->dbgLayout->setAlignment(Qt::AlignHCenter);
+
+
+    QFont        _PhaseNameLabelFont ("times", 24);
+    QFontMetrics _PhaseNameLabelFontInterval (_PhaseNameLabelFont);
+    ui->lbl_PhaseName->setText(_phaseNameInitialPhaseText + " "+ _playersOrder[0]);
+    ui->lbl_PhaseName->setFont(_PhaseNameLabelFont);
+
+    pixelWidth = _PhaseNameLabelFontInterval.width(_startUpTimerTextLabel->text());
+    pixelHeight = _PhaseNameLabelFontInterval.height();
+
+    ui->lbl_PhaseName->setFixedWidth(pixelWidth);
+    ui->lbl_PhaseName->setFixedHeight(pixelHeight);
+
 
     //Initialize the Timer:
     _startUpTimer = new QTimer(this);
@@ -500,6 +502,7 @@ void battleField::SlotStartUpAnimationCompleted()
     ui->lbl_PhaseTimer->show();
     ui->lbl_Player->show();
     ui->lbl_PlayersPower->show();
+    ui->lbl_PhaseName->show();
 
 }
 
@@ -574,6 +577,60 @@ void battleField::paintEvent(QPaintEvent *)
 
 }
 
+void battleField::SetUpPictureAddresses()
+{
+    QString homeDirectory = QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory);
+
+#ifdef Q_OS_WIN
+//NAY-001: MARK_EXPECTED_ERROR
+     QString uiPlayMenuFilesLocation = "Munchkin/Nayda/Pictures/gameSettingsWidget";
+     homeDirectory = "D:/";
+#elif defined Q_OS_UNIX
+     QString uiPlayMenuFilesLocation = "Munchkin/Nayda/Nayda/Pictures/battleField";
+#endif
+
+     QString picturesLocationBasis = homeDirectory + uiPlayMenuFilesLocation + "/";
+
+     _diplomacyTimerPictureAddress = picturesLocationBasis + "DiplomacyTime.png";
+     _timeToMoveTimerPictureAddress = picturesLocationBasis + "TimeToMove.png";
+     _timeToThinkTimerPictureAddress = picturesLocationBasis + "TimeToThink.png";
+     _timeForOpponentsToDecideTimerPictureAddress = picturesLocationBasis + "TimeForOpponentsDecision.png";
+}
+
+void battleField::SetUpInitialTimersPictures()
+{
+    setUpButtonPicture(ui->btn_MoveTimer, _timeToMoveTimerPictureAddress, _buttonsWidthCoefficient, _buttonsHeightWidthRelatio);
+    setUpButtonPicture(ui->btn_PhaseTimer, _timeToThinkTimerPictureAddress, _buttonsWidthCoefficient, _buttonsHeightWidthRelatio);
+}
+
+void battleField::setUpButtonPicture(QPushButton * const btn, const QString &picturePath, double widthCoeff, double heightWidthRelatio)
+{
+    QPixmap pxmpBtnMainRepresenter(picturePath);
+    QPalette plteBtnMainRepresenter(btn->palette());
+    plteBtnMainRepresenter.setBrush(QPalette::Button,
+                                    QBrush(pxmpBtnMainRepresenter.scaled(geometry().width()*widthCoeff,
+                                            geometry().width()*widthCoeff*heightWidthRelatio,
+                                            Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
+
+    btn->setMinimumWidth(geometry().width()*widthCoeff);
+    btn->setMinimumHeight(geometry().width()*widthCoeff*heightWidthRelatio);
+    btn->setMaximumWidth(geometry().width()*widthCoeff);
+    btn->setMaximumHeight(geometry().width()*widthCoeff*heightWidthRelatio);
+    btn->setFlat(true);
+    btn->setAutoFillBackground(true);
+    btn->setPalette(plteBtnMainRepresenter);
+}
+
+std::vector<QString> battleField::playersOrder() const
+{
+    return _playersOrder;
+}
+
+void battleField::setPlayersOrder(const std::vector<QString> &playersOrder)
+{
+    _playersOrder = playersOrder;
+}
+
 void battleField::AddCardToForCards(SimpleCard card)
 {
 
@@ -586,6 +643,30 @@ void battleField::AddCardToAgainstCards(SimpleCard card)
 
 void battleField::InitializeBattle()
 {
+
+}
+
+void battleField::SlotChangeMoveTimerTime(uint32_t time)
+{
+    ui->lbl_MoveTime->setText(QString::number(time));
+}
+
+void battleField::SlotChangePhaseTimerTime(uint32_t time)
+{
+    ui->lbl_PhaseTime->setText(QString::number(time));
+}
+
+void battleField::SlotGamePhaseHasBeenChanged(GamePhase phase)
+{
+    if (phase == GamePhase::Diplomacy)
+        setUpButtonPicture(ui->btn_PhaseTimer, _diplomacyTimerPictureAddress, _buttonsWidthCoefficient, _buttonsHeightWidthRelatio);
+    else if (phase == GamePhase::WaitingForAnOpponentToMove)
+        setUpButtonPicture(ui->btn_PhaseTimer, _timeForOpponentsToDecideTimerPictureAddress, _buttonsWidthCoefficient, _buttonsHeightWidthRelatio);
+    else if (phase == GamePhase::StartOfTheMove)
+        setUpButtonPicture(ui->btn_PhaseTimer, _timeToThinkTimerPictureAddress, _buttonsWidthCoefficient, _buttonsHeightWidthRelatio);
+    else
+        qDebug() << "NAY-001: This phase will not change the timers ICO! Place here changings for all the Other Features";
+
 
 }
 

@@ -14,18 +14,21 @@
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="2" column="3" rowspan="2">
-    <layout class="QGridLayout" name="lyt_SpecialFunctions"/>
-   </item>
-   <item row="4" column="0" colspan="4">
-    <layout class="QHBoxLayout" name="dbgLayout" stretch="0">
-     <property name="sizeConstraint">
-      <enum>QLayout::SetMaximumSize</enum>
-     </property>
+   <item row="0" column="0" colspan="4">
+    <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QPushButton" name="btnStartTestCards">
+      <widget class="QLabel" name="lbl_PhaseName">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text">
-        <string>StartTestCards</string>
+        <string>Название фазы</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
@@ -112,6 +115,23 @@
       </widget>
      </item>
     </layout>
+   </item>
+   <item row="4" column="0" colspan="4">
+    <layout class="QHBoxLayout" name="dbgLayout" stretch="0">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetMaximumSize</enum>
+     </property>
+     <item>
+      <widget class="QPushButton" name="btnStartTestCards">
+       <property name="text">
+        <string>StartTestCards</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="2" column="3" rowspan="2">
+    <layout class="QGridLayout" name="lyt_SpecialFunctions"/>
    </item>
    <item row="3" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_3">

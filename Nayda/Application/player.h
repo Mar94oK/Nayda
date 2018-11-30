@@ -9,6 +9,8 @@
 
 class Player
 {
+    QString _name;
+
     bool _isMainPlayer;
 
     int _playerLevel;
@@ -101,6 +103,9 @@ public:
 
     std::vector<SimpleCard>* cardsOnHandsVector();
     std::vector<SimpleCard>* cardsInGameVector();
+
+    QString name() const;
+    void setName(const QString &name);
 
 private:
 

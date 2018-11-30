@@ -144,7 +144,8 @@ struct TheGameIsAboutToStartData
 {
     bool start;
     std::vector<uint32_t>positionsDoors;
-    std::vector<uint32_t>positionsTreasures;
+    std::vector<uint32_t>positionsTreasures;   
+    std::vector<QString> playersOrder;
 
     explicit TheGameIsAboutToStartData(bool strt,
                                        const std::vector<uint32_t>& posDoors,

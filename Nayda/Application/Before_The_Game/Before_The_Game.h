@@ -138,10 +138,7 @@ public slots:
         emit SignalProcessServerReportsRoomHasChangedOwner(previousOwner, currentOwner);
     }
 
-    void SlotServerReportsTheGameIsAboutToStart(const TheGameIsAboutToStartData& data)
-    {
-        emit SignalServerReportsTheGameIsAboutToStart(data);
-    }
+    void SlotServerReportsTheGameIsAboutToStart(const TheGameIsAboutToStartData& data);
 
 
 //error processing

@@ -43,7 +43,9 @@ SystemManager::SystemManager(Before_The_Game * beforeTheGame,
     QObject::connect(m_serverPtr, &Server::SignalServerHasChangedGameSettings, m_theGamePtr, &The_Game::SlotSetUpGameSettings);
     QObject::connect(m_beforeTheGamePtr, &Before_The_Game::SignalUserHaveChagedGameSettigs, m_theGamePtr, &The_Game::SlotSetUpGameSettings);
     //Start The Game
-    QObject::connect(m_serverPtr, &Server::SignalServerReportsTheGameIsAboutToStart, m_theGamePtr, &The_Game::SlotServerReportsTheGameIsAboutToStart);
+    //From Before The Game, to be able to provide additional settings!
+    //Ofcourse, I can give them form the Server, but it is not good idea as I suppose to store them there, at the server's side.
+    QObject::connect(m_beforeTheGamePtr, &Before_The_Game::SignalServerReportsTheGameIsAboutToStart, m_theGamePtr, &The_Game::SlotServerReportsTheGameIsAboutToStart);
 
     //Chart System
     QObject::connect(m_theGamePtr, &The_Game::SignalChartMessageSending, m_serverPtr, &Server::SlotSendChartMessage);

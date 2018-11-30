@@ -1,9 +1,19 @@
 #include "player.h"
 
+QString Player::name() const
+{
+    return _name;
+}
+
+void Player::setName(const QString &name)
+{
+    _name = name;
+}
+
 Player::Player()
 {
     _isMainPlayer = false;
-
+    
     _playerLevel = 1;
     _warPower = 1;
     _totalCardsOnHands = 0;

@@ -51,6 +51,21 @@ enum class GamePhase {  GameInitialization,
                         CardProcessing
                       };
 
+//Таймеров всего четыре:
+//1. Общий таймер на ход
+//2. Таймер "подумать"  - время на размышления персонажа перед ходом - открывать дверь, воровать, продавать, и т. д.
+// Во время действия этого таймера оппоненты не могут предпринимать никаких (!) враждебных действий.
+// По истечении этого времени решение будет принято автоматически - это всегда "открытие следующей карты"
+//3. Таймер дипломатии - максимальное время, котрое даётся игроку на принятие/непринятие помощи.
+//   По желанию игрока эта фаза может быть полностью пропущена.
+//
+//4. Таймер для принятия решения оппонентами - (пусть будет 3 секунды).
+//Это время, которое даётся оппонентам, чтобы попытаться помешать игроку победить после того, как он побеждает.
+//Запускается автоматически(? или по нажатию кнопки) после того, как сила игрока первышает силу монстра.
+
+
+
+
 namespace Ui
 {
 class The_Game;
@@ -257,7 +272,8 @@ private:
     //special option will allow to be more than 5 opponents
     std::vector <GamerWidget*> _widgets4Opponents; //make as controlled unique_ptr;
 
-    Player _main_player;
+    Player _mainPlayer; // In common case might not be the ROOM Master.
+    //This entity is responsible only for the mainWidget Selection.
 
     Player _opponent0;
     Player _opponent1;
@@ -265,9 +281,10 @@ private:
     Player _opponent3;
     Player _opponent4;
 
-    std::vector<Player* > _opponents;
+    std::vector <Player> _playersOpponents; //5 at all - Maximum according to current settings.
 
-    std::vector <Player> _players_opponents; //5 at all - Maximum according to current settings.
+    std::vector <QString> _playersOrder; //The first one in this list is an actual MASTER!
+    //This entity is expected to be initialized before any action.
 
     //this stock depends on the Game Mode;
     //Nonetheless, it is allways the same through all the game, since its only function is
@@ -368,8 +385,7 @@ public slots:
     void SlotGameInitialization(TheGameIsAboutToStartData data);
 
     //The_Game should allways have correct settings
-    void SlotSetUpGameSettings(const GameSettings& settings)
-    { _gameSettings.applyNewSettings(settings); }
+    void SlotSetUpGameSettings(const GameSettings& settings);
 
     void SlotInitialAnimationCompleted()
     { _currentGamePhase = GamePhase::StartOfTheMove; }

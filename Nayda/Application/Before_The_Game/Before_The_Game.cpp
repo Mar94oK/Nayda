@@ -291,6 +291,14 @@ void Before_The_Game::SlotProcessServerClientWantedToEnterTheRoomReply(const Ser
     }
 }
 
+void Before_The_Game::SlotServerReportsTheGameIsAboutToStart(const TheGameIsAboutToStartData &data)
+{
+    //Before starting the game, set this data!
+    TheGameIsAboutToStartData addedData = data;
+    addedData.playersOrder = _roomCreationWaitingLobby->GetPlayersOrder();
+    emit SignalServerReportsTheGameIsAboutToStart(data);
+}
+
 void Before_The_Game::SlotProcessRemoteHostClosedErrorReport()
 {
     qDebug() << "NAY-001: Processing HostClosedConnectionError!";

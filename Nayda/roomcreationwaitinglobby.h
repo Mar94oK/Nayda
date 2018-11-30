@@ -92,6 +92,15 @@ private:
     std::vector<QPushButton*> _opponnets;
     uint32_t _currentOpponentAwaiting = 0;
     std::vector<QString> _opponentsNames;
+    QString _masterName;
+
+public:
+
+    const std::vector<QString>& GetPlayersOrder()
+    {
+        _opponentsNames.insert(_opponentsNames.begin(), _masterName);
+        return _opponentsNames;
+    }
 
 private slots:
 

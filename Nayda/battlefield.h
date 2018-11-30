@@ -10,6 +10,8 @@
 #include <QLabel>
 #include <QSpacerItem>
 #include "Application/card.h"
+#include "gamesettings.h"
+#include "Application/The_Game/The_Game.h"
 
 namespace Ui {
 class battleField;
@@ -113,9 +115,14 @@ private:
 
    QSpacerItem * _spacerBottom;
 
+   QString _phaseNameInitialPhaseText = "Ожидание хода игрока ";
+
 public:
 
    void InitializeStartUpProcedureVisualization();
+
+   std::vector<QString> playersOrder() const;
+   void setPlayersOrder(const std::vector<QString> &playersOrder);
 
 private slots:
 
@@ -136,6 +143,27 @@ private:
 
 private:
 
+   QString _diplomacyTimerPictureAddress = "";
+   QString _timeToMoveTimerPictureAddress = "";
+   QString _timeForOpponentsToDecideTimerPictureAddress = "";
+   QString _timeToThinkTimerPictureAddress = "";
+
+   void SetUpPictureAddresses();
+   void SetUpInitialTimersPictures();
+   void setUpButtonPicture(QPushButton* const btn, const QString& picturePath, double widthCoeff, double heightWidthRelatio);
+
+   //These sizes should be selected with respect to the TimerText Height.
+   const double _buttonsWidthCoefficient = 0.1;
+   const double _buttonsHeightWidthRelatio = 1.24633;
+
+private:
+
+   GameSettings _settings;
+
+   std::vector<QString> _playersOrder;
+
+private:
+
    std::vector<QPushButton* > _forCards;
    std::vector<QPushButton* > _againstCards;
 
@@ -144,6 +172,17 @@ private:
    void AddCardToSpecialMechanics(SimpleCard card);
 
    void InitializeBattle();
+
+private slots:
+
+   void SlotChangeMoveTimerTime(uint32_t time);
+   void SlotChangePhaseTimerTime(uint32_t time);
+   void SlotGamePhaseHasBeenChanged(GamePhase phase);
+
+public slots:
+
+    void ApplyNewSettings(GameSettings settings)
+    { _settings.applyNewSettings(settings); }
 
 };
 
