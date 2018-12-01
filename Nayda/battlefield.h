@@ -12,6 +12,7 @@
 #include "Application/card.h"
 #include "gamesettings.h"
 #include "Application/The_Game/The_Game.h"
+#include "playersordernotification.h"
 
 namespace Ui {
 class battleField;
@@ -114,8 +115,23 @@ private:
    uint32_t _startUpTimerTicksCounter = 0;
 
    QSpacerItem * _spacerBottom;
+   QSpacerItem * _spacerForScene2;
+   QSpacerItem * _spacerForScene2_2;
 
    QString _phaseNameInitialPhaseText = "Ожидание хода игрока ";
+
+   PlayersOrderNotification* _orderNotification;
+
+   QLabel* _orderNotificationName;
+   QString _orderNotifiactionBaseText = "Очерёдность хода игроков: ";
+   std::vector <QLabel* > _labelsPlayerNamesInOrder;
+
+   void SetFontAndAlignment(QLabel* lbl);
+
+   void ShowInitialAnimationScene_1();
+   void HideInitialAnimationScene_1();
+   void ShowInitialAnimationScene_2();
+   void HideInitialAnimationScene_2();
 
 public:
 
@@ -185,5 +201,7 @@ public slots:
     { _settings.applyNewSettings(settings); }
 
 };
+
+
 
 #endif // BATTLEFIELD_H

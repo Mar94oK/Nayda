@@ -418,6 +418,74 @@ void battleField::SetWidgetsToStartUpPhase()
 
 }
 
+void battleField::SetFontAndAlignment(QLabel *lbl)
+{
+    QFont        _startUpTimerTextLabelFont ("times", 35);
+    QFontMetrics _startUpTimerTextLabelFontInterval (_startUpTimerTextLabelFont);
+    lbl->setFont(_startUpTimerTextLabelFont);
+    lbl->setAlignment(Qt::AlignHCenter);
+}
+
+void battleField::ShowInitialAnimationScene_1()
+{
+    QFont        _startUpTimerTextLabelFont ("times", 75);
+    QFontMetrics _startUpTimerTextLabelFontInterval (_startUpTimerTextLabelFont);
+    _startUpTimerTextLabel->setText(_startUpTimerText);
+    _startUpTimerTextLabel->setFont(_startUpTimerTextLabelFont);
+
+    uint32_t pixelWidth = _startUpTimerTextLabelFontInterval.width(_startUpTimerTextLabel->text());
+    uint32_t pixelHeight = _startUpTimerTextLabelFontInterval.height();
+
+    _startUpTimerTextLabel->setFixedWidth(pixelWidth);
+    _startUpTimerTextLabel->setFixedHeight(pixelHeight);
+    _startUpTimerTextLabel->setText("Вперёд, в пещеры!!!!");
+    _startUpTimerTextLabel->setAlignment(Qt::AlignHCenter);
+
+    _timeLeftBeforeStartUpLabel->setText("");
+}
+
+void battleField::HideInitialAnimationScene_1()
+{
+    _startUpTimerTextLabel->hide();
+    _timeLeftBeforeStartUpLabel->hide();
+}
+
+void battleField::ShowInitialAnimationScene_2()
+{
+//    _orderNotificationName = new QLabel();
+//    SetFontAndAlignment(_orderNotificationName);
+
+//    for (uint32_t var = 0; var < _playersOrder.size(); ++var)
+//    {
+//        QLabel* currLabel = new QLabel();
+//        SetFontAndAlignment(currLabel);
+//        _labelsPlayerNamesInOrder.push_back(currLabel);
+//        currLabel->setText(QString::number(_labelsPlayerNamesInOrder.size())
+//                           + " : "
+//                           + _playersOrder[var]);
+
+//    }
+
+//    ui->dbgLayout->addWidget(_orderNotificationName);
+//    for (uint32_t var = 0; var < _labelsPlayerNamesInOrder.size(); ++var)
+//    {
+//        ui->dbgLayout->addWidget(_labelsPlayerNamesInOrder[var]);
+//    }
+
+    _orderNotification = new PlayersOrderNotification();
+    for (uint32_t var = 0; var < _playersOrder.size(); ++var)
+        _orderNotification->AddPlayer(_playersOrder[var]);
+
+    _spacerForScene2_2 = new QSpacerItem(20, 40, QSizePolicy::Expanding, QSizePolicy::Expanding);
+    ui->dbgLayout->addSpacerItem(_spacerForScene2_2);
+
+    ui->dbgLayout->addWidget(_orderNotification);
+    ui->dbgLayout->setAlignment(Qt::AlignHCenter);
+
+    _spacerForScene2 = new QSpacerItem(20, 40, QSizePolicy::Expanding, QSizePolicy::Expanding);
+    ui->dbgLayout->addSpacerItem(_spacerForScene2);
+}
+
 void battleField::InitializeStartUpProcedureVisualization()
 {
     QFont        _startUpTimerTextLabelFont ("times", 24);
@@ -475,6 +543,14 @@ void battleField::InitializeStartUpProcedureVisualization()
     ui->lbl_PhaseName->setFixedHeight(pixelHeight);
 
 
+    //Set-Up Players Order Notification:
+
+    //Order notification should be Created here!
+    _orderNotification = new PlayersOrderNotification();
+    for (uint32_t var = 0; var < _playersOrder.size(); ++var)
+        _orderNotification->AddPlayer(_playersOrder[var]);
+
+
     //Initialize the Timer:
     _startUpTimer = new QTimer(this);
     _startUpTimer->setInterval(1000);
@@ -487,11 +563,6 @@ void battleField::InitializeStartUpProcedureVisualization()
 void battleField::SlotStartUpAnimationCompleted()
 {
     qDebug() << "SlotStartUpAnimationCompleted() ";
-
-    _startUpTimerTextLabel->hide();
-    _timeLeftBeforeStartUpLabel->hide();
-    ui->dbgLayout->removeItem(_spacerBottom);
-    delete _spacerBottom;
 
     ui->btn_MoveTimer->show();
     ui->btn_PhaseTimer->show();
@@ -520,25 +591,22 @@ void battleField::SlotStartUpTimerHandler()
         _startUpTimer->start();
     else if (_startUpTimerTicksCounter == 5)
     {
-        QFont        _startUpTimerTextLabelFont ("times", 75);
-        QFontMetrics _startUpTimerTextLabelFontInterval (_startUpTimerTextLabelFont);
-        _startUpTimerTextLabel->setText(_startUpTimerText);
-        _startUpTimerTextLabel->setFont(_startUpTimerTextLabelFont);
-
-        uint32_t pixelWidth = _startUpTimerTextLabelFontInterval.width(_startUpTimerTextLabel->text());
-        uint32_t pixelHeight = _startUpTimerTextLabelFontInterval.height();
-
-        _startUpTimerTextLabel->setFixedWidth(pixelWidth);
-        _startUpTimerTextLabel->setFixedHeight(pixelHeight);
-        _startUpTimerTextLabel->setText("Вперёд, в пещеры!!!!");
-        _startUpTimerTextLabel->setAlignment(Qt::AlignHCenter);
-
-        _timeLeftBeforeStartUpLabel->setText("");
-
+        ShowInitialAnimationScene_1();
+        _startUpTimer->start();
+    }
+    else if (_startUpTimerTicksCounter == 6)
+    {
+        HideInitialAnimationScene_1();
+        ShowInitialAnimationScene_2();
+        _startUpTimer->start();
+    }
+    else if ( _startUpTimerTicksCounter == 7 )
+    {
         _startUpTimer->start();
     }
     else
     {
+        HideInitialAnimationScene_2();
         emit SignalStartUpAnimationCompleted();
     }
 
@@ -679,3 +747,30 @@ void battleField::SlotGamePhaseHasBeenChanged(GamePhase phase)
 
 }
 
+
+void battleField::HideInitialAnimationScene_2()
+{
+//    for (uint32_t var = 0; var < _labelsPlayerNamesInOrder.size(); ++var)
+//    {
+//        _labelsPlayerNamesInOrder[var]->hide();
+//        delete _labelsPlayerNamesInOrder[var];
+//        _labelsPlayerNamesInOrder.erase(_labelsPlayerNamesInOrder.begin() + var);
+//        _labelsPlayerNamesInOrder.shrink_to_fit();
+//    }
+//    _orderNotificationName->hide();
+//    delete _orderNotificationName;
+//    ui->dbgLayout->removeItem(_spacerBottom);
+//    delete _spacerBottom;
+
+    _orderNotification->hide();
+    ui->dbgLayout->removeWidget(_orderNotification);
+    delete _orderNotification;
+
+    ui->dbgLayout->removeItem(_spacerBottom);
+    delete _spacerBottom;
+    ui->dbgLayout->removeItem(_spacerForScene2);
+    delete _spacerForScene2;
+    ui->dbgLayout->removeItem(_spacerForScene2_2);
+    delete _spacerForScene2_2;
+
+}
