@@ -41,7 +41,9 @@
 
 
 //For the Diplomacy there should be another timer.
-enum class GamePhase {  GameInitialization,
+enum class GamePhase {
+                        GameInitialization,
+                        OtherPlayerMove,
                         StartOfTheMove,
                         Theft,
                         AfterOpenDoorNoMonster,
@@ -49,8 +51,22 @@ enum class GamePhase {  GameInitialization,
                         Diplomacy,
                         WaitingForAnOpponentToMove,
                         HandAlignment,
-                        CardProcessing
+                        CardProcessing,
+                        AfterBattleWin,
+                        AfterBattleLoose //запрещено подкидывать игроку что-нибудь, пока он разбирается с непотребством
                       };
+//Фазы:
+//Инициализация:
+// В этой фазе игра запускается. Она длится до тех пор, пока не отрисуется анимация.
+// Её завершением является SlotInitialAnimationCompleted(), который делает void The_Game::RealGameStart()
+// После этого игра переходит в фазу StartOfTheMove,
+// Где клиент проверяет, чей сейчас ход, и, в зависимости от этого переключает игру в фазу
+// "Не свой ход" OtherPlayerMove или ведёт игрока (по сути, только своего клиента) далее, через фазы
+// В фазе "Дипломатия" у всех игроков появляются дополнительные кнопки (принять помощь и своё специальное меню)
+// При подключении игрока вор воремя дипломатии к бою, он перелючается во все остальные сопуствующие фазы
+// Если его не выключат из игры картой
+// Во всех остальных случаях игрок находится в фазе OtherPlayerMove, где набор его действий весьма ограничен
+
 
 //Таймеров всего четыре:
 //1. Общий таймер на ход
@@ -255,7 +271,6 @@ signals:
 
 public slots:
 
-    void DEBUG_SlotWasPushedToGameMode();
     void dbg_return_to_the_main_window();
 
 public slots:
@@ -344,7 +359,20 @@ signals:
 //ServerRelated
 public slots:
 
+
+///////////////START THE GAME
+
+
     void SlotServerReportsTheGameIsAboutToStart(const TheGameIsAboutToStartData& data);
+    void DEBUG_SlotWasPushedToGameMode();
+
+    void RealGameStart();
+
+
+//////////////START THE GAME
+
+
+
     void SlotProcessChartMessageReceived(const QStringList& message)
     { emit  SignalChartMessageReceived(message); }
     void SlotProcessChartMessageSending(const QString& message)
@@ -388,8 +416,7 @@ public slots:
     //The_Game should allways have correct settings
     void SlotSetUpGameSettings(const GameSettings& settings);
 
-    void SlotInitialAnimationCompleted()
-    { _currentGamePhase = GamePhase::StartOfTheMove; }
+    void SlotInitialAnimationCompleted();
 
 private:
 
@@ -442,11 +469,69 @@ private:
 
 private:
 
-    bool CheckThePlayerIsAbleToSell(const Player &player);
+    bool CheckThePlayerIsAbleToSell(Player player);
+    uint32_t GetCardPrice(SimpleCard card);
 
 
 
 
+    //В самом начале игра должна проверить, кто сейчас ходит.
+    //Если ходит не главный игрок - для начальной проверки клиенту
+    //не нужно получать от сервера дополнительных сообщений -
+    //требуется сличить имя игрока из настроек с именем мастера.
+    //Для всех последующих итераций сервер также стартует таймеры,
+    //но только для того, чтобы по таймауту отключить игрока.
+    //клиент же при молчании игрока делает ход сам (самый простой  - открывает дверь)
+    //больше он не делает ничего.
+    //сервер (по идее - сам поймёт, что клиент отключился).
+    //т.к. произойти это может в любой момент времени,
+    //клиент, получив подобное сообщение, должен сам произвести все действия, которые
+    //за этим следуют.
+    //По сути для клиента есть два состояния - "свой ход" и "не свой ход"
+    //1. Сначала полностью отладить "свой ход" без противодействия /действия других игроков
+    //2. Добавить воздействие других игроков "не свой ход"
+    //3. Обеспечить корректные действия сервера по таймаутам -
+    //   Сервер передаёт сообщения, по которым сменяются фазы.
+    //   Клиенты в этот момент находятся в фазе "ожидание ответа сервера"
+    //   Т.е. у главного клиента должен сработать "таймаут", он должен передать сообщение на сервер
+    //   Не позднее, чем общее время хода игрока (или какое-нибудь другое время).
+    //   Если клиент ничего не прислал, сервер должен выкинуть его по таймауту,
+    //   Т.к. во всех остальных случаях клиент пришлёт репорт
+    //   Если какой-нибудь клиент три раза подряд пришлёт "автоматический" ход
+    //   Этот клиент будет автоматически отключен от сервера.
+
+
+    void InitializeMainPlayerMove();
+    void InitializeOpponentMove(const QString& opponentsName);
+
+    //these functions are setting timers settings, since they are able to have normal settiungs
+    //use them only after server's connection
+    void StartMoveTimer();
+    void StartPhaseTimer(GamePhase phase);
+
+    QTimer * _moveTimer;
+    QTimer * _phaseTimer;
+
+    QTimer * _secondsMoveTimer;
+    QTimer * _secondsPhaseTimer;
+
+    uint32_t _secondsLeftMoveTimer = 0;
+    uint32_t _secondsLeftPhaseTimer = 0;
+
+    void InitializeTicksTimers();
+
+    void InitializeMoveTimer();
+    void InitializePhaseTimer();
+
+private slots:
+
+    //These slots are not set the intervals!
+    //It will be done later.
+    void SlotMoveTimerHandler();
+    void SlotPhaseTimerHandler();
+
+    void SlotSecondsMoveTimerHandler();
+    void SlotSecondsPhaseTimerHandler();
 
 private:
 
@@ -465,6 +550,8 @@ public:
     constexpr static float koeff_GameInfoBox_size_Height = 0.66f; //why it is impossible 2/3???
     constexpr static float koeff_GameInfoBox_size_Width = (1 - koeff_GameField_size) / 2;
 
+    GamePhase GetCurrentGamePhase() const;
+    void SetCurrentGamePhase(const GamePhase &GetCurrentGamePhase);
 };
 
 #endif // THE_GAME_H

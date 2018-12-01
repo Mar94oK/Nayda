@@ -71,6 +71,11 @@ The_Game::The_Game(QWidget *parent) :
 
     //change the Game Phase:
     _currentGamePhase = GamePhase::GameInitialization;
+
+    //Initialize timers;
+    InitializeMoveTimer();
+    InitializePhaseTimer();
+    InitializeTicksTimers();
 }
 
 The_Game::~The_Game()
@@ -1668,7 +1673,7 @@ void The_Game::dbg_return_to_the_main_window()
 void The_Game::SlotShowTheCardInCentre(PositionedCard card)
 {
     card.AddBase(this->pos());
-    qDebug() << "Application Global Coordinates: " << "X: " <<  pos().x()<< " Y: " << pos().y();
+//    qDebug() << "Application Global Coordinates: " << "X: " <<  pos().x()<< " Y: " << pos().y();
     //pass the card to PopUpWidget
 
     _popUpCardWidget->setUpPointsForPoly(card.GetPositionTopLeft(), card.GetPositionBottomRight());
@@ -1698,6 +1703,16 @@ void The_Game::SlotHideTheCardInCentre(bool)
 {
     _popUpCardWidget->hideAnimation();
     _cardPointer->hideAnimation();
+}
+
+GamePhase The_Game::GetCurrentGamePhase() const
+{
+    return _currentGamePhase;
+}
+
+void The_Game::SetCurrentGamePhase(const GamePhase &currentGamePhase)
+{
+    _currentGamePhase = currentGamePhase;
 }
 
 void The_Game::SlotAdjustSizeOfTheGamerWidgetToMakeCardsToBeInPlace()
@@ -1959,6 +1974,11 @@ void The_Game::SlotSetUpGameSettings(const GameSettings &settings)
 {
     _gameSettings.applyNewSettings(settings);
     ui->GameField->ApplyNewSettings(settings);
+}
+
+void The_Game::SlotInitialAnimationCompleted()
+{
+    RealGameStart();
 }
 
 void The_Game::FormingInitialDecks(const std::vector<uint32_t> &doorsVector, const std::vector<uint32_t> &treasuresVector)
@@ -2299,9 +2319,255 @@ void The_Game::SlotAddPlayedCardToTheBattleField(SimpleCard card)
 
 }
 
-bool The_Game::CheckThePlayerIsAbleToSell(const Player& player)
+bool The_Game::CheckThePlayerIsAbleToSell(Player player)
 {
-    qDebug() <<"NAY-002: AbleToSell Checker";
+    qDebug() <<"NAY-002: Entering AbleToSell Checker";
+    std::vector<SimpleCard> sumChecker;
+    std::vector<SimpleCard> cardsOnHands = player.GetCardsOnHands();
+    std::vector<SimpleCard> cardsInGame = player.GetCardsInGame();
+
+
+    for (uint32_t var = 0; var < cardsOnHands.size(); ++var)
+    {
+        if (cardsOnHands[var].first)
+            sumChecker.push_back(cardsOnHands[var]);
+    }
+    for (uint32_t var = 0; var < cardsInGame.size(); ++var)
+    {
+        if (cardsInGame[var].first)
+            sumChecker.push_back(cardsInGame[var]);
+    }
+
+    uint32_t totalSumOfAllTheCards = 0;
+
+    for (uint32_t var = 0; var < sumChecker.size(); ++var)
+    {
+        totalSumOfAllTheCards += GetCardPrice(sumChecker[var]);
+    }
+    qDebug() << "NAY-002: Total Price of all the cards the player has: " << totalSumOfAllTheCards;
+
+    if (totalSumOfAllTheCards >= 1000)
+        return true;
+    return false;
+}
+
+uint32_t The_Game::GetCardPrice(SimpleCard card)
+{
+    std::map<int, gameCardTreasureArmor> :: const_iterator _armorIterator;
+    std::map<int, gameCardTreasureArmorAmplifier> :: const_iterator _armorAmplifiersIterator;
+    std::map<int, gameCardTreasureBattleAmplifier> :: const_iterator _battleAmplifiersIterator;
+    std::map<int, gameCardTreasureLevelUp> :: const_iterator _levelUpIterator;
+    std::map<int, gameCardTreasureSpecialMechanic> :: const_iterator _specialMechanicsTreasureIterator;
+    std::map<int, gameCardTreasureThingsAmplifiers> :: const_iterator _thingsAmplifiersIterator;
+    std::map<int, gameCardTreasureWeapon> :: const_iterator _weaponsIterator;
+
+    if (!card.first)
+        throw "NAY-002: Error During CheckCardPrice(). Doors have no prices!";
+
+    _armorIterator = _armorDeck.find(static_cast <int> (card.second));
+    if (_armorIterator != _armorDeck.end())
+        return static_cast<uint32_t>((*_armorIterator).second.price());
+
+    _armorAmplifiersIterator = _armorAmplifiersDeck.find(static_cast <int> (card.second));
+    if (_armorAmplifiersIterator != _armorAmplifiersDeck.end())
+        return 0;
+
+    _battleAmplifiersIterator = _battleAmplifiersDeck.find(static_cast <int> (card.second));
+    if (_battleAmplifiersIterator != _battleAmplifiersDeck.end())
+        return 0;
+
+
+     _levelUpIterator = _levelUpDeck.find(static_cast <int> (card.second));
+    if (_levelUpIterator != _levelUpDeck.end())
+        return 0;
+
+    _specialMechanicsTreasureIterator = _specialMechanicsTreasureDeck.find(static_cast <int> (card.second));
+    if (_specialMechanicsTreasureIterator != _specialMechanicsTreasureDeck.end())
+        return static_cast<uint32_t>((*_specialMechanicsTreasureIterator).second.price());
+
+
+    _thingsAmplifiersIterator = _thingsAmplifiersDeck.find(static_cast <int> (card.second));
+    if (_thingsAmplifiersIterator != _thingsAmplifiersDeck.end())
+        return static_cast<uint32_t>((*_thingsAmplifiersIterator).second.price());
+
+
+    _weaponsIterator = _weaponsDeck.find(static_cast <int> (card.second));
+    if (_weaponsIterator != _weaponsDeck.end())
+        return static_cast<uint32_t>((*_weaponsIterator).second.price());
+
+    throw "NAY-002: Error During CheckCardPrice(). Card Not Found!!!";
+}
+
+void The_Game::RealGameStart()
+{
+    qDebug() << "NAY-002 : RealGameStart()!";
+
+    if (_gameSettings.clientName() == _playersOrder[0])
+    {
+        InitializeMainPlayerMove();
+        StartMoveTimer();
+        StartPhaseTimer(GetCurrentGamePhase());
+    }
+
+    else
+    {
+        InitializeOpponentMove(_playersOrder[0]);
+        StartMoveTimer();
+
+        //In fact, while another player is acting,
+        //It is necessary to set correct GamePhase
+        StartPhaseTimer(GamePhase::StartOfTheMove);
+    }
+
+}
+
+void The_Game::InitializeMainPlayerMove()
+{
+
+//    1. Вор может воровать в любой* момент, когда он и его жертва не в бою.
+//    это есть в ФАКе http://munchkinizm.narod.ru/FAQ/index.htm#q0710
+
+//    2. Вводить в игру постоянные шмотки ты можешь в любой* момент своего хода,
+//       когда ты не в бою, либо при получении этой карты, когда ты не в бою
+//       (например после боя, в котором ты был помощником).
+//    Все манипуляции с сыгранными шмотками, то есть смена своей экипировки,
+//                                           то есть снять (убрать в "рюкзак") одно и надеть
+//      (достать из "рюкзака") другое, а так же обмен шмотками с другими игроками, это в любой* момент,
+//                                     когда ты не в бою (при обмене второй игрок тоже должен быть не в бою,
+//                                                        разумеется).
+//      Продавать шмотки за уровень можно в любой* момент своего хода, когда ты не в бою.
+
+//    * любой момент игры - это любой момент, когда это не прерывает какое-либо другое действие.
+//                                                                     например нельзя ничего делать
+//                                                                     (кроме специально предусмотренных
+//                                                                      для таких ситуаций действий),
+//        пока игрок разбирается с эффектом проклятия или непотребства, или пока он роется в сбросе,
+//        сыграв Штырь Лозоходца, или пока Вор пытается украсть шмотку и т.п.
+
+
+    //1. Стартовать основной таймер
+    //2. Стартовать таймер фазы
+    //3. Провероить вор/не вор
+    //  3.1 Если вор, включить функцию "своровать"
+    //  3.2 Если не вор, далее
+    //
+    //4. Проверить, может ли игрок торговать
+    //5. Если может,
+    //5.1  Разрешить торговлю (торговля будет разрешена до начала боя, и после победы - "свой ход")
+    //5.2  Разрешить сыграть монстра с руки
+    //5.3  Разрешить сыграть монстра из колоды
+
+    SetCurrentGamePhase(GamePhase::StartOfTheMove);
+
+    if (CheckThePlayerIsAbleToSell(_mainPlayer))
+        qDebug() << "NAY-001: The player is able to sell!";
+}
+
+void The_Game::InitializeOpponentMove(const QString &opponentsName)
+{
+    SetCurrentGamePhase(GamePhase::OtherPlayerMove);
+    qDebug() << "NAY-002: Other PlayerMove!";
+}
+
+void The_Game::StartMoveTimer()
+{
+    _secondsLeftMoveTimer = _gameSettings.totalTimeToMove();
+    _secondsMoveTimer->start();
+    _moveTimer->setInterval(1000* static_cast<int32_t>(_gameSettings.totalTimeToMove()));
+    _moveTimer->start();
+}
+
+void The_Game::StartPhaseTimer(GamePhase phase)
+{
+    switch (phase)
+    {
+
+    case GamePhase::StartOfTheMove:
+    {
+        _secondsLeftPhaseTimer = _gameSettings.timeToThink();
+        _phaseTimer->setInterval(static_cast<int32_t>(1000*_gameSettings.timeToThink()));
+        _secondsPhaseTimer->start();
+        _phaseTimer->start();
+    }
+        break;
+
+    case GamePhase::Diplomacy:
+    {
+        _secondsLeftPhaseTimer = _gameSettings.diplomacyTime();
+        _phaseTimer->setInterval(static_cast<int32_t>(1000*_gameSettings.diplomacyTime()));
+        _secondsPhaseTimer->start();
+        _phaseTimer->start();
+    }
+        break;
+
+    case GamePhase::AfterBattleWin:
+    {
+        _secondsLeftPhaseTimer = _gameSettings.timeForOpponentsDecision();
+        _phaseTimer->setInterval(static_cast<int32_t>(1000*_gameSettings.timeForOpponentsDecision()));
+        _secondsPhaseTimer->start();
+        _phaseTimer->start();
+    }
+        break;
+
+    default:
+        qDebug() << "StartPhaseTimer() :: Error while setting timer! Incorrect phase.";
+       break;
+    }
+}
+
+void The_Game::InitializeTicksTimers()
+{
+    _secondsMoveTimer = new QTimer(this);
+    _secondsPhaseTimer = new QTimer(this);
+    _secondsMoveTimer->setInterval(1000);
+    _secondsPhaseTimer->setInterval(1000);
+    _secondsMoveTimer->setSingleShot(true);
+    _secondsPhaseTimer->setSingleShot(true);
+
+    connect(_secondsMoveTimer, &QTimer::timeout, this, &The_Game::SlotSecondsMoveTimerHandler);
+    connect(_secondsPhaseTimer, &QTimer::timeout, this, &The_Game::SlotSecondsPhaseTimerHandler);
+}
+
+void The_Game::InitializeMoveTimer()
+{
+    _moveTimer = new QTimer(this);
+    _moveTimer->setSingleShot(true);
+    //here to connect the Handler!
+    connect(_moveTimer, &QTimer::timeout, this, &The_Game::SlotMoveTimerHandler);
+
+}
+
+void The_Game::InitializePhaseTimer()
+{
+    _phaseTimer = new QTimer(this);
+    _phaseTimer->setSingleShot(true);
+    connect(_phaseTimer, &QTimer::timeout, this, &The_Game::SlotPhaseTimerHandler);
+}
+
+void The_Game::SlotMoveTimerHandler()
+{
+    qDebug() << "NAY-002: MoveTimer timeout!";
+}
+
+void The_Game::SlotPhaseTimerHandler()
+{
+    qDebug() << "NAY-002:: PhaseTimer timeout!";
+}
+
+void The_Game::SlotSecondsMoveTimerHandler()
+{
+    --_secondsLeftMoveTimer;
+    ui->GameField->SetTimeLeftMoveTimer(_secondsLeftMoveTimer);
+    if (_secondsLeftPhaseTimer)
+        _secondsMoveTimer->start();
+}
+
+void The_Game::SlotSecondsPhaseTimerHandler()
+{
+    --_secondsLeftPhaseTimer;
+    ui->GameField->SetTimeLeftPhaseTimer(_secondsLeftPhaseTimer);
+    if (_secondsLeftPhaseTimer)
+        _secondsPhaseTimer->start();
 }
 
 unsigned int The_Game::doorsLeft() const

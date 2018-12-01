@@ -198,6 +198,23 @@ public slots:
     void ApplyNewSettings(GameSettings settings)
     { _settings.applyNewSettings(settings); }
 
+public:
+
+    void SetTimeLeftMoveTimer(uint32_t secondsLeft);
+    void SetTimeLeftPhaseTimer(uint32_t secondsLeft);
+
+
+private:
+
+    QString _initialMoveTimerText = "До конца хода осталось: ";
+    QString _initialPhaseTimerText = "До конца фазы осталось: ";
+
+    QString _initialMoveTimeText = "1";
+    QString _initialPhaseTimeText = "1";
+
+    void SetUpTimersLabels();
+    void SetFontAndAlignment(QLabel* lbl, uint32_t size);
+
 };
 
 

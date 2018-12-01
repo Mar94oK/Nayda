@@ -296,7 +296,7 @@ bool Hand::eventFilter(QObject *o, QEvent *e)
         if (o == _cardsVector[var]) {
 
             if (e->type() == QEvent::Enter) {
-                qDebug() << "Mouse Enters Area!";
+//                qDebug() << "Mouse Enters Area!";
 #ifdef __linux__
                 if (_debounceTimer->isActive())
                     _debounceTimer->stop();
@@ -307,20 +307,20 @@ bool Hand::eventFilter(QObject *o, QEvent *e)
 //                qDebug() << "Size of the card, H: " << _cardsVector[var]->height();
 //                qDebug() << "Size of the card, W: " << _cardsVector[var]->width();
                 _currentCardToShowNearItsPosition.SetSimpleCard(_cardsOnHandsHandsWidgetProperty[var]);
-                qDebug() << "Hand.cpp : Position top Left X: " << _cardsVector[var]->pos().x();
-                qDebug() << "Hand.cpp :Position top Left Y: " << _cardsVector[var]->pos().y();
+//                qDebug() << "Hand.cpp : Position top Left X: " << _cardsVector[var]->pos().x();
+//                qDebug() << "Hand.cpp :Position top Left Y: " << _cardsVector[var]->pos().y();
                 _currentCardToShowNearItsPosition.SetPositionTopLeft({ _cardsVector[var]->pos().x(),
                                                                        _cardsVector[var]->pos().y()});
                 _currentCardToShowNearItsPosition.SetPositionBottomRight({_cardsVector[var]->pos().x() + _cardsVector[var]->width(),
                                                                           _cardsVector[var]->pos().y() + _cardsVector[var]->height()});
-                qDebug() << "Hand.cpp :Position bottom Right X: " <<_cardsVector[var]->pos().x() + _cardsVector[var]->width();
-                qDebug() << "Hand.cpp :Position bottom Right Y: " << _cardsVector[var]->pos().y() + _cardsVector[var]->height();
+//                qDebug() << "Hand.cpp :Position bottom Right X: " <<_cardsVector[var]->pos().x() + _cardsVector[var]->width();
+//                qDebug() << "Hand.cpp :Position bottom Right Y: " << _cardsVector[var]->pos().y() + _cardsVector[var]->height();
 
                 _showCardsTimer->start(static_cast<uint32_t>(_timeToShowTheCard));
                 return true;
             }
             else if (e->type() == QEvent::Leave) {
-                qDebug() << "Mouse Leaves Area!";
+//                qDebug() << "Mouse Leaves Area!";
 
 #ifdef __linux__
                 _debounceTimer->start(_debounceTime);

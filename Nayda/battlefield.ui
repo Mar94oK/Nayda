@@ -79,6 +79,15 @@
      </item>
      <item>
       <widget class="QLabel" name="lbl_MoveTime">
+       <property name="font">
+        <font>
+         <family>Times New Roman</family>
+         <pointsize>36</pointsize>
+         <weight>75</weight>
+         <italic>true</italic>
+         <bold>true</bold>
+        </font>
+       </property>
        <property name="text">
         <string>150</string>
        </property>

@@ -166,8 +166,8 @@ void TriangleCardPointer::show(QPoint positionTopLeft, QPoint positionBottomRigh
                 width(),
                 height());
 
-    qDebug() << "NAY-001: TriangleCardPointer::show() Geometry POS TOP LEFT X: " << xPos;
-    qDebug() << "NAY-001: TriangleCardPointer::show() Geometry POS TOP LEFT Y: " << yPos;
+//    qDebug() << "NAY-001: TriangleCardPointer::show() Geometry POS TOP LEFT X: " << xPos;
+//    qDebug() << "NAY-001: TriangleCardPointer::show() Geometry POS TOP LEFT Y: " << yPos;
 
 
     QWidget::show();                // Отображаем виджет, который полностью прозрачен

@@ -120,7 +120,7 @@ GamerWidget::GamerWidget(QWidget *parent) :
     ui->lbl_BattlePowerDigit->setText(QString::number(_battlePower));
     ui->lbl_BattlePowerDigit->setStyleSheet("font: 28pt;");
 
-    qDebug() << "The Size of The Gamer Widget " << size();
+//    qDebug() << "The Size of The Gamer Widget " << size();
     connect(ui->widget, &Hand::adjustSize, this, &GamerWidget::_adjustSizeSlot);
 
     //connect the Hand with the Game... (checking the possibility for the Card to be played)
@@ -318,14 +318,14 @@ void GamerWidget::SlotRepresentTheCardInCentre()
 
 void GamerWidget::SlotRepresentTheCardFromHandsInCentre(PositionedCard card)
 {
-    qDebug() << "NAY-001: SlotRepresentTheCardFromHandsInCentre():";
+//    qDebug() << "NAY-001: SlotRepresentTheCardFromHandsInCentre():";
     card.AddBase(ui->widget->pos());
     card.AddBase(pos());
-    qDebug() << "Related position of Given Card in GamerWidget: ";
-    qDebug() << "NAY-001: SlotRepresentTheCardFromHandsInCentre Geometry POS TOP LEFT X: " << card.GetPositionTopLeft().x();
-    qDebug() << "NAY-001: SlotRepresentTheCardFromHandsInCentre Geometry POS TOP LEFT Y: " << card.GetPositionTopLeft().y();
-    qDebug() << "NAY-001: SlotRepresentTheCardFromHandsInCentre Geometry POS BOT RIGHT X: " << card.GetPositionBottomRight().x();
-    qDebug() << "NAY-001: SlotRepresentTheCardFromHandsInCentre Geometry POS BOT RIGHT Y: " << card.GetPositionBottomRight().y();
+//    qDebug() << "Related position of Given Card in GamerWidget: ";
+//    qDebug() << "NAY-001: SlotRepresentTheCardFromHandsInCentre Geometry POS TOP LEFT X: " << card.GetPositionTopLeft().x();
+//    qDebug() << "NAY-001: SlotRepresentTheCardFromHandsInCentre Geometry POS TOP LEFT Y: " << card.GetPositionTopLeft().y();
+//    qDebug() << "NAY-001: SlotRepresentTheCardFromHandsInCentre Geometry POS BOT RIGHT X: " << card.GetPositionBottomRight().x();
+//    qDebug() << "NAY-001: SlotRepresentTheCardFromHandsInCentre Geometry POS BOT RIGHT Y: " << card.GetPositionBottomRight().y();
     emit SignalRepresentTheCardInCentre(card);
 
 }

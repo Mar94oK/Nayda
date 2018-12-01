@@ -19,6 +19,8 @@ battleField::battleField(QWidget *parent) :
     SetUpInitialTimersPictures();
     SetWidgetsToStartUpPhase();
     SetUpSignalsSlotsConnections();
+
+    SetUpTimersLabels();
     //InitializeStartUpProcedureVisualization();
 
 
@@ -355,13 +357,8 @@ void battleField::startCardsRepresentation()
 void battleField::SetBackgroundPicture()
 {
 
-//#ifndef USE_RESOURCES
-//    QPixmap pxmpBattleField("Pictures/JorneyCover.png");
-//#else
-//    QPixmap pxmpBattleField(":/Pictures/JorneyCover.png");
-//#endif
-
-
+//    qDebug() << "NAY-001: SetUp Cover Picture for BattleField.";
+#ifndef USE_RESOURCES
     qDebug() <<"NAY-0001: Application location: "<< QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory);
     QString homeDirectory = QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory);
 
@@ -372,15 +369,14 @@ void battleField::SetBackgroundPicture()
 #elif defined Q_OS_UNIX
      QString uiBattleFieldFilesLocation = "Munchkin/Nayda/Nayda/Pictures/battleField";
 #endif
-
-    qDebug() << "NAY-001: SetUp Cover Picture for BattleField.";
     QPixmap pxmpBattleField(uiBattleFieldFilesLocation + QString("BattleFieldCover.png"));
-
+#else
+    QPixmap pxmpBattleField(":/Pictures/battleField/BattleFieldCover.png");
+#endif
     //find the HW size of the window
     QRect HW_Screen_Size = QApplication::desktop()->screenGeometry();
 
     QPixmap resultOpaque = pxmpBattleField;
-//    setPalette(plte_battleField);
     setAutoFillBackground(true);
 
     QPainter painter(this);
@@ -616,7 +612,9 @@ void battleField::SlotStartUpTimerHandler()
 
 void battleField::paintEvent(QPaintEvent *)
 {
-//    qDebug() <<"NAY-0001: Application location: "<< QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory);
+#ifndef USE_RESOURCES
+
+    //    qDebug() <<"NAY-0001: Application location: "<< QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory);
     QString homeDirectory = QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory);
 
 #ifdef Q_OS_WIN
@@ -631,6 +629,10 @@ void battleField::paintEvent(QPaintEvent *)
 
      qDebug() << "NAY-001: SetUp Cover Picture for BattleField.";
      QPixmap pxmpBattleField(path + QString("BattleFieldCover.png"));
+
+#else
+    QPixmap pxmpBattleField(":/Pictures/battleField/BattleFieldCover.png");
+#endif
 
      //find the HW size of the window
      QRect HW_Screen_Size = QApplication::desktop()->screenGeometry();
@@ -747,6 +749,43 @@ void battleField::SlotGamePhaseHasBeenChanged(GamePhase phase)
         qDebug() << "NAY-001: This phase will not change the timers ICO! Place here changings for all the Other Features";
 
 
+}
+
+void battleField::SetTimeLeftMoveTimer(uint32_t secondsLeft)
+{
+    ui->lbl_MoveTime->setText(QString::number(secondsLeft));
+}
+
+void battleField::SetTimeLeftPhaseTimer(uint32_t secondsLeft)
+{
+    ui->lbl_PhaseTime->setText(QString::number(secondsLeft));
+}
+
+void battleField::SetUpTimersLabels()
+{
+    ui->lbl_PhaseTime->setText(_initialPhaseTimeText);
+    ui->lbl_PhaseTimer->setText(_initialPhaseTimerText);
+    ui->lbl_MoveTime->setText(_initialMoveTimeText);
+    ui->lbl_MoveTimer->setText(_initialMoveTimerText);
+
+    SetFontAndAlignment(ui->lbl_PhaseTimer, 14);
+    SetFontAndAlignment(ui->lbl_PhaseTime, 32);
+    SetFontAndAlignment(ui->lbl_MoveTimer, 14);
+    SetFontAndAlignment(ui->lbl_MoveTime, 32);
+}
+
+void battleField::SetFontAndAlignment(QLabel *lbl, uint32_t size)
+{
+    qDebug() << "NAY-002: Set Font and Alignment";
+    QFont        TextLabelFont ("times", static_cast<int32_t>(size));
+    QFontMetrics TextLabelFontInterval (TextLabelFont);
+    lbl->setText(lbl->text());
+    lbl->setFont(TextLabelFont);
+
+//    uint32_t pixelWidth = static_cast<uint32_t>(TextLabelFontInterval.width(_startUpTimerTextLabel->text()));
+    uint32_t pixelHeight = static_cast<uint32_t>(TextLabelFontInterval.height());
+
+    lbl->setFixedHeight(static_cast<int32_t>(pixelHeight));
 }
 
 

@@ -103,6 +103,12 @@ public:
     std::vector<SimpleCard>* cardsOnHandsVector();
     std::vector<SimpleCard>* cardsInGameVector();
 
+    const std::vector<SimpleCard>& GetCardsOnHands()
+    { return _cardsOnHands; }
+
+    const std::vector<SimpleCard>& GetCardsInGame()
+    { return _cardsInGame; }
+
     QString name() const;
     void setName(const QString &name);
 
