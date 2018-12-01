@@ -16,6 +16,7 @@ battleField::battleField(QWidget *parent) :
     ui->btnStartTestCards->hide();
 
     SetUpPictureAddresses();
+    SetUpInitialTimersPictures();
     SetWidgetsToStartUpPhase();
     SetUpSignalsSlotsConnections();
     //InitializeStartUpProcedureVisualization();
@@ -428,7 +429,7 @@ void battleField::InitializeStartUpProcedureVisualization()
     uint32_t pixelWidth = _startUpTimerTextLabelFontInterval.width(_startUpTimerTextLabel->text());
     uint32_t pixelHeight = _startUpTimerTextLabelFontInterval.height();
 
-    _startUpTimerTextLabel->setFixedWidth(pixelWidth);
+    //_startUpTimerTextLabel->setFixedWidth(pixelWidth);
     _startUpTimerTextLabel->setFixedHeight(pixelHeight);
 
     QFont        _timeLeftBeforeStartUpLabelFont ("times", 112);
@@ -467,10 +468,10 @@ void battleField::InitializeStartUpProcedureVisualization()
     ui->lbl_PhaseName->setText(_phaseNameInitialPhaseText + " "+ _playersOrder[0]);
     ui->lbl_PhaseName->setFont(_PhaseNameLabelFont);
 
-    pixelWidth = _PhaseNameLabelFontInterval.width(_startUpTimerTextLabel->text());
+    pixelWidth = _PhaseNameLabelFontInterval.width(ui->lbl_PhaseName->text());
     pixelHeight = _PhaseNameLabelFontInterval.height();
 
-    ui->lbl_PhaseName->setFixedWidth(pixelWidth);
+    //ui->lbl_PhaseName->setFixedWidth(pixelWidth);
     ui->lbl_PhaseName->setFixedHeight(pixelHeight);
 
 
@@ -550,7 +551,7 @@ void battleField::paintEvent(QPaintEvent *)
 
 #ifdef Q_OS_WIN
 //NAY-001: MARK_EXPECTED_ERROR
-     QString uiBattleFieldFilesLocation = "Munchkin/Nayda/Pictures/playMenu";
+     QString uiBattleFieldFilesLocation = "Munchkin/Nayda/Pictures/battleField/";
      homeDirectory = "D:/";
 #elif defined Q_OS_UNIX
      QString uiBattleFieldFilesLocation = "Munchkin/Nayda/Nayda/Pictures/battleField/";
