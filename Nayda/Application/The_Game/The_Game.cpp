@@ -1646,7 +1646,7 @@ void The_Game::theMonstersParser(const QString &filename)
 
 void The_Game::DEBUG_SlotWasPushedToGameMode()
 {   
-    _playersOrder.push_back("DEBUG_MainGamer");
+    _playersOrder.push_back(_gameSettings.clientName());
     _playersOrder.push_back("DEBUG_Opponent");
     if (_gameSettings.maximumNumberOfPlayers() != 2)
         throw "DEBUG ERROR! _gameSettings.maximumNumberOfPlayers() != 2";

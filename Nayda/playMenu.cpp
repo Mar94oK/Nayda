@@ -268,8 +268,12 @@ void playMenu::setUpSignalsSlotsConnections()
 
 void playMenu::setUpUiPicturesAddresses()
 {
+
+#ifndef USE_RESOURCES
+
     qDebug() <<"NAY-0001: Application location: "<< QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory);
     QString homeDirectory = QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory);
+
 
 #ifdef Q_OS_WIN
 //NAY-001: MARK_EXPECTED_ERROR
@@ -293,6 +297,26 @@ void playMenu::setUpUiPicturesAddresses()
 
     _joinRoomButtonPictureAddressDefault = picturesLocationBasis + "binocular_gray.png";
     _joinRoomButtonPictureAddressAllowed = picturesLocationBasis + "binocular_ready.png";
+
+#else
+
+    _connectionButtonPictureAddressDefault = ":/Pictures/playMenu/cloud_gray.png";
+    _connectionButtonPictureAddressSetUp = ":/Pictures/playMenu/cloud_blue.png";
+    _connectionButtonPictureAddressConnected = ":/Pictures/playMenu/cloud_green.png";
+
+    _gameSettingsButtonPictureAddressDefault = ":/Pictures/playMenu/gears_gray.png";
+    _gameSettingsButtonPictureAddressSetUp = ":/Pictures/playMenu/gears_green.png";
+
+    _createRoomButtonPictureAddressDefault = ":/Pictures/playMenu/crown_gray.png";
+    _createRoomButtonPictureAddressAllowed = ":/Pictures/playMenu/crown_ready.png";
+
+    _joinRoomButtonPictureAddressDefault = ":/Pictures/playMenu/binocular_gray.png";
+    _joinRoomButtonPictureAddressAllowed = ":/Pictures/playMenu/binocular_ready.png";
+
+#endif
+
+
+
 }
 
 void playMenu::setUpButtonPicture(QPushButton* const btn, const QString &picturePath, double widthCoeff, double heightWidthRelatio)
