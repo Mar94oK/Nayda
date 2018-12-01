@@ -31,6 +31,7 @@ public:
 
 private:
 
+    QString _orderNotifiactionBaseText = "Очерёдность хода игроков: ";
     void SetUpFonts(QLabel* lbl);
 
 };

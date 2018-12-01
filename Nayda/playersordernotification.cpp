@@ -8,6 +8,8 @@ PlayersOrderNotification::PlayersOrderNotification(QWidget *parent) :
     ui(new Ui::PlayersOrderNotification)
 {
     ui->setupUi(this);
+    SetUpFonts(ui->lblName);
+    ui->lblName->setText(_orderNotifiactionBaseText);
 }
 
 PlayersOrderNotification::~PlayersOrderNotification()

@@ -122,9 +122,7 @@ private:
 
    PlayersOrderNotification* _orderNotification;
 
-   QLabel* _orderNotificationName;
-   QString _orderNotifiactionBaseText = "Очерёдность хода игроков: ";
-   std::vector <QLabel* > _labelsPlayerNamesInOrder;
+
 
    void SetFontAndAlignment(QLabel* lbl);
 

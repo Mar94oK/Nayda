@@ -600,7 +600,9 @@ void battleField::SlotStartUpTimerHandler()
         ShowInitialAnimationScene_2();
         _startUpTimer->start();
     }
-    else if ( _startUpTimerTicksCounter == 7 )
+    else if ( _startUpTimerTicksCounter == 7 ||
+              _startUpTimerTicksCounter == 8 ||
+              _startUpTimerTicksCounter == 9 )
     {
         _startUpTimer->start();
     }
