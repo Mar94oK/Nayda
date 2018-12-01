@@ -591,11 +591,19 @@ void battleField::SetUpPictureAddresses()
 #endif
 
      QString picturesLocationBasis = homeDirectory + uiPlayMenuFilesLocation + "/";
-
+#ifndef USE_RESOURCES
      _diplomacyTimerPictureAddress = picturesLocationBasis + "DiplomacyTime.png";
      _timeToMoveTimerPictureAddress = picturesLocationBasis + "TimeToMove.png";
      _timeToThinkTimerPictureAddress = picturesLocationBasis + "TimeToThink.png";
      _timeForOpponentsToDecideTimerPictureAddress = picturesLocationBasis + "TimeForOpponentsDecision.png";
+#else
+    _diplomacyTimerPictureAddress = ":/Pictures/gameSettingsWidget/DiplomacyTime.png";
+    _timeToMoveTimerPictureAddress = ":/Pictures/gameSettingsWidget/TimeToMove.png";
+    _timeToThinkTimerPictureAddress = ":/Pictures/gameSettingsWidget/TimeToThink.png";
+    _timeForOpponentsToDecideTimerPictureAddress = ":/Pictures/gameSettingsWidget/TimeForOpponentsDecision.png";
+
+#endif
+
 }
 
 void battleField::SetUpInitialTimersPictures()
