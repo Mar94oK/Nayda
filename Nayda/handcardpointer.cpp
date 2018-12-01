@@ -38,7 +38,6 @@ HandCardPointer::HandCardPointer(QWidget *parent) :
     connect(timer, &QTimer::timeout, this, &HandCardPointer::hideAnimation);
 #endif
 
-
 }
 
 
@@ -60,13 +59,11 @@ void HandCardPointer::paintEvent(QPaintEvent *event)
     roundedRect.setWidth(rect().width() - 10);
     roundedRect.setHeight(rect().height() - 10);
 
-
     QRect normalRect;
     normalRect.setX(rect().x());
     normalRect.setY(rect().y());
     normalRect.setWidth(rect().width());
     normalRect.setHeight(rect().height()); //different from setted 10!
-
     normalRect.setHeight(15);
 
 //    qDebug() <<"The height of Triangle Pointer: " << rect().height();
@@ -80,12 +77,7 @@ void HandCardPointer::paintEvent(QPaintEvent *event)
 
     // Отрисовываем фон с закруглением краёв в 10px
     //painter.drawRoundedRect(roundedRect, 10, 10);
-
-
-
     QPainterPath path;
-
-
 
     if (_positionTopLeft.y() - _actualCardSize.height() - 30 < 0) { //higher, than allowed
 
@@ -97,7 +89,6 @@ void HandCardPointer::paintEvent(QPaintEvent *event)
 
     }
     else {
-
 
         qDebug() << "Top Left Position" << normalRect.topLeft();
         qDebug() << "The difference: " << (_positionBottomRight.x() - _positionTopLeft.x()) / 2;
@@ -112,8 +103,6 @@ void HandCardPointer::paintEvent(QPaintEvent *event)
 
         path.lineTo(normalRect.topLeft());
 
-
-
 //        path.moveTo((_positionBottomRight.x() - _positionTopLeft.x()) / 2, _positionTopLeft.y());
 
 //        //path.lineTo(_positionBottomRight.x(), normalRect.topLeft().y());
@@ -123,16 +112,7 @@ void HandCardPointer::paintEvent(QPaintEvent *event)
 //        path.lineTo((_positionBottomRight.x() - _positionTopLeft.x()) / 2, _positionTopLeft.y());
 
     }
-
-
-
-
     painter.fillPath(path, QBrush(QColor(244,183,82,150)));
-
-
-
-
-
 }
 
 void HandCardPointer::show()
@@ -149,7 +129,6 @@ void HandCardPointer::show()
                 height());
 
 
-
     QWidget::show();                // Отображаем виджет, который полностью прозрачен
 
     animation.start();              // И запускаем анимацию
@@ -157,9 +136,7 @@ void HandCardPointer::show()
 #ifdef HIDE_THE_CARD_REJECTED_MESSAGE_ON_TIMEOUT
     timer->start(1500);             // А также стартуем таймер, который запустит скрытие уведомления через 3 секунды
 #endif
-
 }
-
 
 
 void HandCardPointer::show(QPoint positionTopLeft, QPoint positionBottomRight)
@@ -199,19 +176,10 @@ void HandCardPointer::show(QPoint positionTopLeft, QPoint positionBottomRight)
         xPos = positionTopLeft.x();
 
     }
-
-
     setGeometry(xPos,
                 yPos,
                 width(),
                 height());
-
-
-
-
-
-
-
 
     QWidget::show();                // Отображаем виджет, который полностью прозрачен
 
@@ -220,8 +188,6 @@ void HandCardPointer::show(QPoint positionTopLeft, QPoint positionBottomRight)
 #ifdef HIDE_THE_CARD_REJECTED_MESSAGE_ON_TIMEOUT
     timer->start(1500);             // А также стартуем таймер, который запустит скрытие уведомления через 3 секунды
 #endif
-
-
 }
 
 void HandCardPointer::setUpHandCardPointer(QPoint positionTopLeft, QPoint positionBottomRight)
@@ -247,15 +213,11 @@ void HandCardPointer::setUpHandCardPointer(QPoint positionTopLeft, QPoint positi
     _actualCardSize.setHeight(handCardSizeHeight*HW_Screen_Size_Height + 20);
     _actualCardSize.setWidth(handCardSizeWidht*HW_Screen_Size_Width + 20);
 
-
-
     //pass the Points value to the TriangleCardPointer
     _positionBottomRight = positionBottomRight;
     _positionTopLeft = positionTopLeft;
 
 //    qDebug() << "Delta: " << _positionBottomRight.x() - positionTopLeft.x();
-
-
 }
 
 
@@ -288,16 +250,6 @@ float HandCardPointer::getPopupOpacity() const
 {
     return popupOpacity;
 }
-
-
-
-
-
-
-
-
-
-
 
 
 HandCardPointer::~HandCardPointer()

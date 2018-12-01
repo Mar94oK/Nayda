@@ -22,12 +22,14 @@ HandSecondaryPlayer::HandSecondaryPlayer(QWidget *parent) :
 
 
     QPalette plte_handSecondaryPlayer;
-    qDebug () << "Size: " << size();
     plte_handSecondaryPlayer.setBrush(QPalette::Background, QBrush(pxmpHandSecondaryPlayer.scaled(_race_class_btn_size_width*HW_Screen_Size_Width,
                                                                                   _race_class_btn_size_height*HW_Screen_Size_Height,
                                                                                   Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
     setPalette(plte_handSecondaryPlayer);
     setAutoFillBackground(true);
+
+    setMaximumSize(static_cast<uint32_t>(_race_class_btn_size_width*HW_Screen_Size_Width),
+                   static_cast<uint32_t>(_race_class_btn_size_height*HW_Screen_Size_Height));
 
 
     ui->btn_Doors->setStyleSheet("QPushButton{background:transparent;color:#0011FF;font:18pt;font:bold;}");
@@ -49,18 +51,14 @@ HandSecondaryPlayer::HandSecondaryPlayer(QWidget *parent) :
 
 #endif
 
-
     //setting-up the Text Style of PushButtons;
-
     //ui->btn_Doors->setStyleSheet("QPushButton{color:#FAAB21;}");
     ui->btn_Doors->setText(QString::number(0));
 //    ui->btn_Doors->setStyleSheet("font:28pt;");
 
-
 //    //ui->btn_Treasures->setStyleSheet("QPushButton{color:#FAAB21;}");
     ui->btn_Treasures->setText(QString::number(0));
 //    ui->btn_Treasures->setStyleSheet("font:28pt;");
-
 
 }
 

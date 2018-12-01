@@ -93,12 +93,6 @@ void PopUpCard::paintEvent(QPaintEvent *event)
     //painter.drawRoundedRect(roundedRect, 5, 5);
 
     painter.drawRect(normalRect);
-
-
-
-
-
-
 }
 
 void PopUpCard::setPopupText(const QString &text)
@@ -116,12 +110,10 @@ void PopUpCard::show()
     animation.setStartValue(0.0);   // Стартовое значение будет 0 (полностью прозрачный виджет)
     animation.setEndValue(1.0);     // Конечное - полностью непрозрачный виджет
 
-    setGeometry(QApplication::desktop()->availableGeometry().width() / 2  -  width() / 2 + QApplication::desktop() -> availableGeometry().x(),
-                QApplication::desktop()->availableGeometry().height() / 2  - height() /2 + QApplication::desktop() -> availableGeometry().y(),
-                width(),
-                height());
-
-
+//    setGeometry(QApplication::desktop()->availableGeometry().width() / 2  -  width() / 2 + QApplication::desktop() -> availableGeometry().x(),
+//                QApplication::desktop()->availableGeometry().height() / 2  - height() /2 + QApplication::desktop() -> availableGeometry().y(),
+//                width(),
+//                height());
 
     QWidget::show();                // Отображаем виджет, который полностью прозрачен
 
@@ -147,6 +139,11 @@ void PopUpCard::show(QPoint positionTopLeft, QPoint positionBottomRight)
 
     _positionBottomRight = positionBottomRight;
     _positionTopLeft = positionTopLeft;
+
+//    qDebug() << "NAY-001: PopUpCard::show() Geometry POS TOP LEFT X: " << _positionTopLeft.x();
+//    qDebug() << "NAY-001: PopUpCard::show() Geometry POS TOP LEFT Y: " << _positionTopLeft.y();
+//    qDebug() << "NAY-001: PopUpCard::show() Geometry POS BOT RIGHT X: " << _positionTopLeft.x();
+//    qDebug() << "NAY-001: PopUpCard::show() Geometry POS BOT RIGHT Y: " << _positionBottomRight.y();
 
     //Check the position!
 
@@ -178,14 +175,18 @@ void PopUpCard::show(QPoint positionTopLeft, QPoint positionBottomRight)
                 width(),
                 height());
 
+//    qDebug() << "NAY-001: PopUpCard::show() Geometry POS TOP LEFT X: " << xPos;
+//    qDebug() << "NAY-001: PopUpCard::show() Geometry POS TOP LEFT Y: " << yPos;
 
-
-
-
-
-
-
+//    resize(width(),
+//           height());
+//    move(xPos,yPos);
     QWidget::show();                // Отображаем виджет, который полностью прозрачен
+
+
+//    qDebug() << "NAY-001: PopUpCard::show() POS() X: " << pos().x();
+//    qDebug() << "NAY-001: PopUpCard::show() POS() Y: " << pos().y();
+
 
     animation.start();              // И запускаем анимацию
 
@@ -217,8 +218,6 @@ void PopUpCard::setUpPopUpCard(SimpleCard card)
     QString currentPictureAddress;
     bool isFound = false;
     bool isNoClassNoRace = false;
-
-
 
     //find the HW size of the window
     QRect HW_Screen_Size = QApplication::desktop()->screenGeometry();
@@ -320,7 +319,6 @@ void PopUpCard::setUpPopUpCard(SimpleCard card)
         }
     }
     else { //treasure
-
 
         _armorIterator = _armorDeck->find(static_cast <int> (card.second));
         if (_armorIterator != _armorDeck->end()) {

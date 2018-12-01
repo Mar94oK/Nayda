@@ -20,8 +20,12 @@
 #include "rejectedcardmessage.h"
 #include "handcardpointer.h"
 
+#include "gamesettings.h"
+
 #include <QPropertyAnimation>
 #include <QAbstractAnimation>
+
+#include "MessagesDefinitions.h"
 
 #define PC_VERSION //begin with PC
 #define DEBUG_MESSAGES //start with debug enabled
@@ -29,18 +33,39 @@
 #define DEBUG_NO_DIALOG
 #define DEBUG_NO_RETURN_TO_MENU
 
+//Fake commit
 
 //These definitions are ruling the Widgets of Gamers (the areas for them)
 #define MainGamerWidgetWidthExpansion 0.2
 #define SecondaryGamerWidgetWidthExpansion 0.05
 
-enum class GamePhase {StartOfTheMove,
-                      AfterOpenDoorNoMonster,
-                      Battle,
-                      WaitingForAnOpponentToMove,
-                      Theft,
-                      HandAlignment,
-                      GameInitialization};
+
+//For the Diplomacy there should be another timer.
+enum class GamePhase {  GameInitialization,
+                        StartOfTheMove,
+                        Theft,
+                        AfterOpenDoorNoMonster,
+                        Battle,
+                        Diplomacy,
+                        WaitingForAnOpponentToMove,
+                        HandAlignment,
+                        CardProcessing
+                      };
+
+//Таймеров всего четыре:
+//1. Общий таймер на ход
+//2. Таймер "подумать"  - время на размышления персонажа перед ходом - открывать дверь, воровать, продавать, и т. д.
+// Во время действия этого таймера оппоненты не могут предпринимать никаких (!) враждебных действий.
+// По истечении этого времени решение будет принято автоматически - это всегда "открытие следующей карты"
+//3. Таймер дипломатии - максимальное время, котрое даётся игроку на принятие/непринятие помощи.
+//   По желанию игрока эта фаза может быть полностью пропущена.
+//
+//4. Таймер для принятия решения оппонентами - (пусть будет 3 секунды).
+//Это время, которое даётся оппонентам, чтобы попытаться помешать игроку победить после того, как он побеждает.
+//Запускается автоматически(? или по нажатию кнопки) после того, как сила игрока первышает силу монстра.
+
+
+
 
 namespace Ui
 {
@@ -107,6 +132,7 @@ struct isOnlyFor_Weapon
     bool isOnlyForCleric;
 };
 
+
 class The_Game :  public QMainWindow
 {
     Q_OBJECT
@@ -165,10 +191,11 @@ public:
     gameCardTreasureWeapon WeaponStringParser (const QString& weapons_string);
 
     void _debugShowAllTheCards();
-    void passDecksToBattleField();
+    void PassDecksToBattleField();
     void passDecksToPlayerWidgets();
-    void passDecksToPopUpCardWidget();
-    void passDecksToCardsStacksWidget();
+    void PassDecksToPopUpCardWidget();
+    void PassDecksToCardsStacksWidget();
+    void PassDecksToCardsInspectorWidget();
 
     const std::map<int, gameCardDoorMonster> * monstersDeck();
     const std::map<int, gameCardDoorAmplifier> *amplifiersDeck();
@@ -206,15 +233,15 @@ public:
     //But for now, in Debug version, the procedure is executed on the clients' side.
 
     //SERVREW
-    void formingInitialDecks();
+    void DEBUGformingInitialDecks();
 
     unsigned int randUnsignedInt(unsigned int low, unsigned int high);
 
     //SERVREW
     //this method also sets the cards values (how many left in the deck)
-    void givingCardsToPlayers();
+    void GivingCardsToPlayers();
 
-    void showInitialCardsOnHands();
+    void ShowInitialCardsOnHands();
 
     unsigned int treasuresLeft() const;
     void setTreasuresLeft(unsigned int treasuresLeft);
@@ -223,42 +250,42 @@ public:
     void setDoorsLeft(unsigned int doorsLeft);
 
 signals:
-    void dbg_to_be_shown(bool);
-    void dbg_return_to_before_the_game(bool);
+    void DEBUG_SignalToBeShown(bool);
+    void DEBUG_ReturnToBeforeTheGame(bool);
 
 public slots:
 
-    void dbg_was_pushed_to_game_mode();
+    void DEBUG_SlotWasPushedToGameMode();
     void dbg_return_to_the_main_window();
 
 public slots:
 
-    void showTheCardInCentre(PositionedCard card);
+    void SlotShowTheCardInCentre(PositionedCard card);
+    void SlotShowTheCardInGameInspector(PositionedCard card);
     //void showTheCardNearItsPosition(PositionedCard card);
-    void hideTheCardInCentre(bool);
+    void SlotHideTheCardInCentre(bool);
     //void hideTheCardNearItsPosition(bool);
     
 private:
 
     Ui::The_Game *ui;
 
-    //game_settings
-    int m_time_to_think;
-    int m_time_for_move;
-    unsigned int m_number_of_players;
-
     //special option will allow to be more than 5 opponents
     std::vector <GamerWidget*> _widgets4Opponents; //make as controlled unique_ptr;
 
-    player _main_player;
+    Player _mainPlayer; // In common case might not be the ROOM Master.
+    //This entity is responsible only for the mainWidget Selection.
 
-    player _opponent0;
-    player _opponent1;
-    player _opponent2;
-    player _opponent3;
-    player _opponent4;
+    Player _opponent0;
+    Player _opponent1;
+    Player _opponent2;
+    Player _opponent3;
+    Player _opponent4;
 
-    std::vector <player> _players_opponents; //5 at all
+    std::vector <Player> _playersOpponents; //5 at all - Maximum according to current settings.
+
+    std::vector <QString> _playersOrder; //The first one in this list is an actual MASTER!
+    //This entity is expected to be initialized before any action.
 
     //this stock depends on the Game Mode;
     //Nonetheless, it is allways the same through all the game, since its only function is
@@ -301,20 +328,34 @@ private:
 
 public slots:
 
-    void _adjustSizeOfTheGamerWidgetToMakeCardsToBeInPlace();
-
-public slots:
-
-    void _slotCheckThePossibilityForTheCardToBePlayed(PositionedCard card);
+    void SlotAdjustSizeOfTheGamerWidgetToMakeCardsToBeInPlace();
+    void SlotCheckThePossibilityForTheCardToBePlayed(PositionedCard card);
 
 signals:
 
     //looks like it is only the Hand from where the card can be played
-    //there are some sepecial functions, like Theft or upcoming fron the cards,
+    //there are some sepecial functions, like Theft or upcoming from the cards,
     //but all of them are targeted the cards to be fold or to be given to another Players.
     //Not To Be Played! (at least, as how it looks for me now, this moment)
-    void _signalCardIsRejectedToBePlayed(bool); //not necessary to send the card back;
+    void SignalCardIsRejectedToBePlayed(bool); //not necessary to send the card back;
                                           //the Hand property "CardIsReadyToBePlayed" is saving the current card;
+
+
+//ServerRelated
+public slots:
+
+    void SlotServerReportsTheGameIsAboutToStart(const TheGameIsAboutToStartData& data);
+    void SlotProcessChartMessageReceived(const QStringList& message)
+    { emit  SignalChartMessageReceived(message); }
+    void SlotProcessChartMessageSending(const QString& message)
+    { emit SignalChartMessageSending(message);}
+
+//ServerRelated
+signals:
+
+    void SignalChartMessageReceived(const QStringList& message);
+    void SignalChartMessageSending(const QString& message);
+
 private:
 
     RejectedCardMessage* _rejectionCardMessage;
@@ -322,17 +363,107 @@ private:
 
 private slots:
 
-    void _slotShowTheRejectedCardMessage(PositionedCard);
+    void SlotShowTheRejectedCardMessage(PositionedCard);
 
 private:
 
-    //QPushButton* _movingCard;
-
-    void _passTheCardToTheBattleField(PositionedCard);
+    void PassTheCardToTheBattleField(PositionedCard);
 
 public:
 
     QString findTheCardPicture(SimpleCard);
+
+    GameSettings gameSettings() const;
+    void setGameSettings(const GameSettings &gameSettings);
+
+private:
+
+    GameSettings _gameSettings;
+
+public slots:
+
+    //Initializing cards and etc
+    void SlotGameInitialization(TheGameIsAboutToStartData data);
+
+    //The_Game should allways have correct settings
+    void SlotSetUpGameSettings(const GameSettings& settings);
+
+    void SlotInitialAnimationCompleted()
+    { _currentGamePhase = GamePhase::StartOfTheMove; }
+
+private:
+
+    void FormingInitialDecks(const std::vector<uint32_t>& doorsVector,
+                             const std::vector<uint32_t>& treasuresVector);
+
+    void RedrawGUIAccordingToCurrentSettings(uint32_t windowHeight, uint32_t windowWidth);
+    void SetUpOpponents(uint32_t windowHeight, uint32_t windowWidth);
+    void SetUpWidgetsProperties(uint32_t windowHeight, uint32_t windowWidth);
+    void MainParser();
+
+
+//Set-up Signal-Slots Connections
+    void SetUpSignalSlotsConnections();
+
+
+
+    void InitializePopUpWidgets();
+    void SetUpBackgroundPicture();
+    void PassCardsToWidgets();
+
+//Game Process
+//Процесс раздачи карт могут проводить клиенты, т.к. каждый клиент знает,
+//какие карты и в какой послеовательности лежат в колоде.
+//Требуется передавать через сервер только сыгранную карту.
+//Общий алгоритм определяется следующим образом:
+//Игрок нажимает на карту. Игра проверяет, можно ли её сыграть в настоящий момент.
+//Если нет - карта возвращается на место (можно ничего не сообщать об этом).
+//Если да - карта разыгрывается
+//          карта передаётся на сервер
+//          события по карте должны отражаться в графическом интерфейсе
+
+    bool CheckTheCardIsPossibleToBePlayed(SimpleCard card);
+
+signals:
+
+    void SignalTheCardWasPlayed(SimpleCard card);
+
+public:
+
+private slots:
+
+    void SlotAddPlayedCardToTheBattleField(SimpleCard card);
+
+//Game Processing entities
+private:
+
+    uint32_t _currentOpponentToMoveId = 0;
+    QString  _currentOpponentToMoveName = "";
+
+private:
+
+    bool CheckThePlayerIsAbleToSell(const Player &player);
+
+
+
+
+
+private:
+
+    uint32_t _roomID = ROOM_ID_NOT_DEFINED;
+
+public:
+
+    //Setting up coefficients
+    constexpr static float koeff_GameField_size = 0.5f;
+
+    constexpr static float koeff_GamerWidget_size_Height = (1 - koeff_GameField_size)/2;
+    constexpr static float koeff_GamerWidget_size_Width = koeff_GameField_size/3;
+
+    constexpr static float koeff_GameTimers_size_Height = koeff_GamerWidget_size_Height; // should be the same
+    constexpr static float koeff_GameTimers_size_Width = koeff_GameField_size/3;
+    constexpr static float koeff_GameInfoBox_size_Height = 0.66f; //why it is impossible 2/3???
+    constexpr static float koeff_GameInfoBox_size_Width = (1 - koeff_GameField_size) / 2;
 
 };
 

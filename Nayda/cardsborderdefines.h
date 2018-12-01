@@ -43,17 +43,12 @@
 #define lowerBorder_ClericalErrors_doorsSpecialMechanics 218
 #define upperBorder_ClericalErrors_doorsSpecialMechanics 225
 
-
-
-
-
 #define lowerBorder_Basic_treasuresArmor 1
 #define upperBorder_Basic_treasuresArmor 12
 #define lowerBorder_WildAxe_treasuresArmor 74
 #define upperBorder_WildAxe_treasuresArmor 78
 #define lowerBorder_ClericalErrors_treasuresArmor 118
 #define upperBorder_ClericalErrors_treasuresArmor 122
-
 
 #define lowerBorder_WildAxe_treasuresArmorAmplifier 79
 #define upperBorder_WildAxe_treasuresArmorAmplifier 79
@@ -94,19 +89,6 @@
 #define upperBorder_WildAxe_treasuresWeapon 117
 #define lowerBorder_ClericalErrors_treasuresWeapon 157
 #define upperBorder_ClericalErrors_treasuresWeapon 163
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 #endif // CARDSBORDERDEFINES_H

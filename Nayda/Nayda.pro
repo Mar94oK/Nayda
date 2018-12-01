@@ -14,6 +14,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = Nayda
 TEMPLATE = app
 CONFIG += c++14
+CONFIG += resources_big
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked as deprecated (the exact warnings
@@ -25,6 +26,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # In order to do so, uncomment the following line.
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
+
+#Fake Commit Here
 
 
 SOURCES += main.cpp\
@@ -50,7 +53,19 @@ SOURCES += main.cpp\
     serversettings.cpp \
     helpserversettings.cpp \
     playMenu.cpp \
-    gamesettings.cpp
+    gamesettings.cpp \
+    serverMessageSystem.pb.cc \
+    gamesettingswindow.cpp \
+    roomcreationwaitinglobby.cpp \
+    gamesettingswidget.cpp \
+    serverhadclosedconnectionwindow.cpp \
+    munchkindialog.cpp \
+    connectiontoroomquestions.cpp \
+    connectiontoroomrejectedmessagewindow.cpp \
+    serverqueryoversizedwindow.cpp \
+    roomselectionlobby.cpp \
+    cardinspector.cpp \
+    playersordernotification.cpp
 
 HEADERS  += main_application.h \
     Application/Before_The_Game/Before_The_Game.h \
@@ -75,7 +90,20 @@ HEADERS  += main_application.h \
     serversettings.h \
     helpserversettings.h \
     playMenu.h \
-    gamesettings.h
+    gamesettings.h \
+    serverMessageSystem.pb.h \
+    gamesettingswindow.h \
+    MessagesDefinitions.h \
+    roomcreationwaitinglobby.h \
+    gamesettingswidget.h \
+    serverhadclosedconnectionwindow.h \
+    munchkindialog.h \
+    connectiontoroomquestions.h \
+    connectiontoroomrejectedmessagewindow.h \
+    serverqueryoversizedwindow.h \
+    roomselectionlobby.h \
+    cardinspector.h \
+    playersordernotification.h
 
 FORMS    += main_application.ui \
     Application/Before_The_Game/Before_The_Game.ui \
@@ -93,7 +121,18 @@ FORMS    += main_application.ui \
     handcardpointer.ui \
     serversettings.ui \
     helpserversettings.ui \
-    playMenu.ui
+    playMenu.ui \
+    gamesettingswindow.ui \
+    roomcreationwaitinglobby.ui \
+    gamesettingswidget.ui \
+    serverhadclosedconnectionwindow.ui \
+    munchkindialog.ui \
+    connectiontoroomquestions.ui \
+    connectiontoroomrejectedmessagewindow.ui \
+    serverqueryoversizedwindow.ui \
+    roomselectionlobby.ui \
+    cardinspector.ui \
+    playersordernotification.ui
 
 RESOURCES += \
     tables.qrc \
@@ -104,4 +143,14 @@ RESOURCES += \
 DISTFILES += \
     Pictures/doorsAreOpened.jpg \
     ToDoList \
-    Pictures/treasures_Weapon/Vorpal Blade.jpg
+    Pictures/treasures_Weapon/Vorpal Blade.jpg \
+    serverMessageSystem.proto
+
+unix: LIBS += /usr/local/lib/libprotobuf.a
+win32: LIBS += $$PWD/Libs/libprotobuf.a
+
+win32: INCLUDEPATH += $$PWD/Includes
+win32: DEPENDPATH += $$PWD/Includes
+
+win32:!win32-g++: PRE_TARGETDEPS += $$PWD/Libs/protobuf.lib
+else:win32-g++: PRE_TARGETDEPS += $$PWD/Libs/libprotobuf.a

@@ -1,9 +1,19 @@
 #include "player.h"
 
-player::player()
+QString Player::name() const
+{
+    return _name;
+}
+
+void Player::setName(const QString &name)
+{
+    _name = name;
+}
+
+Player::Player()
 {
     _isMainPlayer = false;
-
+    
     _playerLevel = 1;
     _warPower = 1;
     _totalCardsOnHands = 0;
@@ -29,7 +39,6 @@ player::player()
     _halfBlood_without_second_race = false;
     _superMunchkin_without_second_profession = false;
 
-
     //set default cards for races and classes;
 
     _race1Card.first = 0;
@@ -44,55 +53,53 @@ player::player()
     _class2Card.first = 0;
     _class2Card.second = 0;
 
-
-
-
-
-
-
-
-
-
 }
 
-void player::addRaceActiveAbility(Race_Active_Abilities raceActiveAbility, Abilities_Keys_Races raceAbilityKey)
+void Player::addRaceActiveAbility(Race_Active_Abilities raceActiveAbility, Abilities_Keys_Races raceAbilityKey)
 {
     _raceActiveAbilities.insert({raceActiveAbility, raceAbilityKey});
 }
 
-void player::addRacePassiveAbility(Race_Passive_Abilities racePassiveAbility, Abilities_Keys_Races raceAbilityKey)
+
+void Player::addRacePassiveAbility(Race_Passive_Abilities racePassiveAbility, Abilities_Keys_Races raceAbilityKey)
 {
     _racePassiveAbilities.insert({racePassiveAbility, raceAbilityKey});
 }
 
-void player::addProfessionActiveAbility(Profession_Active_Abilities professionActiveAbility, Abilities_Keys_Professions professionAbilityKey)
+
+void Player::addProfessionActiveAbility(Profession_Active_Abilities professionActiveAbility, Abilities_Keys_Professions professionAbilityKey)
 {
     _professionActiveAbilities.insert({professionActiveAbility, professionAbilityKey});
 }
 
-void player::addProfessionPassiveAbility(Profession_Passive_Abilities professionPassiveAbility, Abilities_Keys_Professions professionAbilityKey)
+
+void Player::addProfessionPassiveAbility(Profession_Passive_Abilities professionPassiveAbility, Abilities_Keys_Professions professionAbilityKey)
 {
     _professionPassiveAbilites.insert({professionPassiveAbility,professionAbilityKey});
 }
 
-bool player::superMunchkin_without_second_profession() const
+
+bool Player::superMunchkin_without_second_profession() const
 {
     return _superMunchkin_without_second_profession;
 }
 
-void player::setSuperMunchkin_without_second_profession(bool superMunchkin_without_second_profession)
+
+void Player::setSuperMunchkin_without_second_profession(bool superMunchkin_without_second_profession)
 {
     _superMunchkin_without_second_profession = superMunchkin_without_second_profession;
 }
 
-void player::addCardToHands(SimpleCard cardToBeAdded)
+
+void Player::addCardToHands(SimpleCard cardToBeAdded)
 {
     _cardsOnHands.push_back(cardToBeAdded);
-    qDebug() << "Card"<< (cardToBeAdded.first == 0 ? "Door" : "Treasure") << "with cardID = " << cardToBeAdded.second << "was successfully added to _cardsOnHands!";
+    //qDebug() << "Card"<< (cardToBeAdded.first == 0 ? "Door" : "Treasure") << "with cardID = " << cardToBeAdded.second << "was successfully added to _cardsOnHands!";
 
 }
 
-void player::removeCardFromHands(SimpleCard cardToBeRemoved)
+
+void Player::removeCardFromHands(SimpleCard cardToBeRemoved)
 {
     std::vector<SimpleCard>::iterator it;
     it = std::find(_cardsOnHands.begin(), _cardsOnHands.end(), cardToBeRemoved);
@@ -107,176 +114,201 @@ void player::removeCardFromHands(SimpleCard cardToBeRemoved)
     }
 }
 
-std::vector<SimpleCard> *player::cardsOnHandsVector()
+
+std::vector<SimpleCard> *Player::cardsOnHandsVector()
 {
     return &_cardsOnHands;
 }
 
-std::vector<SimpleCard> *player::cardsInGameVector()
+
+std::vector<SimpleCard> *Player::cardsInGameVector()
 {
     return &_cardsInGame;
 }
 
-bool player::halfBlood_without_second_race() const
+
+bool Player::halfBlood_without_second_race() const
 {
     return _halfBlood_without_second_race;
 }
 
-void player::setHalfBlood_without_second_race(bool halfBlood_without_second_race)
+
+void Player::setHalfBlood_without_second_race(bool halfBlood_without_second_race)
 {
     _halfBlood_without_second_race = halfBlood_without_second_race;
 }
 
-Profession player::second_profession() const
+
+Profession Player::second_profession() const
 {
     return _second_profession;
 }
 
-void player::setSecond_profession(const Profession &second_profession)
+
+void Player::setSecond_profession(const Profession &second_profession)
 {
     _second_profession = second_profession;
 }
 
-Race player::second_race() const
+
+Race Player::second_race() const
 {
     return _second_race;
 }
 
-void player::setSecond_race(const Race &second_race)
+
+void Player::setSecond_race(const Race &second_race)
 {
     _second_race = second_race;
 }
 
 
-
-
-
-Profession player::profession() const
+Profession Player::profession() const
 {
     return _profession;
 }
 
-void player::setProfession(const Profession &profession)
+
+void Player::setProfession(const Profession &profession)
 {
     _profession = profession;
 }
 
-Race player::race() const
+
+Race Player::race() const
 {
     return _race;
 }
 
-void player::setRace(const Race &race)
+
+void Player::setRace(const Race &race)
 {
     _race = race;
 }
 
-bool player::thereIsLimitOnBigThings() const
+
+bool Player::thereIsLimitOnBigThings() const
 {
     return _thereIsLimitOnBigThings;
 }
 
-void player::setThereIsLimitOnBigThings(bool thereIsLimitOnBigThings)
+
+void Player::setThereIsLimitOnBigThings(bool thereIsLimitOnBigThings)
 {
     _thereIsLimitOnBigThings = thereIsLimitOnBigThings;
 }
 
-bool player::thereIsOneBigThing() const
+
+bool Player::thereIsOneBigThing() const
 {
     return _thereIsOneBigThing;
 }
 
-void player::setThereIsOneBigThing(bool thereIsOneBigThing)
+
+void Player::setThereIsOneBigThing(bool thereIsOneBigThing)
 {
     _thereIsOneBigThing = thereIsOneBigThing;
 }
 
-bool player::rightHandSlotFull() const
+
+bool Player::rightHandSlotFull() const
 {
     return _rightHandSlotFull;
 }
 
-void player::setRightHandSlotFull(bool rightHandSlotFull)
+
+void Player::setRightHandSlotFull(bool rightHandSlotFull)
 {
     _rightHandSlotFull = rightHandSlotFull;
 }
 
-bool player::leftHandSlotFull() const
+
+bool Player::leftHandSlotFull() const
 {
     return _leftHandSlotFull;
 }
 
-void player::setLeftHandSlotFull(bool leftHandSlotFull)
+
+void Player::setLeftHandSlotFull(bool leftHandSlotFull)
 {
     _leftHandSlotFull = leftHandSlotFull;
 }
 
-bool player::legsSlotFull() const
+
+bool Player::legsSlotFull() const
 {
     return _legsSlotFull;
 }
 
-void player::setLegsSlotFull(bool legsSlotFull)
+
+void Player::setLegsSlotFull(bool legsSlotFull)
 {
     _legsSlotFull = legsSlotFull;
 }
 
-bool player::headSlotFull() const
+
+bool Player::headSlotFull() const
 {
     return _headSlotFull;
 }
 
-void player::setHeadSlotFull(bool headSlotFull)
+
+void Player::setHeadSlotFull(bool headSlotFull)
 {
     _headSlotFull = headSlotFull;
 }
 
-int player::cards_in_game() const
+
+uint32_t Player::cardsInGame() const
 {
-    return _totalCardsInGame;
+    return _cardsInGame.size();
 }
 
-void player::setCards_in_game(int cards_in_game)
+
+void Player::setCards_in_game(int cards_in_game)
 {
     _totalCardsInGame = cards_in_game;
 }
 
-int player::cardsOnHandsLimit() const
+
+int Player::cardsOnHandsLimit() const
 {
     return _cardsOnHandsLimit;
 }
 
-void player::setCardsOnHandsLimit(int cardsOnHandsLimit)
+
+void Player::setCardsOnHandsLimit(int cardsOnHandsLimit)
 {
     _cardsOnHandsLimit = cardsOnHandsLimit;
 }
 
-int player::cardsOnHands() const
+
+uint32_t Player::cardsOnHands() const
 {
-    return _totalCardsOnHands;
+    return _cardsOnHands.size();
 }
 
-void player::setCardsOnHands(int cardsOnHands)
-{
-    _totalCardsOnHands = cardsOnHands;
-}
 
-int player::warPower() const
+
+int Player::warPower() const
 {
     return _warPower;
 }
 
-void player::setWarPower(int warPower)
+
+void Player::setWarPower(int warPower)
 {
     _warPower = warPower;
 }
 
-int player::playerLevel() const
+
+int Player::playerLevel() const
 {
     return _playerLevel;
 }
 
-void player::setPlayerLevel(int playerLevel)
+
+void Player::setPlayerLevel(int playerLevel)
 {
     _playerLevel = playerLevel;
 }

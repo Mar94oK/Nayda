@@ -11,16 +11,13 @@
 #include <QDebug>
 #include <QPoint>
 
-
 #include <QDialog>
 #include <QPainter>
 #include <QPolygon>
 #include <QPainterPath>
 
-
 #define HIDE_THE_CARD_REJECTED_MESSAGE_ON_TIMEOUT
 #define CARD_REJECTED_MESSAGE_FADING_TIME 100
-
 
 namespace Ui {
 class RejectedCardMessage;
@@ -70,9 +67,6 @@ public slots:
     void hide();                            /* По окончании анимации, в данном слоте делается проверка,
                                              * виден ли виджет, или его необходимо скрыть
                                              * */
-
-
-
 private:
 
 
@@ -84,11 +78,6 @@ private:
 
     QPoint _positionBottomRight;
     QPoint _positionTopLeft;
-
-
-
-
-
 
 };
 

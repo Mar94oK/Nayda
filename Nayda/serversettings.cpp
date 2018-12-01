@@ -36,13 +36,13 @@ void ServerSettings::slotUserHasSavedServerSettings()
         emit sig_userHaveChangedServerSettings(serverSettings(ui->cmbx_ServerName->currentText(), ui->lineEdit_ServerName->text()));
         qDebug() << "Server name: " << ui->cmbx_ServerName->currentText() << "Port: " << ui->lineEdit_ServerName->text();
         close();
+        deleteLater();
     }
     else
     {
         qDebug() << "Please, set correct server settings!";
         ui->lbl_MessageForUser->setText("Пожалуйста, установите корректные настройки, прежде, чем сохранять.");
     }
-
 }
 
 void ServerSettings::setServerNameComboBox()

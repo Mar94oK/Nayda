@@ -7,8 +7,9 @@
 
 
 
-class player
+class Player
 {
+    QString _name;
 
     bool _isMainPlayer;
 
@@ -26,11 +27,9 @@ class player
     bool _thereIsOneBigThing;
     bool _thereIsLimitOnBigThings; //may be remove it if checking the race
 
-
     Race _race;
     Profession _profession;
     Players_Sex _playersSex;
-
 
     bool _halfBreed;
     bool _superMunchkin;
@@ -49,37 +48,30 @@ class player
     std::vector<SimpleCard> _cardsOnHands;
     std::vector<SimpleCard> _cardsInGame;
 
-
     //Cards responsible for the Races and Classes
     SimpleCard _race1Card;
     SimpleCard _race2Card;
     SimpleCard _class1Card;
     SimpleCard _class2Card;
 
-
-
 public:
 
-
-    player();
-
+    Player();
 
     void addRaceActiveAbility(Race_Active_Abilities raceActiveAbility, Abilities_Keys_Races raceAbilityKey);
     void addRacePassiveAbility(Race_Passive_Abilities racePassiveAbility, Abilities_Keys_Races raceAbilityKey);
     void addProfessionActiveAbility(Profession_Active_Abilities professionActiveAbility, Abilities_Keys_Professions professionAbilityKey);
     void addProfessionPassiveAbility(Profession_Passive_Abilities professionPassiveAbility, Abilities_Keys_Professions professionAbilityKey);
 
-
     int playerLevel() const;
     void setPlayerLevel(int playerLevel);
     int warPower() const;
     void setWarPower(int warPower);
-    int cardsOnHands() const;
-    void setCardsOnHands(int cardsOnHands);
+    uint32_t cardsOnHands() const;
     int cardsOnHandsLimit() const;
     void setCardsOnHandsLimit(int cardsOnHandsLimit);
-    int cards_in_game() const;
-    void setCards_in_game(int cards_in_game);
+    uint32_t cardsInGame() const;
+    void setCards_in_game(int cardsInGame);
     bool headSlotFull() const;
     void setHeadSlotFull(bool headSlotFull);
     bool legsSlotFull() const;
@@ -108,17 +100,17 @@ public:
     void addCardToHands(SimpleCard);
     void removeCardFromHands(SimpleCard);
 
-
     std::vector<SimpleCard>* cardsOnHandsVector();
     std::vector<SimpleCard>* cardsInGameVector();
+
+    QString name() const;
+    void setName(const QString &name);
 
 private:
 
     //it is necessary to save the property in the player class of the card responsible for the
     //class review
-
     //SimpleCard
-
 
 };
 

@@ -21,10 +21,76 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
+    <item row="2" column="1">
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="GamerWidget" name="MainGamer" native="true"/>
+      </item>
+     </layout>
+    </item>
+    <item row="0" column="1">
+     <layout class="QHBoxLayout" name="top_opponents_layout"/>
+    </item>
+    <item row="1" column="1">
+     <layout class="QHBoxLayout" name="horizontalLayout_5">
+      <item>
+       <widget class="battleField" name="GameField" native="true"/>
+      </item>
+     </layout>
+    </item>
+    <item row="0" column="0" rowspan="3">
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_7">
+        <item>
+         <widget class="QPushButton" name="btn_switch_back">
+          <property name="text">
+           <string>к_Предыгре</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="MunchkinDialog" name="wdgt_Chart" native="true"/>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_6">
+        <item>
+         <widget class="CardInspector" name="wdgt_CardInspector" native="true">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>1</verstretch>
+           </sizepolicy>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="GameTimers" name="TimersWidget" native="true"/>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
     <item row="0" column="2" rowspan="3">
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
-       <layout class="QVBoxLayout" name="right_side_opponents_layout"/>
+       <layout class="QVBoxLayout" name="right_side_opponents_layout">
+        <item>
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
       </item>
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -42,55 +108,6 @@
       </item>
      </layout>
     </item>
-    <item row="0" column="0" rowspan="3">
-     <layout class="QVBoxLayout" name="verticalLayout_2">
-      <item>
-       <layout class="QVBoxLayout" name="verticalLayout_7">
-        <item>
-         <widget class="QPushButton" name="btn_switch_back">
-          <property name="text">
-           <string>к_Предыгре</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QVBoxLayout" name="verticalLayout_6">
-        <item>
-         <widget class="GameInfoWidget" name="GameInfoBox" native="true"/>
-        </item>
-        <item>
-         <widget class="GameTimers" name="TimersWidget" native="true">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-     </layout>
-    </item>
-    <item row="1" column="1">
-     <layout class="QHBoxLayout" name="horizontalLayout_5">
-      <item>
-       <widget class="battleField" name="GameField" native="true"/>
-      </item>
-     </layout>
-    </item>
-    <item row="2" column="1">
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <widget class="GamerWidget" name="MainGamer" native="true"/>
-      </item>
-     </layout>
-    </item>
-    <item row="0" column="1">
-     <layout class="QHBoxLayout" name="top_opponents_layout"/>
-    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -99,7 +116,7 @@
      <x>0</x>
      <y>0</y>
      <width>1141</width>
-     <height>20</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuStart">
@@ -137,12 +154,6 @@
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>GameInfoWidget</class>
-   <extends>QWidget</extends>
-   <header location="global">gameinfowidget.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>battleField</class>
    <extends>QWidget</extends>
    <header location="global">battlefield.h</header>
@@ -152,6 +163,18 @@
    <class>CardStacks</class>
    <extends>QWidget</extends>
    <header location="global">cardstacks.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>CardInspector</class>
+   <extends>QWidget</extends>
+   <header location="global">cardinspector.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>MunchkinDialog</class>
+   <extends>QWidget</extends>
+   <header location="global">munchkindialog.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

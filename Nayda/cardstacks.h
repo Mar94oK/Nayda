@@ -67,8 +67,6 @@ private:
                                                          {":/Pictures/stacksLevels/AllTreasuresAreFound.jpg"}};
 #endif
 
-
-
 public slots:
 
     void changeTheDoorsStackView(unsigned int cardsLeft);
@@ -85,17 +83,14 @@ private:
 
     bool _showTheNumberOfCardsLeft = true;
 
-
 private:
 
     std::vector<SimpleCard> _doorsFold;
     std::vector<SimpleCard> _treasuresFold;
 
-
 public slots:
 
     void passTheCardToFoldStack(SimpleCard card);
-
 
 private:
 
@@ -113,8 +108,6 @@ private:
     const std::map<int, gameCardTreasureSpecialMechanic> *_specialMechanicsTreasureDeck;
     const std::map<int, gameCardTreasureThingsAmplifiers> *_thingsAmplifiersDeck;
     const std::map<int, gameCardTreasureWeapon> *_weaponsDeck;
-
-
 
     std::map<int, gameCardDoorMonster> :: const_iterator  _monstersIterator;
     std::map<int, gameCardDoorAmplifier> :: const_iterator _amplifiersIterator;
@@ -168,12 +161,10 @@ private:
     unsigned int _totalDoors;
     unsigned int _totalTreasures;
 
-
 public slots:
 
     void updateTreasuresLeft(unsigned int treasuresLeft);
     void updateDoorsLeft(unsigned int doorsLeft);
-
 
 public slots:
 
@@ -183,9 +174,7 @@ public slots:
 private:
 
     unsigned int _currCardsArrayRepresentationStep = 0;
-
     QTimer* _testTimer;
-
     bool _testIsRunning = false;
 
 };

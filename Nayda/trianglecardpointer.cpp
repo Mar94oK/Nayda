@@ -18,7 +18,6 @@ TriangleCardPointer::TriangleCardPointer(QWidget *parent) :
     connect(&animation, &QAbstractAnimation::finished, this, &TriangleCardPointer::hide); /* Подключаем сигнал окончания
                                                                                 * анимации к слоты скрытия
                                                                                 * */
-
     // Настройка текста уведомления
     label.setAlignment(Qt::AlignHCenter | Qt::AlignVCenter); // Устанавливаем по центру
     // И настраиваем стили
@@ -96,7 +95,6 @@ void TriangleCardPointer::paintEvent(QPaintEvent *event)
         path.lineTo(normalRect.topRight());
         path.lineTo(normalRect.bottomLeft());
         path.lineTo(normalRect.topLeft());
-
     }
 
     painter.fillPath(path, QBrush(QColor(244,183,82,150)));
@@ -116,8 +114,6 @@ void TriangleCardPointer::show()
                 width(),
                 height());
 
-
-
     QWidget::show();                // Отображаем виджет, который полностью прозрачен
 
     animation.start();              // И запускаем анимацию
@@ -127,7 +123,6 @@ void TriangleCardPointer::show()
 #endif
 
 }
-
 
 
 void TriangleCardPointer::show(QPoint positionTopLeft, QPoint positionBottomRight)
@@ -162,23 +157,17 @@ void TriangleCardPointer::show(QPoint positionTopLeft, QPoint positionBottomRigh
         xPos = positionTopLeft.x();
 
     }
-    else {
-
+    else
+    {
         xPos = positionTopLeft.x();
-
     }
-
-
     setGeometry(xPos,
                 yPos,
                 width(),
                 height());
 
-
-
-
-
-
+    qDebug() << "NAY-001: TriangleCardPointer::show() Geometry POS TOP LEFT X: " << xPos;
+    qDebug() << "NAY-001: TriangleCardPointer::show() Geometry POS TOP LEFT Y: " << yPos;
 
 
     QWidget::show();                // Отображаем виджет, который полностью прозрачен

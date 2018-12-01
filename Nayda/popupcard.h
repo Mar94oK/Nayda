@@ -11,7 +11,6 @@
 #include <QDebug>
 #include <QPoint>
 
-
 #include <QDialog>
 #include <QPainter>
 #include <QPolygon>
@@ -41,8 +40,8 @@ public:
 
 
 protected:
-    void paintEvent(QPaintEvent *event);    // Фон будет отрисовываться через метод перерисовки
 
+    void paintEvent(QPaintEvent *event);    // Фон будет отрисовываться через метод перерисовки
 
 public slots:
 
@@ -56,15 +55,11 @@ public slots:
     //void setUpPopUpCard (PositionedCard card);
     void setUpPointsForPoly(QPoint topLeft, QPoint botRight);
 
-
-
 public slots:
     void hideAnimation();                   // Слот для запуска анимации скрытия
     void hide();                            /* По окончании анимации, в данном слоте делается проверка,
                                              * виден ли виджет, или его необходимо скрыть
                                              * */
-
-
 
 private:
     QLabel label;           // Label с сообщением
@@ -75,8 +70,6 @@ private:
 
     QPoint _positionBottomRight;
     QPoint _positionTopLeft;
-
-
 
 private:
     Ui::PopUpCard *ui;
@@ -96,7 +89,6 @@ private:
     const std::map<int, gameCardTreasureThingsAmplifiers> *_thingsAmplifiersDeck;
     const std::map<int, gameCardTreasureWeapon> *_weaponsDeck;
 
-
 public:
 
     void setMonsersDeck(const std::map<int, gameCardDoorMonster> *monsersDeck);
@@ -112,7 +104,6 @@ public:
     void setSpecialMechanicsTreasureDeck(const std::map<int, gameCardTreasureSpecialMechanic> *specialMechanicsTreasureDeck);
     void setThingsAmplifiersDeck(const std::map<int, gameCardTreasureThingsAmplifiers> *thingsAmplifiersDeck);
     void setWeaponsDeck(const std::map<int, gameCardTreasureWeapon> *weaponsDeck);
-
 
 };
 

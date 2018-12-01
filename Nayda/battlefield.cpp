@@ -2,6 +2,7 @@
 #include "ui_battlefield.h"
 #include "munchkinglobaldefines.h"
 #include <QDebug>
+#include "Application/The_Game/The_Game.h"
 
 battleField::battleField(QWidget *parent) :
     QWidget(parent),
@@ -13,20 +14,14 @@ battleField::battleField(QWidget *parent) :
 
     //disable the button for cards' testing.
     ui->btnStartTestCards->hide();
-    //set the Cover-Picture
 
-#ifndef USE_RESOURCES
-    QPixmap pxmpBattleField("Pictures/treeCover.jpg");
-#else
-    qDebug() << "BattleField cover picture processing";
-    QPixmap pxmpBattleField(":/Pictures/treeCover.jpg");
-#endif
+    SetUpPictureAddresses();
+    SetUpInitialTimersPictures();
+    SetWidgetsToStartUpPhase();
+    SetUpSignalsSlotsConnections();
+    //InitializeStartUpProcedureVisualization();
 
-    QPalette plte_battleField;
-    plte_battleField.setBrush(QPalette::Background, QBrush(pxmpBattleField.scaled(size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
-    //setPalette(plte_battleField);
-    //setAutoFillBackground(true);
-    //setStyleSheet("background-image: url(Pictures/TreasuresCard.png)");
+
 }
 
 battleField::~battleField()
@@ -60,8 +55,8 @@ void battleField::cardsRepresenter()
                                                              race_class_btn_size_height*HW_Screen_Size_Height*2,
                                                              Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
 
-    ui->verticalLayout->addWidget(_theBtnMainRepresenter);
-    ui->verticalLayout->setAlignment(Qt::AlignHCenter);
+    ui->dbgLayout->addWidget(_theBtnMainRepresenter);
+    ui->dbgLayout->setAlignment(Qt::AlignHCenter);
     _theBtnMainRepresenter->setFlat(true);
     _theBtnMainRepresenter->setAutoFillBackground(true);
     _theBtnMainRepresenter->setPalette(plteBtnMainRepresenter);
@@ -84,7 +79,7 @@ void battleField::cardsRepresenter()
         representersVector[var]->setMinimumWidth(race_class_btn_size_width*HW_Screen_Size_Width);
         representersVector[var]->setMinimumHeight(race_class_btn_size_height*HW_Screen_Size_Height);
         representersVector[var]->setText("Hello!");
-        ui->horizontalLayout_2->addWidget(representersVector[var]);
+        ui->dbgLayout->addWidget(representersVector[var]);
 
         QPixmap pxmp_btn(iter->second.pictureAddress());
         if (iter != _monstersDeck->end()) iter++;
@@ -357,3 +352,414 @@ void battleField::startCardsRepresentation()
     if (_timerCount > 2000) _timerCount = 100;
 }
 
+void battleField::SetBackgroundPicture()
+{
+
+//#ifndef USE_RESOURCES
+//    QPixmap pxmpBattleField("Pictures/JorneyCover.png");
+//#else
+//    QPixmap pxmpBattleField(":/Pictures/JorneyCover.png");
+//#endif
+
+
+    qDebug() <<"NAY-0001: Application location: "<< QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory);
+    QString homeDirectory = QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory);
+
+#ifdef Q_OS_WIN
+//NAY-001: MARK_EXPECTED_ERROR
+     QString uiBattleFieldFilesLocation = "Munchkin/Nayda/Pictures/playMenu";
+     homeDirectory = "D:/";
+#elif defined Q_OS_UNIX
+     QString uiBattleFieldFilesLocation = "Munchkin/Nayda/Nayda/Pictures/battleField";
+#endif
+
+    qDebug() << "NAY-001: SetUp Cover Picture for BattleField.";
+    QPixmap pxmpBattleField(uiBattleFieldFilesLocation + QString("BattleFieldCover.png"));
+
+    //find the HW size of the window
+    QRect HW_Screen_Size = QApplication::desktop()->screenGeometry();
+
+    QPixmap resultOpaque = pxmpBattleField;
+//    setPalette(plte_battleField);
+    setAutoFillBackground(true);
+
+    QPainter painter(this);
+    painter.begin(&resultOpaque);
+    painter.setOpacity(0.3);
+    painter.drawPixmap(0,0, pxmpBattleField);
+    painter.end();
+
+    QPalette plte_battleField;
+    qDebug () << "Size: " << size();
+    plte_battleField.setBrush(QPalette::Background, QBrush(resultOpaque.scaled(HW_Screen_Size.width() * The_Game::koeff_GameField_size,
+                                                                                  HW_Screen_Size.height() * The_Game::koeff_GameField_size,
+                                                                                  Qt::KeepAspectRatio, Qt::SmoothTransformation)));
+
+
+    setPalette(plte_battleField);
+
+}
+
+void battleField::SetWidgetsToStartUpPhase()
+{
+    //make 'em all invisible first...
+    ui->btnStartTestCards->hide();
+    ui->btn_MoveTimer->hide();
+    ui->btn_PhaseTimer->hide();
+    ui->lbl_Monster->hide();
+    ui->lbl_MonsterTotalPower->hide();
+    ui->lbl_MoveTime->hide();
+    ui->lbl_MoveTimer->hide();
+    ui->lbl_PhaseTime->hide();
+    ui->lbl_PhaseTimer->hide();
+    ui->lbl_Player->hide();
+    ui->lbl_PlayersPower->hide();    
+    ui->lbl_PhaseName->hide();
+
+}
+
+void battleField::SetFontAndAlignment(QLabel *lbl)
+{
+    QFont        _startUpTimerTextLabelFont ("times", 35);
+    QFontMetrics _startUpTimerTextLabelFontInterval (_startUpTimerTextLabelFont);
+    lbl->setFont(_startUpTimerTextLabelFont);
+    lbl->setAlignment(Qt::AlignHCenter);
+}
+
+void battleField::ShowInitialAnimationScene_1()
+{
+    QFont        _startUpTimerTextLabelFont ("times", 75);
+    QFontMetrics _startUpTimerTextLabelFontInterval (_startUpTimerTextLabelFont);
+    _startUpTimerTextLabel->setText(_startUpTimerText);
+    _startUpTimerTextLabel->setFont(_startUpTimerTextLabelFont);
+
+    uint32_t pixelWidth = _startUpTimerTextLabelFontInterval.width(_startUpTimerTextLabel->text());
+    uint32_t pixelHeight = _startUpTimerTextLabelFontInterval.height();
+
+    _startUpTimerTextLabel->setFixedWidth(pixelWidth);
+    _startUpTimerTextLabel->setFixedHeight(pixelHeight);
+    _startUpTimerTextLabel->setText("Вперёд, в пещеры!!!!");
+    _startUpTimerTextLabel->setAlignment(Qt::AlignHCenter);
+
+    _timeLeftBeforeStartUpLabel->setText("");
+}
+
+void battleField::HideInitialAnimationScene_1()
+{
+    _startUpTimerTextLabel->hide();
+    _timeLeftBeforeStartUpLabel->hide();
+}
+
+void battleField::ShowInitialAnimationScene_2()
+{
+//    _orderNotificationName = new QLabel();
+//    SetFontAndAlignment(_orderNotificationName);
+
+//    for (uint32_t var = 0; var < _playersOrder.size(); ++var)
+//    {
+//        QLabel* currLabel = new QLabel();
+//        SetFontAndAlignment(currLabel);
+//        _labelsPlayerNamesInOrder.push_back(currLabel);
+//        currLabel->setText(QString::number(_labelsPlayerNamesInOrder.size())
+//                           + " : "
+//                           + _playersOrder[var]);
+
+//    }
+
+//    ui->dbgLayout->addWidget(_orderNotificationName);
+//    for (uint32_t var = 0; var < _labelsPlayerNamesInOrder.size(); ++var)
+//    {
+//        ui->dbgLayout->addWidget(_labelsPlayerNamesInOrder[var]);
+//    }
+
+    _orderNotification = new PlayersOrderNotification();
+    for (uint32_t var = 0; var < _playersOrder.size(); ++var)
+        _orderNotification->AddPlayer(_playersOrder[var]);
+
+    _spacerForScene2_2 = new QSpacerItem(20, 40, QSizePolicy::Expanding, QSizePolicy::Expanding);
+    ui->dbgLayout->addSpacerItem(_spacerForScene2_2);
+
+    ui->dbgLayout->addWidget(_orderNotification);
+    ui->dbgLayout->setAlignment(Qt::AlignHCenter);
+
+    _spacerForScene2 = new QSpacerItem(20, 40, QSizePolicy::Expanding, QSizePolicy::Expanding);
+    ui->dbgLayout->addSpacerItem(_spacerForScene2);
+}
+
+void battleField::InitializeStartUpProcedureVisualization()
+{
+    QFont        _startUpTimerTextLabelFont ("times", 24);
+    QFontMetrics _startUpTimerTextLabelFontInterval (_startUpTimerTextLabelFont);
+    _startUpTimerTextLabel = new QLabel(this);
+    _startUpTimerTextLabel->setText(_startUpTimerText);
+    _startUpTimerTextLabel->setFont(_startUpTimerTextLabelFont);
+
+    uint32_t pixelWidth = _startUpTimerTextLabelFontInterval.width(_startUpTimerTextLabel->text());
+    uint32_t pixelHeight = _startUpTimerTextLabelFontInterval.height();
+
+    //_startUpTimerTextLabel->setFixedWidth(pixelWidth);
+    _startUpTimerTextLabel->setFixedHeight(pixelHeight);
+
+    QFont        _timeLeftBeforeStartUpLabelFont ("times", 112);
+    QFontMetrics _timeLeftBeforeStartUpLabelFontInterval (_timeLeftBeforeStartUpLabelFont);
+    _timeLeftBeforeStartUpLabel = new QLabel(this);
+    _timeLeftBeforeStartUpLabel->setText(QString::number(_startUpTimeSeconds));
+    _timeLeftBeforeStartUpLabel->setFont(_timeLeftBeforeStartUpLabelFont);
+
+    _startUpTimerTextLabel->setAlignment(Qt::AlignHCenter);
+    _timeLeftBeforeStartUpLabel->setAlignment(Qt::AlignHCenter);
+
+    pixelWidth = _timeLeftBeforeStartUpLabelFontInterval.width(_timeLeftBeforeStartUpLabel->text());
+    pixelHeight = _timeLeftBeforeStartUpLabelFontInterval.height();
+
+    _timeLeftBeforeStartUpLabel->setFixedWidth(pixelWidth);
+    _timeLeftBeforeStartUpLabel->setFixedHeight(pixelHeight);
+
+    QVBoxLayout* centeredLayout1 = new QVBoxLayout();
+    QVBoxLayout* centeredLayout2 = new QVBoxLayout();
+
+    ui->dbgLayout->addLayout(centeredLayout1);
+    ui->dbgLayout->addLayout(centeredLayout2);
+
+    _spacerBottom = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Expanding);
+    ui->dbgLayout->addSpacerItem(_spacerBottom);
+
+    centeredLayout1->addWidget(_startUpTimerTextLabel);
+    centeredLayout2->addWidget(_timeLeftBeforeStartUpLabel);
+
+    ui->dbgLayout->setStretch(1,1);
+    ui->dbgLayout->setAlignment(Qt::AlignHCenter);
+
+
+    QFont        _PhaseNameLabelFont ("times", 24);
+    QFontMetrics _PhaseNameLabelFontInterval (_PhaseNameLabelFont);
+    ui->lbl_PhaseName->setText(_phaseNameInitialPhaseText + " "+ _playersOrder[0]);
+    ui->lbl_PhaseName->setFont(_PhaseNameLabelFont);
+
+    pixelWidth = _PhaseNameLabelFontInterval.width(ui->lbl_PhaseName->text());
+    pixelHeight = _PhaseNameLabelFontInterval.height();
+
+    //ui->lbl_PhaseName->setFixedWidth(pixelWidth);
+    ui->lbl_PhaseName->setFixedHeight(pixelHeight);
+
+
+    //Set-Up Players Order Notification:
+
+    //Order notification should be Created here!
+    _orderNotification = new PlayersOrderNotification();
+    for (uint32_t var = 0; var < _playersOrder.size(); ++var)
+        _orderNotification->AddPlayer(_playersOrder[var]);
+
+
+    //Initialize the Timer:
+    _startUpTimer = new QTimer(this);
+    _startUpTimer->setInterval(1000);
+    _startUpTimer->setSingleShot(true);
+    connect(_startUpTimer, &QTimer::timeout, this, &battleField::SlotStartUpTimerHandler);
+    _startUpTimer->start();
+
+}
+
+void battleField::SlotStartUpAnimationCompleted()
+{
+    qDebug() << "SlotStartUpAnimationCompleted() ";
+
+    ui->btn_MoveTimer->show();
+    ui->btn_PhaseTimer->show();
+    ui->lbl_Monster->show();
+    ui->lbl_MonsterTotalPower->show();
+    ui->lbl_MoveTime->show();
+    ui->lbl_MoveTimer->show();
+    ui->lbl_PhaseTime->show();
+    ui->lbl_PhaseTimer->show();
+    ui->lbl_Player->show();
+    ui->lbl_PlayersPower->show();
+    ui->lbl_PhaseName->show();
+
+}
+
+void battleField::SetUpSignalsSlotsConnections()
+{
+    connect(this, &battleField::SignalStartUpAnimationCompleted, this, &battleField::SlotStartUpAnimationCompleted);
+}
+
+void battleField::SlotStartUpTimerHandler()
+{
+    ++_startUpTimerTicksCounter;
+    _timeLeftBeforeStartUpLabel->setText(QString::number(_startUpTimeSeconds - 1*_startUpTimerTicksCounter));
+    if (_startUpTimerTicksCounter < 5)
+        _startUpTimer->start();
+    else if (_startUpTimerTicksCounter == 5)
+    {
+        ShowInitialAnimationScene_1();
+        _startUpTimer->start();
+    }
+    else if (_startUpTimerTicksCounter == 6)
+    {
+        HideInitialAnimationScene_1();
+        ShowInitialAnimationScene_2();
+        _startUpTimer->start();
+    }
+    else if ( _startUpTimerTicksCounter == 7 ||
+              _startUpTimerTicksCounter == 8 ||
+              _startUpTimerTicksCounter == 9 )
+    {
+        _startUpTimer->start();
+    }
+    else
+    {
+        HideInitialAnimationScene_2();
+        emit SignalStartUpAnimationCompleted();
+    }
+
+}
+
+void battleField::paintEvent(QPaintEvent *)
+{
+//    qDebug() <<"NAY-0001: Application location: "<< QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory);
+    QString homeDirectory = QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory);
+
+#ifdef Q_OS_WIN
+//NAY-001: MARK_EXPECTED_ERROR
+     QString uiBattleFieldFilesLocation = "Munchkin/Nayda/Pictures/battleField/";
+     homeDirectory = "D:/";
+#elif defined Q_OS_UNIX
+     QString uiBattleFieldFilesLocation = "Munchkin/Nayda/Nayda/Pictures/battleField/";
+#endif
+
+     QString path = homeDirectory + uiBattleFieldFilesLocation;
+
+     qDebug() << "NAY-001: SetUp Cover Picture for BattleField.";
+     QPixmap pxmpBattleField(path + QString("BattleFieldCover.png"));
+
+     //find the HW size of the window
+     QRect HW_Screen_Size = QApplication::desktop()->screenGeometry();
+
+     QPixmap resultOpaque = pxmpBattleField.scaled(HW_Screen_Size.width() * The_Game::koeff_GameField_size,
+                                                    HW_Screen_Size.height() * The_Game::koeff_GameField_size,
+                                                    Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+     setAutoFillBackground(true);
+
+     QPainter painter(this);
+     painter.begin(&resultOpaque);
+     painter.setOpacity(0.15);
+     painter.drawPixmap(0,0, resultOpaque);
+     painter.end();
+
+}
+
+void battleField::SetUpPictureAddresses()
+{
+    QString homeDirectory = QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory);
+
+#ifdef Q_OS_WIN
+//NAY-001: MARK_EXPECTED_ERROR
+     QString uiPlayMenuFilesLocation = "Munchkin/Nayda/Pictures/gameSettingsWidget";
+     homeDirectory = "D:/";
+#elif defined Q_OS_UNIX
+     QString uiPlayMenuFilesLocation = "Munchkin/Nayda/Nayda/Pictures/battleField";
+#endif
+
+     QString picturesLocationBasis = homeDirectory + uiPlayMenuFilesLocation + "/";
+#ifndef USE_RESOURCES
+     _diplomacyTimerPictureAddress = picturesLocationBasis + "DiplomacyTime.png";
+     _timeToMoveTimerPictureAddress = picturesLocationBasis + "TimeToMove.png";
+     _timeToThinkTimerPictureAddress = picturesLocationBasis + "TimeToThink.png";
+     _timeForOpponentsToDecideTimerPictureAddress = picturesLocationBasis + "TimeForOpponentsDecision.png";
+#else
+    _diplomacyTimerPictureAddress = ":/Pictures/gameSettingsWidget/DiplomacyTime.png";
+    _timeToMoveTimerPictureAddress = ":/Pictures/gameSettingsWidget/TimeToMove.png";
+    _timeToThinkTimerPictureAddress = ":/Pictures/gameSettingsWidget/TimeToThink.png";
+    _timeForOpponentsToDecideTimerPictureAddress = ":/Pictures/gameSettingsWidget/TimeForOpponentsDecision.png";
+
+#endif
+
+}
+
+void battleField::SetUpInitialTimersPictures()
+{
+    setUpButtonPicture(ui->btn_MoveTimer, _timeToMoveTimerPictureAddress, _buttonsWidthCoefficient, _buttonsHeightWidthRelatio);
+    setUpButtonPicture(ui->btn_PhaseTimer, _timeToThinkTimerPictureAddress, _buttonsWidthCoefficient, _buttonsHeightWidthRelatio);
+}
+
+void battleField::setUpButtonPicture(QPushButton * const btn, const QString &picturePath, double widthCoeff, double heightWidthRelatio)
+{
+    QPixmap pxmpBtnMainRepresenter(picturePath);
+    QPalette plteBtnMainRepresenter(btn->palette());
+    plteBtnMainRepresenter.setBrush(QPalette::Button,
+                                    QBrush(pxmpBtnMainRepresenter.scaled(geometry().width()*widthCoeff,
+                                            geometry().width()*widthCoeff*heightWidthRelatio,
+                                            Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
+
+    btn->setMinimumWidth(geometry().width()*widthCoeff);
+    btn->setMinimumHeight(geometry().width()*widthCoeff*heightWidthRelatio);
+    btn->setMaximumWidth(geometry().width()*widthCoeff);
+    btn->setMaximumHeight(geometry().width()*widthCoeff*heightWidthRelatio);
+    btn->setFlat(true);
+    btn->setAutoFillBackground(true);
+    btn->setPalette(plteBtnMainRepresenter);
+}
+
+std::vector<QString> battleField::playersOrder() const
+{
+    return _playersOrder;
+}
+
+void battleField::setPlayersOrder(const std::vector<QString> &playersOrder)
+{
+    _playersOrder = playersOrder;
+}
+
+void battleField::AddCardToForCards(SimpleCard card)
+{
+
+}
+
+void battleField::AddCardToAgainstCards(SimpleCard card)
+{
+
+}
+
+void battleField::InitializeBattle()
+{
+
+}
+
+void battleField::SlotChangeMoveTimerTime(uint32_t time)
+{
+    ui->lbl_MoveTime->setText(QString::number(time));
+}
+
+void battleField::SlotChangePhaseTimerTime(uint32_t time)
+{
+    ui->lbl_PhaseTime->setText(QString::number(time));
+}
+
+void battleField::SlotGamePhaseHasBeenChanged(GamePhase phase)
+{
+    if (phase == GamePhase::Diplomacy)
+        setUpButtonPicture(ui->btn_PhaseTimer, _diplomacyTimerPictureAddress, _buttonsWidthCoefficient, _buttonsHeightWidthRelatio);
+    else if (phase == GamePhase::WaitingForAnOpponentToMove)
+        setUpButtonPicture(ui->btn_PhaseTimer, _timeForOpponentsToDecideTimerPictureAddress, _buttonsWidthCoefficient, _buttonsHeightWidthRelatio);
+    else if (phase == GamePhase::StartOfTheMove)
+        setUpButtonPicture(ui->btn_PhaseTimer, _timeToThinkTimerPictureAddress, _buttonsWidthCoefficient, _buttonsHeightWidthRelatio);
+    else
+        qDebug() << "NAY-001: This phase will not change the timers ICO! Place here changings for all the Other Features";
+
+
+}
+
+
+void battleField::HideInitialAnimationScene_2()
+{
+    _orderNotification->hide();
+    ui->dbgLayout->removeWidget(_orderNotification);
+    delete _orderNotification;
+
+    ui->dbgLayout->removeItem(_spacerBottom);
+    delete _spacerBottom;
+    ui->dbgLayout->removeItem(_spacerForScene2);
+    delete _spacerForScene2;
+    ui->dbgLayout->removeItem(_spacerForScene2_2);
+    delete _spacerForScene2_2;
+}

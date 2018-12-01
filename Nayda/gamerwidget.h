@@ -84,12 +84,10 @@ public:
 
     bool eventFilter(QObject *o, QEvent *e);
 
-
 private:
 
     unsigned int _totalDoorsOnHands = 0;
     unsigned int _totalTreasuresOnHands = 0;
-
 
 private:
 
@@ -102,21 +100,16 @@ private:
     std::vector<SimpleCard> _cardsRacesClassesGamerWidgetProperty;
     std::vector<SimpleCard> _cardsInGameWidgetGamerProperty;
 
-
 signals:
 
-    void _representTheCardInCentre(PositionedCard);
-    void _hideTheCardInCentre(bool);
-
-
+    void SignalRepresentTheCardInCentre(PositionedCard);
+    void SignalHideTheCardInCentre(bool);
 
 public slots:
 
-    void _representTheCardInCenterSlot();
-    void _representTheCardFromHandsInCentre(PositionedCard);
+    void SlotRepresentTheCardInCentre();
+    void SlotRepresentTheCardFromHandsInCentre(PositionedCard);
     void _hideTheCardInCentreSlot(bool);
-
-
 
 private:
 #ifndef USE_RESOURCES
@@ -143,13 +136,11 @@ private:
                                             {":/Pictures/levels/match10_transparent.png"}};
 #endif
 
-
     unsigned int _gamerLevel = 1;
 
 public slots:
 
     void _changeTheGamerLevel(int levelDelta);
-
 
 private:
 
@@ -158,7 +149,6 @@ private:
     const float _race_class_btn_size_width = 0.035f;
     const float _race_class_btn_size_height = _race_class_btn_size_geometric_width_to_height_ratio*_race_class_btn_size_width;
 
-
 private:
 
     QTimer* _testTimer;
@@ -166,8 +156,8 @@ private:
 
 private slots:
 
-    void _slotTestGamerLevels();
-    void _slotStartTestCards();
+    void DEBUGSlotTestGamerLevels();
+    void DEBUGSlotStartTestCards();
 
 private:
 
@@ -197,23 +187,20 @@ public slots:
 
 private slots:
 
-    void _slotTestGamerBattlePower();
+    void DEBUGSlotTestGamerBattlePower();
 
 private:
 
     unsigned int _currentDeltaToBattlePower = 0;
 
-
 public slots:
 
-    void _hideHandSecondaryPlayerWidget();
-
+    void HideHandSecondaryPlayerWidget();
     void _adjustSizeSlot();
 
 signals:
 
-    void _signalAdjustSize(bool);
-
+    void SignalAdjustSize(bool);
 
 public slots:
 
@@ -221,16 +208,15 @@ public slots:
 
 signals:
 
-    void _signalSendTheCardToTheGameCheck(PositionedCard);
+    void SignalSendTheCardToTheGameCheck(PositionedCard);
 
 public slots:
 
-    void _slotCardIsRejectedToBePlayed(bool);
+    void SlotCardIsRejectedToBePlayed(bool);
 
 signals:
 
-    void _signalCardIsRejectedToBePlayed(bool);
-
+    void SignalCardIsRejectedToBePlayed(bool);
 
 };
 

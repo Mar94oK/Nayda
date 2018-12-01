@@ -12,6 +12,13 @@
 #include <QDebug>
 #include <QTcpSocket>
 #include <QDataStream>
+#include "QDebug"
+#include <QtNetwork>
+#include <QDebug>
+#include "gamesettings.h"
+#include "MessagesDefinitions.h"
+#include <QStringList>
+
 
 QT_BEGIN_NAMESPACE
 class QTcpSocket;
@@ -26,7 +33,7 @@ enum class RoomPosessionType {RoomMaster, RoomGuest};
   {
       Q_OBJECT
 
-  private:
+private:
 
      int m_value;
      Game_Card_Stock _Main_Doors;
@@ -37,8 +44,9 @@ enum class RoomPosessionType {RoomMaster, RoomGuest};
      Game_Card_Stock _Basis_Treasures;
 
      QPair<QString, QString> defaultSettings;
+     QTimer *connectionUnexpectedBehaviorTimer;
 
-  private:
+private:
 
     QTcpSocket* tcpSocket;
     QNetworkSession* networkSession;
@@ -46,48 +54,122 @@ enum class RoomPosessionType {RoomMaster, RoomGuest};
     QDataStream outputSream;
     serverSettings _srvrSettings;
 
-  private:
+    bool _socketStateHandlerReportedConnectedState;
+
+private:
 
     RoomPosessionType _roomPosessionType;
+    uint32_t _roomID = ROOM_ID_NOT_DEFINED;
 
-  public:
+public:
 
-      explicit Server(QObject* parent =  nullptr, RoomPosessionType posessionType = RoomPosessionType::RoomMaster);
-      int value() const { return m_value; }
-      virtual bool something();
+    explicit Server(QObject* parent =  nullptr, RoomPosessionType posessionType = RoomPosessionType::RoomMaster);
+    int value() const { return m_value; }
 
-      void setupConnection();
-      void sendCreateNewRoomMessage();
-      void sendDataToTheConnection(const QString&);
+    void ConnectionSetUp();
+    void sendCreateNewRoomMessage();
+    void ConnectionSendOutgoingData(const QString&);
+    bool ConnectionSendOutgoingData(const QByteArray& data);
 
-  private slots:
+private slots:
 
-      void readIncomingData();
-      void displayError(QAbstractSocket::SocketError socketError);
+    //void slotReadIncomingData();
+    void slotConnectionReadIncomingData();
+    uint32_t ReadIncomingLenght();
 
-  public slots:
-
-      void slot_saveServerSettings(serverSettings settings)
-      {
-          _srvrSettings = settings;
-          qDebug() << "Server settings saved!";
-      }
-
-      void slot_sendTestDataToServer();
-
-      void slot_openConnection();
-      void slot_sessionOpened();
+    void displayError(QAbstractSocket::SocketError socketError);
+    void SlotSocketStateChanged(QAbstractSocket::SocketState state);
 
 
-  signals:
+public slots:
 
-      void valueChanged(int newValue);
+    void slot_saveServerSettings(serverSettings settings)
+    {
+        _srvrSettings = settings;
+        qDebug() << "Server settings saved!";
+    }
 
-  };
+    void SlotSendTestDataToServer();
+    void SlotSetUpConnection();
+    void slot_sessionOpened();
 
+    void SlotUserHaveChangedGameSettings(const GameSettings& settings);
+    void SlotSendClientRoomCreationRequest();
+    void SlotCloseConnectionByUserInitiative();
+    void SlotSendChartMessage(const QString& message);
+    void SlotSendClientConnectionToRoomRequest(ClientConnectToRoomSettingsData data);
+    void SlotSendClientWantedToEnterTheRoom(uint32_t roomId);
+
+
+signals:
+
+    void valueChanged(int newValue);
+    void socketErrorReportToGUI(QAbstractSocket::SocketError signal);
+    void SignalSocketConnectionSuccessReportToGui(bool);
+    void SignalServerHasChangedGameSettings(const GameSettings&);
+    void SignalReportServerQueryReplyData(ServerQueryReplyData data);
+    void SignalReportClientRoomCreationReplyData(ClientRoomCreationReplyData data);
+    void SignalServerReportsOpponentIsEnteringRoom(const QString& clientName);
+
+    void SignalChartMessageReceived(const QStringList& message);
+
+    void SignalServerQueryOversize();
+
+    void SignalProcessClientConnectionToRoomReply(const ClientConnectionToRoomReplyData& data);
+
+    void SignalProcessServerRoomChangesInSelectableList(const ServerRoomReadyToConnectData& data);
+
+    void SignalProcessServerClientWantedToEnterTheRoomReply(const ServerClientWantedToEnterTheRoomReplyData& data);
+
+    void SignalProcessServerReportsClientIsLeaving(const QString& name);
+
+    void SignalProcessServerReportsRoomHasChangedOwner(const QString& previousOwner, const QString& currentOwner);
+
+    void SignalServerReportsTheGameIsAboutToStart(const TheGameIsAboutToStartData& data);
+
+//error signals
+
+    void SignalRemoteHostClosedErrorReport();
+    void SignalRemoteHostConnectionRefusedErrorReport();
+    void SignalRemoteHostNotFoundErrorReport();
+    void SignalLockConnectionButtonWhileConnecting();
+    void SignalUnlockConnectionButtonAfterConnection();
+
+private:
+
+    GameSettings _gameSettings;
+
+private:
+
+    void ProtobufMessageParser(const QByteArray& data, int socketDescriptor);
+    void ProcessServerInputQueryReply(const QByteArray &data, int socketDescriptor);
+    void ProcessClientRoomCreationReply(const QByteArray &data, int socketDescriptor);
+    void ProcessServerReportsOpponentIsEnteringRoom(const QByteArray &data, int socketDescriptor);
+    void ProcessChartMessage(const QByteArray &data, int socketDescriptor);
+    void ProcessClientConnectionToRoomReply(const QByteArray &data, int socketDescriptor);
+    void ProcessServerRoomChangesInSelectableList(const QByteArray &data, int socketDescriptor);
+    void ProcessServerClientWantedToEnterTheRoomReply(const QByteArray &data, int socketDescriptor);
+    void ProcessServerReportsClientIsLeaving(const QByteArray &data, int socketDescriptor);
+    void ProcessServerReportsRoomHasChangedOwner(const QByteArray &data, int socketDescriptor);
+
+    void ProcessServerReportsTheGameIsAboutToStart(const QByteArray &data, int socketDescriptor);
+
+    void SocketErorHandler(QAbstractSocket::SocketError socketError);
+    void SetUpConnectionTImeoutTimer();
+    void ConnectionUnexpectedBehaviourHandler();
+
+    QString _currentUnheldedErrorString = "";
+
+
+public:
+
+    QByteArray FormServerInputQueryRequest();
+    QByteArray FormClientRoomCreationRequest();
+    QByteArray FormClientConnectionToRoomRequest(ClientConnectToRoomSettingsData data);
+    QByteArray FormChartMessage(const QString& textMessage);
+    QByteArray FormClientWantedToEnterTheRoom(uint32_t roomId);
+
+};
 
 
 #endif // SERVER_H
-
-
-

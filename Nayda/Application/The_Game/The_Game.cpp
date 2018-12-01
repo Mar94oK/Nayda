@@ -3,9 +3,7 @@
 #include <ctime>
 #include <QTime>
 #include "popupcard.h"
-
 #include "munchkinglobaldefines.h"
-
 
 The_Game::The_Game(QWidget *parent) :
     QMainWindow(parent),
@@ -13,381 +11,66 @@ The_Game::The_Game(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    //Algorithm:
-    //1. Receive the size of the screen;
-    //2. Define sizes of an objects;
-    //3. Receive information about number of players from Before_the_Game
-    //                            and another game concepts;
-
-
-    //setup size before rescaling.
-    //resize will be allowed only for PC version and only for some preset definition
-
-#ifdef PC_VERSION
-    //some code
+    InitializePopUpWidgets();
+    SetUpBackgroundPicture();
 
     //find the HW size of the window
     QRect HW_Screen_Size = QApplication::desktop()->screenGeometry();
-    int HW_Screen_Size_Width = HW_Screen_Size.width();
-    int HW_Screen_Size_Heigh = HW_Screen_Size.height();
+    uint32_t HW_Screen_Size_Width = HW_Screen_Size.width();
+    uint32_t HW_Screen_Size_Heigh = HW_Screen_Size.height();
 
-#ifdef DEBUG_MESSAGES
-    qDebug() << "Available dimensions. Screen w = " << HW_Screen_Size_Width << " Screen h = " << HW_Screen_Size_Heigh;
+    //Regarding this note
+    //https://stackoverflow.com/questions/44875309/why-does-qdesktopwidget-give-me-the-wrong-available-geometry-when-i-use-two-moni
+    //It is necessary to adjust size while using Linux internally.
+    //make it 0.8 of height for example
+
+#ifdef __linux
+//    static_cast<uint32_t>(HW_Screen_Size_Heigh *= 0.9);
+//    static_cast<uint32_t>(HW_Screen_Size_Width *= 0.8);
 #endif
 
-
-#endif
-
-#ifdef MOBILE_VERSION
-    //some code
-#endif
-
-
-
-    //Settings-up the Randomization. Disable in the DEBUG
-    // Create seed for the random
-    // That is needed only once on application startup
-    //QTime time = QTime::currentTime();
-    //qsrand((uint)time.msec());
-
-
-    //Setting-up button's connections.
-
-    //QObject::connect( ui->btnHide, SIGNAL(clicked()), this, SLOT(hide()));
-    QObject::connect(ui->btn_switch_back, SIGNAL(clicked()), this, SLOT(hide()));
-    QObject::connect(this, SIGNAL(dbg_to_be_shown(bool)), this, SLOT(showFullScreen()));//SLOT(showFullScreen())) SLOT(show();
-    QObject::connect(ui->btn_switch_back, SIGNAL(clicked(bool)), this, SLOT(dbg_return_to_the_main_window()));
-
-
-    //Setting the in-Game connections with other Widgets
-
-    connect(ui->MainGamer, &GamerWidget::_representTheCardInCentre, this, &The_Game::showTheCardInCentre);
-    connect(ui->MainGamer, &GamerWidget::_hideTheCardInCentre, this, &The_Game::hideTheCardInCentre);
-
-//    connect(ui->MainGamer, &GamerWidget::_representTheCardNearItsPosition, this, &The_Game::showTheCardNearItsPosition);
-//    connect(ui->MainGamer, &GamerWidget::_hideTheCardNearItsPosition, this, &The_Game::hideTheCardInCentre);
-
-    //setting-up main Game Ico
-
-    //all of such kind is equal;
-    //1. create pixmap;
-    //2. rescale pixmap
-    //3. create palette
-    //4. set brush of palette as previously created pixmap
-    //5. set everything for button: fillbackground; palette; flat; fixed size;
-    //6. move to the expected position and leave it there
-    //7. define whether it could be movable???
-
-    //Setting up coefficients
-    const float koeff_GameField_size = 0.5f;
-
-    const float koeff_GamerWidget_size_Height = (1 - koeff_GameField_size)/2;
-    const float koeff_GamerWidget_size_Width = koeff_GameField_size/3;
-
-    const float koeff_GameTimers_size_Height = koeff_GamerWidget_size_Height; // should be the same
-    const float koeff_GameTimers_size_Width = koeff_GameField_size/3;
-    const float koeff_GameInfoBox_size_Height = 0.66f; //why it is impossible 2/3???
-    const float koeff_GameInfoBox_size_Width = (1 - koeff_GameField_size) / 2;
-
-
-    //setting up the GUI staff
-    //Defining its coefficients with respect to the total size of availible field;
-
-    ui->GameField->setMinimumWidth(koeff_GameField_size*HW_Screen_Size_Width);
-    ui->GameField->setMinimumHeight(koeff_GameField_size*HW_Screen_Size_Heigh);
-
-    ui->MainGamer->setMinimumHeight(koeff_GamerWidget_size_Height*HW_Screen_Size_Heigh);
-
-    //trying to disable the maximum size of the MainGamerHeight
-    //ui->MainGamer->setMaximumHeight(koeff_GamerWidget_size_Height*HW_Screen_Size_Heigh);
-
-
-    //with respect to the MainGamer, the height size won't be larger then allowed,
-    //but may take all the availible space if the width is concerned; Why not?
-    ui->MainGamer->setMinimumWidth(koeff_GamerWidget_size_Width*HW_Screen_Size_Width);
-    ui->MainGamer->setMaximumWidth((koeff_GamerWidget_size_Width+MainGamerWidgetWidthExpansion)*HW_Screen_Size_Width);
-
-    ui->TimersWidget->setMinimumHeight(koeff_GameTimers_size_Height*HW_Screen_Size_Heigh);
-    ui->TimersWidget->setMaximumHeight(koeff_GameTimers_size_Height*HW_Screen_Size_Heigh);
-
-    ui->TimersWidget->setMinimumWidth(koeff_GameTimers_size_Width*HW_Screen_Size_Width);
-    ui->TimersWidget->setMaximumWidth(koeff_GameTimers_size_Width*HW_Screen_Size_Width);
-
-    ui->GameInfoBox->setMinimumHeight(koeff_GameInfoBox_size_Height*HW_Screen_Size_Heigh);
-    ui->GameInfoBox->setMaximumHeight(koeff_GameInfoBox_size_Height*HW_Screen_Size_Heigh);
-
-    ui->GameInfoBox->setMinimumWidth(koeff_GameInfoBox_size_Width*HW_Screen_Size_Width);
-    ui->GameInfoBox->setMaximumWidth(koeff_GameInfoBox_size_Width*HW_Screen_Size_Width);
-
-
-#ifdef DEBUG_MESSAGES
-    qDebug() << "GameInfoBox. setMinimumHeight = setMaximumHeight " << koeff_GameInfoBox_size_Height*HW_Screen_Size_Heigh << endl
-             <<" GameInfoBox.setMinimumWidth = " << koeff_GameInfoBox_size_Width*HW_Screen_Size_Width;
-#endif
-
-
-    ui->btn_switch_back->setMinimumWidth(koeff_GameInfoBox_size_Width*HW_Screen_Size_Width);
-    ui->btn_switch_back->setMaximumWidth(koeff_GameInfoBox_size_Width*HW_Screen_Size_Width);
-
-
-    //receiving number of players;
-
-#ifdef DEBUG_NO_SERVER
-    //do not receive actual parameters from Before_the_Game, but start immidiately
-
-    this->m_number_of_players = 6; //default maximum (extended - special code entered by user will be needed)
-    this->m_time_for_move = 30; //seconds
-    this->m_time_to_think = 15; //seconds
-
-#endif
-
-    //setting MainGamer
-    ui->MainGamer->setIs_MainPlayer(true);
-
-    //hide Secondary Hand Widget;
-    ui->MainGamer->_hideHandSecondaryPlayerWidget();
-
-
-    //creating opponents
-    //remember, opponents less by 1 than total amount of players
-
-    //opponets
-
-    _players_opponents.push_back(_opponent0);
-    _players_opponents.push_back(_opponent1);
-    _players_opponents.push_back(_opponent2);
-    _players_opponents.push_back(_opponent3);
-    _players_opponents.push_back(_opponent4);
-
-
-    //widgets for them
-    for (unsigned int j = 0; j < m_number_of_players - 1; j++) {
-        _widgets4Opponents.push_back(new GamerWidget);
-        _widgets4Opponents.back()->redraw_as_a_secondary_player();
-        _widgets4Opponents.back()->setIs_MainPlayer(false);
-
-    }
-
-    //first two of them to the top layout
-    //fixed numbers, they are allways there
-    ui->top_opponents_layout->addWidget(_widgets4Opponents[0]);
-    ui->top_opponents_layout->addWidget(_widgets4Opponents[1]);
-
-    //this->opponent[0]->
-
-
-    //if there is(are) some other players, add them to the right_side layout
-    if (m_number_of_players - 3 > 0) {
-        for (unsigned int i = 0; i < m_number_of_players - 3; i++) {
-            ui->right_side_opponents_layout->addWidget(_widgets4Opponents[2+i]);
-        }
-    }
-
-
-
-    //resizing 'em all
-    for (unsigned int j = 0; j < m_number_of_players - 1; j++) {
-
-        _widgets4Opponents[j]->setMinimumHeight(koeff_GamerWidget_size_Height*HW_Screen_Size_Heigh);
-        _widgets4Opponents[j]->setMaximumHeight(koeff_GamerWidget_size_Height*HW_Screen_Size_Heigh);
-        _widgets4Opponents[j]->setMaximumWidth((koeff_GamerWidget_size_Width+SecondaryGamerWidgetWidthExpansion)*HW_Screen_Size_Width);
-
-    }
-
-    qDebug() << "Maximum Height of the Gamer_Widget: " << koeff_GamerWidget_size_Height*HW_Screen_Size_Heigh;
-    qDebug() << "Maximum Width of the Gamer_Widget: " << koeff_GamerWidget_size_Width*HW_Screen_Size_Width;
-
-
-#ifdef DEBUG_NO_SERVER
-
-    for (unsigned int var = 0; var < _widgets4Opponents.size(); ++var) {
-        connect(_widgets4Opponents[var], &GamerWidget::_representTheCardInCentre, this, &The_Game::showTheCardInCentre);
-        connect(_widgets4Opponents[var], &GamerWidget::_hideTheCardInCentre, this, &The_Game::hideTheCardInCentre);
-    }
-
-#endif
-
-    //filling up the monsters' stock!
-
-#ifndef USE_RESOURCES
-
-    theMonstersParser("Tables/cards_doors_monsters.csv");
-    qDebug() << "Monsters parsing complete!";
-
-    theAmplifiersParser("Tables/cards_doors_amplifiers.csv");
-    qDebug() << "Amplifiers parsing complete!";
-
-    theCursesParser("Tables/cards_doors_curses.csv");
-    qDebug() << "Curses parsing complete!";
-
-    theProfessionsParser("Tables/cards_doors_professions.csv");
-    qDebug() << "Professions parsing complete!";
-
-    theRacesParser("Tables/cards_doors_races.csv");
-    qDebug() << "Races parsing complete!";
-
-    theSpecialMechanicsParser("Tables/cards_doors_specialmechanics.csv");
-    qDebug() << "Special mechanics parsing complete!";
-
-    theArmorsParser("Tables/cards_treasures_armor.csv");
-    qDebug() << "Armor parsing complete!";
-
-    theArmorAmplifiersParser("Tables/cards_treasures_armorAmplifiers.csv");
-    qDebug() << "ArmorAmplifiers parsing complete!";
-
-    theBattleAmplifiersParser("Tables/cards_treasures_battleAmplifiers.csv");
-    qDebug() << "BattleAmplifiers parsing complete!";
-
-    theLevelUpParser("Tables/cards_treasures_levelUp.csv");
-    qDebug() << "LevelUps parsing complete!";
-
-    theSpecialMechanicTreasureParser("Tables/cards_treasures_specialMechanics.csv");
-    qDebug() << "SpecialMechanicsTreasures parsing complete!";
-
-    theThingsAmplifiersParser("Tables/cards_treasures_thingsAmplifiers.csv");
-    qDebug() << "ThingsAmplifiers parsing complete!";
-
-    theWeaponParser("Tables/cards_treasures_Weapon.csv");
-    qDebug() << "Weapons parsing complete!";
-
-#else
-    theMonstersParser(":/Tables/cards_doors_monsters.csv");
-    qDebug() << "Monsters parsing complete!";
-
-    theAmplifiersParser(":/Tables/cards_doors_amplifiers.csv");
-    qDebug() << "Amplifiers parsing complete!";
-
-    theCursesParser(":/Tables/cards_doors_curses.csv");
-    qDebug() << "Curses parsing complete!";
-
-    theProfessionsParser(":/Tables/cards_doors_professions.csv");
-    qDebug() << "Professions parsing complete!";
-
-    theRacesParser(":/Tables/cards_doors_races.csv");
-    qDebug() << "Races parsing complete!";
-
-    theSpecialMechanicsParser(":/Tables/cards_doors_specialmechanics.csv");
-    qDebug() << "Special mechanics parsing complete!";
-
-    theArmorsParser(":/Tables/cards_treasures_armor.csv");
-    qDebug() << "Armor parsing complete!";
-
-    theArmorAmplifiersParser(":/Tables/cards_treasures_armorAmplifiers.csv");
-    qDebug() << "ArmorAmplifiers parsing complete!";
-
-    theBattleAmplifiersParser(":/Tables/cards_treasures_battleAmplifiers.csv");
-    qDebug() << "BattleAmplifiers parsing complete!";
-
-    theLevelUpParser(":/Tables/cards_treasures_levelUp.csv");
-    qDebug() << "LevelUps parsing complete!";
-
-    theSpecialMechanicTreasureParser(":/Tables/cards_treasures_specialMechanics.csv");
-    qDebug() << "SpecialMechanicsTreasures parsing complete!";
-
-    theThingsAmplifiersParser(":/Tables/cards_treasures_thingsAmplifiers.csv");
-    qDebug() << "ThingsAmplifiers parsing complete!";
-
-    theWeaponParser(":/Tables/cards_treasures_Weapon.csv");
-    qDebug() << "Weapons parsing complete!";
-#endif
-
-
-    //first pass there the Cards (after receiving them from server);
-    passDecksToBattleField();
-    passDecksToPlayerWidgets();
-
-
-    formingInitialDecks();
-    givingCardsToPlayers();
-    showInitialCardsOnHands();
+    //1. SetUp Initial Signals-Slots connections
+    SetUpSignalSlotsConnections();
+
+    //2. GUI Adjustment
+    SetUpWidgetsProperties(HW_Screen_Size_Heigh, HW_Screen_Size_Width);
+    RedrawGUIAccordingToCurrentSettings(HW_Screen_Size_Heigh, HW_Screen_Size_Width);
+
+    //3. Parse cards
+    MainParser();
+
+    // NAY-001: MARK_EXPECTED_IMPROVEMENT
+    //Here I should implement selection of the selected cards by the user.
+    //4. Pass cards to widgets to display
+    PassCardsToWidgets();
+
+    //Алгоритм на будущее (когда настройки дополнений действительно будут работать)
+    //Игра получает от Предыгры настройки
+    //Далее далее каждый раз парсит их
+    //В итоге на момент запуска Игры она уже знает все свои настройки
+    //И на самом деле перерисована, следовательно запускается мгновенно
+    //В данный момент времени Аддоны будут просто забиты цифрами в сервер
+
+    //По-правильному: игра при запуске сразу парсит все поддерживаемые колоды.
+    //При апдейте настроек перестраивает колоды
+    //Запускается с уже известными настройками
+    //Сервер выполняет лишь начальную рандомизацию.
+
+    //Сейчас:
+    //"Приколотить" цифры к серверу. 225 - двери и 163 сокровища
+    //При начале игры передать эти цифры каждому клиенту
+    //Далее ими управляет уже непосредственно клиент
+
+
+    //Here was the setting up of cards and showing initials.
+    //Now to make it in a special viewing Slots.
 
 
     //disbale CardRepresenter
     //_debugShowAllTheCards();
 
-
-    //create popUpCard Widget
-
-    _popUpCardWidget = new PopUpCard();
-
-
-     //create CardPointerWidget
-
-    _cardPointer = new TriangleCardPointer();
-
-    //pass the cards to PopUp Widget
-    passDecksToPopUpCardWidget();
-
-
-    //pass the Cards to CardsStacks Widget
-    passDecksToCardsStacksWidget();
-
-
-
-#ifndef USE_RESOURCES
-    QPixmap pxmpBattleField("Pictures/JorneyCover.png");
-#else
-    QPixmap pxmpBattleField(":/Pictures/JorneyCover.png");
-#endif
-
-    QPalette plte_battleField;
-    qDebug () << "Size: " << size();
-    plte_battleField.setBrush(QPalette::Background, QBrush(pxmpBattleField.scaled(HW_Screen_Size.width(),HW_Screen_Size.height(), Qt::KeepAspectRatio, Qt::SmoothTransformation)));
-    setPalette(plte_battleField);
-    setAutoFillBackground(true);
-
-
-#ifdef DEBUG_NO_DIALOG
-
-    //hide the Dialog
-    ui->GameInfoBox->hide();
-
-#endif
-
-#ifdef DEBUG_NO_RETURN_TO_MENU
-
-    ui->btn_switch_back->hide();
-
-#endif
-
-
-
-
-
-
-    //trying to adjust the size of...
-    connect(ui->MainGamer, &GamerWidget::_signalAdjustSize, this, &The_Game::_adjustSizeOfTheGamerWidgetToMakeCardsToBeInPlace);
-
-
-
-    //connect theHand with checking the card slot;
-
-    connect(ui->MainGamer, &GamerWidget::_signalSendTheCardToTheGameCheck,
-            this, &The_Game::_slotCheckThePossibilityForTheCardToBePlayed);
-
-    //pass the answer form The_Game card check back to the Hand
-    connect(this, &The_Game::_signalCardIsRejectedToBePlayed,
-            ui->MainGamer, &GamerWidget::_slotCardIsRejectedToBePlayed);
-
-
-
-    //create RejectedCard Message
-
-    _rejectionCardMessage = new RejectedCardMessage();
-    _handCardPointer = new HandCardPointer();
-
-
-
-
     //change the Game Phase:
-
-    //DEBUG!!!!
     _currentGamePhase = GamePhase::GameInitialization;
-
-    //DEBUG!!!!
-    _currentGamePhase = GamePhase::StartOfTheMove;
-
-
 }
 
 The_Game::~The_Game()
@@ -1611,7 +1294,7 @@ void The_Game::_debugShowAllTheCards()
     ui->GameField->cardsRepresenter();
 }
 
-void The_Game::passDecksToBattleField()
+void The_Game::PassDecksToBattleField()
 {
     ui->GameField->setMonsersDeck(monstersDeck());
     ui->GameField->setAmplifiersDeck(amplifiersDeck());
@@ -1665,7 +1348,7 @@ void The_Game::passDecksToPlayerWidgets()
     }
 }
 
-void The_Game::passDecksToPopUpCardWidget()
+void The_Game::PassDecksToPopUpCardWidget()
 {
     _popUpCardWidget->setMonsersDeck(monstersDeck());
     _popUpCardWidget->setAmplifiersDeck(amplifiersDeck());
@@ -1682,7 +1365,7 @@ void The_Game::passDecksToPopUpCardWidget()
     _popUpCardWidget->setWeaponsDeck(weaponsDeck());
 }
 
-void The_Game::passDecksToCardsStacksWidget()
+void The_Game::PassDecksToCardsStacksWidget()
 {
     ui->CardStacksWidget->setMonsersDeck(monstersDeck());
     ui->CardStacksWidget->setAmplifiersDeck(amplifiersDeck());
@@ -1700,6 +1383,23 @@ void The_Game::passDecksToCardsStacksWidget()
 
     ui->CardStacksWidget->setTotalTreasures(_monstersDeck.size());
     ui->CardStacksWidget->setTotalDoors(_treasuresDeck.size());
+}
+
+void The_Game::PassDecksToCardsInspectorWidget()
+{
+    ui->wdgt_CardInspector->setMonsersDeck(monstersDeck());
+    ui->wdgt_CardInspector->setAmplifiersDeck(amplifiersDeck());
+    ui->wdgt_CardInspector->setArmorAmplifiersDeck(armorAmplifiersDeck());
+    ui->wdgt_CardInspector->setArmorDeck(armorDeck());
+    ui->wdgt_CardInspector->setBattleAmplifiersDeck(battleAmplifiersDeck());
+    ui->wdgt_CardInspector->setCursesDeck(cursesDeck());
+    ui->wdgt_CardInspector->setLevelUpDeck(levelUpDeck());
+    ui->wdgt_CardInspector->setProfessionsDeck(professionsDeck());
+    ui->wdgt_CardInspector->setRacesDeck(racesDeck());
+    ui->wdgt_CardInspector->setSpecialMechanicsDeck(specialMechanicsDeck());
+    ui->wdgt_CardInspector->setSpecialMechanicsTreasureDeck(specialMechanicsTreasureDeck());
+    ui->wdgt_CardInspector->setThingsAmplifiersDeck(thingsAmplifiersDeck());
+    ui->wdgt_CardInspector->setWeaponsDeck(weaponsDeck());
 }
 
 
@@ -1773,79 +1473,79 @@ const std::map<int, gameCardTreasureWeapon> *The_Game::weaponsDeck()
 //For the DEBUG version, it will give the numbers (cardIDs) to end-gamers directly.
 //No #ifdef directive for now.
 
-void The_Game::givingCardsToPlayers()
+void The_Game::GivingCardsToPlayers()
 {
 #ifdef DEBUG_NO_SERVER
 
     //define, how many players are presented;
     //this value is received once from server side and can't be changed during the game if only the player is leaving the game;
-    unsigned int totalPlayers = m_number_of_players; //6 as default
-    unsigned int cardsToGive = 4;
+    uint32_t totalOpponents = _gameSettings.maximumNumberOfPlayers() - 1; //6 as default
+    uint32_t cardsToGive = 4;
 
     //then it is necessary to give m_number_of_players*4 cards from doors stack, and
     //the same quantity from the Treasures stack.
 
     //start with the main player... (giving cards from the top)
 
-    unsigned int initialSizeDoors = _doorsDeck.size();
-    unsigned int initialSizeTreasures = _treasuresDeck.size();
+    uint32_t initialSizeDoors = _doorsDeck.size();
+    uint32_t initialSizeTreasures = _treasuresDeck.size();
 
     for (unsigned int var = 0; var < cardsToGive; ++var) {
 
-        _main_player.addCardToHands(_doorsDeck.front());
+        _mainPlayer.addCardToHands(_doorsDeck.front());
         _doorsDeck.erase(_doorsDeck.begin());
     }
 
     //giving cards to the other players...
 
-    for (unsigned int var = 0; var < m_number_of_players-1; ++var) {
+    for (uint32_t var = 0; var < totalOpponents; ++var) {
 
-        for (unsigned int j = 0; j < cardsToGive; ++j ) {
+        for (uint32_t j = 0; j < cardsToGive; ++j ) {
 
-            _players_opponents[var].addCardToHands(_doorsDeck.front());
+            _playersOpponents[var].addCardToHands(_doorsDeck.front());
             _doorsDeck.erase(_doorsDeck.begin());
         }
     }
 
-    ui->CardStacksWidget->updateDoorsLeft(initialSizeDoors - cardsToGive*m_number_of_players);
+    ui->CardStacksWidget->updateDoorsLeft(initialSizeDoors - cardsToGive*(_gameSettings.maximumNumberOfPlayers()));
     qDebug() << "Doors are given to the players!";
 
     //treasures..
-    for (unsigned int var = 0; var < cardsToGive; ++var) {
-
-        _main_player.addCardToHands(_treasuresDeck.front());
+    for (uint32_t var = 0; var < cardsToGive; ++var)
+    {
+        _mainPlayer.addCardToHands(_treasuresDeck.front());
         _treasuresDeck.erase(_treasuresDeck.begin());
     }
 
     //giving cards to the other players...
-    for (unsigned int var = 0; var < m_number_of_players-1; ++var) {
+    for (unsigned int var = 0; var < totalOpponents; ++var) {
 
         for (unsigned int j = 0; j < cardsToGive; ++j ) {
 
-            _players_opponents[var].addCardToHands(_treasuresDeck.front());
+            _playersOpponents[var].addCardToHands(_treasuresDeck.front());
             _treasuresDeck.erase(_treasuresDeck.begin());
         }
     }
     qDebug() << "Treasures are given to the players!";
 
-    ui->CardStacksWidget->updateTreasuresLeft(initialSizeTreasures - cardsToGive*m_number_of_players);
+    ui->CardStacksWidget->updateTreasuresLeft(initialSizeTreasures - cardsToGive*_gameSettings.maximumNumberOfPlayers());
 #endif
 }
 
-void The_Game::showInitialCardsOnHands()
+void The_Game::ShowInitialCardsOnHands()
 {
     qDebug() << "showInitialCardsOnHands:: Started";
-    for (unsigned int var = 0; var < _main_player.cardsOnHandsVector()->size(); ++var)
+    for (unsigned int var = 0; var < _mainPlayer.cardsOnHandsVector()->size(); ++var)
     {
-        ui->MainGamer->addTheCardToHandsWidget(*((_main_player.cardsOnHandsVector())->begin() + static_cast<int>(var)));
+        ui->MainGamer->addTheCardToHandsWidget(*((_mainPlayer.cardsOnHandsVector())->begin() + static_cast<int>(var)));
     }
 
-    for (unsigned int var = 0; var < _players_opponents.size(); ++var)
+    for (unsigned int var = 0; var < _playersOpponents.size(); ++var)
     {
-        unsigned int totalCardsToShow = (_players_opponents[var].cardsOnHandsVector())->size();
+        unsigned int totalCardsToShow = (_playersOpponents[var].cardsOnHandsVector())->size();
         for (unsigned int j = 0; j < totalCardsToShow; ++j)
         {
-            _widgets4Opponents[var]->addTheCardToHandsWidget(*((_players_opponents[var].cardsOnHandsVector())->begin() + static_cast<int>(j)));
+            _widgets4Opponents[var]->addTheCardToHandsWidget(*((_playersOpponents[var].cardsOnHandsVector())->begin() + static_cast<int>(j)));
         }
     }
     qDebug() << "showInitialCardsOnHands:: Completed";
@@ -1854,7 +1554,7 @@ void The_Game::showInitialCardsOnHands()
 
 //this function might only be called after the cards stacks are initialized.
 //If this rule is note completed, the sizes will be empty!
-void The_Game::formingInitialDecks()
+void The_Game::DEBUGformingInitialDecks()
 {
 
 #ifdef DEBUG_NO_SERVER
@@ -1869,6 +1569,13 @@ void The_Game::formingInitialDecks()
 
     unsigned int totalDoors = _monstersDeck.size() + _amplifiersDeck.size() + _cursesDeck.size() + _professionsDeck.size() +
             _racesDeck.size() + _specialMechanicsDeck.size();
+
+   //NAY-001: MARK_EXPECTED_ERROR
+   //These sizes ARE USED AS DEFINES ON SERVER SIDE.
+   //HERE TO CHECK AND THROW AN EXCEPTION IF THEY ARE NOT CORRECT
+   //I do not want to place all the code on the server's side - with cards and so on;
+   //This data should be given by master to the server while passing settings
+   //(Not visible to user)
 
    if (!totalTreasures)  qDebug() << "Error during Treasures Stack Initialization. Stack is Empty! ";
    qDebug() << "Size of Treasures Stack Report: " << totalTreasures;
@@ -1928,10 +1635,8 @@ void The_Game::theMonstersParser(const QString &filename)
             QStringList lst = str.split(";");
 
             _monstersDeck.insert({(lst.first()).toInt(),monsterStringParser(str)});
-
         }
     }
-
     else
     {
         qDebug()<< "Cannot open this file!";
@@ -1939,40 +1644,68 @@ void The_Game::theMonstersParser(const QString &filename)
 }
 
 
-void The_Game::dbg_was_pushed_to_game_mode()
-{
-    emit dbg_to_be_shown(true);
+void The_Game::DEBUG_SlotWasPushedToGameMode()
+{   
+    _playersOrder.push_back(_gameSettings.clientName());
+    _playersOrder.push_back("DEBUG_Opponent");
+    if (_gameSettings.maximumNumberOfPlayers() != 2)
+        throw "DEBUG ERROR! _gameSettings.maximumNumberOfPlayers() != 2";
+
+    ui->GameField->setPlayersOrder(_playersOrder);
+
+    DEBUGformingInitialDecks();
+    GivingCardsToPlayers();
+    ShowInitialCardsOnHands();
+    ui->GameField->InitializeStartUpProcedureVisualization();
+    emit DEBUG_SignalToBeShown(true);
 }
 
 void The_Game::dbg_return_to_the_main_window()
 {
-    emit dbg_return_to_before_the_game(true);
+    emit DEBUG_ReturnToBeforeTheGame(true);
 }
 
-void The_Game::showTheCardInCentre(PositionedCard card)
+void The_Game::SlotShowTheCardInCentre(PositionedCard card)
 {
+    card.AddBase(this->pos());
+    qDebug() << "Application Global Coordinates: " << "X: " <<  pos().x()<< " Y: " << pos().y();
     //pass the card to PopUpWidget
-    _popUpCardWidget->setUpPointsForPoly(card.positionTopLeft, card.positionBottomRight);
-    _popUpCardWidget->setUpPopUpCard(card.card);
-    _popUpCardWidget->show(card.positionTopLeft, card.positionBottomRight);
-    _cardPointer->setUpTriangleCardPointer(card.positionTopLeft, card.positionBottomRight);
-    _cardPointer->show(card.positionTopLeft, card.positionBottomRight);
+
+    _popUpCardWidget->setUpPointsForPoly(card.GetPositionTopLeft(), card.GetPositionBottomRight());
+    _popUpCardWidget->setUpPopUpCard(card.GetCard());
+
+#ifndef __linux__
+    _popUpCardWidget->show(card.GetPositionTopLeft(), card.GetPositionBottomRight());
+#else
+    //_popUpCardWidget->show();
+    _popUpCardWidget->show(card.GetPositionTopLeft(), card.GetPositionBottomRight());
+#endif
+
+//    qDebug() << "SlotShowTheCardInCentre() cardPositionTopLeft = " << card.GetPositionTopLeft();
+//    qDebug() << "SlotShowTheCardInCentre() positionBottomRight = " << card.GetPositionBottomRight();
+
+    _cardPointer->setUpTriangleCardPointer(card.GetPositionTopLeft(), card.GetPositionBottomRight());
+    _cardPointer->show(card.GetPositionTopLeft(), card.GetPositionBottomRight());
+}
+
+void The_Game::SlotShowTheCardInGameInspector(PositionedCard card)
+{
+    ui->wdgt_CardInspector->SlotSetUpSimpleCardToShow(card);
 }
 
 
-
-void The_Game::hideTheCardInCentre(bool)
+void The_Game::SlotHideTheCardInCentre(bool)
 {
     _popUpCardWidget->hideAnimation();
     _cardPointer->hideAnimation();
 }
 
-void The_Game::_adjustSizeOfTheGamerWidgetToMakeCardsToBeInPlace()
+void The_Game::SlotAdjustSizeOfTheGamerWidgetToMakeCardsToBeInPlace()
 {
     ui->MainGamer->adjustSize();
 }
 
-void The_Game::_slotCheckThePossibilityForTheCardToBePlayed(PositionedCard card)
+void The_Game::SlotCheckThePossibilityForTheCardToBePlayed(PositionedCard card)
 {
     qDebug() << "The Card is checking!!!";
 
@@ -1980,47 +1713,75 @@ void The_Game::_slotCheckThePossibilityForTheCardToBePlayed(PositionedCard card)
     //If the Phase is "WaitingForAnOpponentToMove", it is not possible to use any cards;
     //Even "Annihilation"
 
-    if ((_currentGamePhase == GamePhase::GameInitialization) || (_currentGamePhase == GamePhase::WaitingForAnOpponentToMove)) {
-        qDebug() << "The Game is in the GameInitialization or WaitingForAnOpponentToMove Phase. "
-                    "Not possible to use cards!";
+    if ((_currentGamePhase == GamePhase::GameInitialization)
+            || (_currentGamePhase == GamePhase::WaitingForAnOpponentToMove)
+            || (_currentGamePhase == GamePhase::Theft)
+            || (_currentGamePhase == GamePhase::HandAlignment)
+            || (_currentGamePhase == GamePhase::AfterOpenDoorNoMonster)
+            || (_currentGamePhase == GamePhase::Diplomacy))
+    {
+        qDebug() << "The Game is in Phase when it is not possible to use cards!";
 
-        emit _signalCardIsRejectedToBePlayed(true);
+        emit SignalCardIsRejectedToBePlayed(true);
 
         //show the Rejection Message for the Card
-        _slotShowTheRejectedCardMessage(card);
+        SlotShowTheRejectedCardMessage(card);
     }
-    else {
+    else
+    {
 
         //testing
-
-        _passTheCardToTheBattleField(card);
-        emit _signalCardIsRejectedToBePlayed(false);
+        PassTheCardToTheBattleField(card);
+        emit SignalCardIsRejectedToBePlayed(false);
     }
 }
 
-void The_Game::_slotShowTheRejectedCardMessage(PositionedCard card)
+void The_Game::SlotServerReportsTheGameIsAboutToStart(const TheGameIsAboutToStartData &data)
+{
+    //Set Players Order;
+    _playersOrder = data.playersOrder;
+    qDebug() << "NAY-001: Checking playersOrder";
+    qDebug() << "NAY-001: Master's name: " << data.playersOrder[0];
+    for (uint32_t var = 1; var < data.playersOrder.size(); ++var)
+    {
+        qDebug() << "NAY-001: " << data.playersOrder[var];
+    }
+
+    if (data.playersOrder.empty())
+        throw "Bad playersOrder passed to The_Game!";
+
+    ui->GameField->setPlayersOrder(_playersOrder);
+
+    FormingInitialDecks(data.positionsDoors, data.positionsTreasures);
+    GivingCardsToPlayers();
+    ShowInitialCardsOnHands();
+    showFullScreen();
+    ui->GameField->InitializeStartUpProcedureVisualization();
+}
+
+void The_Game::SlotShowTheRejectedCardMessage(PositionedCard card)
 {
 //    _rejectionCardMessage->setPopupText("The Card Can not be played \n"
 //                                        "Now!");
     _rejectionCardMessage->setPopupText("Сейчас нельзя сыграть \n"
                                         "эту карту!");
-    _rejectionCardMessage->show(card.positionTopLeft, card.positionBottomRight);
-    _handCardPointer->setUpHandCardPointer(card.positionTopLeft, card.positionBottomRight);
-    _handCardPointer->show(card.positionTopLeft, card.positionBottomRight);
+    _rejectionCardMessage->show(card.GetPositionTopLeft(), card.GetPositionBottomRight());
+    _handCardPointer->setUpHandCardPointer(card.GetPositionTopLeft(), card.GetPositionBottomRight());
+    _handCardPointer->show(card.GetPositionTopLeft(), card.GetPositionBottomRight());
 
 }
 
-void The_Game::_passTheCardToTheBattleField(PositionedCard card)
+void The_Game::PassTheCardToTheBattleField(PositionedCard card)
 {
     QPushButton* _movingCard = new QPushButton("Animated Button", this);
-    _movingCard->move(card.positionTopLeft.x(), card.positionTopLeft.y());
-     int sizeX = card.positionBottomRight.x() - card.positionTopLeft.x() ;
-     int sizeY = card.positionBottomRight.y() - card.positionTopLeft.y();
+    _movingCard->move(card.GetPositionTopLeft().x(), card.GetPositionTopLeft().y());
+     int sizeX = card.GetPositionBottomRight().x() - card.GetPositionTopLeft().x() ;
+     int sizeY = card.GetPositionBottomRight().y() - card.GetPositionTopLeft().y();
 
     qDebug() << "Size of the Card during moving: X: " << sizeX;
     qDebug() << "Size of the Card during moving: Y: " << sizeY;
 
-    QString picture = findTheCardPicture(card.card);
+    QString picture = findTheCardPicture(card.GetCard());
 
     QPixmap pxmp_movingCard(picture);
     QPalette plte_movingCard;
@@ -2042,7 +1803,7 @@ void The_Game::_passTheCardToTheBattleField(PositionedCard card)
 
     QPropertyAnimation *animation = new QPropertyAnimation(_movingCard, "geometry");
     animation->setDuration(1000);
-    animation->setStartValue(QRect(card.positionTopLeft.x(), card.positionTopLeft.y(), sizeX, sizeY));
+    animation->setStartValue(QRect(card.GetPositionTopLeft().x(), card.GetPositionTopLeft().y(), sizeX, sizeY));
     animation->setEndValue(QRect(width()/2 - sizeX, height()/2 - sizeY, sizeX*2, sizeY*2));
     animation->setEasingCurve(QEasingCurve::OutCubic);
 
@@ -2052,6 +1813,10 @@ void The_Game::_passTheCardToTheBattleField(PositionedCard card)
 
     connect(animation, &QPropertyAnimation::finished,
             _movingCard, &QPushButton::deleteLater);
+
+    //Соединить этот сигнал со слотом, который добавляет карту на поле боя.
+    connect(animation, &QPropertyAnimation::finished, [this, card] {SlotAddPlayedCardToTheBattleField(card.GetCard());});
+
     //_movingCard->deleteLater();
 }
 
@@ -2171,6 +1936,374 @@ QString The_Game::findTheCardPicture(SimpleCard card)
     return currentPictureAddress;
 }
 
+GameSettings The_Game::gameSettings() const
+{
+    return _gameSettings;
+}
+
+void The_Game::setGameSettings(const GameSettings &gameSettings)
+{
+    _gameSettings = gameSettings;
+}
+
+void The_Game::SlotGameInitialization(TheGameIsAboutToStartData data)
+{
+    //1. Initialize cards;
+    FormingInitialDecks(data.positionsDoors, data.positionsTreasures);
+
+    //2. Redraw GUI regarding current GameSettings
+
+}
+
+void The_Game::SlotSetUpGameSettings(const GameSettings &settings)
+{
+    _gameSettings.applyNewSettings(settings);
+    ui->GameField->ApplyNewSettings(settings);
+}
+
+void The_Game::FormingInitialDecks(const std::vector<uint32_t> &doorsVector, const std::vector<uint32_t> &treasuresVector)
+{
+    //Given vectors are the numbers in order to place in the stacks (Formed by the server!)
+
+    uint32_t totalTreasures = _armorDeck.size() + _armorAmplifiersDeck.size() + _battleAmplifiersDeck.size() + _levelUpDeck.size() +
+            _specialMechanicsTreasureDeck.size() + _thingsAmplifiersDeck.size() + _weaponsDeck.size();
+
+    uint32_t totalDoors = _monstersDeck.size() + _amplifiersDeck.size() + _cursesDeck.size() + _professionsDeck.size() +
+            _racesDeck.size() + _specialMechanicsDeck.size();
+
+    //NAY-001: MARK_EXPECTED_ERROR
+    //These sizes ARE USED AS DEFINES ON SERVER SIDE.
+    //HERE TO CHECK AND THROW AN EXCEPTION IF THEY ARE NOT CORRECT
+    //I do not want to place all the code on the server's side - with cards and so on;
+    //This data should be given by master to the server while passing settings
+    //(Not visible to user)
+    if ((totalDoors != doorsVector.size()) || (totalTreasures != treasuresVector.size()))
+    {
+        qDebug() << "ERROR while assigning random digits to cards. Rework the procedure!";
+        throw "CARDS VECTORS BAD SIZES!";
+    }
+    //SHOULDN'T HANDLE THIS EXCEPTION
+
+   if (!totalTreasures)
+   {
+       qDebug() << "Error during Treasures Stack Initialization. Stack is Empty! ";
+       throw "CARDS VECTORS BAD SIZES!";
+   }
+   qDebug() << "NAY-001: Size of Treasures Stack Report: " << totalTreasures;
+
+   if (!totalDoors)
+   {
+       qDebug() << "Error during Doors Stack Initialization. Stack is Empty! ";
+       throw "CARDS VECTORS BAD SIZES!";
+   }
+   qDebug() << "NAY-001: Size of Doors Stack Report: " << totalDoors;
+
+
+    for (unsigned int var = 0; var < totalTreasures; ++var)
+    {
+        _treasuresDeck.push_back({true,treasuresVector[var]});
+    }
+
+    qDebug() << "NAY-001: Treasures Stack is Filled Now!";
+
+    for (unsigned int var = 0; var < totalDoors; ++var)
+    {
+        _doorsDeck.push_back({false,doorsVector[var]});
+    }
+
+    qDebug() << "NAY-001: Doors Stack is Filled Now!";
+
+}
+
+void The_Game::RedrawGUIAccordingToCurrentSettings(uint32_t windowHeight, uint32_t windowWidth)
+{
+    //Hide absent players;
+    qDebug() << "NAY-001: GameSettings: Total Players: " << _gameSettings.maximumNumberOfPlayers();
+    //There should be opponents: N = MaximumNumberOFPLayers - 1;
+    SetUpOpponents(windowHeight, windowWidth);
+}
+
+
+void The_Game::SetUpOpponents(uint32_t windowHeight, uint32_t windowWidth)
+{
+    uint32_t totalOpponents = _gameSettings.maximumNumberOfPlayers() - 1;
+
+    qDebug() << "Total opponnets: " << totalOpponents;
+
+    switch (totalOpponents)
+    {
+    case 5:
+        _playersOpponents.push_back(_opponent4);
+    case 4:
+        _playersOpponents.push_back(_opponent3);
+    case 3:
+        _playersOpponents.push_back(_opponent2);
+    case 2:
+        _playersOpponents.push_back(_opponent1);
+    case 1:
+        _playersOpponents.push_back(_opponent0);
+        break;
+    default:
+        qDebug() << "Unsupported number of players! : " << totalOpponents;
+        throw "Bad number of players. Unsupported!";
+        break;
+    }
+
+
+    //widgets for them
+    for (uint32_t var = 0; var < totalOpponents; var++)
+    {
+        _widgets4Opponents.push_back(new GamerWidget);
+        _widgets4Opponents.back()->redraw_as_a_secondary_player();
+        _widgets4Opponents.back()->setIs_MainPlayer(false);
+
+    }
+    //first two of them to the top layout
+    //fixed numbers, they are allways there
+    //other three on the left side.
+    //For debug there should be only 1 of opponents;
+
+    switch (totalOpponents)
+    {
+        case 2:
+            ui->top_opponents_layout->addWidget(_widgets4Opponents[1]);
+        case 1:
+            ui->top_opponents_layout->addWidget(_widgets4Opponents[0]);
+        break;
+
+    default:
+        qDebug() << "NAY-001: Go further, adding widgets to the right layout.";
+
+    }
+
+    //if there is(are) some other players, add them to the right_side layout
+    if (totalOpponents > 2)
+    {
+        for (uint32_t i = 0; i < totalOpponents - 3; i++)
+            ui->right_side_opponents_layout->addWidget(_widgets4Opponents[2+i]);
+    }
+
+    //resizing 'em all
+    for (uint32_t j = 0; j < totalOpponents - 1; j++)
+    {
+        _widgets4Opponents[j]->setMinimumHeight(koeff_GamerWidget_size_Height*windowHeight);
+        _widgets4Opponents[j]->setMaximumHeight(koeff_GamerWidget_size_Height*windowHeight);
+        _widgets4Opponents[j]->setMaximumWidth((koeff_GamerWidget_size_Width+SecondaryGamerWidgetWidthExpansion)*windowWidth);
+    }
+
+#ifdef DEBUG_NO_SERVER
+
+    for (unsigned int var = 0; var < _widgets4Opponents.size(); ++var)
+    {
+        connect(_widgets4Opponents[var], &GamerWidget::SignalRepresentTheCardInCentre, this, &The_Game::SlotShowTheCardInCentre);
+        connect(_widgets4Opponents[var], &GamerWidget::SignalHideTheCardInCentre, this, &The_Game::SlotHideTheCardInCentre);
+    }
+
+#endif
+}
+
+void The_Game::SetUpWidgetsProperties(uint32_t windowHeight, uint32_t windowWidth)
+{
+    //setting up the GUI staff
+    //Defining its coefficients with respect to the total size of availible field;
+
+#ifdef DEBUG_NO_RETURN_TO_MENU
+    ui->btn_switch_back->hide();
+#endif
+
+    //setting MainGamer
+    ui->MainGamer->setIs_MainPlayer(true);
+    //hide Secondary Hand Widget;
+    ui->MainGamer->HideHandSecondaryPlayerWidget();
+
+    ui->GameField->setMinimumWidth(koeff_GameField_size*windowWidth);
+    ui->GameField->setMinimumHeight(koeff_GameField_size*windowHeight);
+
+    ui->MainGamer->setMinimumHeight(koeff_GamerWidget_size_Height*windowHeight);
+
+    ui->btn_switch_back->setMinimumWidth(koeff_GameInfoBox_size_Width*windowWidth);
+    ui->btn_switch_back->setMaximumWidth(koeff_GameInfoBox_size_Width*windowWidth);
+
+    //trying to disable the maximum size of the MainGamerHeight
+    //ui->MainGamer->setMaximumHeight(koeff_GamerWidget_size_Height*HW_Screen_Size_Heigh);
+
+    //with respect to the MainGamer, the height size won't be larger then allowed,
+    //but may take all the availible space if the width is concerned; Why not?
+    ui->MainGamer->setMinimumWidth(koeff_GamerWidget_size_Width*windowWidth);
+    ui->MainGamer->setMaximumWidth((koeff_GamerWidget_size_Width+MainGamerWidgetWidthExpansion)*windowWidth);
+
+    ui->TimersWidget->setMinimumHeight(koeff_GameTimers_size_Height*windowHeight);
+    ui->TimersWidget->setMaximumHeight(koeff_GameTimers_size_Height*windowHeight);
+
+    ui->wdgt_Chart->setMinimumWidth(koeff_GameTimers_size_Width*windowWidth);
+    ui->wdgt_Chart->setMaximumWidth(koeff_GameTimers_size_Width*windowWidth);
+
+//    ui->GameInfoBox->setMinimumHeight(koeff_GameInfoBox_size_Height*windowHeight);
+//    ui->GameInfoBox->setMaximumHeight(koeff_GameInfoBox_size_Height*windowHeight);
+
+//    ui->GameInfoBox->setMinimumWidth(koeff_GameInfoBox_size_Width*windowWidth);
+    //    ui->GameInfoBox->setMaximumWidth(koeff_GameInfoBox_size_Width*windowWidth);
+}
+
+void The_Game::MainParser()
+{
+#ifndef USE_RESOURCES
+
+    theMonstersParser("Tables/cards_doors_monsters.csv");
+    qDebug() << "Monsters parsing complete!";
+
+    theAmplifiersParser("Tables/cards_doors_amplifiers.csv");
+    qDebug() << "Amplifiers parsing complete!";
+
+    theCursesParser("Tables/cards_doors_curses.csv");
+    qDebug() << "Curses parsing complete!";
+
+    theProfessionsParser("Tables/cards_doors_professions.csv");
+    qDebug() << "Professions parsing complete!";
+
+    theRacesParser("Tables/cards_doors_races.csv");
+    qDebug() << "Races parsing complete!";
+
+    theSpecialMechanicsParser("Tables/cards_doors_specialmechanics.csv");
+    qDebug() << "Special mechanics parsing complete!";
+
+    theArmorsParser("Tables/cards_treasures_armor.csv");
+    qDebug() << "Armor parsing complete!";
+
+    theArmorAmplifiersParser("Tables/cards_treasures_armorAmplifiers.csv");
+    qDebug() << "ArmorAmplifiers parsing complete!";
+
+    theBattleAmplifiersParser("Tables/cards_treasures_battleAmplifiers.csv");
+    qDebug() << "BattleAmplifiers parsing complete!";
+
+    theLevelUpParser("Tables/cards_treasures_levelUp.csv");
+    qDebug() << "LevelUps parsing complete!";
+
+    theSpecialMechanicTreasureParser("Tables/cards_treasures_specialMechanics.csv");
+    qDebug() << "SpecialMechanicsTreasures parsing complete!";
+
+    theThingsAmplifiersParser("Tables/cards_treasures_thingsAmplifiers.csv");
+    qDebug() << "ThingsAmplifiers parsing complete!";
+
+    theWeaponParser("Tables/cards_treasures_Weapon.csv");
+    qDebug() << "Weapons parsing complete!";
+
+#else
+    theMonstersParser(":/Tables/cards_doors_monsters.csv");
+    qDebug() << "Monsters parsing complete!";
+
+    theAmplifiersParser(":/Tables/cards_doors_amplifiers.csv");
+    qDebug() << "Amplifiers parsing complete!";
+
+    theCursesParser(":/Tables/cards_doors_curses.csv");
+    qDebug() << "Curses parsing complete!";
+
+    theProfessionsParser(":/Tables/cards_doors_professions.csv");
+    qDebug() << "Professions parsing complete!";
+
+    theRacesParser(":/Tables/cards_doors_races.csv");
+    qDebug() << "Races parsing complete!";
+
+    theSpecialMechanicsParser(":/Tables/cards_doors_specialmechanics.csv");
+    qDebug() << "Special mechanics parsing complete!";
+
+    theArmorsParser(":/Tables/cards_treasures_armor.csv");
+    qDebug() << "Armor parsing complete!";
+
+    theArmorAmplifiersParser(":/Tables/cards_treasures_armorAmplifiers.csv");
+    qDebug() << "ArmorAmplifiers parsing complete!";
+
+    theBattleAmplifiersParser(":/Tables/cards_treasures_battleAmplifiers.csv");
+    qDebug() << "BattleAmplifiers parsing complete!";
+
+    theLevelUpParser(":/Tables/cards_treasures_levelUp.csv");
+    qDebug() << "LevelUps parsing complete!";
+
+    theSpecialMechanicTreasureParser(":/Tables/cards_treasures_specialMechanics.csv");
+    qDebug() << "SpecialMechanicsTreasures parsing complete!";
+
+    theThingsAmplifiersParser(":/Tables/cards_treasures_thingsAmplifiers.csv");
+    qDebug() << "ThingsAmplifiers parsing complete!";
+
+    theWeaponParser(":/Tables/cards_treasures_Weapon.csv");
+    qDebug() << "Weapons parsing complete!";
+#endif
+}
+
+void The_Game::SetUpSignalSlotsConnections()
+{
+    QObject::connect(ui->btn_switch_back, SIGNAL(clicked()), this, SLOT(hide()));
+    QObject::connect(this, &The_Game::DEBUG_SignalToBeShown, this, &The_Game::showFullScreen);//SLOT(showFullScreen())) SLOT(show();
+    QObject::connect(ui->btn_switch_back, SIGNAL(clicked(bool)), this, SLOT(dbg_return_to_the_main_window()));
+
+    //Setting the in-Game connections with other Widgets
+    connect(ui->MainGamer, &GamerWidget::SignalRepresentTheCardInCentre, this, &The_Game::SlotShowTheCardInCentre);
+    connect(ui->MainGamer, &GamerWidget::SignalRepresentTheCardInCentre, this, &The_Game::SlotShowTheCardInGameInspector);
+    connect(ui->MainGamer, &GamerWidget::SignalHideTheCardInCentre, this, &The_Game::SlotHideTheCardInCentre);
+
+    //trying to adjust the size of...
+    connect(ui->MainGamer, &GamerWidget::SignalAdjustSize, this, &The_Game::SlotAdjustSizeOfTheGamerWidgetToMakeCardsToBeInPlace);
+
+    //connect theHand with checking the card slot;
+    connect(ui->MainGamer, &GamerWidget::SignalSendTheCardToTheGameCheck, this, &The_Game::SlotCheckThePossibilityForTheCardToBePlayed);
+    //pass the answer form The_Game card check back to the Hand
+    connect(this, &The_Game::SignalCardIsRejectedToBePlayed, ui->MainGamer, &GamerWidget::SlotCardIsRejectedToBePlayed);
+
+    QObject::connect(this, &The_Game::SignalChartMessageReceived, ui->wdgt_Chart, &MunchkinDialog::SlotShowMessage);
+    QObject::connect(ui->wdgt_Chart, &MunchkinDialog::SignalSendMessage, this, &The_Game::SlotProcessChartMessageSending);
+    QObject::connect(ui->GameField, &battleField::SignalStartUpAnimationCompleted, this, &The_Game::SlotInitialAnimationCompleted);
+
+}
+
+void The_Game::InitializePopUpWidgets()
+{
+    //create popUpCard Widget
+    _popUpCardWidget = new PopUpCard(this);
+    //create CardPointerWidget
+    _cardPointer = new TriangleCardPointer();
+
+    _rejectionCardMessage = new RejectedCardMessage();
+    _handCardPointer = new HandCardPointer();
+
+}
+
+void The_Game::SetUpBackgroundPicture()
+{
+
+#ifndef USE_RESOURCES
+    QPixmap pxmpBattleField("Pictures/JorneyCover.png");
+#else
+    QPixmap pxmpBattleField(":/Pictures/JorneyCover.png");
+#endif
+    //find the HW size of the window
+    QRect HW_Screen_Size = QApplication::desktop()->screenGeometry();
+
+    QPalette plte_battleField;
+    plte_battleField.setBrush(QPalette::Background, QBrush(pxmpBattleField.scaled(HW_Screen_Size.width(),HW_Screen_Size.height(), Qt::KeepAspectRatio, Qt::SmoothTransformation)));
+    setPalette(plte_battleField);
+    setAutoFillBackground(true);
+
+}
+
+void The_Game::PassCardsToWidgets()
+{
+    PassDecksToBattleField();
+    passDecksToPlayerWidgets();
+    PassDecksToCardsInspectorWidget();
+    PassDecksToPopUpCardWidget();
+    PassDecksToCardsStacksWidget();
+}
+
+void The_Game::SlotAddPlayedCardToTheBattleField(SimpleCard card)
+{
+
+}
+
+bool The_Game::CheckThePlayerIsAbleToSell(const Player& player)
+{
+    qDebug() <<"NAY-001: AbleToSell Checker";
+}
+
 unsigned int The_Game::doorsLeft() const
 {
     return _doorsLeft;
@@ -2190,6 +2323,3 @@ void The_Game::setTreasuresLeft(unsigned int treasuresLeft)
 {
     _treasuresLeft = treasuresLeft;
 }
-
-
-

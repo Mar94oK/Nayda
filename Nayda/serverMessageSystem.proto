@@ -1,0 +1,272 @@
+syntax = "proto3";
+package serverMessageSystem;
+
+
+//---------------------------------
+//Definitions and constants
+//---------------------------------
+
+//Rules type - only two for now
+enum RulesType
+{
+    Automatic = 0; //standard
+    Manual = 1; //hard-mode. To be developed later.
+}
+
+//Subsystem IDs
+enum SubSystemID
+{
+    CONNECTION_SUBSYSTEM = 0;
+    GAME_ACTIONS_SUBSYSTEM = 1;
+    GAME_NOTIFICATION_SUBSYSTEM = 2;
+    CHART_SUBSYSTEM = 3;
+}
+
+// Connection Subsystem Commands
+enum ConnectionSubSysCommandsID
+{
+    SERVER_INPUT_QUERY_REQUEST = 0;
+    SERVER_INPUT_QUERY_REPLY = 1;
+    CLIENT_ROOM_CREATION_REQUEST = 2;
+    CLIENT_ROOM_CREATION_REPLY = 3;
+    CLIENT_CONNECTION_TO_ROOM_REQUEST = 4;
+    CLIENT_CONNECTION_TO_ROOM_REPLY = 5;
+    SERVER_REPORTS_OPPONENT_IS_ENTERING_ROOM = 6;
+    SERVER_ROOM_CHANGES_IN_SELECTABLE_LIST = 7;
+    CLIENT_WANTED_TO_ENTER_THE_ROOM = 8;
+    SERVER_CLIENT_WANTED_TO_ENTER_THE_ROOM_REPLY = 9;
+    SERVER_REPORTS_CLIENT_IS_LEAVING = 10;
+    SERVER_REPORTS_ROOM_HAS_CHANGED_OWNER = 11;
+    SERVER_REPORTS_THE_GAME_IS_ABOUT_TO_START = 12;
+}
+
+enum ChartSubSysCommandsID
+{
+    CHART_MESSAGE = 0;
+    CHART_NOTIFICATION = 1;  //GameServer will notify All about it.
+                             //De-facto: The same structure as the message.
+                             //For Future use only.
+}
+
+//Message to be included to each and every message for it to be detected trhu
+//all the others.
+//Contains SubSystem ID which is unique through all the SubSystems
+//Contains message ID which is unique through all the messages in the SubSystem
+message CommonHeader
+{
+    SubSystemID subSystem = 1;
+    uint32      commandId = 2;
+}
+
+//GameTimers Constraints. Might be modified later.
+message TimeSettings
+{
+    uint32 totalTimeToMove = 1;
+    uint32 timeToThink = 2;
+    uint32 timeForOpponentsDecision = 3;
+    uint32 diplomacyTime = 4;
+}
+
+//Game Addons and Rules types. Actually, in the first Release
+//Will not be used.
+message GameType
+{
+    bool hasAddonWildAxe = 1;
+    bool hasAddonClericalErrors = 2;
+    RulesType rulesType = 3;
+}
+
+//SubMessage for GameSettings
+message GameSettings
+{
+    GameType gameType = 1;
+    TimeSettings timeSettings = 2;
+    uint32  maximumNumberOfPlayers = 3;
+    bool    settingsCorrectionAllowed = 4;
+}
+
+//Initial Request Type
+//Might not be used, if I'd prefer to send two different messages
+//instead of common Entering Request.
+enum GameCreationRequest
+{
+    JoinTheGame = 0;
+    CreateTheGame = 1;
+}
+
+message RoomCreationErrors
+{
+    bool noFreeSlotsAvailable = 1;
+    bool rulesAreNotSupported = 2;
+    bool incorrectSettings = 3;
+}
+
+message Player
+{
+    string playerName = 1; // player name
+    uint32 playerID = 2; // 0 - Leader
+}
+
+
+// CreatedRoom (Sub-Message, DO NOT USE for sending)
+message CreatedRoom
+{
+    uint32 roomID = 1;
+    string roomName = 2;
+    uint32 players = 3;
+    uint32 maximumNumberOfPlayers = 4;
+    repeated Player player = 5;
+}
+
+//#1 Idea: Check whether server is ready to work...
+message ServerInputQuery
+{
+    CommonHeader header = 1;                        //allways included
+    ConnectionSubSysCommandsID connectionCmdID = 2; //command ID
+    string clientName = 3;                          //client Name (may be useful to show pending requests)
+    string OsType = 4;                              //OsType - type of Operation System. MAy be useful. Not sure when.
+}
+
+//#2 Idea: SomeKind of Pinging for Life reply.
+//Server will show it's opportunities.
+message ServerQueryReply
+{
+    CommonHeader header = 1;                        //allways included
+    ConnectionSubSysCommandsID connectionCmdID = 2; //command ID
+    bool roomCreationAllowed = 3;                   //to enable respected Button in GUI
+    bool connectionToRoomAllowed = 4;               //to enable respected Button in GUI
+    string serverName = 5;                          //Server Name may be used to show some stats...
+}
+
+//#3 Room Creation Request
+message ClientRoomCreationRequest
+{
+    CommonHeader header = 1;                        //allways included
+    ConnectionSubSysCommandsID connectionCmdID = 2; //command ID
+    string clientName = 3;
+    string roomName = 4;
+    GameSettings gameSettings = 5;
+}
+
+//#4 Room Creation Reply
+message ClientRoomCreationReply
+{
+    CommonHeader header = 1;                        //allways included
+    ConnectionSubSysCommandsID connectionCmdID = 2; //command ID
+    bool connectionAllowed = 3;                     //check
+    uint32 slotID = 4;                              //to identify the slot's number
+    uint32 freeSlotsLeft = 5;                       //how many slots left
+    RoomCreationErrors roomCreationErrors = 6;      //to identify the Error
+}
+
+//#5 Connection to Room Request
+message ClientConnectionToRoomRequest
+{
+    CommonHeader header = 1;                        //allways included
+    ConnectionSubSysCommandsID connectionCmdID = 2; //command ID
+    string clientName = 3;                          //identify Client (may be not necessary, up to decide later)
+    bool connectToAnyRoom = 4;                      //now allways to set this
+    bool agreeToWait = 5;                           //now allways set this. Later to provide user an opportunity to wait
+                                                    //in menu mode.
+//    GameSettings gameSettings = 6;                //later to apply such a filter by settings
+}
+
+//#6
+message ClientConnectionToRoomReply
+{
+    CommonHeader header = 1;                        //allways included
+    ConnectionSubSysCommandsID connectionCmdID = 2; //command ID
+    bool noRoomsAvailable = 3;                      //if no Rooms Available, set thi field
+    uint32 freeSlotsLeft = 4;                       //how many free Slots are left
+    repeated CreatedRoom room = 5;                  //how Rooms IDs are provided
+    uint32 queryOrder = 6;                          //place in order
+    uint32 querySize = 7;                           //total waiters
+}
+
+//#7
+message ServerQueryOrderNotification
+{
+    CommonHeader header = 1;                        //allways included
+    ConnectionSubSysCommandsID connectionCmdID = 2; //command ID
+    uint32 queryOrder = 3;                          //place in order
+}
+
+//#8
+message ServerReportsOpponentIsEnteringRoom
+{
+    CommonHeader header = 1;
+    ConnectionSubSysCommandsID connectionCmdID = 2;
+    string opponentName = 3;
+    uint32 roomID = 4;                              //exactly the same as the SlotID in the ClientRoomCreationReply
+}
+
+
+//#9
+message ChartMessage
+{
+    CommonHeader header = 1;
+    ChartSubSysCommandsID chartCmdID = 2;
+    string senderName = 3;                  //opponent's or client's name de-facto
+    string chartMessage = 4;
+    uint32 roomID = 5;
+}
+
+//#10 - Historically
+message DefaultMessage //Used for message-type distinguish cast.
+{
+    CommonHeader header = 1;
+    ChartSubSysCommandsID chartCmdID = 2;
+}
+
+//#11
+message ServerRoomChangesInSelectableList
+{
+    CommonHeader header = 1;                        //allways included
+    bool deletedOrUpdateFlag = 2;                   //Shows what to do with the room - Update info or Delete;
+    ConnectionSubSysCommandsID connectionCmdID = 3; //command ID
+    CreatedRoom room = 4;                           //room was removed (doesn't matter - started or closed)
+}
+
+message ClientWantedToEnterTheRoom
+{
+    CommonHeader header = 1;                        //allways included
+    ConnectionSubSysCommandsID connectionCmdID = 2; //command ID
+    string clientName = 3;                          //client's name
+    uint32 roomID = 4;                              //roomID to enter
+}
+
+message ServerClientWantedToEnterTheRoomReply
+{
+    CommonHeader header = 1;                        //allways included
+    ConnectionSubSysCommandsID connectionCmdID = 2; //command ID
+    bool entranceAllowed = 3;                       //Allowed or Rejected
+    string masterName = 4;
+    CreatedRoom room = 5;                           //Room to be joined - for the GUI to draw it.
+    GameSettings settings = 6;                      //Settings selected by user, created the room
+}
+
+message ServerReportsClientIsLeaving
+{
+    CommonHeader header = 1;
+    ConnectionSubSysCommandsID connectionCmdID = 2;
+    uint32 socketDescriptor = 3;                       //May be unnecessary
+    string clientName = 4;                            //Client name to define whom to delete
+}
+
+message ServerReportsRoomHasChangedOwner
+{
+    CommonHeader header = 1;
+    ConnectionSubSysCommandsID connectionCmdID = 2;
+    string previousOwner = 3;                         //May be unnecessary
+    string currentOwner = 4;                          //Client name to define whom to delete
+}
+
+
+message ServerReportsTheGameIsAboutToStart
+{
+    CommonHeader header = 1;
+    ConnectionSubSysCommandsID connectionCmdID = 2;
+    bool start = 3;                                  //In fact - allways true;
+    repeated uint32 posTreasures = 4;
+    repeated uint32 posDoors = 5;
+}

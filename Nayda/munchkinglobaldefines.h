@@ -1,8 +1,12 @@
 #ifndef MUNCHKINGLOBALDEFINES_H
 #define MUNCHKINGLOBALDEFINES_H
 
+#ifdef Q_OS_WIN
 #define USE_RESOURCES
-//#undef USE_RESOURCES
+#elif defined __linux__
+#define USE_RESOURCES
+#endif
+
 
 class GeometricLimitations {
 
@@ -12,6 +16,5 @@ public:
     static constexpr float beforeTheGameButtonsSize = 0.1f;
 
 };
-
 
 #endif // MUNCHKINGLOBALDEFINES_H

@@ -7,6 +7,12 @@
 #include <Application/card.h>
 #include <QPushButton>
 #include <QTimer>
+#include <QLabel>
+#include <QSpacerItem>
+#include "Application/card.h"
+#include "gamesettings.h"
+#include "Application/The_Game/The_Game.h"
+#include "playersordernotification.h"
 
 namespace Ui {
 class battleField;
@@ -56,8 +62,6 @@ private:
     const std::map<int, gameCardTreasureThingsAmplifiers> *_thingsAmplifiersDeck;
     const std::map<int, gameCardTreasureWeapon> *_weaponsDeck;
 
-
-
     std::map<int, gameCardDoorMonster> :: const_iterator  _monstersIterator;
     std::map<int, gameCardDoorAmplifier> :: const_iterator _amplifiersIterator;
     std::map<int, gameCardDoorCurse> :: const_iterator _cursesIterator;
@@ -73,8 +77,6 @@ private:
     std::map<int, gameCardTreasureThingsAmplifiers> :: const_iterator _thingsAmplifiersIterator;
     std::map<int, gameCardTreasureWeapon> :: const_iterator _weaponsIterator;
 
-
-
     QTimer *_showCardsTimer;
     QPushButton* _theBtnMainRepresenter;
     QPushButton* _theBtnRepresenter1;
@@ -87,20 +89,117 @@ private:
     const float _race_class_btn_size_width = 0.0415f;
     const float _race_class_btn_size_height = _race_class_btn_size_geometric_width_to_height_ratio*_race_class_btn_size_width;
 
-
     bool _continueToRepresentCards = false;
     unsigned int _currCardsArrayRepresentationStep = 0;
     int _timerCount = 100;
-
-
-
 
 public slots:
 
    void continueCardRepresentation();
    void startCardsRepresentation();
 
+private:
+
+   void SetBackgroundPicture();
+
+//Setting-up Start-Up Procedure.
+private:
+
+   void SetWidgetsToStartUpPhase();
+
+   QLabel* _startUpTimerTextLabel;
+   QLabel* _timeLeftBeforeStartUpLabel;
+   QString _startUpTimerText = "До начала игры осталось: ";
+   QTimer* _startUpTimer;
+   const uint32_t _startUpTimeSeconds = 5;
+   uint32_t _startUpTimerTicksCounter = 0;
+
+   QSpacerItem * _spacerBottom;
+   QSpacerItem * _spacerForScene2;
+   QSpacerItem * _spacerForScene2_2;
+
+   QString _phaseNameInitialPhaseText = "Ожидание хода игрока ";
+
+   PlayersOrderNotification* _orderNotification;
+
+
+
+   void SetFontAndAlignment(QLabel* lbl);
+
+   void ShowInitialAnimationScene_1();
+   void HideInitialAnimationScene_1();
+   void ShowInitialAnimationScene_2();
+   void HideInitialAnimationScene_2();
+
+public:
+
+   void InitializeStartUpProcedureVisualization();
+
+   std::vector<QString> playersOrder() const;
+   void setPlayersOrder(const std::vector<QString> &playersOrder);
+
+private slots:
+
+   void SlotStartUpTimerHandler();
+   void SlotStartUpAnimationCompleted();
+
+signals:
+
+   void SignalStartUpAnimationCompleted();
+
+private:
+
+   void SetUpSignalsSlotsConnections();
+
+private:
+
+   void paintEvent(QPaintEvent*);
+
+private:
+
+   QString _diplomacyTimerPictureAddress = "";
+   QString _timeToMoveTimerPictureAddress = "";
+   QString _timeForOpponentsToDecideTimerPictureAddress = "";
+   QString _timeToThinkTimerPictureAddress = "";
+
+   void SetUpPictureAddresses();
+   void SetUpInitialTimersPictures();
+   void setUpButtonPicture(QPushButton* const btn, const QString& picturePath, double widthCoeff, double heightWidthRelatio);
+
+   //These sizes should be selected with respect to the TimerText Height.
+   const double _buttonsWidthCoefficient = 0.1;
+   const double _buttonsHeightWidthRelatio = 1.24633;
+
+private:
+
+   GameSettings _settings;
+
+   std::vector<QString> _playersOrder;
+
+private:
+
+   std::vector<QPushButton* > _forCards;
+   std::vector<QPushButton* > _againstCards;
+
+   void AddCardToForCards(SimpleCard card);
+   void AddCardToAgainstCards(SimpleCard card);
+   void AddCardToSpecialMechanics(SimpleCard card);
+
+   void InitializeBattle();
+
+private slots:
+
+   void SlotChangeMoveTimerTime(uint32_t time);
+   void SlotChangePhaseTimerTime(uint32_t time);
+   void SlotGamePhaseHasBeenChanged(GamePhase phase);
+
+public slots:
+
+    void ApplyNewSettings(GameSettings settings)
+    { _settings.applyNewSettings(settings); }
 
 };
+
+
 
 #endif // BATTLEFIELD_H
