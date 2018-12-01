@@ -2558,7 +2558,7 @@ void The_Game::SlotSecondsMoveTimerHandler()
 {
     --_secondsLeftMoveTimer;
     ui->GameField->SetTimeLeftMoveTimer(_secondsLeftMoveTimer);
-    if (_secondsLeftPhaseTimer)
+    if (_secondsLeftMoveTimer)
         _secondsMoveTimer->start();
 }
 
