@@ -259,9 +259,9 @@ void Player::setHeadSlotFull(bool headSlotFull)
 }
 
 
-int Player::cards_in_game() const
+uint32_t Player::cardsInGame() const
 {
-    return _totalCardsInGame;
+    return _cardsInGame.size();
 }
 
 
@@ -283,16 +283,11 @@ void Player::setCardsOnHandsLimit(int cardsOnHandsLimit)
 }
 
 
-int Player::cardsOnHands() const
+uint32_t Player::cardsOnHands() const
 {
-    return _totalCardsOnHands;
+    return _cardsOnHands.size();
 }
 
-
-void Player::setCardsOnHands(int cardsOnHands)
-{
-    _totalCardsOnHands = cardsOnHands;
-}
 
 
 int Player::warPower() const

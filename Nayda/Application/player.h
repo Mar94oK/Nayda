@@ -67,12 +67,11 @@ public:
     void setPlayerLevel(int playerLevel);
     int warPower() const;
     void setWarPower(int warPower);
-    int cardsOnHands() const;
-    void setCardsOnHands(int cardsOnHands);
+    uint32_t cardsOnHands() const;
     int cardsOnHandsLimit() const;
     void setCardsOnHandsLimit(int cardsOnHandsLimit);
-    int cards_in_game() const;
-    void setCards_in_game(int cards_in_game);
+    uint32_t cardsInGame() const;
+    void setCards_in_game(int cardsInGame);
     bool headSlotFull() const;
     void setHeadSlotFull(bool headSlotFull);
     bool legsSlotFull() const;

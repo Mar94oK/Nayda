@@ -752,18 +752,6 @@ void battleField::SlotGamePhaseHasBeenChanged(GamePhase phase)
 
 void battleField::HideInitialAnimationScene_2()
 {
-//    for (uint32_t var = 0; var < _labelsPlayerNamesInOrder.size(); ++var)
-//    {
-//        _labelsPlayerNamesInOrder[var]->hide();
-//        delete _labelsPlayerNamesInOrder[var];
-//        _labelsPlayerNamesInOrder.erase(_labelsPlayerNamesInOrder.begin() + var);
-//        _labelsPlayerNamesInOrder.shrink_to_fit();
-//    }
-//    _orderNotificationName->hide();
-//    delete _orderNotificationName;
-//    ui->dbgLayout->removeItem(_spacerBottom);
-//    delete _spacerBottom;
-
     _orderNotification->hide();
     ui->dbgLayout->removeWidget(_orderNotification);
     delete _orderNotification;
@@ -774,5 +762,4 @@ void battleField::HideInitialAnimationScene_2()
     delete _spacerForScene2;
     ui->dbgLayout->removeItem(_spacerForScene2_2);
     delete _spacerForScene2_2;
-
 }

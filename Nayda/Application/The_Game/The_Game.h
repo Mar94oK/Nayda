@@ -434,7 +434,15 @@ private slots:
 
     void SlotAddPlayedCardToTheBattleField(SimpleCard card);
 
+//Game Processing entities
+private:
 
+    uint32_t _currentOpponentToMoveId = 0;
+    QString  _currentOpponentToMoveName = "";
+
+private:
+
+    bool CheckThePlayerIsAbleToSell(const Player &player);
 
 
 

@@ -2299,6 +2299,11 @@ void The_Game::SlotAddPlayedCardToTheBattleField(SimpleCard card)
 
 }
 
+bool The_Game::CheckThePlayerIsAbleToSell(const Player& player)
+{
+    qDebug() <<"NAY-001: AbleToSell Checker";
+}
+
 unsigned int The_Game::doorsLeft() const
 {
     return _doorsLeft;
