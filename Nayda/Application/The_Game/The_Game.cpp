@@ -2524,6 +2524,10 @@ void The_Game::InitializeTicksTimers()
     _secondsMoveTimer->setSingleShot(true);
     _secondsPhaseTimer->setSingleShot(true);
 
+    ui->GameField->SetTimeLeftMoveTimer(_gameSettings.totalTimeToMove());
+    ui->GameField->SetTimeLeftPhaseTimer(_gameSettings.timeToThink());
+
+
     connect(_secondsMoveTimer, &QTimer::timeout, this, &The_Game::SlotSecondsMoveTimerHandler);
     connect(_secondsPhaseTimer, &QTimer::timeout, this, &The_Game::SlotSecondsPhaseTimerHandler);
 }

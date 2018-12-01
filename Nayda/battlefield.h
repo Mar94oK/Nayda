@@ -153,6 +153,8 @@ private:
 
 private:
 
+   QPainter* _painter;
+   bool _painterInitialized = false;
    void paintEvent(QPaintEvent*);
 
 private:
