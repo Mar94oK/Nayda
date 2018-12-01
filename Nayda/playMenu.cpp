@@ -9,6 +9,8 @@
 #include <QThread>
 #include <QPaintEvent>
 
+#include <QStyle>
+
 
 playMenu::playMenu(QWidget *parent) :
     QWidget(parent),

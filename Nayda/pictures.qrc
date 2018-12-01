@@ -435,5 +435,32 @@
         <file>Pictures/playMenu/playMenu_oblako_connection_blue.jpg</file>
         <file>Pictures/playMenu/playMenu_oblako_connection_gray.jpg</file>
         <file>Pictures/playMenu/playMenu_oblako_connection_green.jpg</file>
+        <file>Pictures/battleField/BattleFieldCover.png</file>
+        <file>Pictures/playMenu/binocular_gray.png</file>
+        <file>Pictures/playMenu/binocular_ready.png</file>
+        <file>Pictures/playMenu/cloud_blue.png</file>
+        <file>Pictures/playMenu/cloud_gray.png</file>
+        <file>Pictures/playMenu/cloud_green.png</file>
+        <file>Pictures/playMenu/crown_gray.png</file>
+        <file>Pictures/playMenu/crown_ready.png</file>
+        <file>Pictures/playMenu/gears.jpg</file>
+        <file>Pictures/playMenu/gears_gray.png</file>
+        <file>Pictures/playMenu/gears_green.png</file>
+        <file>Pictures/connectionToRoomQuestions/QuestionMark.png</file>
+        <file>Pictures/gameSettingsWidget/AutomaticRuleType.png</file>
+        <file>Pictures/gameSettingsWidget/ClericalErrorsAddon.png</file>
+        <file>Pictures/gameSettingsWidget/DiplomacyTime.png</file>
+        <file>Pictures/gameSettingsWidget/ManualRulesType.png</file>
+        <file>Pictures/gameSettingsWidget/NumberOfPeople.png</file>
+        <file>Pictures/gameSettingsWidget/TimeForOpponentsDecision.png</file>
+        <file>Pictures/gameSettingsWidget/TimeToMove.png</file>
+        <file>Pictures/gameSettingsWidget/TimeToThink.png</file>
+        <file>Pictures/gameSettingsWidget/WildAxeAddon.png</file>
+        <file>Pictures/roomSelectionLobby/CastleForRoomsSelection.jpg</file>
+        <file>Pictures/serverHadClosedConnectionWindow/Closed.png</file>
+        <file>Pictures/serverQueueOversizedWindow/pinguinsQueue.jpg</file>
+        <file>Pictures/treasures_Weapon/Vorpal Blade.jpg</file>
+        <file>Pictures/waitingForOpponentsLobby/BlackCrown.png</file>
+        <file>Pictures/waitingForOpponentsLobby/Crown.png</file>
     </qresource>
 </RCC>

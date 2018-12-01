@@ -61,8 +61,14 @@ Continued 16.07.2018
 
 8) Make this before building protobuf on Windows
 export PATH=/c/Qt/Tools/mingw530_32/bin/:$PATH
+//Home Working Machine
+export PATH=/d/Qt/Tools/mingw530_32/bin/:$PATH
 
 /d/Munchkin/Nayda/Libs/protoc.exe --cpp_out=. serverMessageSystem.proto
+/d/Munchkin/Viluy/Libs/protoc.exe --cpp_out=. serverMessageSystem.proto
+
+//Home Working Machine
+/d/Munchkin/Nayda/Nayda/Libs/protoc.exe --cpp_out=. serverMessageSystem.proto
 /d/Munchkin/Viluy/Libs/protoc.exe --cpp_out=. serverMessageSystem.proto
 
 Continued 17.11.2018

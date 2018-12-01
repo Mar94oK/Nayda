@@ -2,10 +2,11 @@
 #define MUNCHKINGLOBALDEFINES_H
 
 #ifdef Q_OS_WIN
-#undef USE_RESOURCES
+#define USE_RESOURCES
 #elif defined __linux__
 #define USE_RESOURCES
 #endif
+
 
 class GeometricLimitations {
 

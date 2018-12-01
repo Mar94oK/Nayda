@@ -2,7 +2,7 @@
 #include "ui_Before_The_Game.h"
 #include <QDesktopWidget>
 #include <munchkinglobaldefines.h>
-
+#include <QStyle>
 
 
 Before_The_Game::Before_The_Game(QWidget *parent) :

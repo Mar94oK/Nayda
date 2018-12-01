@@ -3,6 +3,7 @@
 #include "munchkinglobaldefines.h"
 #include <QDesktopWidget>
 #include <QDebug>
+#include <QStyle>
 
 RoomCreationWaitingLobby::RoomCreationWaitingLobby(const GameSettings &settings, QWidget *parent) :
     _gameSettings(settings), QWidget(parent),
