@@ -32,7 +32,7 @@
      <item>
       <widget class="QCheckBox" name="chckBox_Selected">
        <property name="text">
-        <string>CheckBox</string>
+        <string/>
        </property>
       </widget>
      </item>
