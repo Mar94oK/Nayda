@@ -44,6 +44,16 @@
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="btn_Trade">
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="text">
+        <string>Торговля</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="btn_fast_action">
        <property name="text">
         <string>Быстрое действие</string>

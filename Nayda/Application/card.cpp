@@ -1935,4 +1935,22 @@ void gameCardTreasureWeapon::setCardID(int cardID)
     _cardID = cardID;
 }
 
+QDebug operator<<(QDebug debug, const SelectableCardMode& dt) {
 
+    switch (dt) {
+    case SelectableCardMode::DiplomacyTrade:
+        debug << "DiplomacyTrade";
+        break;
+    case SelectableCardMode::HandAlignment:
+        debug << "HandAlignment";
+        break;
+    case SelectableCardMode::Theft:
+        debug << "Theft";
+        break;
+    case SelectableCardMode::SellMenu:
+        debug << "SellMenu";
+        break;
+    }
+
+    return debug;
+}

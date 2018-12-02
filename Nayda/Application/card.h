@@ -8,6 +8,8 @@
 #include <vector>
 #include <QPoint>
 #include <QSize>
+#include <iostream>
+#include <QDebug>
 
 /*
  * There are .csv tables of all the cards.
@@ -107,18 +109,31 @@ struct CardsKeysBorders {
 typedef std::pair<bool, unsigned int> SimpleCard;
 
 enum class SelectableCardMode { SellMenu, Theft, HandAlignment, DiplomacyTrade };
+QDebug operator<<(QDebug debug, const SelectableCardMode& dt);
+
+
 
 struct CommonCardViewData
 {
+
+public:
+
     QSize explicitSize;
     QString pictureAddress;
+
 };
 
 struct CardToBeShownInSellMenu: public CommonCardViewData
 {
     uint32_t price;
-};
 
+    CardToBeShownInSellMenu (QSize size, const QString& str, uint32_t pr) :
+        price(pr)
+    {
+        explicitSize = size;
+        pictureAddress = str;
+    }
+};
 
 
 
@@ -916,7 +931,33 @@ struct AllDecksToBePassed
     std::map <int, gameCardTreasureThingsAmplifiers> _thingsAmplifiersDeck;
     std::map <int, gameCardTreasureWeapon> _weaponsDeck;
 
-    AllDecksToBePassed(const std::map <int, gameCardDoorMonster>& monsters, ) :
+    explicit AllDecksToBePassed(const std::map <int, gameCardDoorMonster>& monsters,
+                       const std::map <int, gameCardDoorAmplifier>& amplifiersDoors,
+                       const std::map <int, gameCardDoorCurse>& curses,
+                       const std::map <int, gameCardDoorProfession>& professions,
+                       const std::map <int, gameCardDoorRace>& races,
+                       const std::map <int, gameCardDoorSpecialMechanic>& specialMechanicsDoors,
+
+                       const std::map <int, gameCardTreasureArmor>& armor,
+                       const std::map <int, gameCardTreasureArmorAmplifier>& armorAmplifiers,
+                       const std::map <int, gameCardTreasureBattleAmplifier>& battleAmplifier,
+                       const std::map <int, gameCardTreasureLevelUp>& levelUp,
+                       const std::map <int, gameCardTreasureSpecialMechanic>& specialMechanicsTreasure,
+                       const std::map <int, gameCardTreasureThingsAmplifiers>& thingsAmplifiers,
+                       const std::map <int, gameCardTreasureWeapon>& weapons) :
+        _monstersDeck(monsters),
+        _amplifiersDeck(amplifiersDoors),
+        _cursesDeck(curses),
+        _professionsDeck(professions),
+        _racesDeck(races),
+        _specialMechanicsDeck(specialMechanicsDoors),
+        _armorDeck(armor),
+        _armorAmplifiersDeck(armorAmplifiers),
+        _battleAmplifiersDeck(battleAmplifier),
+        _levelUpDeck(levelUp),
+        _specialMechanicsTreasureDeck(specialMechanicsTreasure),
+        _thingsAmplifiersDeck(thingsAmplifiers),
+        _weaponsDeck(weapons)
     { }
 
 };

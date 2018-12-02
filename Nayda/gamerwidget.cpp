@@ -128,6 +128,11 @@ GamerWidget::GamerWidget(QWidget *parent) :
 
     //connect the Hand with the answer from The_Game Crad check slot;
     connect(this, &GamerWidget::SignalCardIsRejectedToBePlayed, ui->widget, &Hand::SlotCardIsRejectedToBePlayed);
+
+
+    ui->btn_Trade->hide();
+
+    connect(ui->btn_Trade, &QPushButton::pressed, [this]{emit SignalTradeButtonWasPressed();});
 }
 
 GamerWidget::~GamerWidget()
@@ -465,6 +470,17 @@ void GamerWidget::_slotSendTheCardToTheGameCheck(PositionedCard card)
 void GamerWidget::SlotCardIsRejectedToBePlayed(bool rejected)
 {
     emit SignalCardIsRejectedToBePlayed(rejected);
+}
+
+void GamerWidget::SlotHideTradeButton()
+{
+    ui->btn_Trade->hide();
+}
+
+void GamerWidget::SlotShowTradeButton()
+{
+    qDebug() << "NAY-002: Show Trade Button!!!";
+    ui->btn_Trade->show();
 }
 
 

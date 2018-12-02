@@ -15,7 +15,7 @@ class SelectableCardWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit SelectableCardWidget(SelectableCardMode mode, CommonCardViewData data, QWidget *parent = nullptr);
+    explicit SelectableCardWidget(SelectableCardMode mode, CardToBeShownInSellMenu data, QWidget *parent = nullptr);
     ~SelectableCardWidget();
 
 private:
@@ -23,7 +23,19 @@ private:
 
 private:
 
-    CardToBeShownInSellMenu data;
+    CardToBeShownInSellMenu* _dataSellCards;
+
+signals:
+
+    void SignalReportSelected(bool selected);
+
+private slots:
+
+    void SlotReportSelected(bool selected);
+
+private:
+
+    void SetUpSignalsSlotsConnection();
 
 };
 

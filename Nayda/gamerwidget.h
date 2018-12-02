@@ -218,6 +218,20 @@ signals:
 
     void SignalCardIsRejectedToBePlayed(bool);
 
+//SellMenu-Related:
+
+private:
+
+    bool _isSecondaryPlayer = false;
+
+signals:
+
+   void SignalTradeButtonWasPressed();
+
+public slots:
+
+   void SlotHideTradeButton();
+   void SlotShowTradeButton();
 };
 
 #endif // GAMERWIDGET_H

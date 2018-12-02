@@ -2273,6 +2273,10 @@ void The_Game::SetUpSignalSlotsConnections()
     QObject::connect(ui->wdgt_Chart, &MunchkinDialog::SignalSendMessage, this, &The_Game::SlotProcessChartMessageSending);
     QObject::connect(ui->GameField, &battleField::SignalStartUpAnimationCompleted, this, &The_Game::SlotInitialAnimationCompleted);
 
+    connect(ui->MainGamer, &GamerWidget::SignalTradeButtonWasPressed, this, &The_Game::SlotShowTradeMenu);
+
+    connect(this, &The_Game::SignalShowTradeButton, ui->MainGamer, &GamerWidget::SlotShowTradeButton);
+    connect(this, &The_Game::SignalHideTradeButton, ui->MainGamer, &GamerWidget::SlotHideTradeButton);
 }
 
 void The_Game::InitializePopUpWidgets()
@@ -2314,6 +2318,34 @@ void The_Game::PassCardsToWidgets()
     PassDecksToCardsStacksWidget();
 }
 
+void The_Game::SlotShowTradeMenu()
+{
+    QRect HW_Screen_Size = QApplication::desktop()->screenGeometry();
+
+    _sellMenu = new SellMenu(QSize(HW_Screen_Size.width(), HW_Screen_Size.height()), _cardsToBeSelledHolder);
+    _sellMenu->show();
+
+    connect(_sellMenu, &SellMenu::SignalUserClosedTradeMenu, this, &The_Game::SlotHideTradeMenu);
+    connect(_sellMenu, &SellMenu::SignalReportCardsToBeSold, this, &The_Game::SlotProcessCardsSelectedToBeSold);
+
+}
+
+void The_Game::SlotHideTradeMenu()
+{
+    qDebug() << "NAY-002: Closing Trade Menu in The_Game: ";
+    if (_sellMenu != nullptr)
+        _sellMenu->deleteLater();
+}
+
+void The_Game::SlotProcessCardsSelectedToBeSold(const std::vector<SimpleCard> cards)
+{
+    //1. Удалить карты с руки
+    //2. Проверить и убрать в случае необходимости кнопку "Торговля"
+    //3. Добавить уровень//уровни
+    qDebug() << "NAY-002: In the SlotProcessCardsSelectedToBeSold() ";
+    qDebug() << "NAY-002: CardsToBeSold size " << cards.size();
+}
+
 void The_Game::SlotAddPlayedCardToTheBattleField(SimpleCard card)
 {
 
@@ -2343,11 +2375,16 @@ bool The_Game::CheckThePlayerIsAbleToSell(Player player)
     for (uint32_t var = 0; var < sumChecker.size(); ++var)
     {
         totalSumOfAllTheCards += GetCardPrice(sumChecker[var]);
+        if (GetCardPrice(sumChecker[var]))
+            _cardsToBeSelledHolder.push_back(sumChecker[var]);
     }
     qDebug() << "NAY-002: Total Price of all the cards the player has: " << totalSumOfAllTheCards;
 
     if (totalSumOfAllTheCards >= 1000)
+    {
+        emit SignalShowTradeButton();
         return true;
+    }
     return false;
 }
 
@@ -2395,7 +2432,8 @@ uint32_t The_Game::GetCardPrice(SimpleCard card)
     if (_weaponsIterator != _weaponsDeck.end())
         return static_cast<uint32_t>((*_weaponsIterator).second.price());
 
-    throw "NAY-002: Error During CheckCardPrice(). Card Not Found!!!";
+    qDebug() << "NAY-002: Error During CheckCardPrice(). Card Not Found!!!";
+    return 0;
 }
 
 void The_Game::RealGameStart()

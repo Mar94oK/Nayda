@@ -27,6 +27,8 @@
 
 #include "MessagesDefinitions.h"
 
+#include "sellmenu.h"
+
 #define PC_VERSION //begin with PC
 #define DEBUG_MESSAGES //start with debug enabled
 #define DEBUG_NO_SERVER
@@ -454,6 +456,25 @@ private:
 signals:
 
     void SignalTheCardWasPlayed(SimpleCard card);
+
+//Related to SellMenu:
+private:
+
+    SellMenu* _sellMenu = nullptr;
+    std::vector<SimpleCard> _cardsToBeSelledHolder;
+
+signals:
+
+    void SignalShowTradeButton();
+    void SignalHideTradeButton();
+
+
+public slots:
+
+    void SlotShowTradeMenu();
+    void SlotHideTradeMenu();
+    void SlotProcessCardsSelectedToBeSold(const std::vector<SimpleCard> cards);
+
 
 public:
 
