@@ -52,6 +52,6 @@ void SelectableCardWidget::SlotReportSelected(bool selected)
 
 void SelectableCardWidget::SetUpSignalsSlotsConnection()
 {
-    connect(ui->chckBox_Selected, &QCheckBox::pressed,
+    connect(ui->chckBox_Selected, &QCheckBox::stateChanged,
             [this]{SlotReportSelected(ui->chckBox_Selected->isChecked());});
 }

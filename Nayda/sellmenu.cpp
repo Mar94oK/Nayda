@@ -17,7 +17,7 @@ SellMenu::SellMenu(AllDecksToBePassed decksData, QSize mainWindowSize, const std
     _windowSizeHeight = static_cast<uint32_t>(HW_Screen_Size.height());
 
     //Initially Hide "Ok" button
-    ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok);
+    ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->hide();
 
     SetUpSignalsSlotsConnections();
 
@@ -211,6 +211,7 @@ void SellMenu::SlotCardWasSelectedToBeSoldByUser(SimpleCard card, bool selected)
         ui->lbl_CardsToSell->setText(_cardsToSellBaseText + QString::number(_totalCardsToBeSold));
 
         uint32_t cardPrice = GetCardPrice(card);
+        qDebug() << "NAY-002: Card Price " << cardPrice;
         _totalSumOfSelectedCards += cardPrice;
         ui->lbl_Sum->setText(_sumBaseText + QString::number(_totalSumOfSelectedCards));
 
