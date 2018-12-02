@@ -33,6 +33,8 @@ SelectableCardWidget::SelectableCardWidget(SelectableCardMode mode, CardToBeShow
     ui->btn_theCard->setPalette(plte_theCard);
     ui->btn_theCard->setText("");
 
+    ui->btn_theCard->setMinimumSize(data.explicitSize);
+
     ui->chckBox_Selected->setCheckState(Qt::CheckState::Unchecked);
     ui->lbl_Price->setText("Стоимость карты: " + QString::number(data.price));
 
