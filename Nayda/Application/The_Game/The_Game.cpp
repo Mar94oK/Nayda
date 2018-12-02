@@ -2322,7 +2322,25 @@ void The_Game::SlotShowTradeMenu()
 {
     QRect HW_Screen_Size = QApplication::desktop()->screenGeometry();
 
-    _sellMenu = new SellMenu(QSize(HW_Screen_Size.width(), HW_Screen_Size.height()), _cardsToBeSelledHolder);
+    _sellMenu = new SellMenu(AllDecksToBePassed(
+                                 _monstersDeck,
+                                 _amplifiersDeck,
+                                 _cursesDeck,
+                                 _professionsDeck,
+                                 _racesDeck,
+                                 _specialMechanicsDeck,
+
+                                 _armorDeck,
+                                 _armorAmplifiersDeck,
+                                 _battleAmplifiersDeck,
+                                 _levelUpDeck,
+                                 _specialMechanicsTreasureDeck,
+                                 _thingsAmplifiersDeck,
+                                 _weaponsDeck),
+                                QSize(HW_Screen_Size.width(),
+                                      HW_Screen_Size.height()),
+                                _cardsToBeSelledHolder);
+
     _sellMenu->show();
 
     connect(_sellMenu, &SellMenu::SignalUserClosedTradeMenu, this, &The_Game::SlotHideTradeMenu);

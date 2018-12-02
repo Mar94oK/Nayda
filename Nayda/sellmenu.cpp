@@ -5,7 +5,7 @@
 #include <QSize>
 #include <QPushButton>
 
-SellMenu::SellMenu(QSize mainWindowSize, const std::vector<SimpleCard> &data, QWidget *parent) :
+SellMenu::SellMenu(AllDecksToBePassed decksData, QSize mainWindowSize, const std::vector<SimpleCard> &data, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::SellMenu)
 {
@@ -20,6 +20,8 @@ SellMenu::SellMenu(QSize mainWindowSize, const std::vector<SimpleCard> &data, QW
     ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok);
 
     SetUpSignalsSlotsConnections();
+
+    SetDecks(decksData);
 
     for (uint32_t var = 0; var < data.size(); ++var)
     {
@@ -81,6 +83,10 @@ CardToBeSoldCredentials SellMenu::GetCardToBeSoldCredentials(SimpleCard card)
 
     if (!card.first)
         throw "NAY-002: Error During GetCardToBeSoldCredentials(). Doors have no prices!";
+
+    qDebug() << "NAY-002: card.second " << card.second;
+    qDebug() << "NAY-002: card.first " << card.first;
+
 
     _armorIterator = _armorDeck.find(static_cast <int> (card.second));
     if (_armorIterator != _armorDeck.end())
@@ -172,6 +178,21 @@ void SellMenu::SetDecks(const AllDecksToBePassed &data)
     _specialMechanicsTreasureDeck = data._specialMechanicsTreasureDeck;
     _thingsAmplifiersDeck = data._thingsAmplifiersDeck;
     _weaponsDeck = data._weaponsDeck;
+
+    qDebug() << "NAY-002: Decks Sizes: "
+             << _monstersDeck.size()
+             << _amplifiersDeck.size()
+             << _cursesDeck.size()
+             << _professionsDeck.size()
+             << _racesDeck.size()
+             << _specialMechanicsDeck.size()
+             << _armorDeck.size()
+             << _armorAmplifiersDeck.size()
+             << _battleAmplifiersDeck.size()
+             << _levelUpDeck.size()
+             << _specialMechanicsTreasureDeck.size()
+             << _thingsAmplifiersDeck.size()
+             << _weaponsDeck.size();
 }
 
 CardPosition SellMenu::GetCurrentCardPosition()

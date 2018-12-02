@@ -39,7 +39,7 @@ class SellMenu : public QWidget
     Q_OBJECT
 
 public:
-    explicit SellMenu(QSize mainWindowSize, const std::vector<SimpleCard>& data, QWidget *parent = nullptr);
+    explicit SellMenu(AllDecksToBePassed decksData, QSize mainWindowSize, const std::vector<SimpleCard>& data, QWidget *parent = nullptr);
     ~SellMenu();
 
 private:
@@ -57,6 +57,8 @@ private:
     void AddCard(SimpleCard card);
     CardToBeSoldCredentials GetCardToBeSoldCredentials(SimpleCard card);
     uint32_t GetCardPrice(SimpleCard card);
+
+public:
     void SetDecks(const AllDecksToBePassed& data);
 
 //Visualization. The same as in the CardInspector Size.
