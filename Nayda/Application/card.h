@@ -7,6 +7,7 @@
 #include <cardsborderdefines.h>
 #include <vector>
 #include <QPoint>
+#include <QSize>
 
 /*
  * There are .csv tables of all the cards.
@@ -94,6 +95,8 @@ struct CardsKeysBorders {
 };
 
 
+
+
 //class-prototype (draft only)
 //Despite of cards having somekind of the same nature,
 //the Game mechanics can be made much easier to implement if I am not using the cards as childs of prototype
@@ -102,6 +105,22 @@ struct CardsKeysBorders {
 
 //use this as the elements of arrays, controlled by The Game.
 typedef std::pair<bool, unsigned int> SimpleCard;
+
+enum class SelectableCardMode { SellMenu, Theft, HandAlignment, DiplomacyTrade };
+
+struct CommonCardViewData
+{
+    QSize explicitSize;
+    QString pictureAddress;
+};
+
+struct CardToBeShownInSellMenu: public CommonCardViewData
+{
+    uint32_t price;
+};
+
+
+
 
 class PositionedCard
 {
@@ -859,8 +878,6 @@ public:
 
 
 class Game_Card_Stock
-
-
 {
 public:
 
@@ -878,6 +895,29 @@ private:
   int _time_replayed; //how many times were the stock replayed (somekind of a debug info)
 
   std::vector<GameCard> _stock;
+
+};
+
+
+struct AllDecksToBePassed
+{
+    std::map <int, gameCardDoorMonster> _monstersDeck;
+    std::map <int, gameCardDoorAmplifier> _amplifiersDeck;
+    std::map <int, gameCardDoorCurse> _cursesDeck;
+    std::map <int, gameCardDoorProfession> _professionsDeck;
+    std::map <int, gameCardDoorRace> _racesDeck;
+    std::map <int, gameCardDoorSpecialMechanic> _specialMechanicsDeck;
+
+    std::map <int, gameCardTreasureArmor> _armorDeck;
+    std::map <int, gameCardTreasureArmorAmplifier> _armorAmplifiersDeck;
+    std::map <int, gameCardTreasureBattleAmplifier> _battleAmplifiersDeck;
+    std::map <int, gameCardTreasureLevelUp> _levelUpDeck;
+    std::map <int, gameCardTreasureSpecialMechanic> _specialMechanicsTreasureDeck;
+    std::map <int, gameCardTreasureThingsAmplifiers> _thingsAmplifiersDeck;
+    std::map <int, gameCardTreasureWeapon> _weaponsDeck;
+
+    AllDecksToBePassed(const std::map <int, gameCardDoorMonster>& monsters, ) :
+    { }
 
 };
 

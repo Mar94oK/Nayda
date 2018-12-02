@@ -65,7 +65,9 @@ SOURCES += main.cpp\
     serverqueryoversizedwindow.cpp \
     roomselectionlobby.cpp \
     cardinspector.cpp \
-    playersordernotification.cpp
+    playersordernotification.cpp \
+    sellmenu.cpp \
+    selectablecardwidget.cpp
 
 HEADERS  += main_application.h \
     Application/Before_The_Game/Before_The_Game.h \
@@ -103,7 +105,9 @@ HEADERS  += main_application.h \
     serverqueryoversizedwindow.h \
     roomselectionlobby.h \
     cardinspector.h \
-    playersordernotification.h
+    playersordernotification.h \
+    sellmenu.h \
+    selectablecardwidget.h
 
 FORMS    += main_application.ui \
     Application/Before_The_Game/Before_The_Game.ui \
@@ -132,7 +136,9 @@ FORMS    += main_application.ui \
     serverqueryoversizedwindow.ui \
     roomselectionlobby.ui \
     cardinspector.ui \
-    playersordernotification.ui
+    playersordernotification.ui \
+    sellmenu.ui \
+    selectablecardwidget.ui
 
 RESOURCES += \
     tables.qrc \
