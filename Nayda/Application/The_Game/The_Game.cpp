@@ -1770,8 +1770,8 @@ void The_Game::SlotServerReportsTheGameIsAboutToStart(const TheGameIsAboutToStar
     FormingInitialDecks(data.positionsDoors, data.positionsTreasures);
     GivingCardsToPlayers();
     ShowInitialCardsOnHands();
-    showFullScreen();
     ui->GameField->InitializeStartUpProcedureVisualization();
+    showFullScreen();
 }
 
 void The_Game::SlotShowTheRejectedCardMessage(PositionedCard card)

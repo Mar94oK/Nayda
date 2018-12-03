@@ -55,7 +55,7 @@ void SellMenu::AddCard(SimpleCard card)
                                                                                             cardData._price));
     _cardsToBeSoldOut.push_back(selectableCard);
 
-    ui->gridLayout->addWidget(selectableCard,
+    ui->lyt_Cards->addWidget(selectableCard,
                               static_cast<int32_t>(GetCurrentCardPosition().posRow),
                               static_cast<int32_t>(GetCurrentCardPosition().posColumn));
     selectableCard->show();
