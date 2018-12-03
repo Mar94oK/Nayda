@@ -149,8 +149,10 @@ struct TheGameIsAboutToStartData
 
     explicit TheGameIsAboutToStartData(bool strt,
                                        const std::vector<uint32_t>& posDoors,
-                                       const std::vector<uint32_t>& posTreasures) :
-        start(strt), positionsDoors(posDoors), positionsTreasures(posTreasures)
+                                       const std::vector<uint32_t>& posTreasures,
+                                       const std::vector<QString>& plOrder):
+        start(strt), positionsDoors(posDoors), positionsTreasures(posTreasures),
+        playersOrder(plOrder)
     { }
 };
 

@@ -121,7 +121,7 @@ signals:
 
     void SignalProcessServerClientWantedToEnterTheRoomReply(const ServerClientWantedToEnterTheRoomReplyData& data);
 
-    void SignalProcessServerReportsClientIsLeaving(const QString& name);
+    void SignalServerReportsClientIsLeavingRoom(const QString& name);
 
     void SignalProcessServerReportsRoomHasChangedOwner(const QString& previousOwner, const QString& currentOwner);
 

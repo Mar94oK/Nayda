@@ -412,6 +412,35 @@ private:
 
 public slots:
 
+    void SlotClientIsEnteringToRoom(const QString& name)
+    { _playersOrder.push_back(name); }
+
+    void SlotClientIsLeavingTheRoom(const QString& name)
+    {
+        for (uint32_t var = 0; var < _playersOrder.size(); ++var)
+        {
+            if (_playersOrder[var] == name)
+            {
+                qDebug() << "NAY-002: Opponent with name " << name << " is leaving.";
+                _playersOrder.erase(_playersOrder.begin() + var);
+                _playersOrder.shrink_to_fit();
+                return;
+            }
+        }
+        qDebug() << "NAY-002: Error during SlotClientIsLeavingTheRoom(). Client not found!";
+    }
+
+    void SlotProcessServerReportsRoomHasChangedOwner(const QString& previousOwner, const QString& currentOwner);
+
+signals:
+
+    //NAY-002: ADD_LATER
+    //Соединить этот сигнал со всплывающим окном об изменении мастера
+    void SignalRoomHasChangedOwner(const QStringList& previousCurrentNames);
+
+
+public slots:
+
     //Initializing cards and etc
     void SlotGameInitialization(TheGameIsAboutToStartData data);
 

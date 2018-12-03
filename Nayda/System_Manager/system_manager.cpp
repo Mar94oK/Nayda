@@ -35,7 +35,7 @@ SystemManager::SystemManager(Before_The_Game * beforeTheGame,
     QObject::connect(m_serverPtr, &Server::SignalProcessServerRoomChangesInSelectableList, m_beforeTheGamePtr, &Before_The_Game::SlotProcessServerRoomChangesInSelectableList);
     QObject::connect(m_beforeTheGamePtr, &Before_The_Game::SignalProcessClientWantedToEnterTheRoom, m_serverPtr, &Server::SlotSendClientWantedToEnterTheRoom);
     QObject::connect(m_serverPtr, &Server::SignalProcessServerClientWantedToEnterTheRoomReply, m_beforeTheGamePtr, &Before_The_Game::SlotProcessServerClientWantedToEnterTheRoomReply);
-    QObject::connect(m_serverPtr, &Server::SignalProcessServerReportsClientIsLeaving, m_beforeTheGamePtr, &Before_The_Game::SlotProcessServerReportsClientIsLeaving);
+    QObject::connect(m_serverPtr, &Server::SignalServerReportsClientIsLeavingRoom, m_beforeTheGamePtr, &Before_The_Game::SlotProcessServerReportsClientIsLeaving);
     QObject::connect(m_serverPtr, &Server::SignalProcessServerReportsRoomHasChangedOwner, m_beforeTheGamePtr, &Before_The_Game::SlotProcessServerReportsRoomHasChangedOwner);
     QObject::connect(m_serverPtr, &Server::SignalServerReportsTheGameIsAboutToStart, m_beforeTheGamePtr, &Before_The_Game::SlotServerReportsTheGameIsAboutToStart);
 
@@ -50,5 +50,11 @@ SystemManager::SystemManager(Before_The_Game * beforeTheGame,
     //Chart System
     QObject::connect(m_theGamePtr, &The_Game::SignalChartMessageSending, m_serverPtr, &Server::SlotSendChartMessage);
     QObject::connect(m_serverPtr, &Server::SignalChartMessageReceived, m_theGamePtr, &The_Game::SlotProcessChartMessageReceived);
+
+    QObject::connect(m_serverPtr, &Server::SignalServerReportsOpponentIsEnteringRoom, m_theGamePtr, &The_Game::SlotClientIsEnteringToRoom);
+    QObject::connect(m_serverPtr, &Server::SignalServerReportsClientIsLeavingRoom, m_theGamePtr, &The_Game::SlotClientIsLeavingTheRoom);
+    QObject::connect(m_serverPtr, &Server::SignalProcessServerReportsRoomHasChangedOwner, m_theGamePtr, &The_Game::SlotProcessServerReportsRoomHasChangedOwner);
+
+
 
 }

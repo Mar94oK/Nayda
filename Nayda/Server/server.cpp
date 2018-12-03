@@ -730,7 +730,7 @@ void Server::ProcessServerReportsClientIsLeaving(const QByteArray &data, int soc
     qDebug() << "NAY-001: ProcessServerReportsClientIsLeaving() ClientName: " << QString::fromStdString(message.clientname());
     qDebug() << "NAY-001: ProcessServerReportsClientIsLeaving() SocketDescriptor: " << QString::number(message.socketdescriptor());
 
-    emit SignalProcessServerReportsClientIsLeaving(QString::fromStdString(message.clientname()));
+    emit SignalServerReportsClientIsLeavingRoom(QString::fromStdString(message.clientname()));
 
 }
 
@@ -777,9 +777,17 @@ void Server::ProcessServerReportsTheGameIsAboutToStart(const QByteArray &data, i
         qDebug() << QString::number(message.postreasures(var));
     }
 
+    std::vector<QString> players;
+    for (uint32_t var = 0; var < message.playersorder_size(); ++var)
+    {
+        players.push_back(QString::fromStdString(message.playersorder(var)));
+        qDebug() << QString::fromStdString(message.playersorder(var));
+    }
+
     emit SignalServerReportsTheGameIsAboutToStart(TheGameIsAboutToStartData(message.start(),
                                                   positionsDoors,
-                                                  positionsTreasures));
+                                                  positionsTreasures,
+                                                  players));
 }
 
 

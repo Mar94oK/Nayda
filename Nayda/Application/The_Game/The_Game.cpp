@@ -1755,6 +1755,9 @@ void The_Game::SlotServerReportsTheGameIsAboutToStart(const TheGameIsAboutToStar
 {
     //Set Players Order;
     _playersOrder = data.playersOrder;
+    //Save own property also...
+
+
     qDebug() << "NAY-001: Checking playersOrder";
     qDebug() << "NAY-001: Master's name: " << data.playersOrder[0];
     for (uint32_t var = 1; var < data.playersOrder.size(); ++var)
@@ -1766,6 +1769,12 @@ void The_Game::SlotServerReportsTheGameIsAboutToStart(const TheGameIsAboutToStar
         throw "Bad playersOrder passed to The_Game!";
 
     ui->GameField->setPlayersOrder(_playersOrder);
+
+
+    QRect HW_Screen_Size = QApplication::desktop()->screenGeometry();
+    uint32_t HW_Screen_Size_Width = HW_Screen_Size.width();
+    uint32_t HW_Screen_Size_Heigh = HW_Screen_Size.height();
+    RedrawGUIAccordingToCurrentSettings(HW_Screen_Size_Heigh, HW_Screen_Size_Width);
 
     FormingInitialDecks(data.positionsDoors, data.positionsTreasures);
     GivingCardsToPlayers();
@@ -1959,6 +1968,32 @@ GameSettings The_Game::gameSettings() const
 void The_Game::setGameSettings(const GameSettings &gameSettings)
 {
     _gameSettings = gameSettings;
+}
+
+void The_Game::SlotProcessServerReportsRoomHasChangedOwner(const QString &previousOwner, const QString &currentOwner)
+{
+    //Если игра уже в процессе, удалить игрока из игры!
+    for (uint32_t var = 0; var < _playersOrder.size(); ++var)
+    {
+        if (_playersOrder[var] == previousOwner)
+        {
+            qDebug() << "NAY-002 : SlotProcessServerReportsRoomHasChangedOwner() Remove Player from order! (FOR FUTHER PROCESSING!) " << previousOwner;
+            _playersOrder.erase(_playersOrder.begin() + var);
+            _playersOrder.shrink_to_fit();
+            //С этого момента игра начнёт просто пропускать его ходы
+
+            if (_playersOrder[0] != currentOwner)
+            {
+                qDebug() << "NAY-002 : Error while SlotProcessServerReportsRoomHasChangedOwner(). Current owner not equal to the one it should be."
+                            "Check Logic!";
+            }
+            emit SignalRoomHasChangedOwner(QStringList{previousOwner, currentOwner});
+            return;
+        }
+        qDebug() << "NAY-002: Error while SlotProcessServerReportsRoomHasChangedOwner() Previous Master Not found! "
+                 << "Previous owner: " << previousOwner
+                 << "Current owner: " << currentOwner;
+    }
 }
 
 void The_Game::SlotGameInitialization(TheGameIsAboutToStartData data)
