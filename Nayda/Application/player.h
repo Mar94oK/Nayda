@@ -56,7 +56,9 @@ class Player
 
 public:
 
-    Player();
+    explicit Player(const QString& player) :
+        _name(player)
+    { }
 
     void addRaceActiveAbility(Race_Active_Abilities raceActiveAbility, Abilities_Keys_Races raceAbilityKey);
     void addRacePassiveAbility(Race_Passive_Abilities racePassiveAbility, Abilities_Keys_Races raceAbilityKey);

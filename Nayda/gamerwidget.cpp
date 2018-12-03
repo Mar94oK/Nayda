@@ -20,6 +20,7 @@ GamerWidget::GamerWidget(QWidget *parent) :
     ui->lbl_halfblood->hide();
     ui->btn_class_2->hide();
     ui->lbl_supermunchkin->hide();
+    ui->btn_Master->hide();
 
     //setup the "card"-race and "card"-class size
     ui->btn_race_1->setMaximumWidth(_race_class_btn_size_width*HW_Screen_Size_Width);
@@ -142,12 +143,12 @@ GamerWidget::~GamerWidget()
 
 bool GamerWidget::is_MainPlayer() const
 {
-    return _is_MainPlayer;
+    return _isMainPlayer;
 }
 
 void GamerWidget::setIs_MainPlayer(bool is_MainPlayer)
 {
-    _is_MainPlayer = is_MainPlayer;
+    _isMainPlayer = is_MainPlayer;
 }
 
 void GamerWidget::redraw_as_a_secondary_player()
@@ -225,6 +226,11 @@ void GamerWidget::setThingsAmplifiersDeck(const std::map<int, gameCardTreasureTh
 void GamerWidget::setWeaponsDeck(const std::map<int, gameCardTreasureWeapon> *weaponsDeck)
 {
     _weaponsDeck = weaponsDeck;
+}
+
+void GamerWidget::SetIsRoomMaster()
+{
+    ui->btn_Master->show();
 }
 
 void GamerWidget::passCardsDecksToHandsWidget()

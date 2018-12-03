@@ -294,8 +294,19 @@ void Before_The_Game::SlotProcessServerClientWantedToEnterTheRoomReply(const Ser
 void Before_The_Game::SlotServerReportsTheGameIsAboutToStart(const TheGameIsAboutToStartData &data)
 {
     //Before starting the game, set this data!
-    TheGameIsAboutToStartData addedData = data;
-    addedData.playersOrder = _roomCreationWaitingLobby->GetPlayersOrder();
+    //TheGameIsAboutToStartData addedData = data;
+    //addedData.playersOrder = _roomCreationWaitingLobby->GetPlayersOrder();
+    if(_roomCreationWaitingLobby != nullptr)
+    {
+        QObject::disconnect(_roomCreationWaitingLobby, &RoomCreationWaitingLobby::SignalUserIsClosingRoomCreationLobby, newRoomDialog, &playMenu::show);
+        QObject::disconnect(_roomCreationWaitingLobby, &RoomCreationWaitingLobby::SignalUserIsClosingRoomCreationLobby, this, &Before_The_Game::SlotAbortingConnectionByUserInitiative);
+        QObject::disconnect(_roomCreationWaitingLobby, &RoomCreationWaitingLobby::SignalChartMessageToBeSend, this, &Before_The_Game::SlotProcessChartMessageSending);
+
+        _roomCreationWaitingLobby->close();
+        _roomCreationWaitingLobby->deleteLater();
+
+    }
+
     emit SignalServerReportsTheGameIsAboutToStart(data);
 }
 

@@ -239,17 +239,6 @@ public:
     std::vector<SimpleCard> _treasuresFold;
     std::vector<SimpleCard> _doorsFold;
 
-    //this process is responsible for giving cards to players, setting the Four Decks.
-    //in the Debug Version the Game Holds controll on each and every card Stack Action;
-    //remember to place prototypes for server-based functionality in all such places (where Cards Stack Action Takes place)
-    //first, make the as commented strings, to provide funtionality further...
-
-    //void initialCardsProcess();
-
-    //This process should take place on the Server Side.
-    //Instead of forming an exact array of digits here, the Server should pass them one-by-one on clients requests..
-    //But for now, in Debug version, the procedure is executed on the clients' side.
-
     //SERVREW
     void DEBUGformingInitialDecks();
 
@@ -290,16 +279,18 @@ private:
     //special option will allow to be more than 5 opponents
     std::vector <GamerWidget*> _widgets4Opponents; //make as controlled unique_ptr;
 
-    Player _mainPlayer; // In common case might not be the ROOM Master.
+    Player* _mainPlayer; // In common case might not be the ROOM Master.
     //This entity is responsible only for the mainWidget Selection.
 
-    Player _opponent0;
-    Player _opponent1;
-    Player _opponent2;
-    Player _opponent3;
-    Player _opponent4;
+    bool _isRoomMaster = false;
+    void SetIsRoomMaster(bool master);
+    bool GetIsRoomMaster() { return _isRoomMaster; }
+    bool CheckIsMainPlayerTheRoomMaster(const QString& master)
+    {return _mainPlayer->name() == master; }
 
-    std::vector <Player> _playersOpponents; //5 at all - Maximum according to current settings.
+    QString _roomMasterName;
+
+    std::vector <Player*> _playersOpponents; //5 at all - Maximum according to current settings.
 
     std::vector <QString> _playersOrder; //The first one in this list is an actual MASTER!
     //This entity is expected to be initialized before any action.
@@ -454,8 +445,8 @@ private:
     void FormingInitialDecks(const std::vector<uint32_t>& doorsVector,
                              const std::vector<uint32_t>& treasuresVector);
 
-    void RedrawGUIAccordingToCurrentSettings(uint32_t windowHeight, uint32_t windowWidth);
-    void SetUpOpponents(uint32_t windowHeight, uint32_t windowWidth);
+    void SetUpPlayersAndWidgets(uint32_t windowHeight, uint32_t windowWidth, const std::vector<QString>& playersNames);
+    void SetUpOpponents(uint32_t windowHeight, uint32_t windowWidth, const std::vector<QString>& opponents);
     void SetUpWidgetsProperties(uint32_t windowHeight, uint32_t windowWidth);
     void MainParser();
 
@@ -519,7 +510,7 @@ private:
 
 private:
 
-    bool CheckThePlayerIsAbleToSell(Player player);
+    bool CheckThePlayerIsAbleToSell(Player *player);
     uint32_t GetCardPrice(SimpleCard card);
 
 

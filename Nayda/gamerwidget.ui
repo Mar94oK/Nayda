@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>829</width>
+    <width>835</width>
     <height>422</height>
    </rect>
   </property>
@@ -81,11 +81,25 @@
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>Аватарка</string>
-         </property>
-        </widget>
+        <layout class="QVBoxLayout" name="lyt_Avatar">
+         <item>
+          <widget class="QPushButton" name="btn_Master">
+           <property name="text">
+            <string>Мастер</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>Аватарка</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item>
         <widget class="QLabel" name="lbl_Level">

@@ -34,7 +34,7 @@ The_Game::The_Game(QWidget *parent) :
 
     //2. GUI Adjustment
     SetUpWidgetsProperties(HW_Screen_Size_Heigh, HW_Screen_Size_Width);
-    RedrawGUIAccordingToCurrentSettings(HW_Screen_Size_Heigh, HW_Screen_Size_Width);
+    //SetUpPlayersAndWidgets(HW_Screen_Size_Heigh, HW_Screen_Size_Width);
 
     //3. Parse cards
     MainParser();
@@ -1497,7 +1497,7 @@ void The_Game::GivingCardsToPlayers()
 
     for (unsigned int var = 0; var < cardsToGive; ++var) {
 
-        _mainPlayer.addCardToHands(_doorsDeck.front());
+        _mainPlayer->addCardToHands(_doorsDeck.front());
         _doorsDeck.erase(_doorsDeck.begin());
     }
 
@@ -1507,7 +1507,7 @@ void The_Game::GivingCardsToPlayers()
 
         for (uint32_t j = 0; j < cardsToGive; ++j ) {
 
-            _playersOpponents[var].addCardToHands(_doorsDeck.front());
+            _playersOpponents[var]->addCardToHands(_doorsDeck.front());
             _doorsDeck.erase(_doorsDeck.begin());
         }
     }
@@ -1518,7 +1518,7 @@ void The_Game::GivingCardsToPlayers()
     //treasures..
     for (uint32_t var = 0; var < cardsToGive; ++var)
     {
-        _mainPlayer.addCardToHands(_treasuresDeck.front());
+        _mainPlayer->addCardToHands(_treasuresDeck.front());
         _treasuresDeck.erase(_treasuresDeck.begin());
     }
 
@@ -1527,7 +1527,7 @@ void The_Game::GivingCardsToPlayers()
 
         for (unsigned int j = 0; j < cardsToGive; ++j ) {
 
-            _playersOpponents[var].addCardToHands(_treasuresDeck.front());
+            _playersOpponents[var]->addCardToHands(_treasuresDeck.front());
             _treasuresDeck.erase(_treasuresDeck.begin());
         }
     }
@@ -1540,17 +1540,17 @@ void The_Game::GivingCardsToPlayers()
 void The_Game::ShowInitialCardsOnHands()
 {
     qDebug() << "showInitialCardsOnHands:: Started";
-    for (unsigned int var = 0; var < _mainPlayer.cardsOnHandsVector()->size(); ++var)
+    for (unsigned int var = 0; var < _mainPlayer->cardsOnHandsVector()->size(); ++var)
     {
-        ui->MainGamer->addTheCardToHandsWidget(*((_mainPlayer.cardsOnHandsVector())->begin() + static_cast<int>(var)));
+        ui->MainGamer->addTheCardToHandsWidget(*((_mainPlayer->cardsOnHandsVector())->begin() + static_cast<int>(var)));
     }
 
     for (unsigned int var = 0; var < _playersOpponents.size(); ++var)
     {
-        unsigned int totalCardsToShow = (_playersOpponents[var].cardsOnHandsVector())->size();
+        unsigned int totalCardsToShow = (_playersOpponents[var]->cardsOnHandsVector())->size();
         for (unsigned int j = 0; j < totalCardsToShow; ++j)
         {
-            _widgets4Opponents[var]->addTheCardToHandsWidget(*((_playersOpponents[var].cardsOnHandsVector())->begin() + static_cast<int>(j)));
+            _widgets4Opponents[var]->addTheCardToHandsWidget(*((_playersOpponents[var]->cardsOnHandsVector())->begin() + static_cast<int>(j)));
         }
     }
     qDebug() << "showInitialCardsOnHands:: Completed";
@@ -1656,6 +1656,9 @@ void The_Game::DEBUG_SlotWasPushedToGameMode()
     if (_gameSettings.maximumNumberOfPlayers() != 2)
         throw "DEBUG ERROR! _gameSettings.maximumNumberOfPlayers() != 2";
 
+    //Set Up Players And Widgets
+    QRect HW_Screen_Size = QApplication::desktop()->screenGeometry();
+    SetUpPlayersAndWidgets(HW_Screen_Size.height(), HW_Screen_Size.width(), _playersOrder);
     ui->GameField->setPlayersOrder(_playersOrder);
 
     DEBUGformingInitialDecks();
@@ -1703,6 +1706,13 @@ void The_Game::SlotHideTheCardInCentre(bool)
 {
     _popUpCardWidget->hideAnimation();
     _cardPointer->hideAnimation();
+}
+
+void The_Game::SetIsRoomMaster(bool master)
+{
+    _isRoomMaster = master;
+    if (master)
+        ui->MainGamer->SetIsRoomMaster();
 }
 
 GamePhase The_Game::GetCurrentGamePhase() const
@@ -1755,27 +1765,31 @@ void The_Game::SlotServerReportsTheGameIsAboutToStart(const TheGameIsAboutToStar
 {
     //Set Players Order;
     _playersOrder = data.playersOrder;
-    //Save own property also...
-
 
     qDebug() << "NAY-001: Checking playersOrder";
-    qDebug() << "NAY-001: Master's name: " << data.playersOrder[0];
-    for (uint32_t var = 1; var < data.playersOrder.size(); ++var)
+    if (!data.playersOrder.size())
     {
-        qDebug() << "NAY-001: " << data.playersOrder[var];
+        qDebug() << "NAY-002: ERROR: No players given in SlotServerReportsTheGameIsAboutToStart(). "
+                    "Game will not start!" ;
+        return;
     }
+    qDebug() << "NAY-002: Checking playersOrder Successfull!";
 
-    if (data.playersOrder.empty())
-        throw "Bad playersOrder passed to The_Game!";
+    for (uint32_t var = 1; var < data.playersOrder.size(); ++var)
+        qDebug() << "NAY-001: cleint # " << var << " " << data.playersOrder[var];
 
+    //Set Up Players And Widgets
+    QRect HW_Screen_Size = QApplication::desktop()->screenGeometry();
+    SetUpPlayersAndWidgets(HW_Screen_Size.height(), HW_Screen_Size.width(), data.playersOrder);
+
+    //Set players order for battlefield
     ui->GameField->setPlayersOrder(_playersOrder);
 
-
-    QRect HW_Screen_Size = QApplication::desktop()->screenGeometry();
-    uint32_t HW_Screen_Size_Width = HW_Screen_Size.width();
-    uint32_t HW_Screen_Size_Heigh = HW_Screen_Size.height();
-    RedrawGUIAccordingToCurrentSettings(HW_Screen_Size_Heigh, HW_Screen_Size_Width);
-
+    //Form initial decks
+    //NAY-002: REWORK
+    //Переделать формирование колод, так, чтобы каждый клиент получал свои карты.
+    //И тот, кто НЕ мастер получал свои.
+    //Т.е. выдавать в порядке очереди. :)
     FormingInitialDecks(data.positionsDoors, data.positionsTreasures);
     GivingCardsToPlayers();
     ShowInitialCardsOnHands();
@@ -2070,47 +2084,44 @@ void The_Game::FormingInitialDecks(const std::vector<uint32_t> &doorsVector, con
 
 }
 
-void The_Game::RedrawGUIAccordingToCurrentSettings(uint32_t windowHeight, uint32_t windowWidth)
-{
-    //Hide absent players;
-    qDebug() << "NAY-001: GameSettings: Total Players: " << _gameSettings.maximumNumberOfPlayers();
-    //There should be opponents: N = MaximumNumberOFPLayers - 1;
-    SetUpOpponents(windowHeight, windowWidth);
-}
-
-
-void The_Game::SetUpOpponents(uint32_t windowHeight, uint32_t windowWidth)
+void The_Game::SetUpPlayersAndWidgets(uint32_t windowHeight, uint32_t windowWidth, const std::vector<QString> &playersNames)
 {
     uint32_t totalOpponents = _gameSettings.maximumNumberOfPlayers() - 1;
+    qDebug() << "Total opponnets from settings: " << totalOpponents;
+    qDebug() << "Total opponents given by SetUp Opponents: " << playersNames.size();
 
-    qDebug() << "Total opponnets: " << totalOpponents;
+    _mainPlayer = new Player(_gameSettings.clientName());
+    _roomMasterName = _playersOrder[0];
+    SetIsRoomMaster(CheckIsMainPlayerTheRoomMaster(_playersOrder[0]));
+    qDebug() << "NAY-001: Master's name: " << playersNames[0];
+    //Set Players name:
 
-    switch (totalOpponents)
+    if (totalOpponents != playersNames.size())
+        qDebug() << "ERROR while The_Game::SetUpOpponents(): Total opponents from settings"
+                    "and given by server differs!";
+
+    //Один из них может быть мастером!
+    for (uint32_t var = 0; var < playersNames.size(); ++var)
     {
-    case 5:
-        _playersOpponents.push_back(_opponent4);
-    case 4:
-        _playersOpponents.push_back(_opponent3);
-    case 3:
-        _playersOpponents.push_back(_opponent2);
-    case 2:
-        _playersOpponents.push_back(_opponent1);
-    case 1:
-        _playersOpponents.push_back(_opponent0);
-        break;
-    default:
-        qDebug() << "Unsupported number of players! : " << totalOpponents;
-        throw "Bad number of players. Unsupported!";
-        break;
+        if (_gameSettings.clientName() != playersNames[var])
+        {
+            Player* currentPlayer = new Player (playersNames[var]);
+            _playersOpponents.push_back(currentPlayer);
+        }
     }
 
-
     //widgets for them
-    for (uint32_t var = 0; var < totalOpponents; var++)
+    for (uint32_t var = 0; var < playersNames.size(); var++)
     {
-        _widgets4Opponents.push_back(new GamerWidget);
-        _widgets4Opponents.back()->redraw_as_a_secondary_player();
-        _widgets4Opponents.back()->setIs_MainPlayer(false);
+
+       if (_gameSettings.clientName() != playersNames[var])
+       {
+            _widgets4Opponents.push_back(new GamerWidget);
+            _widgets4Opponents.back()->redraw_as_a_secondary_player();
+            _widgets4Opponents.back()->setIs_MainPlayer(false);
+            if (playersNames[var] == _roomMasterName)
+                _widgets4Opponents.back()->SetIsRoomMaster();
+       }
 
     }
     //first two of them to the top layout
@@ -2193,11 +2204,13 @@ void The_Game::SetUpWidgetsProperties(uint32_t windowHeight, uint32_t windowWidt
     ui->wdgt_Chart->setMinimumWidth(koeff_GameTimers_size_Width*windowWidth);
     ui->wdgt_Chart->setMaximumWidth(koeff_GameTimers_size_Width*windowWidth);
 
-//    ui->GameInfoBox->setMinimumHeight(koeff_GameInfoBox_size_Height*windowHeight);
-//    ui->GameInfoBox->setMaximumHeight(koeff_GameInfoBox_size_Height*windowHeight);
+}
 
-//    ui->GameInfoBox->setMinimumWidth(koeff_GameInfoBox_size_Width*windowWidth);
-    //    ui->GameInfoBox->setMaximumWidth(koeff_GameInfoBox_size_Width*windowWidth);
+
+void The_Game::SetUpOpponents(uint32_t windowHeight, uint32_t windowWidth, const std::vector<QString>& opponents)
+{
+
+
 }
 
 void The_Game::MainParser()
@@ -2404,12 +2417,12 @@ void The_Game::SlotAddPlayedCardToTheBattleField(SimpleCard card)
 
 }
 
-bool The_Game::CheckThePlayerIsAbleToSell(Player player)
+bool The_Game::CheckThePlayerIsAbleToSell(Player* player)
 {
     qDebug() <<"NAY-002: Entering AbleToSell Checker";
     std::vector<SimpleCard> sumChecker;
-    std::vector<SimpleCard> cardsOnHands = player.GetCardsOnHands();
-    std::vector<SimpleCard> cardsInGame = player.GetCardsInGame();
+    std::vector<SimpleCard> cardsOnHands = player->GetCardsOnHands();
+    std::vector<SimpleCard> cardsInGame = player->GetCardsInGame();
 
 
     for (uint32_t var = 0; var < cardsOnHands.size(); ++var)

@@ -45,7 +45,12 @@ public:
 private:
 
     Ui::GamerWidget *ui;
-    bool _is_MainPlayer;
+    bool _isMainPlayer;
+    bool _isRoomMaster;
+
+public:
+
+    void SetIsRoomMaster();
 
     const std::map<int, gameCardDoorMonster> *_monstersDeck;
     const std::map<int, gameCardDoorAmplifier> *_amplifiersDeck;
