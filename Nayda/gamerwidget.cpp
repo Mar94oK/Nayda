@@ -253,6 +253,10 @@ void GamerWidget::passCardsDecksToHandsWidget()
 
 void GamerWidget::addTheCardToHandsWidget(SimpleCard card)
 {
+
+    qDebug() << "NAY-002: IsMainPlayer: " << is_MainPlayer();
+    qDebug() << "";
+
     ui->widget->addNewCardToHands(card);
     _cardsOnHandsGamerWidgetProperty.push_back(card);
 

@@ -42,7 +42,7 @@ The_Game::The_Game(QWidget *parent) :
     // NAY-001: MARK_EXPECTED_IMPROVEMENT
     //Here I should implement selection of the selected cards by the user.
     //4. Pass cards to widgets to display
-    PassCardsToWidgets();
+
 
     //Алгоритм на будущее (когда настройки дополнений действительно будут работать)
     //Игра получает от Предыгры настройки
@@ -1545,12 +1545,15 @@ void The_Game::ShowInitialCardsOnHands()
         ui->MainGamer->addTheCardToHandsWidget(*((_mainPlayer->cardsOnHandsVector())->begin() + static_cast<int>(var)));
     }
 
+    qDebug() << "NAY-002: _playersOpponents.size(): " << _playersOpponents.size();
+
     for (unsigned int var = 0; var < _playersOpponents.size(); ++var)
     {
-        unsigned int totalCardsToShow = (_playersOpponents[var]->cardsOnHandsVector())->size();
-        for (unsigned int j = 0; j < totalCardsToShow; ++j)
-        {
-            _widgets4Opponents[var]->addTheCardToHandsWidget(*((_playersOpponents[var]->cardsOnHandsVector())->begin() + static_cast<int>(j)));
+        unsigned int totalCardsToShow = _playersOpponents[var]->GetCardsOnHands().size();
+        std::vector<SimpleCard> cardsOnHands = _playersOpponents[var]->GetCardsOnHands();
+        for (unsigned int j = 0; j < cardsOnHands.size(); ++j)
+        {            
+            _widgets4Opponents[var]->addTheCardToHandsWidget(cardsOnHands[j]);
         }
     }
     qDebug() << "showInitialCardsOnHands:: Completed";
@@ -1659,6 +1662,7 @@ void The_Game::DEBUG_SlotWasPushedToGameMode()
     //Set Up Players And Widgets
     QRect HW_Screen_Size = QApplication::desktop()->screenGeometry();
     SetUpPlayersAndWidgets(HW_Screen_Size.height(), HW_Screen_Size.width(), _playersOrder);
+    PassCardsToWidgets();
     ui->GameField->setPlayersOrder(_playersOrder);
 
     DEBUGformingInitialDecks();
@@ -1781,6 +1785,7 @@ void The_Game::SlotServerReportsTheGameIsAboutToStart(const TheGameIsAboutToStar
     //Set Up Players And Widgets
     QRect HW_Screen_Size = QApplication::desktop()->screenGeometry();
     SetUpPlayersAndWidgets(HW_Screen_Size.height(), HW_Screen_Size.width(), data.playersOrder);
+    PassCardsToWidgets();
 
     //Set players order for battlefield
     ui->GameField->setPlayersOrder(_playersOrder);
@@ -2130,19 +2135,10 @@ void The_Game::SetUpPlayersAndWidgets(uint32_t windowHeight, uint32_t windowWidt
     //other three on the left side.
     //For debug there should be only 1 of opponents;
 
-    switch (totalOpponents)
+    for (uint32_t var = 0; var < _widgets4Opponents.size(); ++var)
     {
-        case 2:
-            ui->top_opponents_layout->addWidget(_widgets4Opponents[1]);
-        case 1:
-            ui->top_opponents_layout->addWidget(_widgets4Opponents[0]);
-        break;
-
-    default:
-        qDebug() << "NAY-001: Go further, adding widgets to the right layout.";
-
+        ui->top_opponents_layout->addWidget(_widgets4Opponents[var]);
     }
-
     //if there is(are) some other players, add them to the right_side layout
     if (totalOpponents > 2)
     {
