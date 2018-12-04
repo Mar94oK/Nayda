@@ -2410,6 +2410,12 @@ void The_Game::SlotProcessCardsSelectedToBeSold(const std::vector<SimpleCard> ca
 
     //1.1. Для этого сначала получить их позиции
     std::vector<PositionedCard> posCards = GetPositionedCards(cards);
+    for (uint32_t var = 0; var < posCards.size(); ++var)
+    {
+        qDebug() << "NAY-002: PosCard id " << posCards[var].GetCard().second
+                 << " pos top left: " << posCards[var].GetPositionTopLeft()
+                 << " pos bottom right: " << posCards[var].GetPositionBottomRight();
+    }
 }
 
 std::vector<PositionedCard> The_Game::GetPositionedCards(const std::vector<SimpleCard> &cards)
