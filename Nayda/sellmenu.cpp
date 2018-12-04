@@ -28,6 +28,12 @@ SellMenu::SellMenu(AllDecksToBePassed decksData, QSize mainWindowSize, const std
         AddCard(data[var]);
     }
 
+    SetFontAndAlignment(ui->lbl_Name);
+    SetFontAndAlignment(ui->lbl_Sum);
+    SetFontAndAlignment(ui->lbl_CardsToSell);
+
+
+
 }
 
 SellMenu::~SellMenu()
@@ -250,6 +256,8 @@ void SellMenu::SetUpSignalsSlotsConnections()
 {
     connect(ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok), &QPushButton::pressed,
             [this]{emit SignalReportCardsToBeSold(_cardsToBeSold);});
+    connect(ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok), &QPushButton::pressed,
+            this, &SellMenu::close);
 
     connect(ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel), &QPushButton::pressed,
             [this]{emit SignalUserClosedTradeMenu();});
@@ -259,4 +267,12 @@ void SellMenu::SetUpSignalsSlotsConnections()
 void SellMenu::closeEvent(QCloseEvent *event)
 {
     emit SignalUserClosedTradeMenu();
+}
+
+void SellMenu::SetFontAndAlignment(QLabel *lbl)
+{
+    QFont        _startUpTimerTextLabelFont ("times", 35);
+    QFontMetrics _startUpTimerTextLabelFontInterval (_startUpTimerTextLabelFont);
+    lbl->setFont(_startUpTimerTextLabelFont);
+    lbl->setAlignment(Qt::AlignHCenter);
 }

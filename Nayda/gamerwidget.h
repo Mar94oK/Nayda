@@ -209,7 +209,7 @@ signals:
 
 public slots:
 
-    void _slotSendTheCardToTheGameCheck(PositionedCard card);
+    void SlotSendTheCardToTheGameCheck(PositionedCard card);
 
 signals:
 
@@ -237,6 +237,20 @@ public slots:
 
    void SlotHideTradeButton();
    void SlotShowTradeButton();
+
+signals:
+
+   void SignalReportPostionedCard(PositionedCard card);
+   void SignalGetPositionedCard(SimpleCard card);
+
+public slots:
+
+   void SlotGetPositionedCard (SimpleCard card)
+    { emit SignalGetPositionedCard(card); }
+
+public:
+
+   std::vector<PositionedCard> GetPositionedCards(const std::vector<SimpleCard> cards);
 };
 
 #endif // GAMERWIDGET_H

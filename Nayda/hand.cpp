@@ -42,7 +42,7 @@ Hand::Hand(QWidget *parent) :
     //connect timeout issue
     connect(_showCardsTimer, &QTimer::timeout, this, &Hand::SlotShowTheCardInCentreSlot);
 //    connect(_showCardsTimer, &QTimer::timeout ,this, &Hand::_showTheCardNearItsPositionSlot);
-    connect(this, &Hand::_cardIsPreparedToBePlayed, this, &Hand::_slotCardIsPreparedToBePlayedFromHand);
+    connect(this, &Hand::SignalCardIsPreparedToBePlayed, this, &Hand::SlotCardIsPreparedToBePlayedFromHand);
 //    qDebug() << "The Size Of Cards On Hands, Height: " << size().height();
 
 #ifdef __linux__
@@ -336,7 +336,7 @@ bool Hand::eventFilter(QObject *o, QEvent *e)
             else if (e->type() == QEvent::MouseButtonPress) {
 
                 qDebug() << "Button Pressed " << var;
-                emit _cardIsPreparedToBePlayed(var);
+                emit SignalCardIsPreparedToBePlayed(var);
                 emit SignalHideTheCard(true);
 
             }
@@ -348,7 +348,7 @@ bool Hand::eventFilter(QObject *o, QEvent *e)
     return QWidget::eventFilter(o, e);
 }
 
-void Hand::_slotCardIsPreparedToBePlayedFromHand(unsigned int cardId)
+void Hand::SlotCardIsPreparedToBePlayedFromHand(unsigned int cardId)
 {
     //this is not work.
     //size().setHeight(size().height() + movingUpCardDelta *2);
@@ -375,7 +375,7 @@ void Hand::_slotCardIsPreparedToBePlayedFromHand(unsigned int cardId)
             QPoint currPos = _cardsVector[cardId]->pos();
             _cardsVector[cardId]->move(currPos.x(), currPos.y() + movingUpCardDelta);
             _cardIsReadyToBePlayed.thereIsCardToBePulledDown = false;
-            emit _cardIsSendedToTheGameCheck(cardToBeSendForTheCheck);
+            emit SignalCardIsSendedToTheGameCheck(cardToBeSendForTheCheck);
         }
         else {
             //returning the previous card to previous position!
@@ -424,7 +424,8 @@ void Hand::RemoveCardFromHand(SimpleCard card)
     for (unsigned int var = 0; var < _cardsOnHandsHandsWidgetProperty.size(); ++var) {
 
         if (((_cardsOnHandsHandsWidgetProperty[var]).first == card.first)
-                && ((_cardsOnHandsHandsWidgetProperty[var]).second == card.second)) {
+                && ((_cardsOnHandsHandsWidgetProperty[var]).second == card.second))
+        {
 
             qDebug() << "The Card with ID: " << _cardsOnHandsHandsWidgetProperty[var].first << ";"
                      << _cardsOnHandsHandsWidgetProperty[var].second
@@ -439,4 +440,40 @@ void Hand::RemoveCardFromHand(SimpleCard card)
     _cardsVector.erase(_cardsVector.begin() + position);
     _cardsVector.shrink_to_fit();
     qDebug() << "The card is removed from Hands!" ;
+}
+
+PositionedCard Hand::GetCardPosition(SimpleCard card)
+{
+    //Define whether ther'es such card in the hand.
+    for (uint32_t var = 0; var < _cardsOnHandsHandsWidgetProperty.size(); ++var)
+    {
+        if (_cardsOnHandsHandsWidgetProperty[var] == card)
+        {
+            PositionedCard posCard;
+            posCard.SetSimpleCard(card);
+            //Они добавляются в вектор карт точно в таком же порядке, их ID должны свопадать
+            //Им может служить в общем случае индекс массива
+
+            posCard.SetPositionTopLeft({ _cardsVector[var]->pos().x(),
+                                                         _cardsVector[var]->pos().y()});
+            posCard.SetPositionBottomRight({ _cardsVector[var]->pos().x() + _cardsVector[var]->width(),
+                                                             _cardsVector[var]->pos().y() + _cardsVector[var]->height()});
+            return posCard;
+
+        }
+    }
+    qDebug() << "NAY-002: ERROR WHILE PositionedCard Hand::GetCardPosition(SimpleCard card)"
+             << "No card found!";
+
+    return PositionedCard();
+
+}
+
+std::vector<PositionedCard> Hand::GetPositionedCards(const std::vector<SimpleCard> &cards)
+{
+    std::vector<PositionedCard> posCards;
+    for (uint32_t var = 0; var < cards.size(); ++var)
+    {
+        posCards.push_back(GetCardPosition(cards[var]));
+    }
 }

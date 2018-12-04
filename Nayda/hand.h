@@ -134,11 +134,11 @@ public:
 
 public slots:
 
-    void _slotCardIsPreparedToBePlayedFromHand(unsigned int cardId);
+    void SlotCardIsPreparedToBePlayedFromHand(unsigned int cardId);
 
 signals:
 
-    void _cardIsPreparedToBePlayed(unsigned int);
+    void SignalCardIsPreparedToBePlayed(unsigned int);
 
 private:
 
@@ -149,7 +149,7 @@ signals:
 
     void adjustSize(bool);
 
-    void _cardIsSendedToTheGameCheck(PositionedCard card);
+    void SignalCardIsSendedToTheGameCheck(PositionedCard card);
 
 public slots:
 
@@ -159,6 +159,20 @@ public slots:
 public slots:
 
     void RemoveCardFromHand(SimpleCard card);
+
+public:
+
+    PositionedCard GetCardPosition(SimpleCard card);
+    std::vector<PositionedCard> GetPositionedCards(const std::vector<SimpleCard> &cards);
+
+public slots:
+
+    void SlotGetCardPostion(SimpleCard card)
+    { emit SignalReportCardPosition(GetCardPosition(card));}
+
+signals:
+
+    void SignalReportCardPosition(PositionedCard card);
 
 };
 

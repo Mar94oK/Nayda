@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <Application/card.h>
 #include <selectablecardwidget.h>
+#include <QLabel>
 
 
 struct CardToBeSoldCredentials
@@ -110,6 +111,8 @@ private:
 
     void SetUpSignalsSlotsConnections();
     void closeEvent(QCloseEvent *event);
+
+    void SetFontAndAlignment(QLabel* lbl);
 
 };
 

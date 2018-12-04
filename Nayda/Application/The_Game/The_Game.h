@@ -388,7 +388,7 @@ private slots:
 
 private:
 
-    void PassTheCardToTheBattleField(PositionedCard);
+    void DEBUGPassTheCardToTheBattleField(PositionedCard);
 
 public:
 
@@ -487,6 +487,7 @@ signals:
 
     void SignalShowTradeButton();
     void SignalHideTradeButton();
+    void SignalGetPostionedCard(SimpleCard card);
 
 
 public slots:
@@ -495,7 +496,13 @@ public slots:
     void SlotHideTradeMenu();
     void SlotProcessCardsSelectedToBeSold(const std::vector<SimpleCard> cards);
 
+private:
 
+    std::vector<PositionedCard> _soldCards;
+    std::vector<PositionedCard> GetPositionedCards(const std::vector<SimpleCard>& cards);
+    void SoldProcess(const std::vector<PositionedCard>& soldCards);
+
+//SellMenu
 public:
 
 private slots:

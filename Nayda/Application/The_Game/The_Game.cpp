@@ -1760,7 +1760,7 @@ void The_Game::SlotCheckThePossibilityForTheCardToBePlayed(PositionedCard card)
     {
 
         //testing
-        PassTheCardToTheBattleField(card);
+        DEBUGPassTheCardToTheBattleField(card);
         emit SignalCardIsRejectedToBePlayed(false);
     }
 }
@@ -1814,7 +1814,7 @@ void The_Game::SlotShowTheRejectedCardMessage(PositionedCard card)
 
 }
 
-void The_Game::PassTheCardToTheBattleField(PositionedCard card)
+void The_Game::DEBUGPassTheCardToTheBattleField(PositionedCard card)
 {
     QPushButton* _movingCard = new QPushButton("Animated Button", this);
     _movingCard->move(card.GetPositionTopLeft().x(), card.GetPositionTopLeft().y());
@@ -2407,6 +2407,14 @@ void The_Game::SlotProcessCardsSelectedToBeSold(const std::vector<SimpleCard> ca
     //3. Добавить уровень//уровни
     qDebug() << "NAY-002: In the SlotProcessCardsSelectedToBeSold() ";
     qDebug() << "NAY-002: CardsToBeSold size " << cards.size();
+
+    //1.1. Для этого сначала получить их позиции
+    std::vector<PositionedCard> posCards = GetPositionedCards(cards);
+}
+
+std::vector<PositionedCard> The_Game::GetPositionedCards(const std::vector<SimpleCard> &cards)
+{
+    return ui->MainGamer->GetPositionedCards(cards);
 }
 
 void The_Game::SlotAddPlayedCardToTheBattleField(SimpleCard card)

@@ -125,7 +125,7 @@ GamerWidget::GamerWidget(QWidget *parent) :
     connect(ui->widget, &Hand::adjustSize, this, &GamerWidget::_adjustSizeSlot);
 
     //connect the Hand with the Game... (checking the possibility for the Card to be played)
-    connect(ui->widget, &Hand::_cardIsSendedToTheGameCheck, this, &GamerWidget::_slotSendTheCardToTheGameCheck);
+    connect(ui->widget, &Hand::SignalCardIsSendedToTheGameCheck, this, &GamerWidget::SlotSendTheCardToTheGameCheck);
 
     //connect the Hand with the answer from The_Game Crad check slot;
     connect(this, &GamerWidget::SignalCardIsRejectedToBePlayed, ui->widget, &Hand::SlotCardIsRejectedToBePlayed);
@@ -134,6 +134,9 @@ GamerWidget::GamerWidget(QWidget *parent) :
     ui->btn_Trade->hide();
 
     connect(ui->btn_Trade, &QPushButton::pressed, [this]{emit SignalTradeButtonWasPressed();});
+    connect(ui->widget, &Hand::SignalReportCardPosition,
+            [this](PositionedCard card){emit SignalReportPostionedCard(card);});
+    connect(this, &GamerWidget::SignalGetPositionedCard, ui->widget, &Hand::SlotGetCardPostion);
 }
 
 GamerWidget::~GamerWidget()
@@ -472,7 +475,7 @@ void GamerWidget::_adjustSizeSlot()
     emit SignalAdjustSize(true);
 }
 
-void GamerWidget::_slotSendTheCardToTheGameCheck(PositionedCard card)
+void GamerWidget::SlotSendTheCardToTheGameCheck(PositionedCard card)
 {
     emit SignalSendTheCardToTheGameCheck(card);
 }
@@ -491,6 +494,11 @@ void GamerWidget::SlotShowTradeButton()
 {
     qDebug() << "NAY-002: Show Trade Button!!!";
     ui->btn_Trade->show();
+}
+
+std::vector<PositionedCard> GamerWidget::GetPositionedCards(const std::vector<SimpleCard> cards)
+{
+    return ui->widget->GetPositionedCards(cards);
 }
 
 
