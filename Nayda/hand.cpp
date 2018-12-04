@@ -476,4 +476,6 @@ std::vector<PositionedCard> Hand::GetPositionedCards(const std::vector<SimpleCar
     {
         posCards.push_back(GetCardPosition(cards[var]));
     }
+
+    return posCards;
 }
