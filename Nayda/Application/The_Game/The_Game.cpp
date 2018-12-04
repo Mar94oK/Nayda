@@ -2086,9 +2086,9 @@ void The_Game::FormingInitialDecks(const std::vector<uint32_t> &doorsVector, con
 
 void The_Game::SetUpPlayersAndWidgets(uint32_t windowHeight, uint32_t windowWidth, const std::vector<QString> &playersNames)
 {
-    uint32_t totalOpponents = _gameSettings.maximumNumberOfPlayers() - 1;
-    qDebug() << "Total opponnets from settings: " << totalOpponents;
-    qDebug() << "Total opponents given by SetUp Opponents: " << playersNames.size();
+    uint32_t totalOpponents = _gameSettings.maximumNumberOfPlayers();
+    qDebug() << "Total players from settings: " << totalOpponents;
+    qDebug() << "Total players given by SetUp Opponents: " << playersNames.size();
 
     _mainPlayer = new Player(_gameSettings.clientName());
     _roomMasterName = _playersOrder[0];
@@ -2107,6 +2107,7 @@ void The_Game::SetUpPlayersAndWidgets(uint32_t windowHeight, uint32_t windowWidt
         {
             Player* currentPlayer = new Player (playersNames[var]);
             _playersOpponents.push_back(currentPlayer);
+            qDebug() << "NAY-002: _playersOpponents Size: " << _playersOpponents.size();
         }
     }
 

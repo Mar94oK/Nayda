@@ -10,7 +10,7 @@ void Player::setName(const QString &name)
     _name = name;
 }
 
-Player::Player()
+Player::Player(const QString& name) : _name(name)
 {
     _isMainPlayer = false;
     
