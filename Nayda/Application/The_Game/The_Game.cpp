@@ -1904,6 +1904,59 @@ void The_Game::DEBUGPassTheCardToTheBattleField(PositionedCard card)
     //_movingCard->deleteLater();
 }
 
+void The_Game::PassSoldCardFromHandToTreasureFold(PositionedCard card)
+{
+    QPushButton* _movingCard = new QPushButton("Animated Button", this);
+    QPoint handPosition = GetMainGamerHandPosition();
+    QPoint gamerWidgetPosition = GetMainGamerWidgetPostion();
+
+    QPoint relativeCardPostionTopLeft = card.GetPositionTopLeft() + gamerWidgetPosition + handPosition;
+    QPoint relativeCardPostionBottomRight = card.GetPositionBottomRight() + gamerWidgetPosition + handPosition;
+
+    _movingCard->move(relativeCardPostionTopLeft.x(), relativeCardPostionTopLeft.y());
+    int sizeX = relativeCardPostionBottomRight.x() - relativeCardPostionTopLeft.x() ;
+    int sizeY = relativeCardPostionBottomRight.y() - relativeCardPostionTopLeft.y();
+
+    qDebug() << "Size of the Card during moving: X: " << sizeX;
+    qDebug() << "Size of the Card during moving: Y: " << sizeY;
+
+    QString picture = findTheCardPicture(card.GetCard());
+
+    QPixmap pxmp_movingCard(picture);
+    QPalette plte_movingCard;
+    plte_movingCard.setBrush(_movingCard->backgroundRole(),
+    QBrush(pxmp_movingCard.scaled(sizeX*2, sizeY*2, Qt::KeepAspectRatio, Qt::SmoothTransformation)));
+
+    _movingCard->setMaximumWidth(sizeX*2);
+    _movingCard->setMaximumHeight(sizeY*2);
+    _movingCard->setMinimumWidth(sizeX);
+    _movingCard->setMinimumHeight(sizeY);
+
+    //http://www.prog.org.ru/topic_7215_0.html
+    _movingCard->setFlat(true);
+    _movingCard->setAutoFillBackground(true);
+    _movingCard->setPalette(plte_movingCard);
+    _movingCard->setText("");
+    //_movingCard->installEventFilter(this);
+    _movingCard->show();
+
+    QPropertyAnimation *animation = new QPropertyAnimation(_movingCard, "geometry");
+    animation->setDuration(3000);
+    animation->setStartValue(QRect(relativeCardPostionTopLeft.x(), relativeCardPostionTopLeft.y(), sizeX, sizeY));
+    animation->setEndValue(QRect(width()/2 - sizeX, height()/2 - sizeY, sizeX*2, sizeY*2));
+    animation->setEasingCurve(QEasingCurve::OutCubic);
+
+    //setWindowFlags(Qt::CustomizeWindowHint);
+
+    animation->start(QAbstractAnimation::DeleteWhenStopped);
+
+    connect(animation, &QPropertyAnimation::finished,
+            _movingCard, &QPushButton::deleteLater);
+
+    //Соединить этот сигнал со слотом, который добавляет карту в стек сброса сокровищ.
+    connect(animation, &QPropertyAnimation::finished, [this, card] {SlotAddPlayedCardToTheBattleField(card.GetCard());});
+}
+
 QString The_Game::findTheCardPicture(SimpleCard card)
 {
     std::map<int, gameCardDoorMonster> :: const_iterator  _monstersIterator;
@@ -2464,8 +2517,7 @@ void The_Game::SlotProcessCardsSelectedToBeSold(const std::vector<SimpleCard> ca
                  << " pos bottom right: " << posCards[var].GetPositionBottomRight();
     }
 
-    QPoint handPosition = GetMainGamerHandPosition();
-    QPoint gamerWidgetPosition = GetMainGamerWidgetPostion();
+
 
     //Убрать проданные карты с руки. (Карты хранятся во временном векторе posCards)
     //Была либо фаза торговли, либо фаза "ход другого игрока"
@@ -2476,7 +2528,7 @@ void The_Game::SlotProcessCardsSelectedToBeSold(const std::vector<SimpleCard> ca
     {
         RemoveCardFromCardsAreAbleToBeSold(posCards[var].GetCard());
         RemoveTheCardFromHand(ui->MainGamer, posCards[var].GetCard());
-        DEBUGPassTheCardToTheBattleField(posCards[var]);
+        PassSoldCardFromHandToTreasureFold(posCards[var]);
     }
     //will show the Trade button if it is ok.
     bool Ok = CheckThePlayerIsAbleToSell(_mainPlayer);

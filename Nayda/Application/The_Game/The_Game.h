@@ -390,6 +390,8 @@ private:
 
     void DEBUGPassTheCardToTheBattleField(PositionedCard);
 
+    void PassSoldCardFromHandToTreasureFold(PositionedCard card);
+
 public:
 
     QString findTheCardPicture(SimpleCard);
