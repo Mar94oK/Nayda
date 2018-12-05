@@ -390,7 +390,13 @@ private:
 
     void DEBUGPassTheCardToTheBattleField(PositionedCard);
 
-    void PassSoldCardsFromHandToTreasureFold(std::vector<PositionedCard> cards);
+    //moving to centre
+    void Animation_StartPassSoldCardsFromHandToTreasureFold_Phase1(std::vector<PositionedCard> cards);
+    //leaving at centre
+    void Animation_StartPassSoldCardsFromHandToTreasureFold_Phase2(std::vector<QPushButton *> movedCards);
+    //moving to treasures fold
+    void Animation_StartPassSoldCardsFromHandToTreasureFold_Phase3(std::vector<PositionedCard> cards);
+
 
 public:
 
@@ -638,6 +644,14 @@ private:
     QPoint GetDoorsStackPosotion();
 
     QPoint GetCenterPosition();
+
+
+//Settings not given in the settings Selection menu:
+private:
+
+    uint32_t _msTimeForTradeAnimationPhase1 = 1500; //Moving to centre
+    uint32_t _msTimeForTradeAnimationPhase2 = 1500; //Standing at the centre
+    uint32_t _msTimeForTradeAnimationPhase3 = 500;  //Moving to Treasure Fold
 
 };
 

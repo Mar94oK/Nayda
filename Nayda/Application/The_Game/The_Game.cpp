@@ -2,6 +2,7 @@
 #include "ui_the_game.h"
 #include <ctime>
 #include <QTime>
+#include <ui_the_game.h>
 #include "popupcard.h"
 #include "munchkinglobaldefines.h"
 
@@ -25,8 +26,8 @@ The_Game::The_Game(QWidget *parent) :
     //make it 0.8 of height for example
 
 #ifdef __linux
-    static_cast<uint32_t>(HW_Screen_Size_Heigh *= 0.9);
-    static_cast<uint32_t>(HW_Screen_Size_Width *= 0.8);
+//    static_cast<uint32_t>(HW_Screen_Size_Heigh *= 0.9);
+//    static_cast<uint32_t>(HW_Screen_Size_Width *= 0.8);
 #endif
 
     //1. SetUp Initial Signals-Slots connections
@@ -1904,7 +1905,7 @@ void The_Game::DEBUGPassTheCardToTheBattleField(PositionedCard card)
     //_movingCard->deleteLater();
 }
 
-void The_Game::PassSoldCardsFromHandToTreasureFold(std::vector <PositionedCard> cards)
+void The_Game::Animation_StartPassSoldCardsFromHandToTreasureFold_Phase1(std::vector <PositionedCard> cards)
 {
     for (uint32_t var = 0; var < cards.size(); ++var)
     {
@@ -1945,7 +1946,7 @@ void The_Game::PassSoldCardsFromHandToTreasureFold(std::vector <PositionedCard> 
         _movingCard->show();
 
         QPropertyAnimation *animation = new QPropertyAnimation(_movingCard, "geometry");
-        animation->setDuration(3000);
+        animation->setDuration(_msTimeForTradeAnimationPhase1);
         animation->setStartValue(QRect(relativeCardPostionTopLeft.x(), relativeCardPostionTopLeft.y(), sizeX, sizeY));
         animation->setEndValue(QRect(width()/2 - sizeX, height()/2 - sizeY, sizeX*2, sizeY*2));
         animation->setEasingCurve(QEasingCurve::OutCubic);
@@ -1957,9 +1958,31 @@ void The_Game::PassSoldCardsFromHandToTreasureFold(std::vector <PositionedCard> 
         connect(animation, &QPropertyAnimation::finished,
                 _movingCard, &QPushButton::deleteLater);
 
-        //Соединить этот сигнал со слотом, который добавляет карту в стек сброса сокровищ.
+        //Соединить этот сигнал со слотом, который отображает анимацию второй фазы сброса
+        //проданных карт.
         connect(animation, &QPropertyAnimation::finished, [this, card] {SlotAddPlayedCardToTheBattleField(card.GetCard());});
     }
+}
+
+void The_Game::Animation_StartPassSoldCardsFromHandToTreasureFold_Phase2(std::vector<QPushButton*> movedCards)
+{
+    //Разместить по позициям.
+    //финальная позиция, где они были в прошлый раз.
+    //animation->setEndValue(QRect(width()/2 - sizeX, height()/2 - sizeY, sizeX*2, sizeY*2));
+
+    uint32_t sizeHeight = movedCards[0]->height();
+    totalWidthNecessary = movedCards.size() * movedCards[0]->width();
+    QPoint CardMostToTheLeftPosition = GetCenterPosition()
+            - QPoint(static_cast<uint32_t>(totalWidthNecessary/2), movedCards[0]->pos().y());
+
+    for (uint32_t var = 0; var < movedCards.size(); ++var)
+    {
+
+    }
+    //QPropertyAnimation *animation = new QPropertyAnimation(_movingCard, "geometry");
+
+
+
 }
 
 QString The_Game::findTheCardPicture(SimpleCard card)
@@ -2536,7 +2559,8 @@ void The_Game::SlotProcessCardsSelectedToBeSold(const std::vector<SimpleCard> ca
     }
     _mainPlayer->RemoveGivenCardsFromHand(cards);
     bool Ok = CheckThePlayerIsAbleToSell(_mainPlayer);
-    PassSoldCardsFromHandToTreasureFold(posCards);
+    //start animation here
+    Animation_StartPassSoldCardsFromHandToTreasureFold_Phase1(posCards);
     //will show the Trade button if it is ok.
     qDebug() << (Ok ? "NAY-002: MainGamer is still able to sell!"
                     : "NAY-002: MainGamer is not able to sell!");
