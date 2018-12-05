@@ -32,7 +32,7 @@ SellMenu::SellMenu(AllDecksToBePassed decksData, QSize mainWindowSize, const std
     SetFontAndAlignment(ui->lbl_Sum);
     SetFontAndAlignment(ui->lbl_CardsToSell);
 
-
+    setWindowModality(Qt::WindowModal);
 
 }
 
