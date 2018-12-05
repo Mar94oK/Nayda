@@ -90,7 +90,7 @@ GamerWidget::GamerWidget(QWidget *parent) :
     //connect timeout issue
     connect(_showCardsTimer, &QTimer::timeout, this, &GamerWidget::SlotRepresentTheCardInCentre);
     connect(ui->widget, &Hand::SignalShowTheCard, this, &GamerWidget::SlotRepresentTheCardFromHandsInCentre);
-    connect(ui->widget, &Hand::SignalHideTheCard, this, &GamerWidget::_hideTheCardInCentreSlot);
+    connect(ui->widget, &Hand::SignalHideTheCard, this, &GamerWidget::SlotHideTheCardInCentre);
 
 #ifdef DEBUG_GAMER_WIDGET
 
@@ -125,10 +125,12 @@ GamerWidget::GamerWidget(QWidget *parent) :
     connect(ui->widget, &Hand::adjustSize, this, &GamerWidget::_adjustSizeSlot);
 
     //connect the Hand with the Game... (checking the possibility for the Card to be played)
-    connect(ui->widget, &Hand::SignalCardIsSendedToTheGameCheck, this, &GamerWidget::SlotSendTheCardToTheGameCheck);
+    connect(ui->widget, &Hand::SignalCardIsSendedToTheGameCheck,
+            this, &GamerWidget::SlotSendTheCardToTheGameCheck);
 
     //connect the Hand with the answer from The_Game Crad check slot;
-    connect(this, &GamerWidget::SignalCardIsRejectedToBePlayed, ui->widget, &Hand::SlotCardIsRejectedToBePlayed);
+    connect(this, &GamerWidget::SignalCardIsRejectedToBePlayed,
+            ui->widget, &Hand::SlotCardIsRejectedToBePlayed);
 
 
     ui->btn_Trade->hide();
@@ -154,7 +156,7 @@ void GamerWidget::setIs_MainPlayer(bool is_MainPlayer)
     _isMainPlayer = is_MainPlayer;
 }
 
-void GamerWidget::redraw_as_a_secondary_player()
+void GamerWidget::RedrawAsASecondaryPlayer()
 {
     ui->btn_auto_advice->hide();
     ui->btn_diplomacy->hide();
@@ -348,14 +350,14 @@ void GamerWidget::SlotRepresentTheCardFromHandsInCentre(PositionedCard card)
 
 }
 
-void GamerWidget::_hideTheCardInCentreSlot(bool)
+void GamerWidget::SlotHideTheCardInCentre(bool)
 {
     emit SignalHideTheCardInCentre(true);
 }
 
 //Attention!!!
 //Bad Code!!! To change these coeffisients to be built-int in the class;
-void GamerWidget::_changeTheGamerLevel(int levelDelta)
+void GamerWidget::SlotChangeTheGamerLevel(int levelDelta)
 {
     _gamerLevel = _gamerLevel + levelDelta;
 
@@ -383,7 +385,7 @@ void GamerWidget::_changeTheGamerLevel(int levelDelta)
 
 void GamerWidget::DEBUGSlotTestGamerLevels()
 {
-    _changeTheGamerLevel(1);
+    SlotChangeTheGamerLevel(1);
 }
 
 void GamerWidget::DEBUGSlotStartTestCards()
@@ -395,7 +397,7 @@ void GamerWidget::DEBUGSlotStartTestCards()
     }
 }
 
-void GamerWidget::_changeTheGamerBattlePower(int battlePowerDelta)
+void GamerWidget::SlotChangeTheGamerBattlePower(int battlePowerDelta)
 {
 
     _battlePower += battlePowerDelta;
@@ -459,7 +461,7 @@ void GamerWidget::DEBUGSlotTestGamerBattlePower()
         _battlePower = 1;
         _currentDeltaToBattlePower = 0;
     }
-    _changeTheGamerBattlePower(1);
+    SlotChangeTheGamerBattlePower(1);
 
 }
 
@@ -500,5 +502,21 @@ std::vector<PositionedCard> GamerWidget::GetPositionedCards(const std::vector<Si
 {
     return ui->widget->GetPositionedCards(cards);
 }
+
+void GamerWidget::RemoveCardFromHand(SimpleCard card)
+{
+    ui->widget->SlotRemoveCardFromHand(card);
+}
+
+QPoint GamerWidget::ProvideSelfPosition()
+{
+    return pos();
+}
+
+QPoint GamerWidget::ProvideHandPosition()
+{
+    return ui->widget->pos(); //Relative to Gamer Widget.
+}
+
 
 

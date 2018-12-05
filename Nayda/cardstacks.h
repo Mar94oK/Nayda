@@ -177,6 +177,13 @@ private:
     QTimer* _testTimer;
     bool _testIsRunning = false;
 
+public:
+
+    QPoint ProvideTreasuresFoldPosition();
+    QPoint ProvideDoorsFoldPosition();
+    QPoint ProvideTreasuresStackPosition();
+    QPoint ProvideDoorsStackPosotion();
+
 };
 
 #endif // CARDSTACKS_H

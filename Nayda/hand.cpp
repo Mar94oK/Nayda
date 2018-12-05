@@ -413,12 +413,12 @@ void Hand::SlotCardIsRejectedToBePlayed(bool rejected)
     //up to be debugged!
     if (!rejected)
     {
-        RemoveCardFromHand(_cardIsReadyToBePlayed.card);
+        SlotRemoveCardFromHand(_cardIsReadyToBePlayed.card);
         _cardIsReadyToBePlayed.thereIsCardToBePulledDown = false;
     }
 }
 
-void Hand::RemoveCardFromHand(SimpleCard card)
+void Hand::SlotRemoveCardFromHand(SimpleCard card)
 {
     unsigned int position = 0;
     for (unsigned int var = 0; var < _cardsOnHandsHandsWidgetProperty.size(); ++var) {

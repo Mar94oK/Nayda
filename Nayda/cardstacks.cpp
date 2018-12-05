@@ -615,6 +615,26 @@ void CardStacks::startTheTest()
     }
 }
 
+QPoint CardStacks::ProvideTreasuresFoldPosition()
+{
+    return ui->btn_TreasuresFold->pos();
+}
+
+QPoint CardStacks::ProvideDoorsFoldPosition()
+{
+    return ui->btn_DoorsFold->pos();
+}
+
+QPoint CardStacks::ProvideTreasuresStackPosition()
+{
+    return ui->btn_TreasuresStack->pos();
+}
+
+QPoint CardStacks::ProvideDoorsStackPosotion()
+{
+    return ui->btn_DoorsStack->pos();
+}
+
 void CardStacks::setMonsersDeck(const std::map<int, gameCardDoorMonster> *monsersDeck)
 {
     _monstersDeck = monsersDeck;

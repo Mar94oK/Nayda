@@ -483,11 +483,16 @@ private:
     SellMenu* _sellMenu = nullptr;
     std::vector<SimpleCard> _cardsToBeSelledHolder;
 
+private:
+
+    void RemoveTheCardFromHand(GamerWidget* wt, SimpleCard card);
+
 signals:
 
     void SignalShowTradeButton();
     void SignalHideTradeButton();
     void SignalGetPostionedCard(SimpleCard card);
+
 
 
 public slots:
@@ -600,6 +605,23 @@ public:
 
     GamePhase GetCurrentGamePhase() const;
     void SetCurrentGamePhase(const GamePhase &GetCurrentGamePhase);
+
+//Visualization Engine
+private:
+
+//Positions are top left.
+//Looks like will be used for only MainPlayer widget.
+    QPoint GetMainGamerWidgetPostion();
+    QPoint GetMainGamerHandPosition();
+    QPoint GetCardsStackPosition();
+
+    QPoint GetTreasuresFoldPosition();
+    QPoint GetDoorsFoldPosition();
+    QPoint GetTreasuresStackPosition();
+    QPoint GetDoorsStackPosotion();
+
+    QPoint GetCenterPosition();
+
 };
 
 #endif // THE_GAME_H

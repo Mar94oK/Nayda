@@ -158,7 +158,7 @@ public slots:
 
 public slots:
 
-    void RemoveCardFromHand(SimpleCard card);
+    void SlotRemoveCardFromHand(SimpleCard card);
 
 public:
 

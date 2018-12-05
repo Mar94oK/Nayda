@@ -1729,6 +1729,47 @@ void The_Game::SetCurrentGamePhase(const GamePhase &currentGamePhase)
     _currentGamePhase = currentGamePhase;
 }
 
+QPoint The_Game::GetMainGamerWidgetPostion()
+{
+    return ui->MainGamer->ProvideSelfPosition();
+}
+
+QPoint The_Game::GetMainGamerHandPosition()
+{
+    return ui->MainGamer->ProvideHandPosition();
+}
+
+QPoint The_Game::GetCardsStackPosition()
+{
+    return ui->CardStacksWidget->pos();
+}
+
+QPoint The_Game::GetTreasuresFoldPosition()
+{
+    return ui->CardStacksWidget->ProvideTreasuresFoldPosition();
+}
+
+QPoint The_Game::GetDoorsFoldPosition()
+{
+    return ui->CardStacksWidget->ProvideDoorsFoldPosition();
+}
+
+QPoint The_Game::GetTreasuresStackPosition()
+{
+    return ui->CardStacksWidget->ProvideTreasuresStackPosition();
+}
+
+QPoint The_Game::GetDoorsStackPosotion()
+{
+    return ui->CardStacksWidget->ProvideDoorsStackPosotion();
+}
+
+QPoint The_Game::GetCenterPosition()
+{
+    return QPoint(static_cast<uint32_t> (size().width() / 2),
+                  static_cast<uint32_t> (size().height() / 2));
+}
+
 void The_Game::SlotAdjustSizeOfTheGamerWidgetToMakeCardsToBeInPlace()
 {
     ui->MainGamer->adjustSize();
@@ -2123,7 +2164,7 @@ void The_Game::SetUpPlayersAndWidgets(uint32_t windowHeight, uint32_t windowWidt
        if (_gameSettings.clientName() != playersNames[var])
        {
             _widgets4Opponents.push_back(new GamerWidget);
-            _widgets4Opponents.back()->redraw_as_a_secondary_player();
+            _widgets4Opponents.back()->RedrawAsASecondaryPlayer();
             _widgets4Opponents.back()->setIs_MainPlayer(false);
             if (playersNames[var] == _roomMasterName)
                 _widgets4Opponents.back()->SetIsRoomMaster();
@@ -2363,6 +2404,11 @@ void The_Game::PassCardsToWidgets()
     PassDecksToCardsStacksWidget();
 }
 
+void The_Game::RemoveTheCardFromHand(GamerWidget *wt, SimpleCard card)
+{
+    wt->RemoveCardFromHand(card);
+}
+
 void The_Game::SlotShowTradeMenu()
 {
     QRect HW_Screen_Size = QApplication::desktop()->screenGeometry();
@@ -2417,6 +2463,19 @@ void The_Game::SlotProcessCardsSelectedToBeSold(const std::vector<SimpleCard> ca
                  << " pos top left: " << posCards[var].GetPositionTopLeft()
                  << " pos bottom right: " << posCards[var].GetPositionBottomRight();
     }
+
+    QPoint handPosition = GetMainGamerHandPosition();
+    QPoint gamerWidgetPosition = GetMainGamerWidgetPostion();
+
+    //Убрать проданные карты с руки. (Карты хранятся во временном векторе posCards)
+    for (uint32_t var = 0; var < posCards.size(); ++var)
+    {
+        DEBUGPassTheCardToTheBattleField(posCards[var]);
+    }
+
+
+
+
 }
 
 std::vector<PositionedCard> The_Game::GetPositionedCards(const std::vector<SimpleCard> &cards)

@@ -26,7 +26,7 @@ public:
 
     bool is_MainPlayer() const;
     void setIs_MainPlayer(bool is_MainPlayer);
-    void redraw_as_a_secondary_player();
+    void RedrawAsASecondaryPlayer();
 
     void setMonsersDeck(const std::map<int, gameCardDoorMonster> *monsersDeck);
     void setAmplifiersDeck(const std::map<int, gameCardDoorAmplifier> *amplifiersDeck);
@@ -114,7 +114,7 @@ public slots:
 
     void SlotRepresentTheCardInCentre();
     void SlotRepresentTheCardFromHandsInCentre(PositionedCard);
-    void _hideTheCardInCentreSlot(bool);
+    void SlotHideTheCardInCentre(bool);
 
 private:
 #ifndef USE_RESOURCES
@@ -145,7 +145,7 @@ private:
 
 public slots:
 
-    void _changeTheGamerLevel(int levelDelta);
+    void SlotChangeTheGamerLevel(int levelDelta);
 
 private:
 
@@ -188,7 +188,7 @@ private:
 
 public slots:
 
-    void _changeTheGamerBattlePower(int battlePowerDelta);
+    void SlotChangeTheGamerBattlePower(int battlePowerDelta);
 
 private slots:
 
@@ -251,6 +251,15 @@ public slots:
 public:
 
    std::vector<PositionedCard> GetPositionedCards(const std::vector<SimpleCard> cards);
+    void RemoveCardFromHand(SimpleCard card);
+
+public:
+
+   QPoint ProvideSelfPosition();
+   QPoint ProvideHandPosition();
+
+
+
 };
 
 #endif // GAMERWIDGET_H
