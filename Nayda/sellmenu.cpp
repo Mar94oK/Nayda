@@ -203,7 +203,7 @@ void SellMenu::SetDecks(const AllDecksToBePassed &data)
 
 CardPosition SellMenu::GetCurrentCardPosition()
 {
-    uint32_t column = (_cardsToBeSoldOut.size() % 4);
+    uint32_t column = (_cardsToBeSoldOut.size() % 4) - 1;
     uint32_t row = 3 + _cardsToBeSoldOut.size() / 4;
 
     return CardPosition(column, row);
