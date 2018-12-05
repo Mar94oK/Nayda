@@ -112,6 +112,10 @@ public:
     QString name() const;
     void setName(const QString &name);
 
+    void RemoveGivenCardsFromHand(const std::vector<SimpleCard>& cards);
+    void RemoveGivenCardFromHand(SimpleCard card);
+
+
 private:
 
     //it is necessary to save the property in the player class of the card responsible for the

@@ -10,6 +10,35 @@ void Player::setName(const QString &name)
     _name = name;
 }
 
+void Player::RemoveGivenCardsFromHand(const std::vector<SimpleCard> &cards)
+{
+    for (uint32_t var = 0; var < _cardsOnHands.size(); ++var)
+    {
+        for (uint32_t y = 0; y < cards.size(); ++y)
+        {
+            if (_cardsOnHands[var] == cards[y])
+            {
+               _cardsOnHands.erase(_cardsOnHands.begin() + var);
+            }
+        }
+    }
+    _cardsOnHands.shrink_to_fit();
+    qDebug() << "NAY-002: New size of the CardsOnHands Vector: " << _cardsOnHands.size();
+}
+
+void Player::RemoveGivenCardFromHand(SimpleCard card)
+{
+    for (uint32_t var = 0; var < _cardsOnHands.size(); ++var)
+    {
+        if (_cardsOnHands[var] == card)
+        {
+            _cardsOnHands.erase(_cardsOnHands.begin() + var);
+            return;
+        }
+    }
+    qDebug() << "NAY-002: ERROR WHILE void Player::RemoveGivenCardFromHand(SimpleCard card). Card not found!";
+}
+
 Player::Player(const QString& name) : _name(name)
 {
     _isMainPlayer = false;

@@ -390,7 +390,7 @@ private:
 
     void DEBUGPassTheCardToTheBattleField(PositionedCard);
 
-    void PassSoldCardFromHandToTreasureFold(PositionedCard card);
+    void PassSoldCardsFromHandToTreasureFold(std::vector<PositionedCard> cards);
 
 public:
 
@@ -528,6 +528,8 @@ public:
 private slots:
 
     void SlotAddPlayedCardToTheBattleField(SimpleCard card);
+
+    void SlotShowAllSoldCardsInCentre(const std::vector<SimpleCard> cards, uint32_t msTime);
 
 //Game Processing entities
 private:
