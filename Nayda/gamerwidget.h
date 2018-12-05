@@ -259,7 +259,6 @@ public:
    QPoint ProvideHandPosition();
 
 
-
 };
 
 #endif // GAMERWIDGET_H

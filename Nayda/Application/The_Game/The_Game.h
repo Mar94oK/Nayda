@@ -481,7 +481,20 @@ signals:
 private:
 
     SellMenu* _sellMenu = nullptr;
-    std::vector<SimpleCard> _cardsToBeSelledHolder;
+    std::vector<SimpleCard> _cardsAreReadyToBeSoldHolder;
+    void RemoveCardFromCardsAreAbleToBeSold(SimpleCard card)
+    {
+        for (int var = 0; var < _cardsAreReadyToBeSoldHolder.size(); ++var)
+        {
+            if (_cardsAreReadyToBeSoldHolder[var] == card)
+            {
+                _cardsAreReadyToBeSoldHolder.erase(_cardsAreReadyToBeSoldHolder.begin() + var);
+                return;
+            }
+        }
+        qDebug() << "EEROR WHILE RemoveCardFromCardsAreAbleToBeSold! Card with id: " << card.second
+                 << " Not found!";
+    }
 
 private:
 

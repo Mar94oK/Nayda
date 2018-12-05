@@ -2430,7 +2430,7 @@ void The_Game::SlotShowTradeMenu()
                                  _weaponsDeck),
                                 QSize(HW_Screen_Size.width(),
                                       HW_Screen_Size.height()),
-                                _cardsToBeSelledHolder);
+                                _cardsAreReadyToBeSoldHolder);
 
     _sellMenu->show();
 
@@ -2468,12 +2468,21 @@ void The_Game::SlotProcessCardsSelectedToBeSold(const std::vector<SimpleCard> ca
     QPoint gamerWidgetPosition = GetMainGamerWidgetPostion();
 
     //Убрать проданные карты с руки. (Карты хранятся во временном векторе posCards)
+    //Была либо фаза торговли, либо фаза "ход другого игрока"
+    GamePhase savedPhase = _currentGamePhase;
+    _currentGamePhase = GamePhase::CardProcessing;
+    emit SignalHideTradeButton();
     for (uint32_t var = 0; var < posCards.size(); ++var)
     {
+        RemoveCardFromCardsAreAbleToBeSold(posCards[var].GetCard());
+        RemoveTheCardFromHand(ui->MainGamer, posCards[var].GetCard());
         DEBUGPassTheCardToTheBattleField(posCards[var]);
     }
-
-
+    //will show the Trade button if it is ok.
+    bool Ok = CheckThePlayerIsAbleToSell(_mainPlayer);
+    qDebug() << (Ok ? "NAY-002: MainGamer is still able to sell!"
+                    : "NAY-002: MainGamer is not able to sell!");
+    _currentGamePhase = savedPhase;
 
 
 }
@@ -2513,7 +2522,7 @@ bool The_Game::CheckThePlayerIsAbleToSell(Player* player)
     {
         totalSumOfAllTheCards += GetCardPrice(sumChecker[var]);
         if (GetCardPrice(sumChecker[var]))
-            _cardsToBeSelledHolder.push_back(sumChecker[var]);
+            _cardsAreReadyToBeSoldHolder.push_back(sumChecker[var]);
     }
     qDebug() << "NAY-002: Total Price of all the cards the player has: " << totalSumOfAllTheCards;
 
