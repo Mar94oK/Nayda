@@ -1907,11 +1907,14 @@ void The_Game::DEBUGPassTheCardToTheBattleField(PositionedCard card)
 
 void The_Game::Animation_StartPassSoldCardsFromHandToTreasureFold_Phase1(std::vector <PositionedCard> cards)
 {
+    std::vector<QPushButton*> cardsAsButtons;
+    std::vector<QPropertyAnimation*> animations;
     for (uint32_t var = 0; var < cards.size(); ++var)
     {
         PositionedCard card = cards[var];
 
         QPushButton* _movingCard = new QPushButton("Animated Button", this);
+        cardsAsButtons.push_back(_movingCard);
         QPoint handPosition = GetMainGamerHandPosition();
         QPoint gamerWidgetPosition = GetMainGamerWidgetPostion();
 
@@ -1946,7 +1949,8 @@ void The_Game::Animation_StartPassSoldCardsFromHandToTreasureFold_Phase1(std::ve
         _movingCard->show();
 
         QPropertyAnimation *animation = new QPropertyAnimation(_movingCard, "geometry");
-        animation->setDuration(_msTimeForTradeAnimationPhase1);
+        animations.push_back(animation);
+        animation->setDuration(static_cast<uint32_t>(_msTimeForTradeAnimationPhase1));
         animation->setStartValue(QRect(relativeCardPostionTopLeft.x(), relativeCardPostionTopLeft.y(), sizeX, sizeY));
         animation->setEndValue(QRect(width()/2 - sizeX, height()/2 - sizeY, sizeX*2, sizeY*2));
         animation->setEasingCurve(QEasingCurve::OutCubic);
@@ -1955,13 +1959,14 @@ void The_Game::Animation_StartPassSoldCardsFromHandToTreasureFold_Phase1(std::ve
 
         animation->start(QAbstractAnimation::DeleteWhenStopped);
 
-        connect(animation, &QPropertyAnimation::finished,
-                _movingCard, &QPushButton::deleteLater);
+//        connect(animation, &QPropertyAnimation::finished,
+//                _movingCard, &QPushButton::deleteLater);
 
         //Соединить этот сигнал со слотом, который отображает анимацию второй фазы сброса
         //проданных карт.
-        connect(animation, &QPropertyAnimation::finished, [this, card] {SlotAddPlayedCardToTheBattleField(card.GetCard());});
     }
+    connect(animations[0], &QPropertyAnimation::finished,
+            [this, cardsAsButtons] {Animation_StartPassSoldCardsFromHandToTreasureFold_Phase2(cardsAsButtons);});
 }
 
 void The_Game::Animation_StartPassSoldCardsFromHandToTreasureFold_Phase2(std::vector<QPushButton*> movedCards)
@@ -1970,16 +1975,23 @@ void The_Game::Animation_StartPassSoldCardsFromHandToTreasureFold_Phase2(std::ve
     //финальная позиция, где они были в прошлый раз.
     //animation->setEndValue(QRect(width()/2 - sizeX, height()/2 - sizeY, sizeX*2, sizeY*2));
 
-    uint32_t sizeHeight = movedCards[0]->height();
-    totalWidthNecessary = movedCards.size() * movedCards[0]->width();
+    uint32_t sizeHeight = static_cast<uint32_t>(movedCards[0]->height());
+    uint32_t totalWidthNecessary =static_cast<uint32_t>(movedCards.size() * movedCards[0]->width());
     QPoint CardMostToTheLeftPosition = GetCenterPosition()
             - QPoint(static_cast<uint32_t>(totalWidthNecessary/2), movedCards[0]->pos().y());
 
     for (uint32_t var = 0; var < movedCards.size(); ++var)
-    {
+    {  
+        QPropertyAnimation *animation = new QPropertyAnimation(movedCards[var], "geometry");
+        animation->setDuration(static_cast<uint32_t>(_msTimeForTradeAnimationPhase1));
+        animation->setStartValue(QRect(movedCards[var]->pos().x(), movedCards[var]->pos().y(),
+                                       movedCards[var]->size().width(), movedCards[var]->size().height()));
+        animation->setEndValue(QRect(CardMostToTheLeftPosition.x() +var*movedCards[var]->size().width(), movedCards[var]->pos().y(),
+                                     movedCards[var]->size().width(), movedCards[var]->size().height()));
+        animation->setEasingCurve(QEasingCurve::OutCubic);
 
+        animation->start(QAbstractAnimation::DeleteWhenStopped);
     }
-    //QPropertyAnimation *animation = new QPropertyAnimation(_movingCard, "geometry");
 
 
 
