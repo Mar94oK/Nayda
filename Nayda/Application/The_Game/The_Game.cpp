@@ -26,8 +26,8 @@ The_Game::The_Game(QWidget *parent) :
     //make it 0.8 of height for example
 
 #ifdef __linux
-//    static_cast<uint32_t>(HW_Screen_Size_Heigh *= 0.9);
-//    static_cast<uint32_t>(HW_Screen_Size_Width *= 0.8);
+    static_cast<uint32_t>(HW_Screen_Size_Heigh *= 0.9);
+    static_cast<uint32_t>(HW_Screen_Size_Width *= 0.8);
 #endif
 
     //1. SetUp Initial Signals-Slots connections
@@ -1760,15 +1760,25 @@ QPoint The_Game::GetTreasuresStackPosition()
     return ui->CardStacksWidget->ProvideTreasuresStackPosition();
 }
 
-QPoint The_Game::GetDoorsStackPosotion()
+QPoint The_Game::GetDoorsStackPosition()
 {
-    return ui->CardStacksWidget->ProvideDoorsStackPosotion();
+    return ui->CardStacksWidget->ProvideDoorsStackPosition();
 }
 
 QPoint The_Game::GetCenterPosition()
 {
     return QPoint(static_cast<uint32_t> (size().width() / 2),
                   static_cast<uint32_t> (size().height() / 2));
+}
+
+QSize The_Game::GetTreasuresFoldSize()
+{
+    return ui->CardStacksWidget->ProvideTreasuresFoldSize();
+}
+
+QSize The_Game::GetDoorsFoldSize()
+{
+    return ui->CardStacksWidget->ProvideDoorsFoldSize();
 }
 
 void The_Game::SlotAdjustSizeOfTheGamerWidgetToMakeCardsToBeInPlace()
@@ -1907,6 +1917,13 @@ void The_Game::DEBUGPassTheCardToTheBattleField(PositionedCard card)
 
 void The_Game::Animation_StartPassSoldCardsFromHandToTreasureFold_Phase1(std::vector <PositionedCard> cards)
 {
+    if (!cards.size())
+    {
+        qDebug() << "NAY-002: ERROR WHILE Animation_StartPassSoldCardsFromHandToTreasureFold_Phase1()."
+                    "Empty Vector!";
+        return;
+    }
+
     std::vector<QPushButton*> cardsAsButtons;
     std::vector<QPropertyAnimation*> animations;
     for (uint32_t var = 0; var < cards.size(); ++var)
@@ -1974,16 +1991,24 @@ void The_Game::Animation_StartPassSoldCardsFromHandToTreasureFold_Phase2(std::ve
     //Разместить по позициям.
     //финальная позиция, где они были в прошлый раз.
     //animation->setEndValue(QRect(width()/2 - sizeX, height()/2 - sizeY, sizeX*2, sizeY*2));
+    if (!movedCards.size())
+    {
+        qDebug() << "NAY-002: ERROR WHILE Animation_StartPassSoldCardsFromHandToTreasureFold_Phase2()."
+                    "Empty Vector!";
+        return;
+    }
 
     uint32_t sizeHeight = static_cast<uint32_t>(movedCards[0]->height());
     uint32_t totalWidthNecessary =static_cast<uint32_t>(movedCards.size() * movedCards[0]->width());
     QPoint CardMostToTheLeftPosition = GetCenterPosition()
             - QPoint(static_cast<uint32_t>(totalWidthNecessary/2), movedCards[0]->pos().y());
 
+    std::vector<QPropertyAnimation*> animations;
     for (uint32_t var = 0; var < movedCards.size(); ++var)
     {  
         QPropertyAnimation *animation = new QPropertyAnimation(movedCards[var], "geometry");
-        animation->setDuration(static_cast<uint32_t>(_msTimeForTradeAnimationPhase1));
+        animations.push_back(animation);
+        animation->setDuration(static_cast<uint32_t>(_msTimeForTradeAnimationPhase2));
         animation->setStartValue(QRect(movedCards[var]->pos().x(), movedCards[var]->pos().y(),
                                        movedCards[var]->size().width(), movedCards[var]->size().height()));
         animation->setEndValue(QRect(CardMostToTheLeftPosition.x() +var*movedCards[var]->size().width(), movedCards[var]->pos().y(),
@@ -1993,8 +2018,44 @@ void The_Game::Animation_StartPassSoldCardsFromHandToTreasureFold_Phase2(std::ve
         animation->start(QAbstractAnimation::DeleteWhenStopped);
     }
 
+    //Соединить этот сигнал со слотом, который отображает анимацию третьей фазы сброса
+    //проданных карт.
+    connect(animations[0], &QPropertyAnimation::finished,
+            [this, movedCards] {Animation_StartPassSoldCardsFromHandToTreasureFold_Phase3(movedCards);});
 
+}
 
+void The_Game::Animation_StartPassSoldCardsFromHandToTreasureFold_Phase3(std::vector<QPushButton *> movedCards)
+{
+    if (!movedCards.size())
+    {
+        qDebug() << "NAY-002: ERROR WHILE Animation_StartPassSoldCardsFromHandToTreasureFold_Phase2()."
+                    "Empty Vector!";
+        return;
+    }
+
+    QPoint EndPosition = GetTreasuresFoldPosition() + GetCardsStackPosition();
+    QSize EndSize = GetTreasuresFoldSize();
+    std::vector<QPropertyAnimation*> animations;
+    for (uint32_t var = 0; var < movedCards.size(); ++var)
+    {
+        QPropertyAnimation *animation = new QPropertyAnimation(movedCards[var], "geometry");
+        animations.push_back(animation);
+        animation->setDuration(static_cast<uint32_t>(_msTimeForTradeAnimationPhase3));
+        animation->setStartValue(QRect(movedCards[var]->pos().x(), movedCards[var]->pos().y(),
+                                       movedCards[var]->size().width(), movedCards[var]->size().height()));
+        animation->setEndValue(QRect(EndPosition.x(), EndPosition.y(),
+                                     EndSize.width(), EndSize.height()));
+        animation->setEasingCurve(QEasingCurve::OutCubic);
+
+        animation->start(QAbstractAnimation::DeleteWhenStopped);
+
+        connect(animation, &QPropertyAnimation::finished,
+                movedCards[var], &QPushButton::deleteLater);
+    }
+
+    //Соединить этот сигнал со слотом, который добавляет и отображает последнюю сброшенную карту в TreasuresFold.
+    //До этого момента игра находится в фазе CardProcessing.
 }
 
 QString The_Game::findTheCardPicture(SimpleCard card)

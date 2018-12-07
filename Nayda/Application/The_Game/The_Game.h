@@ -395,7 +395,7 @@ private:
     //leaving at centre
     void Animation_StartPassSoldCardsFromHandToTreasureFold_Phase2(std::vector<QPushButton *> movedCards);
     //moving to treasures fold
-    void Animation_StartPassSoldCardsFromHandToTreasureFold_Phase3(std::vector<PositionedCard> cards);
+    void Animation_StartPassSoldCardsFromHandToTreasureFold_Phase3(std::vector<QPushButton *> movedCards);
 
 
 public:
@@ -641,9 +641,12 @@ private:
     QPoint GetTreasuresFoldPosition();
     QPoint GetDoorsFoldPosition();
     QPoint GetTreasuresStackPosition();
-    QPoint GetDoorsStackPosotion();
+    QPoint GetDoorsStackPosition();
 
     QPoint GetCenterPosition();
+
+    QSize GetTreasuresFoldSize();
+    QSize GetDoorsFoldSize();
 
 
 //Settings not given in the settings Selection menu:

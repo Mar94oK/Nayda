@@ -182,7 +182,10 @@ public:
     QPoint ProvideTreasuresFoldPosition();
     QPoint ProvideDoorsFoldPosition();
     QPoint ProvideTreasuresStackPosition();
-    QPoint ProvideDoorsStackPosotion();
+    QPoint ProvideDoorsStackPosition();
+
+    QSize  ProvideTreasuresFoldSize();
+    QSize  ProvideDoorsFoldSize();
 
 };
 
