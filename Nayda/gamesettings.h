@@ -25,7 +25,7 @@ private:
     //GameProcessSettings:
     bool _HardCodedSettings_AllowedToSellAtLevelNine = true;
     bool _HardCodedSettings_AllowedToOverSellAtLevelNine = true;
-    bool _HardCodedSettings_AllowLevelOverSell = true;
+    bool _HardCodedSettings_AllowLevelOverSell = false;
 
 public:
     GameSettings();

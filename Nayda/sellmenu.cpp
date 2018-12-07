@@ -207,7 +207,7 @@ void SellMenu::SetDecks(const AllDecksToBePassed &data)
 
 CardPosition SellMenu::GetCurrentCardPosition()
 {
-    uint32_t column = (_cardsToBeSoldOut.size() % 4) - 1;
+    uint32_t column = (_cardsToBeSoldOut.size() % 4);
     uint32_t row = 3 + _cardsToBeSoldOut.size() / 4;
 
     return CardPosition(column, row);
@@ -327,11 +327,15 @@ void SellMenu::SetFontAndAlignment(QLabel *lbl)
 
 void SellMenu::CheckIfRestrictedToOverSell(uint32_t priceWas, uint32_t priceBecame)
 {
-    if (priceBecame >= 1000 && !_AllowLevelOverSell)
+    qDebug() << "NAY-002: Processing overSell: ";
+    if (priceBecame >= 1000)
     {
         if (priceWas % 1000 >= 1)
         {
-            if (((priceBecame % 1000) - (priceWas % 1000)) <= 0)
+            uint32_t levelsBecame = priceBecame % 1000;
+            uint32_t levelsWas = priceWas % 1000;
+            uint32_t rise = levelsBecame - levelsWas;
+            if (rise)
                 //уровень от продажи этой карты дополнительно не поднимется.
                 //не показывать кнопку продажи
                 //на этом этапе валидации алгоритма для упрощения не проверять,
