@@ -99,6 +99,7 @@ struct CardsKeysBorders {
 
 
 
+
 //class-prototype (draft only)
 //Despite of cards having somekind of the same nature,
 //the Game mechanics can be made much easier to implement if I am not using the cards as childs of prototype
@@ -136,6 +137,18 @@ struct CardToBeShownInSellMenu: public CommonCardViewData
 };
 
 
+struct CardToBeSoldCredentials
+{
+    QString     _picturePath;
+    uint32_t    _price;
+
+    explicit CardToBeSoldCredentials(const QString& str, uint32_t price) :
+        _picturePath(str), _price(price)
+    { }
+
+    explicit CardToBeSoldCredentials()
+    { }
+};
 
 class PositionedCard
 {

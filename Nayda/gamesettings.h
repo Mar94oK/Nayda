@@ -21,6 +21,12 @@ private:
     RulesType    _rulesType;
     bool         _settingsCorrectionAllowed;
 
+private:
+    //GameProcessSettings:
+    bool _HardCodedSettings_AllowedToSellAtLevelNine = true;
+    bool _HardCodedSettings_AllowedToOverSellAtLevelNine = true;
+    bool _HardCodedSettings_AllowLevelOverSell = true;
+
 public:
     GameSettings();
     GameSettings(unsigned int maxNumberOfPlayers, unsigned int totaltimeToMove,
@@ -59,6 +65,10 @@ public:
     void setSettingsCorrectionAllowed(bool settingCorrectionAllowed);
     QString roomName() const;
     void setRoomName(const QString &roomName);
+
+    bool GetHardCodedSettingsAllowedToSellAtLevelNine() const { return _HardCodedSettings_AllowedToSellAtLevelNine; }
+    bool GetHardCodedSettingsAllowedToOverSellAtLevelNine() const { return _HardCodedSettings_AllowedToOverSellAtLevelNine; }
+    bool GetHardCodedSettingsAllowLevelOverSell() const { return _HardCodedSettings_AllowLevelOverSell; }
 };
 
 #endif // GAMESETTINGS_H

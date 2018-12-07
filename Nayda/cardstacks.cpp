@@ -117,7 +117,7 @@ CardStacks::~CardStacks()
     delete ui;
 }
 
-void CardStacks::changeTheDoorsStackView(unsigned int cardsLeft)
+void CardStacks::SlotChangeTheDoorsStackView(unsigned int cardsLeft)
 {
     QRect HW_Screen_Size = QApplication::desktop()->screenGeometry();
     int HW_Screen_Size_Width = HW_Screen_Size.width();
@@ -162,7 +162,7 @@ void CardStacks::changeTheDoorsStackView(unsigned int cardsLeft)
     }
 }
 
-void CardStacks::changeTheTreasureStackView(unsigned int cardsLeft)
+void CardStacks::SlotChangeTheTreasureStackView(unsigned int cardsLeft)
 {
     QRect HW_Screen_Size = QApplication::desktop()->screenGeometry();
     int HW_Screen_Size_Width = HW_Screen_Size.width();
@@ -206,14 +206,12 @@ void CardStacks::changeTheTreasureStackView(unsigned int cardsLeft)
     }
 }
 
-void CardStacks::passTheCardToFoldStack(SimpleCard card)
+void CardStacks::SlotPassTheCardToFoldStack(SimpleCard card)
 {
-    if (card.first) {
+    if (card.first)
         _treasuresFold.push_back(card);
-    }
-    else {
+    else
         _doorsFold.push_back(card);
-    }
 
     //and redraw the Picture!
 
@@ -598,7 +596,7 @@ void CardStacks::testTheFoldProcess()
         ui->lbl_DoorsFold->setText(QString::number(_doorsFold.size()));
     }
 //pass the Card;
-    passTheCardToFoldStack(currentCard);
+    SlotPassTheCardToFoldStack(currentCard);
 }
 
 void CardStacks::startTheTest()

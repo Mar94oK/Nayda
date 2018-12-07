@@ -69,8 +69,8 @@ private:
 
 public slots:
 
-    void changeTheDoorsStackView(unsigned int cardsLeft);
-    void changeTheTreasureStackView(unsigned int cardsLeft);
+    void SlotChangeTheDoorsStackView(unsigned int cardsLeft);
+    void SlotChangeTheTreasureStackView(unsigned int cardsLeft);
 
 private:
 
@@ -90,7 +90,7 @@ private:
 
 public slots:
 
-    void passTheCardToFoldStack(SimpleCard card);
+    void SlotPassTheCardToFoldStack(SimpleCard card);
 
 private:
 

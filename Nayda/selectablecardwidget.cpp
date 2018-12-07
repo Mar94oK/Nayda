@@ -55,3 +55,8 @@ void SelectableCardWidget::SetUpSignalsSlotsConnection()
     connect(ui->chckBox_Selected, &QCheckBox::stateChanged,
             [this]{SlotReportSelected(ui->chckBox_Selected->isChecked());});
 }
+
+void SelectableCardWidget::DisableChecker()
+{
+    ui->chckBox_Selected->setCheckState(Qt::CheckState::Unchecked);
+}

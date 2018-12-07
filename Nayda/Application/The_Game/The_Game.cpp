@@ -1474,6 +1474,23 @@ const std::map<int, gameCardTreasureWeapon> *The_Game::weaponsDeck()
     return &_weaponsDeck;
 }
 
+void The_Game::SaveFoldCardsAndClearSoldCardsHolder()
+{
+    for (uint32_t var = 0; var < _soldCardsToBeProcessedHolder.size(); ++var)
+    {
+        AddCardToFoldStack(_soldCardsToBeProcessedHolder[var]);
+    }
+    _soldCardsToBeProcessedHolder.clear();
+}
+
+void The_Game::AddCardToFoldStack(SimpleCard card)
+{
+    if (card.first)
+        _treasuresFold.push_back(card);
+    else
+        _doorsFold.push_back(card);
+}
+
 //This procedure is responsible for giving initial 8 cards to players.
 //If the Server is Working, it is resposible for providing this info for the end-client.
 //For the DEBUG version, it will give the numbers (cardIDs) to end-gamers directly.
@@ -2050,12 +2067,14 @@ void The_Game::Animation_StartPassSoldCardsFromHandToTreasureFold_Phase3(std::ve
 
         animation->start(QAbstractAnimation::DeleteWhenStopped);
 
+        //Соединить этот сигнал со слотом, который добавляет и отображает последнюю сброшенную карту в TreasuresFold.
+        //До этого момента игра находится в фазе CardProcessing.
         connect(animation, &QPropertyAnimation::finished,
                 movedCards[var], &QPushButton::deleteLater);
+        connect(animation, &QPropertyAnimation::finished,
+                [this, var]{ emit SignalPassTheCardToTheFoldStack(_cardsAreReadyToBeSoldHolder[var]);});
     }
-
-    //Соединить этот сигнал со слотом, который добавляет и отображает последнюю сброшенную карту в TreasuresFold.
-    //До этого момента игра находится в фазе CardProcessing.
+    SaveFoldCardsAndClearSoldCardsHolder();
 }
 
 QString The_Game::findTheCardPicture(SimpleCard card)
@@ -2517,6 +2536,9 @@ void The_Game::SetUpSignalSlotsConnections()
 
     connect(this, &The_Game::SignalShowTradeButton, ui->MainGamer, &GamerWidget::SlotShowTradeButton);
     connect(this, &The_Game::SignalHideTradeButton, ui->MainGamer, &GamerWidget::SlotHideTradeButton);
+
+    connect(this, &The_Game::SignalPassTheCardToTheFoldStack,
+            ui->CardStacksWidget, &CardStacks::SlotPassTheCardToFoldStack);
 }
 
 void The_Game::InitializePopUpWidgets()
@@ -2558,6 +2580,20 @@ void The_Game::PassCardsToWidgets()
     PassDecksToCardsStacksWidget();
 }
 
+void The_Game::RemoveCardFromCardsAreAbleToBeSold(SimpleCard card)
+{
+    for (int var = 0; var < _cardsAreReadyToBeSoldHolder.size(); ++var)
+    {
+        if (_cardsAreReadyToBeSoldHolder[var] == card)
+        {
+            _cardsAreReadyToBeSoldHolder.erase(_cardsAreReadyToBeSoldHolder.begin() + var);
+            return;
+        }
+    }
+    qDebug() << "EEROR WHILE RemoveCardFromCardsAreAbleToBeSold! Card with id: " << card.second
+             << " Not found!";
+}
+
 void The_Game::RemoveTheCardFromHand(GamerWidget *wt, SimpleCard card)
 {
     wt->RemoveCardFromHand(card);
@@ -2584,6 +2620,9 @@ void The_Game::SlotShowTradeMenu()
                                  _weaponsDeck),
                                 QSize(HW_Screen_Size.width(),
                                       HW_Screen_Size.height()),
+                                _gameSettings.GetHardCodedSettingsAllowedToOverSellAtLevelNine(),
+                                _mainPlayer->GetPlayerLevel(),
+                                _gameSettings.GetHardCodedSettingsAllowLevelOverSell(),
                                 _cardsAreReadyToBeSoldHolder);
 
     _sellMenu->show();
@@ -2602,23 +2641,17 @@ void The_Game::SlotHideTradeMenu()
 
 void The_Game::SlotProcessCardsSelectedToBeSold(const std::vector<SimpleCard> cards)
 {
-    //1. Удалить карты с руки
-    //2. Проверить и убрать в случае необходимости кнопку "Торговля"
-    //3. Добавить уровень//уровни
+    //1. Сохранить карты, чтобы обработать добавление в стек после анимации
+    //2. Удалить карты с руки
+    //3. Проверить и убрать в случае необходимости кнопку "Торговля"
+    //4. Добавить уровень//уровни
     qDebug() << "NAY-002: In the SlotProcessCardsSelectedToBeSold() ";
-    qDebug() << "NAY-002: CardsToBeSold size " << cards.size();
+    qDebug() << "NAY-002: CardsToBeSold size " << cards.size();   
+    _cardsAreReadyToBeSoldHolder = cards;
 
     //1.1. Для этого сначала получить их позиции
     std::vector<PositionedCard> posCards = GetPositionedCards(cards);
     qDebug() << "NAY-002: posCards size " << posCards.size();
-    for (uint32_t var = 0; var < posCards.size(); ++var)
-    {
-        qDebug() << "NAY-002: PosCard id " << posCards[var].GetCard().second
-                 << " pos top left: " << posCards[var].GetPositionTopLeft()
-                 << " pos bottom right: " << posCards[var].GetPositionBottomRight();
-    }
-
-
 
     //Убрать проданные карты с руки. (Карты хранятся во временном векторе posCards)
     //Была либо фаза торговли, либо фаза "ход другого игрока"
@@ -2663,6 +2696,11 @@ void The_Game::SlotShowAllSoldCardsInCentre(const std::vector<SimpleCard> cards,
 bool The_Game::CheckThePlayerIsAbleToSell(Player* player)
 {
     qDebug() <<"NAY-002: Entering AbleToSell Checker";
+
+    if (!_gameSettings.GetHardCodedSettingsAllowedToSellAtLevelNine()
+            && (player->GetPlayerLevel() == 9))
+        return false;
+
     std::vector<SimpleCard> sumChecker;
     std::vector<SimpleCard> cardsOnHands = player->GetCardsOnHands();
     std::vector<SimpleCard> cardsInGame = player->GetCardsInGame();
@@ -2742,6 +2780,11 @@ uint32_t The_Game::GetCardPrice(SimpleCard card)
 
     qDebug() << "NAY-002: Error During CheckCardPrice(). Card Not Found!!!";
     return 0;
+}
+
+uint32_t The_Game::GetLevelPurchased(uint32_t totalMoneySpent)
+{
+    return totalMoneySpent % 1000;
 }
 
 void The_Game::RealGameStart()

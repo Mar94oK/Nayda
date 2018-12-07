@@ -231,13 +231,32 @@ public:
     const std::map<int, gameCardTreasureWeapon> *weaponsDeck();
 
 
+
+//===DECKS PROCESSING
     //Initial Decks;
     //Their exact values should be stored on the SERVER SIDE
+    //07.12.2018
+    //Нет никакой необходимости хранить их на сервере
     std::vector<SimpleCard> _treasuresDeck;
     std::vector<SimpleCard> _doorsDeck;
 
     std::vector<SimpleCard> _treasuresFold;
     std::vector<SimpleCard> _doorsFold;
+
+signals:
+
+    void SignalPassTheCardToTheFoldStack(SimpleCard card);
+
+private:
+
+    std::vector<SimpleCard> _soldCardsToBeProcessedHolder;
+    void SaveFoldCardsAndClearSoldCardsHolder();
+
+    void AddCardToFoldStack(SimpleCard card);
+
+//DECKS PROCESSING===
+
+
 
     //SERVREW
     void DEBUGformingInitialDecks();
@@ -462,8 +481,6 @@ private:
 //Set-up Signal-Slots Connections
     void SetUpSignalSlotsConnections();
 
-
-
     void InitializePopUpWidgets();
     void SetUpBackgroundPicture();
     void PassCardsToWidgets();
@@ -490,19 +507,7 @@ private:
 
     SellMenu* _sellMenu = nullptr;
     std::vector<SimpleCard> _cardsAreReadyToBeSoldHolder;
-    void RemoveCardFromCardsAreAbleToBeSold(SimpleCard card)
-    {
-        for (int var = 0; var < _cardsAreReadyToBeSoldHolder.size(); ++var)
-        {
-            if (_cardsAreReadyToBeSoldHolder[var] == card)
-            {
-                _cardsAreReadyToBeSoldHolder.erase(_cardsAreReadyToBeSoldHolder.begin() + var);
-                return;
-            }
-        }
-        qDebug() << "EEROR WHILE RemoveCardFromCardsAreAbleToBeSold! Card with id: " << card.second
-                 << " Not found!";
-    }
+    void RemoveCardFromCardsAreAbleToBeSold(SimpleCard card);
 
 private:
 
@@ -528,13 +533,12 @@ private:
     std::vector<PositionedCard> GetPositionedCards(const std::vector<SimpleCard>& cards);
     void SoldProcess(const std::vector<PositionedCard>& soldCards);
 
-//SellMenu
+
 public:
 
 private slots:
 
     void SlotAddPlayedCardToTheBattleField(SimpleCard card);
-
     void SlotShowAllSoldCardsInCentre(const std::vector<SimpleCard> cards, uint32_t msTime);
 
 //Game Processing entities
@@ -543,12 +547,15 @@ private:
     uint32_t _currentOpponentToMoveId = 0;
     QString  _currentOpponentToMoveName = "";
 
+
+//===SELLPROCESS
 private:
 
     bool CheckThePlayerIsAbleToSell(Player *player);
     uint32_t GetCardPrice(SimpleCard card);
+    uint32_t GetLevelPurchased(uint32_t totalMoneySpent);
 
-
+//SELLPROCESS===
 
 
     //В самом начале игра должна проверить, кто сейчас ходит.
@@ -651,10 +658,12 @@ private:
 
 //Settings not given in the settings Selection menu:
 private:
-
+    //Animation timings
     uint32_t _msTimeForTradeAnimationPhase1 = 1500; //Moving to centre
     uint32_t _msTimeForTradeAnimationPhase2 = 1500; //Standing at the centre
     uint32_t _msTimeForTradeAnimationPhase3 = 500;  //Moving to Treasure Fold
+
+
 
 };
 

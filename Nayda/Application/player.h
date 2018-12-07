@@ -13,12 +13,11 @@ class Player
 
     bool _isMainPlayer;
 
-    int _playerLevel;
+    uint32_t _playerLevel;
     int _warPower;
-    int _totalCardsOnHands;
-    int _cardsOnHandsLimit;
-    int _totalCardsInGame;
-
+    uint32_t _totalCardsOnHands;
+    uint32_t _cardsOnHandsLimit;
+    uint32_t _totalCardsInGame;
 
     bool _headSlotFull;
     bool _legsSlotFull;
@@ -63,12 +62,12 @@ public:
     void addProfessionActiveAbility(Profession_Active_Abilities professionActiveAbility, Abilities_Keys_Professions professionAbilityKey);
     void addProfessionPassiveAbility(Profession_Passive_Abilities professionPassiveAbility, Abilities_Keys_Professions professionAbilityKey);
 
-    int playerLevel() const;
-    void setPlayerLevel(int playerLevel);
-    int warPower() const;
-    void setWarPower(int warPower);
-    uint32_t cardsOnHands() const;
-    int cardsOnHandsLimit() const;
+    uint32_t GetPlayerLevel() const;
+    void SetPlayerLevel(uint32_t GetPlayerLevel);
+    int GetWarPower() const;
+    void SetWarPower(int GetWarPower);
+    uint32_t GetCardsOnHands() const;
+    uint32_t cardsOnHandsLimit() const;
     void setCardsOnHandsLimit(int cardsOnHandsLimit);
     uint32_t cardsInGame() const;
     void setCards_in_game(int cardsInGame);

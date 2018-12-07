@@ -5,12 +5,16 @@
 #include <QSize>
 #include <QPushButton>
 
-SellMenu::SellMenu(AllDecksToBePassed decksData, QSize mainWindowSize, const std::vector<SimpleCard> &data, QWidget *parent) :
+SellMenu::SellMenu(AllDecksToBePassed decksData, QSize mainWindowSize,
+                   bool AllowedToOverSellAtLevelNine, uint32_t playerLevel, bool AllowLevelOverSell, const std::vector<SimpleCard> &data, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::SellMenu)
 {
     ui->setupUi(this);
 
+    _AllowedToOverSellAtLevelNine = AllowedToOverSellAtLevelNine;
+    _playerLevel = playerLevel;
+    _AllowLevelOverSell = AllowLevelOverSell;
     //find the HW size of the window
     QSize HW_Screen_Size = mainWindowSize;
     _widnowSizeWidth = static_cast<uint32_t>(HW_Screen_Size.width());
@@ -67,7 +71,7 @@ void SellMenu::AddCard(SimpleCard card)
     selectableCard->show();
 
     connect(selectableCard, &SelectableCardWidget::SignalReportSelected,
-            [this, card](bool selected){SlotCardWasSelectedToBeSoldByUser(card, selected);});
+            [this, card, selectableCard](bool selected){SlotCardWasSelectedToBeSoldByUser(card, selected, selectableCard);});
 
 }
 
@@ -209,22 +213,60 @@ CardPosition SellMenu::GetCurrentCardPosition()
     return CardPosition(column, row);
 }
 
-void SellMenu::SlotCardWasSelectedToBeSoldByUser(SimpleCard card, bool selected)
+void SellMenu::SlotCardWasSelectedToBeSoldByUser(SimpleCard card, bool selected, SelectableCardWidget *wt)
 {
     if (selected)
     {
-        ++_totalCardsToBeSold;
-        ui->lbl_CardsToSell->setText(_cardsToSellBaseText + QString::number(_totalCardsToBeSold));
+        if (_AllowedToOverSellAtLevelNine)
+        {
+            ++_totalCardsToBeSold;
+            ui->lbl_CardsToSell->setText(_cardsToSellBaseText + QString::number(_totalCardsToBeSold));
 
-        uint32_t cardPrice = GetCardPrice(card);
-        qDebug() << "NAY-002: Card Price " << cardPrice;
-        _totalSumOfSelectedCards += cardPrice;
-        ui->lbl_Sum->setText(_sumBaseText + QString::number(_totalSumOfSelectedCards));
+            uint32_t cardPrice = GetCardPrice(card);
+            qDebug() << "NAY-002: Card Price " << cardPrice;
+            uint32_t amountOfMoneyWas = _totalSumOfSelectedCards;
+            _totalSumOfSelectedCards += cardPrice;
 
-        _cardsToBeSold.push_back(card);
+            ui->lbl_Sum->setText(_sumBaseText + QString::number(_totalSumOfSelectedCards));
 
-        if (_totalSumOfSelectedCards >= 1000)
-            ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->show();
+            _cardsToBeSold.push_back(card);
+
+            if (_AllowLevelOverSell)
+            {
+                if (_totalSumOfSelectedCards >= 1000)
+                    ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->show();
+            }
+            else
+                CheckIfRestrictedToOverSell(amountOfMoneyWas, _totalSumOfSelectedCards);
+        }
+        else
+        {
+            uint32_t cardPrice = GetCardPrice(card);
+            uint32_t estimatedPrice = _totalSumOfSelectedCards + cardPrice;
+            uint32_t amountOfMoneyWas = _totalSumOfSelectedCards;
+            qDebug() << "NAY-002: Estimated Price " << estimatedPrice;
+            if ((estimatedPrice % 1000) + _playerLevel <= 9)
+            {
+                ++_totalCardsToBeSold;
+                ui->lbl_CardsToSell->setText(_cardsToSellBaseText + QString::number(_totalCardsToBeSold));
+                _totalSumOfSelectedCards += cardPrice;
+                ui->lbl_Sum->setText(_sumBaseText + QString::number(_totalSumOfSelectedCards));
+                _cardsToBeSold.push_back(card);
+
+                if (_AllowLevelOverSell)
+                {
+                    if (_totalSumOfSelectedCards >= 1000)
+                        ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->show();
+                }
+                else
+                    CheckIfRestrictedToOverSell(amountOfMoneyWas, _totalSumOfSelectedCards);
+            }
+            else
+            {
+                qDebug() << "NAY-002: OverSell Reaching Level Nine Detected. OverSell Not allowed! " << estimatedPrice;
+                wt->DisableChecker();
+            }
+        }
     }
     else
     {
@@ -234,6 +276,12 @@ void SellMenu::SlotCardWasSelectedToBeSoldByUser(SimpleCard card, bool selected)
 
         if (_totalSumOfSelectedCards < 1000)
             ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->hide();
+        if (!_AllowLevelOverSell)
+        {
+            --_overSellCardsAdded;
+            if (!_overSellCardsAdded && _totalSumOfSelectedCards >= 1000)
+                ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->show();
+        }
 
         --_totalCardsToBeSold;
         ui->lbl_CardsToSell->setText(_cardsToSellBaseText + QString::number(_totalCardsToBeSold));
@@ -275,4 +323,29 @@ void SellMenu::SetFontAndAlignment(QLabel *lbl)
     QFontMetrics _startUpTimerTextLabelFontInterval (_startUpTimerTextLabelFont);
     lbl->setFont(_startUpTimerTextLabelFont);
     lbl->setAlignment(Qt::AlignHCenter);
+}
+
+void SellMenu::CheckIfRestrictedToOverSell(uint32_t priceWas, uint32_t priceBecame)
+{
+    if (priceBecame >= 1000 && !_AllowLevelOverSell)
+    {
+        if (priceWas % 1000 >= 1)
+        {
+            if (((priceBecame % 1000) - (priceWas % 1000)) <= 0)
+                //уровень от продажи этой карты дополнительно не поднимется.
+                //не показывать кнопку продажи
+                //на этом этапе валидации алгоритма для упрощения не проверять,
+                //сколько карт осталось и хватит ли их цены
+                //пусть пользователь сам считает
+            {
+                ++_overSellCardsAdded;
+                ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->hide();
+            }
+            else
+                ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->show();
+        }
+        else
+            if (priceBecame >= 1000)
+                ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->show();
+    }
 }

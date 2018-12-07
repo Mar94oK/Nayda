@@ -300,7 +300,7 @@ void Player::setCards_in_game(int cards_in_game)
 }
 
 
-int Player::cardsOnHandsLimit() const
+uint32_t Player::cardsOnHandsLimit() const
 {
     return _cardsOnHandsLimit;
 }
@@ -312,32 +312,32 @@ void Player::setCardsOnHandsLimit(int cardsOnHandsLimit)
 }
 
 
-uint32_t Player::cardsOnHands() const
+uint32_t Player::GetCardsOnHands() const
 {
     return _cardsOnHands.size();
 }
 
 
 
-int Player::warPower() const
+int Player::GetWarPower() const
 {
     return _warPower;
 }
 
 
-void Player::setWarPower(int warPower)
+void Player::SetWarPower(int warPower)
 {
     _warPower = warPower;
 }
 
 
-int Player::playerLevel() const
+uint32_t Player::GetPlayerLevel() const
 {
     return _playerLevel;
 }
 
 
-void Player::setPlayerLevel(int playerLevel)
+void Player::SetPlayerLevel(uint32_t playerLevel)
 {
     _playerLevel = playerLevel;
 }

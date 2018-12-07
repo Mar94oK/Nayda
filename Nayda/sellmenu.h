@@ -7,18 +7,7 @@
 #include <QLabel>
 
 
-struct CardToBeSoldCredentials
-{
-    QString     _picturePath;
-    uint32_t    _price;
 
-    explicit CardToBeSoldCredentials(const QString& str, uint32_t price) :
-        _picturePath(str), _price(price)
-    { }
-
-    explicit CardToBeSoldCredentials()
-    { }
-};
 
 
 struct CardPosition
@@ -40,7 +29,9 @@ class SellMenu : public QWidget
     Q_OBJECT
 
 public:
-    explicit SellMenu(AllDecksToBePassed decksData, QSize mainWindowSize, const std::vector<SimpleCard>& data, QWidget *parent = nullptr);
+    explicit SellMenu(AllDecksToBePassed decksData, QSize mainWindowSize,
+                      bool AllowedToOverSellAtLevelNine, uint32_t playerLevel, bool AllowLevelOverSell,
+                      const std::vector<SimpleCard>& data, QWidget *parent = nullptr);
     ~SellMenu();
 
 private:
@@ -58,6 +49,11 @@ private:
     void AddCard(SimpleCard card);
     CardToBeSoldCredentials GetCardToBeSoldCredentials(SimpleCard card);
     uint32_t GetCardPrice(SimpleCard card);
+
+    bool _AllowedToOverSellAtLevelNine;
+    uint32_t _playerLevel;
+    bool _AllowLevelOverSell;
+    uint32_t _overSellCardsAdded;
 
 public:
     void SetDecks(const AllDecksToBePassed& data);
@@ -100,12 +96,13 @@ private:
 
 public slots:
 
-    void SlotCardWasSelectedToBeSoldByUser(SimpleCard card, bool selected);
+    void SlotCardWasSelectedToBeSoldByUser(SimpleCard card, bool selected, SelectableCardWidget* wt);
 
 signals:
 
     void SignalReportCardsToBeSold(const std::vector<SimpleCard>& cards);
     void SignalUserClosedTradeMenu();
+
 
 private:
 
@@ -113,6 +110,8 @@ private:
     void closeEvent(QCloseEvent *event);
 
     void SetFontAndAlignment(QLabel* lbl);
+
+    void CheckIfRestrictedToOverSell(uint32_t priceWas, uint32_t priceBecame);
 
 };
 

@@ -37,6 +37,10 @@ private:
 
     void SetUpSignalsSlotsConnection();
 
+public:
+
+    void DisableChecker();
+
 };
 
 #endif // SELECTABLECARDWIDGET_H
