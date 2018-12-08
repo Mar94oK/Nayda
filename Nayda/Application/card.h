@@ -96,7 +96,15 @@ struct CardsKeysBorders {
     int upperBorder;
 };
 
+struct CardPosition
+{
+    uint32_t posColumn;
+    uint32_t posRow;
 
+    explicit CardPosition(uint32_t posCol, uint32_t posRow) :
+        posColumn(posCol), posRow(posRow)
+    { }
+};
 
 
 

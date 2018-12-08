@@ -166,7 +166,7 @@ private:
 
    void SetUpPictureAddresses();
    void SetUpInitialTimersPictures();
-   void setUpButtonPicture(QPushButton* const btn, const QString& picturePath, double widthCoeff, double heightWidthRelatio);
+   void SetUpButtonPicture(QPushButton* const btn, const QString& picturePath, double widthCoeff, double heightWidthRelatio);
 
    //These sizes should be selected with respect to the TimerText Height.
    const double _buttonsWidthCoefficient = 0.1;

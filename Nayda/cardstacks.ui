@@ -199,7 +199,14 @@
     </layout>
    </item>
    <item row="3" column="0" colspan="4">
-    <layout class="QVBoxLayout" name="verticalLayout_6" stretch="0">
+    <layout class="QVBoxLayout" name="verticalLayout_6" stretch="0,0">
+     <item>
+      <widget class="QPushButton" name="btn_FoldObserver">
+       <property name="text">
+        <string>Карты последнего сброса</string>
+       </property>
+      </widget>
+     </item>
      <item>
       <widget class="QPushButton" name="btn_Test">
        <property name="sizePolicy">

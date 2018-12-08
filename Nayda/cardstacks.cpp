@@ -1,6 +1,7 @@
 #include "cardstacks.h"
 #include "ui_cardstacks.h"
 #include "munchkinglobaldefines.h"
+#include <QPalette>
 
 CardStacks::CardStacks(QWidget *parent) :
     QWidget(parent),
@@ -109,7 +110,17 @@ CardStacks::CardStacks(QWidget *parent) :
 
     connect(ui->btn_Test, &QPushButton::clicked, this, &CardStacks::startTheTest);
     connect(_testTimer, &QTimer::timeout, this, &CardStacks::testTheFoldProcess);
+
 #endif
+
+    _savedPalleteFoldObserverButton = ui->btn_FoldObserver->palette();
+    ui->btn_FoldObserver->hide();
+
+    QPushButton* observer = ui->btn_FoldObserver;
+    connect(ui->btn_FoldObserver, &QPushButton::pressed,
+            [this, observer]{emit SignalFoldObserverButtonPressed();
+                             observer->hide();});
+    SetUpFoldObserverBlinkingTimer();
 }
 
 CardStacks::~CardStacks()
@@ -641,6 +652,72 @@ QSize CardStacks::ProvideTreasuresFoldSize()
 QSize CardStacks::ProvideDoorsFoldSize()
 {
     return ui->btn_DoorsFold->size();
+}
+
+void CardStacks::SlotHideFoldObserver()
+{
+    ui->btn_FoldObserver->hide();
+    if (_foldObserverBlinkingTimer->isActive())
+        _foldObserverBlinkingTimer->stop();
+
+    QPalette pal = _savedPalleteFoldObserverButton;
+    ui->btn_FoldObserver->setAutoFillBackground(true);
+    ui->btn_FoldObserver->setPalette(pal);
+    ui->btn_FoldObserver->update();
+}
+
+void CardStacks::SlotShowFoldObserver()
+{
+    ui->btn_FoldObserver->show();
+    _foldObserverBlinkingTimer->start();
+}
+
+void CardStacks::SetUpFoldObserverBlinkingTimer()
+{
+    _foldObserverBlinkingTimer = new QTimer(this);
+    _foldObserverBlinkingTimer->setInterval(static_cast<int>(_ms_foldObserverBlinkingtTime));
+    _foldObserverBlinkingTimer->setSingleShot(true);
+    connect(_foldObserverBlinkingTimer, &QTimer::timeout,
+            this, &CardStacks::ProcessBlinking);
+}
+
+void CardStacks::ProcessBlinking()
+{
+    ++_blinkingCounter;
+    if (_blinkingCounter == _maximumBlinks)
+    {
+        _foldObserverBlinkingTimer->stop();
+        QPalette pal = _savedPalleteFoldObserverButton;
+        ui->btn_FoldObserver->setAutoFillBackground(true);
+        ui->btn_FoldObserver->setPalette(pal);
+        ui->btn_FoldObserver->update();
+        return;
+    }
+    else
+    {
+        if (_blinkingCounter % 2)
+        {
+            QPalette pal = ui->btn_FoldObserver->palette();
+            pal.setColor(QPalette::Button, QColor(Qt::blue));
+            ui->btn_FoldObserver->setAutoFillBackground(true);
+            ui->btn_FoldObserver->setPalette(pal);
+            ui->btn_FoldObserver->update();
+
+            _foldObserverBlinkingTimer->start();
+            return;
+        }
+        else
+        {
+            _foldObserverBlinkingTimer->stop();
+            QPalette pal = _savedPalleteFoldObserverButton;
+            ui->btn_FoldObserver->setAutoFillBackground(true);
+            ui->btn_FoldObserver->setPalette(pal);
+            ui->btn_FoldObserver->update();
+
+            _foldObserverBlinkingTimer->start();
+            return;
+        }
+    }
 }
 
 void CardStacks::setMonsersDeck(const std::map<int, gameCardDoorMonster> *monsersDeck)

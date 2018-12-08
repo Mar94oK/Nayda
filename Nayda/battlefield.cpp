@@ -680,11 +680,11 @@ void battleField::SetUpPictureAddresses()
 
 void battleField::SetUpInitialTimersPictures()
 {
-    setUpButtonPicture(ui->btn_MoveTimer, _timeToMoveTimerPictureAddress, _buttonsWidthCoefficient, _buttonsHeightWidthRelatio);
-    setUpButtonPicture(ui->btn_PhaseTimer, _timeToThinkTimerPictureAddress, _buttonsWidthCoefficient, _buttonsHeightWidthRelatio);
+    SetUpButtonPicture(ui->btn_MoveTimer, _timeToMoveTimerPictureAddress, _buttonsWidthCoefficient, _buttonsHeightWidthRelatio);
+    SetUpButtonPicture(ui->btn_PhaseTimer, _timeToThinkTimerPictureAddress, _buttonsWidthCoefficient, _buttonsHeightWidthRelatio);
 }
 
-void battleField::setUpButtonPicture(QPushButton * const btn, const QString &picturePath, double widthCoeff, double heightWidthRelatio)
+void battleField::SetUpButtonPicture(QPushButton * const btn, const QString &picturePath, double widthCoeff, double heightWidthRelatio)
 {
     QPixmap pxmpBtnMainRepresenter(picturePath);
     QPalette plteBtnMainRepresenter(btn->palette());
@@ -740,11 +740,11 @@ void battleField::SlotChangePhaseTimerTime(uint32_t time)
 void battleField::SlotGamePhaseHasBeenChanged(GamePhase phase)
 {
     if (phase == GamePhase::Diplomacy)
-        setUpButtonPicture(ui->btn_PhaseTimer, _diplomacyTimerPictureAddress, _buttonsWidthCoefficient, _buttonsHeightWidthRelatio);
+        SetUpButtonPicture(ui->btn_PhaseTimer, _diplomacyTimerPictureAddress, _buttonsWidthCoefficient, _buttonsHeightWidthRelatio);
     else if (phase == GamePhase::WaitingForAnOpponentToMove)
-        setUpButtonPicture(ui->btn_PhaseTimer, _timeForOpponentsToDecideTimerPictureAddress, _buttonsWidthCoefficient, _buttonsHeightWidthRelatio);
+        SetUpButtonPicture(ui->btn_PhaseTimer, _timeForOpponentsToDecideTimerPictureAddress, _buttonsWidthCoefficient, _buttonsHeightWidthRelatio);
     else if (phase == GamePhase::StartOfTheMove)
-        setUpButtonPicture(ui->btn_PhaseTimer, _timeToThinkTimerPictureAddress, _buttonsWidthCoefficient, _buttonsHeightWidthRelatio);
+        SetUpButtonPicture(ui->btn_PhaseTimer, _timeToThinkTimerPictureAddress, _buttonsWidthCoefficient, _buttonsHeightWidthRelatio);
     else
         qDebug() << "NAY-001: This phase will not change the timers ICO! Place here changings for all the Other Features";
 

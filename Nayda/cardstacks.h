@@ -187,6 +187,27 @@ public:
     QSize  ProvideTreasuresFoldSize();
     QSize  ProvideDoorsFoldSize();
 
+public slots:
+
+    void SlotHideFoldObserver();
+    void SlotShowFoldObserver();
+
+signals:
+
+    void SignalFoldObserverButtonPressed();
+
+private:
+
+    QTimer* _foldObserverBlinkingTimer;
+    const uint32_t _ms_foldObserverBlinkingtTime = 1000;
+    void SetUpFoldObserverBlinkingTimer();
+    uint32_t   _blinkingCounter = 0;
+    const uint32_t _maximumBlinks = 7;
+    QPalette _savedPalleteFoldObserverButton;
+
+    void ProcessBlinking();
+
+
 };
 
 #endif // CARDSTACKS_H

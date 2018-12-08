@@ -29,6 +29,8 @@
 
 #include "sellmenu.h"
 
+#include "lastfoldobserver.h"
+
 #define PC_VERSION //begin with PC
 #define DEBUG_MESSAGES //start with debug enabled
 #define DEBUG_NO_SERVER
@@ -246,6 +248,9 @@ public:
 signals:
 
     void SignalPassTheCardToTheFoldStack(SimpleCard card);
+    void SignalEnableFoldProcessButton();
+    void SignalDisableFoldProcessButton();
+    void SignalCloseFoldObserver();
 
 private:
 
@@ -253,6 +258,11 @@ private:
     void SaveFoldCardsAndClearSoldCardsHolder();
 
     void AddCardToFoldStack(SimpleCard card);
+
+    LastFoldObserver* _foldObserver = nullptr;
+    void ProcessFoldObserver(const std::vector<SimpleCard> foldedCards);
+
+    std::vector<SimpleCard> _lastFold;
 
 //DECKS PROCESSING===
 
@@ -287,9 +297,9 @@ public slots:
 
     void SlotShowTheCardInCentre(PositionedCard card);
     void SlotShowTheCardInGameInspector(PositionedCard card);
-    //void showTheCardNearItsPosition(PositionedCard card);
+
     void SlotHideTheCardInCentre(bool);
-    //void hideTheCardNearItsPosition(bool);
+
     
 private:
 
@@ -341,7 +351,6 @@ private:
 private:
 
     PopUpCard* _popUpCardWidget;
-
     TriangleCardPointer* _cardPointer;
 
 private:

@@ -1480,6 +1480,7 @@ void The_Game::SaveFoldCardsAndClearSoldCardsHolder()
     {
         AddCardToFoldStack(_soldCardsToBeProcessedHolder[var]);
     }
+    qDebug() << "NAY-002: Process sold cards: ";
     _soldCardsToBeProcessedHolder.clear();
 }
 
@@ -1489,6 +1490,78 @@ void The_Game::AddCardToFoldStack(SimpleCard card)
         _treasuresFold.push_back(card);
     else
         _doorsFold.push_back(card);
+}
+
+void The_Game::ProcessFoldObserver(const std::vector<SimpleCard> foldedCards)
+{
+    QRect HW_Screen_Size = geometry();
+
+    if (_foldObserver == nullptr)
+    {
+        _foldObserver = new LastFoldObserver(AllDecksToBePassed(
+                                                 _monstersDeck,
+                                                 _amplifiersDeck,
+                                                 _cursesDeck,
+                                                 _professionsDeck,
+                                                 _racesDeck,
+                                                 _specialMechanicsDeck,
+
+                                                 _armorDeck,
+                                                 _armorAmplifiersDeck,
+                                                 _battleAmplifiersDeck,
+                                                 _levelUpDeck,
+                                                 _specialMechanicsTreasureDeck,
+                                                 _thingsAmplifiersDeck,
+                                                 _weaponsDeck),
+                                              QSize(HW_Screen_Size.width(),
+                                                    HW_Screen_Size.height()),
+                                              foldedCards);
+        emit SignalEnableFoldProcessButton();
+
+        connect(ui->CardStacksWidget, &CardStacks::SignalFoldObserverButtonPressed,
+                _foldObserver, &LastFoldObserver::show);
+
+        connect(_foldObserver, &LastFoldObserver::SignalUserIsClosingLastFoldObserver,
+                [this]{ _foldObserver->deleteLater();});
+    }
+    else
+    {
+        emit SignalDisableFoldProcessButton();
+
+        _foldObserver->blockSignals(true);
+        _foldObserver->close();
+        _foldObserver->deleteLater();
+
+        _foldObserver = new LastFoldObserver(AllDecksToBePassed(
+                                                 _monstersDeck,
+                                                 _amplifiersDeck,
+                                                 _cursesDeck,
+                                                 _professionsDeck,
+                                                 _racesDeck,
+                                                 _specialMechanicsDeck,
+
+                                                 _armorDeck,
+                                                 _armorAmplifiersDeck,
+                                                 _battleAmplifiersDeck,
+                                                 _levelUpDeck,
+                                                 _specialMechanicsTreasureDeck,
+                                                 _thingsAmplifiersDeck,
+                                                 _weaponsDeck),
+                                              QSize(HW_Screen_Size.width(),
+                                                    HW_Screen_Size.height()),
+                                              foldedCards);
+
+
+        connect(ui->CardStacksWidget, &CardStacks::SignalFoldObserverButtonPressed,
+                _foldObserver, &LastFoldObserver::show);
+
+        connect(_foldObserver, &LastFoldObserver::SignalUserIsClosingLastFoldObserver,
+                [this]{ _foldObserver->deleteLater();});
+
+        emit SignalEnableFoldProcessButton();
+    }
+
+    _lastFold.clear();
 }
 
 //This procedure is responsible for giving initial 8 cards to players.
@@ -2054,6 +2127,7 @@ void The_Game::Animation_StartPassSoldCardsFromHandToTreasureFold_Phase3(std::ve
     QPoint EndPosition = GetTreasuresFoldPosition() + GetCardsStackPosition();
     QSize EndSize = GetTreasuresFoldSize();
     std::vector<QPropertyAnimation*> animations;
+    _lastFold = _soldCardsToBeProcessedHolder;
     for (uint32_t var = 0; var < movedCards.size(); ++var)
     {
         QPropertyAnimation *animation = new QPropertyAnimation(movedCards[var], "geometry");
@@ -2073,7 +2147,10 @@ void The_Game::Animation_StartPassSoldCardsFromHandToTreasureFold_Phase3(std::ve
                 movedCards[var], &QPushButton::deleteLater);
         connect(animation, &QPropertyAnimation::finished,
                 [this, var]{ emit SignalPassTheCardToTheFoldStack(_cardsAreReadyToBeSoldHolder[var]);});
-    }
+        if (var == (movedCards.size() - 1))
+            connect(animation, &QPropertyAnimation::finished,
+                    [this]{ProcessFoldObserver(_lastFold);});
+    }    
     SaveFoldCardsAndClearSoldCardsHolder();
     CheckThePlayerIsAbleToSell(_mainPlayer);
 }
@@ -2540,6 +2617,12 @@ void The_Game::SetUpSignalSlotsConnections()
 
     connect(this, &The_Game::SignalPassTheCardToTheFoldStack,
             ui->CardStacksWidget, &CardStacks::SlotPassTheCardToFoldStack);
+
+    connect(this, &The_Game::SignalEnableFoldProcessButton,
+            ui->CardStacksWidget, &CardStacks::SlotShowFoldObserver);
+    connect(this, &The_Game::SignalDisableFoldProcessButton,
+            ui->CardStacksWidget, &CardStacks::SlotHideFoldObserver);
+
 }
 
 void The_Game::InitializePopUpWidgets()
@@ -2662,6 +2745,7 @@ void The_Game::SlotProcessCardsSelectedToBeSold(const std::vector<SimpleCard> ca
         RemoveTheCardFromHand(ui->MainGamer, posCards[var].GetCard());
 
     _mainPlayer->RemoveGivenCardsFromHand(cards);
+    _soldCardsToBeProcessedHolder = cards;
     //start animation here
     Animation_StartPassSoldCardsFromHandToTreasureFold_Phase1(posCards);
 
