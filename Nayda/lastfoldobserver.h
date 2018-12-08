@@ -59,7 +59,7 @@ private:
 
     //setup the koefficients;
     const float handCardSize_width_to_height_ratio = 2.71f;
-    const float handCardSizeWidht = 0.10f;
+    const float handCardSizeWidht = 0.12f;
     const float handCardSizeHeight = handCardSize_width_to_height_ratio*handCardSizeWidht;
 
     uint32_t _windowSizeHeight;
@@ -76,7 +76,7 @@ private:
 
     CardPosition GetCurrentCardPosition();
 
-    void SetUpButtonPicture(QPushButton* const btn, const QString& picturePath, double widthCoeff, double heightWidthRelatio);
+    void SetUpButtonPicture(QPushButton* const btn, const QString& picturePath, QSize size);
 
 signals:
 

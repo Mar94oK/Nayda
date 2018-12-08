@@ -23,9 +23,7 @@ LastFoldObserver::LastFoldObserver(AllDecksToBePassed decksData,
     }
 
     SetFontAndAlignment(ui->lbl_Name);
-
-
-
+    ui->lbl_Name->setText(_nameBaseText);
 
     connect(ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok), &QPushButton::pressed,
             this, &LastFoldObserver::close);
@@ -68,25 +66,9 @@ void LastFoldObserver::AddCard(SimpleCard card)
     QPushButton* cardToShow = new QPushButton();
 
     qDebug() << "LastFoldObserver::AddCard(SimpleCard card): " << GetCardPictureAddress(card);
-//    SetUpButtonPicture(cardToShow,
-//                       GetCardPictureAddress(card),
-//                       static_cast<double>(handCardSizeWidht),
-//                       static_cast<double>(handCardSize_width_to_height_ratio));
-
-    //setUpTheCard
-    QPixmap pxmp_theCard(GetCardPictureAddress(card));
-    QPalette plte_theCard;
-    plte_theCard.setBrush(cardToShow->backgroundRole(),
-    QBrush(pxmp_theCard.scaled(cardSize.width(),
-                               cardSize.height(),
-                               Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
-
-    cardToShow->setFlat(true);
-    cardToShow->setAutoFillBackground(true);
-    cardToShow->setPalette(plte_theCard);
-    cardToShow->setText("");
-
-    cardToShow->setMinimumSize(cardSize);
+    SetUpButtonPicture(cardToShow,
+                       GetCardPictureAddress(card),
+                       cardSize);
 
     ui->lyt_FoldCards->addWidget(cardToShow,
                                 static_cast<int32_t>(GetCurrentCardPosition().posRow),
@@ -194,19 +176,18 @@ CardPosition LastFoldObserver::GetCurrentCardPosition()
     return CardPosition(column, row);
 }
 
-void LastFoldObserver::SetUpButtonPicture(QPushButton * const btn, const QString &picturePath, double widthCoeff, double heightWidthRelatio)
+void LastFoldObserver::SetUpButtonPicture(QPushButton * const btn, const QString &picturePath, QSize size)
 {
     QPixmap pxmpBtnMainRepresenter(picturePath);
     QPalette plteBtnMainRepresenter(btn->palette());
+
     plteBtnMainRepresenter.setBrush(QPalette::Button,
-                                    QBrush(pxmpBtnMainRepresenter.scaled(static_cast<int>(_mainWindowSize.width()*widthCoeff),
-                                            static_cast<int>(_mainWindowSize.width()*widthCoeff*heightWidthRelatio),
+                                    QBrush(pxmpBtnMainRepresenter.scaled(size.width(),
+                                            size.height(),
                                             Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
 
-    btn->setMinimumWidth(static_cast<int>(_mainWindowSize.width()*widthCoeff));
-    btn->setMinimumHeight(static_cast<int>(_mainWindowSize.width()*widthCoeff*heightWidthRelatio));
-    btn->setMaximumWidth(static_cast<int>(_mainWindowSize.width()*widthCoeff));
-    btn->setMaximumHeight(static_cast<int>(_mainWindowSize.width()*widthCoeff*heightWidthRelatio));
+    btn->setMinimumSize(size);
+    btn->setMaximumSize(size);
     btn->setFlat(true);
     btn->setAutoFillBackground(true);
     btn->setPalette(plteBtnMainRepresenter);

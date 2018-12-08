@@ -2685,7 +2685,7 @@ void The_Game::RemoveTheCardFromHand(GamerWidget *wt, SimpleCard card)
 void The_Game::SlotShowTradeMenu()
 {
     QRect HW_Screen_Size = QApplication::desktop()->screenGeometry();
-
+    emit SignalHideTradeButton();
     _sellMenu = new SellMenu(AllDecksToBePassed(
                                  _monstersDeck,
                                  _amplifiersDeck,
@@ -2745,8 +2745,10 @@ void The_Game::SlotProcessCardsSelectedToBeSold(const std::vector<SimpleCard> ca
     _currentGamePhase = GamePhase::CardProcessing;
     emit SignalHideTradeButton();
     for (uint32_t var = 0; var < posCards.size(); ++var)
+    {
+        RemoveCardFromCardsAreAbleToBeSold(posCards[var].GetCard());
         RemoveTheCardFromHand(ui->MainGamer, posCards[var].GetCard());
-
+    }
     _mainPlayer->RemoveGivenCardsFromHand(cards);
 
     //start animation here
