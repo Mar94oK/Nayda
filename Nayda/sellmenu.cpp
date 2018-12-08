@@ -217,71 +217,43 @@ void SellMenu::SlotCardWasSelectedToBeSoldByUser(SimpleCard card, bool selected,
 {
     if (selected)
     {
-        if (_AllowedToOverSellAtLevelNine)
+        if (!_AllowedToOverSellAtLevelNine)
         {
-            ++_totalCardsToBeSold;
-            ui->lbl_CardsToSell->setText(_cardsToSellBaseText + QString::number(_totalCardsToBeSold));
-
-            uint32_t cardPrice = GetCardPrice(card);
-            qDebug() << "NAY-002: Card Price " << cardPrice;
-            uint32_t amountOfMoneyWas = _totalSumOfSelectedCards;
-            _totalSumOfSelectedCards += cardPrice;
-
-            ui->lbl_Sum->setText(_sumBaseText + QString::number(_totalSumOfSelectedCards));
-
-            _cardsToBeSold.push_back(card);
-
-            if (_AllowLevelOverSell)
+            if (!CheckIfRestricetdToOverSellAtLevelNine(_totalSumOfSelectedCards + GetCardPrice(card)))
             {
-                if (_totalSumOfSelectedCards >= 1000)
-                    ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->show();
+                wt->DisableChecker();
+                return;
             }
-            else
-                CheckIfRestrictedToOverSell(amountOfMoneyWas, _totalSumOfSelectedCards);
+        }
+
+        ++_totalCardsToBeSold;
+        ui->lbl_CardsToSell->setText(_cardsToSellBaseText + QString::number(_totalCardsToBeSold));
+
+        uint32_t cardPrice = GetCardPrice(card);
+        qDebug() << "NAY-002: Card Price " << cardPrice;
+        uint32_t amountOfMoneyWas = _totalSumOfSelectedCards;
+        _totalSumOfSelectedCards += cardPrice;
+
+        ui->lbl_Sum->setText(_sumBaseText + QString::number(_totalSumOfSelectedCards));
+
+        _cardsToBeSold.push_back(card);
+
+        if (!_AllowLevelOverSell)
+        {
+            CheckIfRestrictedToOverSell(amountOfMoneyWas, _totalSumOfSelectedCards);
         }
         else
         {
-            uint32_t cardPrice = GetCardPrice(card);
-            uint32_t estimatedPrice = _totalSumOfSelectedCards + cardPrice;
-            uint32_t amountOfMoneyWas = _totalSumOfSelectedCards;
-            qDebug() << "NAY-002: Estimated Price " << estimatedPrice;
-            if ((estimatedPrice % 1000) + _playerLevel <= 9)
-            {
-                ++_totalCardsToBeSold;
-                ui->lbl_CardsToSell->setText(_cardsToSellBaseText + QString::number(_totalCardsToBeSold));
-                _totalSumOfSelectedCards += cardPrice;
-                ui->lbl_Sum->setText(_sumBaseText + QString::number(_totalSumOfSelectedCards));
-                _cardsToBeSold.push_back(card);
-
-                if (_AllowLevelOverSell)
-                {
-                    if (_totalSumOfSelectedCards >= 1000)
-                        ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->show();
-                }
-                else
-                    CheckIfRestrictedToOverSell(amountOfMoneyWas, _totalSumOfSelectedCards);
-            }
-            else
-            {
-                qDebug() << "NAY-002: OverSell Reaching Level Nine Detected. OverSell Not allowed! " << estimatedPrice;
-                wt->DisableChecker();
-            }
+            if (_totalSumOfSelectedCards >= 1000)
+                ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->show();
         }
+
     }
     else
     {
         uint32_t cardPrice = GetCardPrice(card);
         _totalSumOfSelectedCards -= cardPrice;
         ui->lbl_Sum->setText(_sumBaseText + QString::number(_totalSumOfSelectedCards));
-
-        if (_totalSumOfSelectedCards < 1000)
-            ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->hide();
-        if (!_AllowLevelOverSell)
-        {
-            --_overSellCardsAdded;
-            if (!_overSellCardsAdded && _totalSumOfSelectedCards >= 1000)
-                ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->show();
-        }
 
         --_totalCardsToBeSold;
         ui->lbl_CardsToSell->setText(_cardsToSellBaseText + QString::number(_totalCardsToBeSold));
@@ -292,8 +264,24 @@ void SellMenu::SlotCardWasSelectedToBeSoldByUser(SimpleCard card, bool selected,
             {
                 _cardsToBeSold.erase(_cardsToBeSold.begin() + static_cast<int32_t>(var));
                 _cardsToBeSold.shrink_to_fit();
-                return;
+                break;
             }
+        }
+
+        if (_totalSumOfSelectedCards < 1000)
+        {
+            ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->hide();
+            return;
+        }
+
+        if (!_AllowLevelOverSell)
+        {
+            CheckIfRestrictedToOverSell(_totalSumOfSelectedCards + cardPrice, _totalSumOfSelectedCards);
+        }
+        else
+        {
+            if (_totalSumOfSelectedCards >= 1000)
+                ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->show();
         }
 
         qDebug() << "NAY-002: ERROR SlotCardWasSelectedToBeSoldByUser() Card Not Found!";
@@ -328,28 +316,83 @@ void SellMenu::SetFontAndAlignment(QLabel *lbl)
 void SellMenu::CheckIfRestrictedToOverSell(uint32_t priceWas, uint32_t priceBecame)
 {
     qDebug() << "NAY-002: Processing overSell: ";
-    if (priceBecame >= 1000)
+    uint32_t thresholdWas = priceWas / 1000;
+    uint32_t thresholdBecame = priceBecame / 1000;
+
+    if ((thresholdBecame == thresholdWas) && (priceBecame > priceWas))
     {
-        if (priceWas % 1000 >= 1)
-        {
-            uint32_t levelsBecame = priceBecame % 1000;
-            uint32_t levelsWas = priceWas % 1000;
-            uint32_t rise = levelsBecame - levelsWas;
-            if (rise)
-                //уровень от продажи этой карты дополнительно не поднимется.
-                //не показывать кнопку продажи
-                //на этом этапе валидации алгоритма для упрощения не проверять,
-                //сколько карт осталось и хватит ли их цены
-                //пусть пользователь сам считает
-            {
-                ++_overSellCardsAdded;
-                ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->hide();
-            }
-            else
-                ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->show();
-        }
-        else
-            if (priceBecame >= 1000)
-                ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->show();
+        qDebug() << "NAY-002: New level wasn't reached with this card! Price: " << priceBecame - priceWas;
+        ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->hide();
+        return;
     }
+
+//    if ((thresholdBecame == thresholdWas) && (priceBecame < priceWas))
+//    {
+//        //Check whether without each(!!!) card this result might nor be achieved;
+//        for (uint32_t var = 0; var < _cardsToBeSold.size(); ++var)
+//        {
+//            uint32_t priceWithoutGivenCard = 0;
+//            for (uint32_t y = 0; y < _cardsToBeSold.size(); ++y)
+//            {
+//                if (y != var)
+//                    priceWithoutGivenCard += GetCardPrice(_cardsToBeSold[y]);
+//            }
+//            uint32_t thresholdReachedWithoutGivenCard = priceWithoutGivenCard / 1000;
+//            if (thresholdReachedWithoutGivenCard == thresholdBecame)
+//            {
+//                qDebug() << "NAY-002: New level could be reached without this card! Card: "
+//                         << _cardsToBeSold[var].second
+//                         << " Price: " << GetCardPrice(_cardsToBeSold[var]);
+//                ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->hide();
+//                return;
+//            }
+//        }
+//        //check completed. Check if there's a level to be purchased:
+//        if (priceBecame >= 1000)
+//            ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->show();
+//        else
+//            ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->hide();
+//        return;
+//    }
+
+    if ((thresholdBecame > thresholdWas)
+            || (thresholdBecame < thresholdWas)
+            || ((thresholdBecame == thresholdWas) && (priceBecame < priceWas)))
+    {
+        //Check whether without each(!!!) card this result might nor be achieved;
+
+        for (uint32_t var = 0; var < _cardsToBeSold.size(); ++var)
+        {
+            uint32_t priceWithoutGivenCard = 0;
+            for (uint32_t y = 0; y < _cardsToBeSold.size(); ++y)
+            {
+                if (y != var)
+                    priceWithoutGivenCard += GetCardPrice(_cardsToBeSold[y]);
+            }
+            uint32_t thresholdReachedWithoutGivenCard = priceWithoutGivenCard / 1000;
+            if (thresholdReachedWithoutGivenCard == thresholdBecame)
+            {
+                qDebug() << "NAY-002: New level could be reached without this card! Card: "
+                         << _cardsToBeSold[var].second
+                         << " Price: " << GetCardPrice(_cardsToBeSold[var]);
+                ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->hide();
+                return;
+            }
+        }
+        //No such card without witch new threshold might be achieved
+        if (priceBecame >= 1000)
+            ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->show();
+        else
+            ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->hide();
+        return;
+    }
+}
+
+bool SellMenu::CheckIfRestricetdToOverSellAtLevelNine(uint32_t priceBecame)
+{
+    uint32_t levelAddition = priceBecame / 1000;
+    uint32_t newLevelWillBe = _playerLevel + levelAddition;
+    if (newLevelWillBe > 9)
+        return false;
+    return true;
 }

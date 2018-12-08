@@ -112,6 +112,7 @@ private:
     void SetFontAndAlignment(QLabel* lbl);
 
     void CheckIfRestrictedToOverSell(uint32_t priceWas, uint32_t priceBecame);
+    bool CheckIfRestricetdToOverSellAtLevelNine(uint32_t priceBecame);
 
 };
 
