@@ -81,6 +81,8 @@ The_Game::The_Game(QWidget *parent) :
 
 The_Game::~The_Game()
 {
+    if (_sellMenu != nullptr)
+        delete _sellMenu;
     delete ui;
 }
 
@@ -2629,7 +2631,6 @@ void The_Game::SlotShowTradeMenu()
 
     connect(_sellMenu, &SellMenu::SignalUserClosedTradeMenu, this, &The_Game::SlotHideTradeMenu);
     connect(_sellMenu, &SellMenu::SignalReportCardsToBeSold, this, &The_Game::SlotProcessCardsSelectedToBeSold);
-
 }
 
 void The_Game::SlotHideTradeMenu()
