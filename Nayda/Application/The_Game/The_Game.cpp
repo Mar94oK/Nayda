@@ -2742,6 +2742,9 @@ void The_Game::SlotProcessCardsSelectedToBeSold(const std::vector<SimpleCard> ca
     }
     _lastFold = cards;
     qDebug() << "NAY-002: Total Money Spent: " << totalMoneySpent;
+    _mainPlayer->SetPlayerLevel(_mainPlayer->GetPlayerLevel() + GetLevelPurchased(totalMoneySpent));
+    _mainPlayer->SetWarPower(_mainPlayer->GetWarPower() + GetLevelPurchased(totalMoneySpent));
+
     ui->MainGamer->SlotChangeTheGamerLevel(static_cast<int32_t>(GetLevelPurchased(totalMoneySpent)));
 
     //1.1. Для этого сначала получить их позиции
