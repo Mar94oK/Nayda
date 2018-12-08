@@ -111,8 +111,8 @@ private:
    QLabel* _timeLeftBeforeStartUpLabel;
    QString _startUpTimerText = "До начала игры осталось: ";
    QTimer* _startUpTimer;
-   const uint32_t _startUpTimeSeconds = 5;
-   const uint32_t _startUpShowOrderTime = 3;
+   const uint32_t _startUpTimeSeconds = 1;
+   const uint32_t _startUpShowOrderTime = 1;
    uint32_t _startUpTimerTicksCounter = 0;
 
    QSpacerItem * _spacerBottom;

@@ -2149,11 +2149,14 @@ void The_Game::Animation_StartPassSoldCardsFromHandToTreasureFold_Phase3(std::ve
         connect(animation, &QPropertyAnimation::finished,
                 [this, var, cards]{ emit SignalPassTheCardToTheFoldStack(cards[var].GetCard());});
         if (var == (movedCards.size() - 1))
+        {
             connect(animation, &QPropertyAnimation::finished,
                     [this, cardsToBeProcessed]{ProcessFoldObserver(cardsToBeProcessed);});
+            connect(animation, &QPropertyAnimation::finished,
+                    [this]{CheckThePlayerIsAbleToSell(_mainPlayer);});
+        }
     }    
 
-    CheckThePlayerIsAbleToSell(_mainPlayer);
 }
 
 QString The_Game::findTheCardPicture(SimpleCard card)
@@ -2731,11 +2734,15 @@ void The_Game::SlotProcessCardsSelectedToBeSold(const std::vector<SimpleCard> ca
     //4. Добавить уровень//уровни
     qDebug() << "NAY-002: In the SlotProcessCardsSelectedToBeSold() ";
     qDebug() << "NAY-002: CardsToBeSold size " << cards.size();   
+    uint32_t totalMoneySpent = 0;
     for (uint32_t var = 0; var < cards.size(); ++var)
     {
         AddCardToFoldStack(cards[var]);
+        totalMoneySpent += GetCardPrice(cards[var]);
     }
     _lastFold = cards;
+    qDebug() << "NAY-002: Total Money Spent: " << totalMoneySpent;
+    ui->MainGamer->SlotChangeTheGamerLevel(static_cast<int32_t>(GetLevelPurchased(totalMoneySpent)));
 
     //1.1. Для этого сначала получить их позиции
     std::vector<PositionedCard> posCards = GetPositionedCards(cards);
@@ -2790,6 +2797,8 @@ bool The_Game::CheckThePlayerIsAbleToSell(Player* player)
     std::vector<SimpleCard> sumChecker;
     std::vector<SimpleCard> cardsOnHands = player->GetCardsOnHands();
     std::vector<SimpleCard> cardsInGame = player->GetCardsInGame();
+
+    qDebug() <<"NAY-002: AbleToSell Checker cardsOnHands: size: " << player->GetCardsOnHands().size();
 
     for (uint32_t var = 0; var < cardsOnHands.size(); ++var)
     {
@@ -2870,7 +2879,7 @@ uint32_t The_Game::GetCardPrice(SimpleCard card)
 
 uint32_t The_Game::GetLevelPurchased(uint32_t totalMoneySpent)
 {
-    return totalMoneySpent % 1000;
+    return totalMoneySpent / 1000;
 }
 
 void The_Game::RealGameStart()

@@ -641,7 +641,8 @@ void battleField::paintEvent(QPaintEvent *)
      setAutoFillBackground(true);
 
      QPainter painter(this);
-     painter.begin(&resultOpaque);
+     if (!painter.isActive())
+        painter.begin(&resultOpaque);
      painter.setOpacity(0.15);
      painter.drawPixmap(0,0, resultOpaque);
      painter.end();

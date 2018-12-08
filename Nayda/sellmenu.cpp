@@ -321,39 +321,10 @@ void SellMenu::CheckIfRestrictedToOverSell(uint32_t priceWas, uint32_t priceBeca
 
     if ((thresholdBecame == thresholdWas) && (priceBecame > priceWas))
     {
-        qDebug() << "NAY-002: New level wasn't reached with this card! Price: " << priceBecame - priceWas;
+        //qDebug() << "NAY-002: New level wasn't reached with this card! Price: " << priceBecame - priceWas;
         ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->hide();
         return;
     }
-
-//    if ((thresholdBecame == thresholdWas) && (priceBecame < priceWas))
-//    {
-//        //Check whether without each(!!!) card this result might nor be achieved;
-//        for (uint32_t var = 0; var < _cardsToBeSold.size(); ++var)
-//        {
-//            uint32_t priceWithoutGivenCard = 0;
-//            for (uint32_t y = 0; y < _cardsToBeSold.size(); ++y)
-//            {
-//                if (y != var)
-//                    priceWithoutGivenCard += GetCardPrice(_cardsToBeSold[y]);
-//            }
-//            uint32_t thresholdReachedWithoutGivenCard = priceWithoutGivenCard / 1000;
-//            if (thresholdReachedWithoutGivenCard == thresholdBecame)
-//            {
-//                qDebug() << "NAY-002: New level could be reached without this card! Card: "
-//                         << _cardsToBeSold[var].second
-//                         << " Price: " << GetCardPrice(_cardsToBeSold[var]);
-//                ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->hide();
-//                return;
-//            }
-//        }
-//        //check completed. Check if there's a level to be purchased:
-//        if (priceBecame >= 1000)
-//            ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->show();
-//        else
-//            ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->hide();
-//        return;
-//    }
 
     if ((thresholdBecame > thresholdWas)
             || (thresholdBecame < thresholdWas)
@@ -372,9 +343,9 @@ void SellMenu::CheckIfRestrictedToOverSell(uint32_t priceWas, uint32_t priceBeca
             uint32_t thresholdReachedWithoutGivenCard = priceWithoutGivenCard / 1000;
             if (thresholdReachedWithoutGivenCard == thresholdBecame)
             {
-                qDebug() << "NAY-002: New level could be reached without this card! Card: "
-                         << _cardsToBeSold[var].second
-                         << " Price: " << GetCardPrice(_cardsToBeSold[var]);
+//                qDebug() << "NAY-002: New level could be reached without this card! Card: "
+//                         << _cardsToBeSold[var].second
+//                         << " Price: " << GetCardPrice(_cardsToBeSold[var]);
                 ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->hide();
                 return;
             }

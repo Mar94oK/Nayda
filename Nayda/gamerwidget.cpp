@@ -359,13 +359,20 @@ void GamerWidget::SlotHideTheCardInCentre(bool)
 //Bad Code!!! To change these coeffisients to be built-int in the class;
 void GamerWidget::SlotChangeTheGamerLevel(int levelDelta)
 {
-    _gamerLevel = _gamerLevel + levelDelta;
+    qDebug() << "NAY-002: SlotChangeTheGamerLevel: levelDelta:" << levelDelta;
+    this->SlotChangeTheGamerBattlePower(levelDelta);
+    if (levelDelta < 0)
+        _gamerLevel -= levelDelta;
+    else
+        _gamerLevel += levelDelta;
 
     if (_gamerLevel < 1) {
         _gamerLevel = 1;
     }
     else if (_gamerLevel > 10) {
         _gamerLevel = 10; //Win!
+
+
 
 #ifdef DEBUG_GAMER_WIDGET
         _gamerLevel = 1;
@@ -399,6 +406,7 @@ void GamerWidget::DEBUGSlotStartTestCards()
 
 void GamerWidget::SlotChangeTheGamerBattlePower(int battlePowerDelta)
 {
+    qDebug() << "NAY-002: BattlePower delta: " << battlePowerDelta;
 
     _battlePower += battlePowerDelta;
 

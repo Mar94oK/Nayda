@@ -141,7 +141,7 @@ private:
                                             {":/Pictures/levels/match10_transparent.png"}};
 #endif
 
-    unsigned int _gamerLevel = 1;
+    int _gamerLevel = 1;
 
 public slots:
 
