@@ -81,8 +81,6 @@ The_Game::The_Game(QWidget *parent) :
 
 The_Game::~The_Game()
 {
-    if (_sellMenu != nullptr)
-        delete _sellMenu;
     delete ui;
 }
 
@@ -2077,6 +2075,7 @@ void The_Game::Animation_StartPassSoldCardsFromHandToTreasureFold_Phase3(std::ve
                 [this, var]{ emit SignalPassTheCardToTheFoldStack(_cardsAreReadyToBeSoldHolder[var]);});
     }
     SaveFoldCardsAndClearSoldCardsHolder();
+    CheckThePlayerIsAbleToSell(_mainPlayer);
 }
 
 QString The_Game::findTheCardPicture(SimpleCard card)
@@ -2660,17 +2659,12 @@ void The_Game::SlotProcessCardsSelectedToBeSold(const std::vector<SimpleCard> ca
     _currentGamePhase = GamePhase::CardProcessing;
     emit SignalHideTradeButton();
     for (uint32_t var = 0; var < posCards.size(); ++var)
-    {
-        RemoveCardFromCardsAreAbleToBeSold(posCards[var].GetCard());
         RemoveTheCardFromHand(ui->MainGamer, posCards[var].GetCard());
-    }
+
     _mainPlayer->RemoveGivenCardsFromHand(cards);
-    bool Ok = CheckThePlayerIsAbleToSell(_mainPlayer);
     //start animation here
     Animation_StartPassSoldCardsFromHandToTreasureFold_Phase1(posCards);
-    //will show the Trade button if it is ok.
-    qDebug() << (Ok ? "NAY-002: MainGamer is still able to sell!"
-                    : "NAY-002: MainGamer is not able to sell!");
+
     _currentGamePhase = savedPhase;
 
 
