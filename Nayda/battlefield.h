@@ -112,6 +112,7 @@ private:
    QString _startUpTimerText = "До начала игры осталось: ";
    QTimer* _startUpTimer;
    const uint32_t _startUpTimeSeconds = 5;
+   const uint32_t _startUpShowOrderTime = 3;
    uint32_t _startUpTimerTicksCounter = 0;
 
    QSpacerItem * _spacerBottom;

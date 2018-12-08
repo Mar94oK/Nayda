@@ -583,22 +583,20 @@ void battleField::SlotStartUpTimerHandler()
 {
     ++_startUpTimerTicksCounter;
     _timeLeftBeforeStartUpLabel->setText(QString::number(_startUpTimeSeconds - 1*_startUpTimerTicksCounter));
-    if (_startUpTimerTicksCounter < 5)
+    if (_startUpTimerTicksCounter < _startUpTimeSeconds)
         _startUpTimer->start();
-    else if (_startUpTimerTicksCounter == 5)
+    else if (_startUpTimerTicksCounter == _startUpTimeSeconds)
     {
         ShowInitialAnimationScene_1();
         _startUpTimer->start();
     }
-    else if (_startUpTimerTicksCounter == 6)
+    else if (_startUpTimerTicksCounter == _startUpTimeSeconds + 1)
     {
         HideInitialAnimationScene_1();
         ShowInitialAnimationScene_2();
         _startUpTimer->start();
     }
-    else if ( _startUpTimerTicksCounter == 7 ||
-              _startUpTimerTicksCounter == 8 ||
-              _startUpTimerTicksCounter == 9 )
+    else if ( _startUpTimerTicksCounter <= _startUpTimeSeconds + 1 + _startUpShowOrderTime)
     {
         _startUpTimer->start();
     }
