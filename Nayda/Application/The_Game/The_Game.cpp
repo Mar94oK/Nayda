@@ -771,7 +771,12 @@ gameCardTreasureBattleAmplifier The_Game::battleAmplifierStringParser(const QStr
     theBattleAmplifier.setHasSpecialMechanic(false);
     if (lst.first() == "yes\n") {
         theBattleAmplifier.setHasSpecialMechanic(true);
-    };
+    };   
+    lst.removeFirst();
+
+    theBattleAmplifier.setPrice(static_cast<uint32_t>(lst.first().toInt()));
+
+
     return theBattleAmplifier;
 
 
@@ -2855,7 +2860,7 @@ uint32_t The_Game::GetCardPrice(SimpleCard card)
 
     _battleAmplifiersIterator = _battleAmplifiersDeck.find(static_cast <int> (card.second));
     if (_battleAmplifiersIterator != _battleAmplifiersDeck.end())
-        return 0;
+        return static_cast<uint32_t>((*_battleAmplifiersIterator).second.price());
 
 
      _levelUpIterator = _levelUpDeck.find(static_cast <int> (card.second));

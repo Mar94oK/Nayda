@@ -114,6 +114,11 @@ CardToBeSoldCredentials SellMenu::GetCardToBeSoldCredentials(SimpleCard card)
         return CardToBeSoldCredentials((*_thingsAmplifiersIterator).second.pictureAddress(),
                                         static_cast<uint32_t>((*_thingsAmplifiersIterator).second.price()));
 
+    _battleAmplifiersIterator = _battleAmplifiersDeck.find(static_cast <int> (card.second));
+    if (_battleAmplifiersIterator != _battleAmplifiersDeck.end())
+        return CardToBeSoldCredentials((*_battleAmplifiersIterator).second.pictureAddress(),
+                                        static_cast<uint32_t>((*_battleAmplifiersIterator).second.price()));
+
 
     _weaponsIterator = _weaponsDeck.find(static_cast <int> (card.second));
     if (_weaponsIterator != _weaponsDeck.end())
@@ -147,7 +152,7 @@ uint32_t SellMenu::GetCardPrice(SimpleCard card)
 
     _battleAmplifiersIterator = _battleAmplifiersDeck.find(static_cast <int> (card.second));
     if (_battleAmplifiersIterator != _battleAmplifiersDeck.end())
-        return 0;
+        return static_cast<uint32_t>((*_battleAmplifiersIterator).second.price());
 
 
      _levelUpIterator = _levelUpDeck.find(static_cast <int> (card.second));

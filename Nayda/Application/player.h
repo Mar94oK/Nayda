@@ -30,6 +30,7 @@ class Player
     Profession _profession;
     Players_Sex _playersSex;
 
+
     bool _halfBreed;
     bool _superMunchkin;
 

@@ -639,7 +639,7 @@ class gameCardTreasureBattleAmplifier {
     int _bonus;
     bool _isPotion;
     bool _hasSpecialMechanic;
-
+    uint32_t _price;
 
 public:
 
@@ -659,6 +659,8 @@ public:
     void setIsPotion(bool isPotion);
     bool hasSpecialMechanic() const;
     void setHasSpecialMechanic(bool hasSpecialMechanic);
+    uint32_t price() const;
+    void setPrice(const uint32_t &price);
 };
 
 class gameCardTreasureLevelUp {

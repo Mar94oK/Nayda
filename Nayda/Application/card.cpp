@@ -1255,6 +1255,16 @@ void gameCardTreasureBattleAmplifier::setHasSpecialMechanic(bool hasSpecialMecha
     _hasSpecialMechanic = hasSpecialMechanic;
 }
 
+uint32_t gameCardTreasureBattleAmplifier::price() const
+{
+    return _price;
+}
+
+void gameCardTreasureBattleAmplifier::setPrice(const uint32_t &price)
+{
+    _price = price;
+}
+
 int gameCardTreasureBattleAmplifier::cardID() const
 {
     return _cardID;
