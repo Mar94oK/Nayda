@@ -10,11 +10,12 @@ LastFoldObserver::LastFoldObserver(AllDecksToBePassed decksData,
 {
     ui->setupUi(this);
 
-    setMinimumSize(200,200);
-
     SetDecks(decksData);
 
     _mainWindowSize = mainWindowSize;
+    qDebug() << "NAY-002: Size" << _mainWindowSize;
+    _widnowSizeWidth = static_cast<uint32_t>(_mainWindowSize.width());
+    _windowSizeHeight = static_cast<uint32_t>(_mainWindowSize.height());
 
     for (uint32_t var = 0; var < data.size(); ++var)
     {
@@ -24,9 +25,7 @@ LastFoldObserver::LastFoldObserver(AllDecksToBePassed decksData,
     SetFontAndAlignment(ui->lbl_Name);
 
 
-    qDebug() << "NAY-002: Size" << _mainWindowSize;
-    _widnowSizeWidth = static_cast<uint32_t>(_mainWindowSize.width());
-    _windowSizeHeight = static_cast<uint32_t>(_mainWindowSize.height());
+
 
     connect(ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok), &QPushButton::pressed,
             this, &LastFoldObserver::close);

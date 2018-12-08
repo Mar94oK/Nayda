@@ -254,8 +254,6 @@ signals:
 
 private:
 
-    std::vector<SimpleCard> _soldCardsToBeProcessedHolder;
-    void SaveFoldCardsAndClearSoldCardsHolder();
 
     void AddCardToFoldStack(SimpleCard card);
 
@@ -421,9 +419,9 @@ private:
     //moving to centre
     void Animation_StartPassSoldCardsFromHandToTreasureFold_Phase1(std::vector<PositionedCard> cards);
     //leaving at centre
-    void Animation_StartPassSoldCardsFromHandToTreasureFold_Phase2(std::vector<QPushButton *> movedCards);
+    void Animation_StartPassSoldCardsFromHandToTreasureFold_Phase2(std::vector<QPushButton *> movedCards, const std::vector<PositionedCard> &cards);
     //moving to treasures fold
-    void Animation_StartPassSoldCardsFromHandToTreasureFold_Phase3(std::vector<QPushButton *> movedCards);
+    void Animation_StartPassSoldCardsFromHandToTreasureFold_Phase3(std::vector<QPushButton *> movedCards, const std::vector<PositionedCard> &cards);
 
 
 public:

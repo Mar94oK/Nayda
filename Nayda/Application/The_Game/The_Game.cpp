@@ -1474,15 +1474,7 @@ const std::map<int, gameCardTreasureWeapon> *The_Game::weaponsDeck()
     return &_weaponsDeck;
 }
 
-void The_Game::SaveFoldCardsAndClearSoldCardsHolder()
-{
-    for (uint32_t var = 0; var < _soldCardsToBeProcessedHolder.size(); ++var)
-    {
-        AddCardToFoldStack(_soldCardsToBeProcessedHolder[var]);
-    }
-    qDebug() << "NAY-002: Process sold cards: ";
-    _soldCardsToBeProcessedHolder.clear();
-}
+
 
 void The_Game::AddCardToFoldStack(SimpleCard card)
 {
@@ -2073,10 +2065,11 @@ void The_Game::Animation_StartPassSoldCardsFromHandToTreasureFold_Phase1(std::ve
         //проданных карт.
     }
     connect(animations[0], &QPropertyAnimation::finished,
-            [this, cardsAsButtons] {Animation_StartPassSoldCardsFromHandToTreasureFold_Phase2(cardsAsButtons);});
+            [this, cardsAsButtons, cards]
+            {Animation_StartPassSoldCardsFromHandToTreasureFold_Phase2(cardsAsButtons, cards);});
 }
 
-void The_Game::Animation_StartPassSoldCardsFromHandToTreasureFold_Phase2(std::vector<QPushButton*> movedCards)
+void The_Game::Animation_StartPassSoldCardsFromHandToTreasureFold_Phase2(std::vector<QPushButton*> movedCards, const std::vector<PositionedCard>& cards)
 {
     //Разместить по позициям.
     //финальная позиция, где они были в прошлый раз.
@@ -2111,11 +2104,11 @@ void The_Game::Animation_StartPassSoldCardsFromHandToTreasureFold_Phase2(std::ve
     //Соединить этот сигнал со слотом, который отображает анимацию третьей фазы сброса
     //проданных карт.
     connect(animations[0], &QPropertyAnimation::finished,
-            [this, movedCards] {Animation_StartPassSoldCardsFromHandToTreasureFold_Phase3(movedCards);});
+            [this, movedCards, cards] {Animation_StartPassSoldCardsFromHandToTreasureFold_Phase3(movedCards, cards);});
 
 }
 
-void The_Game::Animation_StartPassSoldCardsFromHandToTreasureFold_Phase3(std::vector<QPushButton *> movedCards)
+void The_Game::Animation_StartPassSoldCardsFromHandToTreasureFold_Phase3(std::vector<QPushButton *> movedCards, const std::vector<PositionedCard> &cards)
 {
     if (!movedCards.size())
     {
@@ -2124,10 +2117,16 @@ void The_Game::Animation_StartPassSoldCardsFromHandToTreasureFold_Phase3(std::ve
         return;
     }
 
+    std::vector<SimpleCard> cardsToBeProcessed;
+    for (uint32_t var = 0; var < cards.size(); ++var)
+    {
+        cardsToBeProcessed.push_back(cards[var].GetCard());
+    }
+
     QPoint EndPosition = GetTreasuresFoldPosition() + GetCardsStackPosition();
     QSize EndSize = GetTreasuresFoldSize();
     std::vector<QPropertyAnimation*> animations;
-    _lastFold = _soldCardsToBeProcessedHolder;
+
     for (uint32_t var = 0; var < movedCards.size(); ++var)
     {
         QPropertyAnimation *animation = new QPropertyAnimation(movedCards[var], "geometry");
@@ -2146,12 +2145,12 @@ void The_Game::Animation_StartPassSoldCardsFromHandToTreasureFold_Phase3(std::ve
         connect(animation, &QPropertyAnimation::finished,
                 movedCards[var], &QPushButton::deleteLater);
         connect(animation, &QPropertyAnimation::finished,
-                [this, var]{ emit SignalPassTheCardToTheFoldStack(_cardsAreReadyToBeSoldHolder[var]);});
+                [this, var, cards]{ emit SignalPassTheCardToTheFoldStack(cards[var].GetCard());});
         if (var == (movedCards.size() - 1))
             connect(animation, &QPropertyAnimation::finished,
-                    [this]{ProcessFoldObserver(_lastFold);});
+                    [this, cardsToBeProcessed]{ProcessFoldObserver(cardsToBeProcessed);});
     }    
-    SaveFoldCardsAndClearSoldCardsHolder();
+
     CheckThePlayerIsAbleToSell(_mainPlayer);
 }
 
@@ -2730,7 +2729,11 @@ void The_Game::SlotProcessCardsSelectedToBeSold(const std::vector<SimpleCard> ca
     //4. Добавить уровень//уровни
     qDebug() << "NAY-002: In the SlotProcessCardsSelectedToBeSold() ";
     qDebug() << "NAY-002: CardsToBeSold size " << cards.size();   
-    _cardsAreReadyToBeSoldHolder = cards;
+    for (uint32_t var = 0; var < cards.size(); ++var)
+    {
+        AddCardToFoldStack(cards[var]);
+    }
+    _lastFold = cards;
 
     //1.1. Для этого сначала получить их позиции
     std::vector<PositionedCard> posCards = GetPositionedCards(cards);
@@ -2745,7 +2748,7 @@ void The_Game::SlotProcessCardsSelectedToBeSold(const std::vector<SimpleCard> ca
         RemoveTheCardFromHand(ui->MainGamer, posCards[var].GetCard());
 
     _mainPlayer->RemoveGivenCardsFromHand(cards);
-    _soldCardsToBeProcessedHolder = cards;
+
     //start animation here
     Animation_StartPassSoldCardsFromHandToTreasureFold_Phase1(posCards);
 
