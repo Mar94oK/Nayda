@@ -479,7 +479,7 @@ private:
     void FormingInitialDecks(const std::vector<uint32_t>& doorsVector,
                              const std::vector<uint32_t>& treasuresVector);
 
-    void SetUpPlayersAndWidgets(uint32_t windowHeight, uint32_t windowWidth, const std::vector<QString>& playersNames);
+    void SetUpPlayersAndWidgets(uint32_t windowHeight, uint32_t windowWidth, const std::vector<QString>& playersOrder);
     void SetUpOpponents(uint32_t windowHeight, uint32_t windowWidth, const std::vector<QString>& opponents);
     void SetUpWidgetsProperties(uint32_t windowHeight, uint32_t windowWidth);
     void MainParser();

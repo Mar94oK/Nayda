@@ -1585,19 +1585,32 @@ void The_Game::GivingCardsToPlayers()
     uint32_t initialSizeDoors = _doorsDeck.size();
     uint32_t initialSizeTreasures = _treasuresDeck.size();
 
-    for (unsigned int var = 0; var < cardsToGive; ++var) {
-
-        _mainPlayer->addCardToHands(_doorsDeck.front());
-        _doorsDeck.erase(_doorsDeck.begin());
+    std::vector<Player*> orderOfMove;
+    for (uint32_t var = 0; var < _playersOrder.size(); ++var)
+    {
+        if (_mainPlayer->name() == _playersOrder[var])
+            orderOfMove.push_back(_mainPlayer);
+        for (uint32_t y = 0; y < _playersOpponents.size(); ++y)
+        {
+            if (_playersOpponents[y]->name() == _playersOrder[var])
+            {
+                orderOfMove.push_back(_playersOpponents[y]);
+                //NAY-002: MARK_EXPECTED_ERROR
+                //To Test under 3 or more players.
+                break;
+            }
+        }
     }
+    qDebug() << "NAY-002: PlayersOrder size: " << orderOfMove.size();
+    if (orderOfMove.size() != _playersOpponents.size() + 1)
+        qDebug() << "NAY-002: ERROR WHILE void The_Game::GivingCardsToPlayers()"
+                 << "orderOfMove.size() != _playersOpponents.size() + 1";
 
-    //giving cards to the other players...
-
-    for (uint32_t var = 0; var < totalOpponents; ++var) {
-
-        for (uint32_t j = 0; j < cardsToGive; ++j ) {
-
-            _playersOpponents[var]->addCardToHands(_doorsDeck.front());
+    for (uint32_t var = 0; var < orderOfMove.size(); ++var)
+    {
+        for (unsigned int y = 0; y < cardsToGive; ++y)
+        {
+            orderOfMove[var]->addCardToHands(_doorsDeck.front());
             _doorsDeck.erase(_doorsDeck.begin());
         }
     }
@@ -1605,25 +1618,56 @@ void The_Game::GivingCardsToPlayers()
     ui->CardStacksWidget->updateDoorsLeft(initialSizeDoors - cardsToGive*(_gameSettings.maximumNumberOfPlayers()));
     qDebug() << "Doors are given to the players!";
 
-    //treasures..
-    for (uint32_t var = 0; var < cardsToGive; ++var)
+    for (uint32_t var = 0; var < orderOfMove.size(); ++var)
     {
-        _mainPlayer->addCardToHands(_treasuresDeck.front());
-        _treasuresDeck.erase(_treasuresDeck.begin());
-    }
-
-    //giving cards to the other players...
-    for (unsigned int var = 0; var < totalOpponents; ++var) {
-
-        for (unsigned int j = 0; j < cardsToGive; ++j ) {
-
-            _playersOpponents[var]->addCardToHands(_treasuresDeck.front());
+        for (uint32_t y = 0; y < cardsToGive; ++y)
+        {
+            orderOfMove[var]->addCardToHands(_treasuresDeck.front());
             _treasuresDeck.erase(_treasuresDeck.begin());
         }
     }
-    qDebug() << "Treasures are given to the players!";
 
     ui->CardStacksWidget->updateTreasuresLeft(initialSizeTreasures - cardsToGive*_gameSettings.maximumNumberOfPlayers());
+    qDebug() << "Treasures are given to the players!";
+
+
+
+//    for (unsigned int var = 0; var < cardsToGive; ++var) {
+
+//        _mainPlayer->addCardToHands(_doorsDeck.front());
+//        _doorsDeck.erase(_doorsDeck.begin());
+//    }
+
+//    //giving cards to the other players...
+
+//    for (uint32_t var = 0; var < totalOpponents; ++var) {
+
+//        for (uint32_t j = 0; j < cardsToGive; ++j ) {
+
+//            _playersOpponents[var]->addCardToHands(_doorsDeck.front());
+//            _doorsDeck.erase(_doorsDeck.begin());
+//        }
+//    }
+
+
+
+//    //treasures..
+//    for (uint32_t var = 0; var < cardsToGive; ++var)
+//    {
+//        _mainPlayer->addCardToHands(_treasuresDeck.front());
+//        _treasuresDeck.erase(_treasuresDeck.begin());
+//    }
+
+//    //giving cards to the other players...
+//    for (unsigned int var = 0; var < totalOpponents; ++var) {
+
+//        for (unsigned int j = 0; j < cardsToGive; ++j ) {
+
+//            _playersOpponents[var]->addCardToHands(_treasuresDeck.front());
+//            _treasuresDeck.erase(_treasuresDeck.begin());
+//        }
+//    }
+
 #endif
 }
 
@@ -2390,43 +2434,43 @@ void The_Game::FormingInitialDecks(const std::vector<uint32_t> &doorsVector, con
 
 }
 
-void The_Game::SetUpPlayersAndWidgets(uint32_t windowHeight, uint32_t windowWidth, const std::vector<QString> &playersNames)
+void The_Game::SetUpPlayersAndWidgets(uint32_t windowHeight, uint32_t windowWidth, const std::vector<QString> &playersOrder)
 {
     uint32_t totalOpponents = _gameSettings.maximumNumberOfPlayers();
     qDebug() << "Total players from settings: " << totalOpponents;
-    qDebug() << "Total players given by SetUp Opponents: " << playersNames.size();
+    qDebug() << "Total players given by SetUp Opponents: " << playersOrder.size();
 
     _mainPlayer = new Player(_gameSettings.clientName());
     _roomMasterName = _playersOrder[0];
     SetIsRoomMaster(CheckIsMainPlayerTheRoomMaster(_playersOrder[0]));
-    qDebug() << "NAY-001: Master's name: " << playersNames[0];
+    qDebug() << "NAY-001: Master's name: " << playersOrder[0];
     //Set Players name:
 
-    if (totalOpponents != playersNames.size())
+    if (totalOpponents != playersOrder.size())
         qDebug() << "ERROR while The_Game::SetUpOpponents(): Total opponents from settings"
                     "and given by server differs!";
 
     //Один из них может быть мастером!
-    for (uint32_t var = 0; var < playersNames.size(); ++var)
+    for (uint32_t var = 0; var < playersOrder.size(); ++var)
     {
-        if (_gameSettings.clientName() != playersNames[var])
+        if (_gameSettings.clientName() != playersOrder[var])
         {
-            Player* currentPlayer = new Player (playersNames[var]);
+            Player* currentPlayer = new Player (playersOrder[var]);
             _playersOpponents.push_back(currentPlayer);
             qDebug() << "NAY-002: _playersOpponents Size: " << _playersOpponents.size();
         }
     }
 
     //widgets for them
-    for (uint32_t var = 0; var < playersNames.size(); var++)
+    for (uint32_t var = 0; var < playersOrder.size(); var++)
     {
 
-       if (_gameSettings.clientName() != playersNames[var])
+       if (_gameSettings.clientName() != playersOrder[var])
        {
             _widgets4Opponents.push_back(new GamerWidget);
             _widgets4Opponents.back()->RedrawAsASecondaryPlayer();
             _widgets4Opponents.back()->setIs_MainPlayer(false);
-            if (playersNames[var] == _roomMasterName)
+            if (playersOrder[var] == _roomMasterName)
                 _widgets4Opponents.back()->SetIsRoomMaster();
        }
 
