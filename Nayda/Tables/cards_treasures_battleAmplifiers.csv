@@ -1,21 +1,21 @@
-13;Pictures/treasures_battleAmplifiers/Cotion Ponfusion.jpg;Cotion Ponfusion;Basic;battleAmplifier;3;1;no
-14;Pictures/treasures_battleAmplifiers/Pretty Balloons.jpg;Pretty Balloons;Basic;battleAmplifier;5;0;no
-15;Pictures/treasures_battleAmplifiers/Potion of Idiotic Bravery.jpg;Potion of Idiotic Bravery;Basic;battleAmplifier;2;1;no
-16;Pictures/treasures_battleAmplifiers/Flaming Poison Potion.jpg;Flaming Poison Potion;Basic;battleAmplifier;3;1;no
-17;Pictures/treasures_battleAmplifiers/Electric Radioactive Acid Potion.jpg;Electric Radioactive Acid Potion;Basic;battleAmplifier;5;1;no
-18;Pictures/treasures_battleAmplifiers/Yuppie Water.jpg;Yuppie Water;Basic;battleAmplifier;2;1;yes
-19;Pictures/treasures_battleAmplifiers/Magic Missile.jpg;Magic Missile;Basic;battleAmplifier;5;0;no
-20;Pictures/treasures_battleAmplifiers/Nasty-Tasting Sports Drink.jpg;Nasty-Tasting Sports Drink;Basic;battleAmplifier;2;0;no
-21;Pictures/treasures_battleAmplifiers/Sleep Potion.jpg;Sleep Potion;Basic;battleAmplifier;2;1;no
-22;Pictures/treasures_battleAmplifiers/Freezing Explosive Potion.jpg;Freezing Explosive Potion;Basic;battleAmplifier;3;1;no
-23;Pictures/treasures_battleAmplifiers/Potion of Halitosis.jpg;Potion of Halitosis;Basic;battleAmplifier;2;1;no
-80;Pictures/treasures_battleAmplifiers/Your Shoe's Untied!.jpg;Your Shoe's Untied!;WildAxe;battleAmplifier;3;0;no
-81;Pictures/treasures_battleAmplifiers/Potion of Flight.jpg;Potion of Flight;WildAxe;battleAmplifier;5;1;no
-82;Pictures/treasures_battleAmplifiers/Lemming Juice.jpg;Lemming Juice;WildAxe;battleAmplifier;3;0;no
-83;Pictures/treasures_battleAmplifiers/Druid Fluid.jpg;Druid Fluid;WildAxe;battleAmplifier;3;0;no
-126;Pictures/treasures_battleAmplifiers/Tasty Pie.jpg;Tasty Pie;ClericalErrors;battleAmplifier;2;0;yes
-127;Pictures/treasures_battleAmplifiers/Hot Pepper Sauce.jpg;Hot Pepper Sauce;ClericalErrors;battleAmplifier;3;1;yes
-128;Pictures/treasures_battleAmplifiers/Royal Oil.jpg;Royal Oil;ClericalErrors;battleAmplifier;3;0;no
-129;Pictures/treasures_battleAmplifiers/Monster Chow.jpg;Monster Chow;ClericalErrors;battleAmplifier;5;0;no
-130;Pictures/treasures_battleAmplifiers/Liquid Wench.jpg;Liquid Wench;ClericalErrors;battleAmplifier;3;0;no
-131;Pictures/treasures_battleAmplifiers/Oil of Boiling.jpg;Oil of Boiling;ClericalErrors;battleAmplifier;3;0;yes
+13;Pictures/treasures_battleAmplifiers/Cotion Ponfusion.jpg;Cotion Ponfusion;Basic;battleAmplifier;3;1;no;100
+14;Pictures/treasures_battleAmplifiers/Pretty Balloons.jpg;Pretty Balloons;Basic;battleAmplifier;5;0;no;0
+15;Pictures/treasures_battleAmplifiers/Potion of Idiotic Bravery.jpg;Potion of Idiotic Bravery;Basic;battleAmplifier;2;1;no;100
+16;Pictures/treasures_battleAmplifiers/Flaming Poison Potion.jpg;Flaming Poison Potion;Basic;battleAmplifier;3;1;no;100
+17;Pictures/treasures_battleAmplifiers/Electric Radioactive Acid Potion.jpg;Electric Radioactive Acid Potion;Basic;battleAmplifier;5;1;no;200
+18;Pictures/treasures_battleAmplifiers/Yuppie Water.jpg;Yuppie Water;Basic;battleAmplifier;2;1;yes;100
+19;Pictures/treasures_battleAmplifiers/Magic Missile.jpg;Magic Missile;Basic;battleAmplifier;5;0;no;300
+20;Pictures/treasures_battleAmplifiers/Nasty-Tasting Sports Drink.jpg;Nasty-Tasting Sports Drink;Basic;battleAmplifier;2;0;no;200
+21;Pictures/treasures_battleAmplifiers/Sleep Potion.jpg;Sleep Potion;Basic;battleAmplifier;2;1;no;100
+22;Pictures/treasures_battleAmplifiers/Freezing Explosive Potion.jpg;Freezing Explosive Potion;Basic;battleAmplifier;3;1;no;100
+23;Pictures/treasures_battleAmplifiers/Potion of Halitosis.jpg;Potion of Halitosis;Basic;battleAmplifier;2;1;no;100
+80;Pictures/treasures_battleAmplifiers/Your Shoe's Untied!.jpg;Your Shoe's Untied!;WildAxe;battleAmplifier;3;0;no;0
+81;Pictures/treasures_battleAmplifiers/Potion of Flight.jpg;Potion of Flight;WildAxe;battleAmplifier;5;1;no;300
+82;Pictures/treasures_battleAmplifiers/Lemming Juice.jpg;Lemming Juice;WildAxe;battleAmplifier;3;0;no;100
+83;Pictures/treasures_battleAmplifiers/Druid Fluid.jpg;Druid Fluid;WildAxe;battleAmplifier;3;0;no;100
+126;Pictures/treasures_battleAmplifiers/Tasty Pie.jpg;Tasty Pie;ClericalErrors;battleAmplifier;2;0;yes;100
+127;Pictures/treasures_battleAmplifiers/Hot Pepper Sauce.jpg;Hot Pepper Sauce;ClericalErrors;battleAmplifier;3;1;yes;300
+128;Pictures/treasures_battleAmplifiers/Royal Oil.jpg;Royal Oil;ClericalErrors;battleAmplifier;3;0;no;100
+129;Pictures/treasures_battleAmplifiers/Monster Chow.jpg;Monster Chow;ClericalErrors;battleAmplifier;5;0;no;300
+130;Pictures/treasures_battleAmplifiers/Liquid Wench.jpg;Liquid Wench;ClericalErrors;battleAmplifier;3;0;no;400
+131;Pictures/treasures_battleAmplifiers/Oil of Boiling.jpg;Oil of Boiling;ClericalErrors;battleAmplifier;3;0;yes;200
