@@ -17,8 +17,8 @@ The_Game::The_Game(QWidget *parent) :
 
     //find the HW size of the window
     QRect HW_Screen_Size = QApplication::desktop()->screenGeometry();
-    uint32_t HW_Screen_Size_Width = HW_Screen_Size.width();
-    uint32_t HW_Screen_Size_Heigh = HW_Screen_Size.height();
+    uint32_t HW_Screen_Size_Width = static_cast<uint32_t>(HW_Screen_Size.width());
+    uint32_t HW_Screen_Size_Heigh = static_cast<uint32_t>(HW_Screen_Size.height());
 
     //Regarding this note
     //https://stackoverflow.com/questions/44875309/why-does-qdesktopwidget-give-me-the-wrong-available-geometry-when-i-use-two-moni
@@ -26,6 +26,10 @@ The_Game::The_Game(QWidget *parent) :
     //make it 0.8 of height for example
 
 #ifdef __linux
+    static_cast<uint32_t>(HW_Screen_Size_Heigh *= 0.9);
+    static_cast<uint32_t>(HW_Screen_Size_Width *= 0.8);
+#endif
+#ifdef Q_OS_WIN
     static_cast<uint32_t>(HW_Screen_Size_Heigh *= 0.9);
     static_cast<uint32_t>(HW_Screen_Size_Width *= 0.8);
 #endif
@@ -83,8 +87,6 @@ The_Game::~The_Game()
 {
     delete ui;
 }
-
-
 
 gameCardDoorMonster The_Game::monsterStringParser(const QString &monster_string)
 {
