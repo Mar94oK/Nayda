@@ -266,6 +266,19 @@ connect(animation, &QPropertyAnimation::finished, [this, card] {SlotAddPlayedCar
 
 В данный омент она запрещает отображение кнопки "торговля"
 
+Далее (10.12) заняться void The_Game::SlotCheckThePossibilityForTheCardToBePlayed(PositionedCard card)
+
+Начать с обычного хода игрока:
+
+1) Открытие Двери
+    2) Пустая дверь
+    3) Моснтр (битва)
+2) Применение проклятий
+3)
+
+
+
+
 
 
 

@@ -446,7 +446,7 @@ private:
     void DEBUGPassTheCardToTheBattleField(PositionedCard);
 
     //moving to centre
-    void Animation_StartPassSoldCardsFromHandToTreasureFold_Phase1(std::vector<PositionedCard> cards);
+    void Animation_StartPassSoldCardsFromHandToTreasureFold_Phase1(GamerWidget* wt, std::vector<PositionedCard> cards);
     //leaving at centre
     void Animation_StartPassSoldCardsFromHandToTreasureFold_Phase2(std::vector<QPushButton *> movedCards, const std::vector<PositionedCard> &cards);
     //moving to treasures fold

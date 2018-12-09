@@ -2027,7 +2027,7 @@ void The_Game::DEBUGPassTheCardToTheBattleField(PositionedCard card)
     //_movingCard->deleteLater();
 }
 
-void The_Game::Animation_StartPassSoldCardsFromHandToTreasureFold_Phase1(std::vector <PositionedCard> cards)
+void The_Game::Animation_StartPassSoldCardsFromHandToTreasureFold_Phase1(GamerWidget *wt, std::vector <PositionedCard> cards)
 {
     if (!cards.size())
     {
@@ -2044,8 +2044,9 @@ void The_Game::Animation_StartPassSoldCardsFromHandToTreasureFold_Phase1(std::ve
 
         QPushButton* _movingCard = new QPushButton("Animated Button", this);
         cardsAsButtons.push_back(_movingCard);
-        QPoint handPosition = GetMainGamerHandPosition();
-        QPoint gamerWidgetPosition = GetMainGamerWidgetPostion();
+        QPoint handPosition = wt->ProvideHandPosition();
+        QPoint gamerWidgetPosition = wt->ProvideSelfPosition();
+
 
         QPoint relativeCardPostionTopLeft = card.GetPositionTopLeft() + gamerWidgetPosition + handPosition;
         QPoint relativeCardPostionBottomRight = card.GetPositionBottomRight() + gamerWidgetPosition + handPosition;
@@ -2871,7 +2872,7 @@ void The_Game::SlotProcessCardsSelectedToBeSold(const std::vector<SimpleCard> ca
     _mainPlayer->RemoveGivenCardsFromHand(cards);
 
     //start animation here
-    Animation_StartPassSoldCardsFromHandToTreasureFold_Phase1(posCards);
+    Animation_StartPassSoldCardsFromHandToTreasureFold_Phase1(ui->MainGamer, posCards);
 
     _currentGamePhase = savedPhase;
 
@@ -3021,8 +3022,10 @@ void The_Game::SlotProcessOpponentHasSoldCards(TheGameMainGamerHasSoldCards data
     //1. Вычислить оппонента
     //2. Добавить ему уровень/боевую силу
     //3. Отобразить анимацию продажи карт
+    qDebug() << "NAY-002: SlotProcessOpponentHasSoldCards(TheGameMainGamerHasSoldCards data) ";
 
     uint32_t opponentId = data.gamerID; //explicitly relates to _playersOrder;
+    qDebug() << "NAY-002: opponentID: " << opponentId;
     Player* currentPlayer = _orderOfMove[data.gamerID];
 
     GamerWidget* currentWidget = _GamerWidgetsWithIDs[data.gamerID];
@@ -3048,12 +3051,12 @@ void The_Game::SlotProcessOpponentHasSoldCards(TheGameMainGamerHasSoldCards data
     for (uint32_t var = 0; var < posCards.size(); ++var)
     {
         RemoveCardFromCardsAreAbleToBeSold(posCards[var].GetCard());
-        RemoveTheCardFromHand(ui->MainGamer, posCards[var].GetCard());
+        RemoveTheCardFromHand(currentWidget, posCards[var].GetCard());
     }
     currentPlayer->RemoveGivenCardsFromHand(data.soldCards);
 
     //start animation here
-    Animation_StartPassSoldCardsFromHandToTreasureFold_Phase1(posCards);
+    Animation_StartPassSoldCardsFromHandToTreasureFold_Phase1(currentWidget, posCards);
 
     //RestoreGamePhase();
 
