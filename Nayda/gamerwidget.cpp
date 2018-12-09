@@ -266,8 +266,8 @@ void GamerWidget::addTheCardToHandsWidget(SimpleCard card)
     _cardsOnHandsGamerWidgetProperty.push_back(card);
 
     //changing the values for Secondary players:
-    if (!card.first) ui->wt_CardsOnHandsSecondary->_slot_updateCardsOnHandsDoors(++_totalDoorsOnHands);
-    else ui->wt_CardsOnHandsSecondary->_slot_updateCardsOnHandsTreasures(++_totalTreasuresOnHands);
+    if (!card.first) ui->wt_CardsOnHandsSecondary->SlotUpdateCardsOnHandsDoors(++_totalDoorsOnHands);
+    else ui->wt_CardsOnHandsSecondary->SlotUpdateCardsOnHandsTreasures(++_totalTreasuresOnHands);
 
 }
 
@@ -514,6 +514,9 @@ std::vector<PositionedCard> GamerWidget::GetPositionedCards(const std::vector<Si
 void GamerWidget::RemoveCardFromHand(SimpleCard card)
 {
     ui->widget->SlotRemoveCardFromHand(card);
+    if (!card.first) ui->wt_CardsOnHandsSecondary->SlotUpdateCardsOnHandsDoors(--_totalDoorsOnHands);
+    else ui->wt_CardsOnHandsSecondary->SlotUpdateCardsOnHandsTreasures(--_totalTreasuresOnHands);
+
 }
 
 QPoint GamerWidget::ProvideSelfPosition()

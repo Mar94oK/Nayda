@@ -36,8 +36,8 @@ private slots:
 
 public slots:
 
-    void _slot_updateCardsOnHandsTreasures(unsigned int);
-    void _slot_updateCardsOnHandsDoors(unsigned int);
+    void SlotUpdateCardsOnHandsTreasures(uint32_t);
+    void SlotUpdateCardsOnHandsDoors(uint32_t);
 
 };
 
