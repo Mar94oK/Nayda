@@ -3,6 +3,9 @@
 
 #include <QString>
 #include "gamesettings.h"
+#include "Application/card.h"
+
+
 
 namespace MessageSystem {
 
@@ -153,6 +156,21 @@ struct TheGameIsAboutToStartData
                                        const std::vector<QString>& plOrder):
         start(strt), positionsDoors(posDoors), positionsTreasures(posTreasures),
         playersOrder(plOrder)
+    { }
+};
+
+
+struct TheGameMainGamerHasSoldCards
+{
+    uint32_t gamerID; //order
+    std::vector<SimpleCard> soldCards;
+    uint32_t levelDelta; //warPower delta is the same
+    bool    isCardProcessing; //should be true
+    uint32_t roomID;
+
+    explicit TheGameMainGamerHasSoldCards(uint32_t gmrId, const std::vector<SimpleCard>& sldCards,
+                                          uint32_t lvlDelta, bool crdPrcss, uint32_t roomId) :
+        gamerID(gmrId), soldCards(sldCards), levelDelta(lvlDelta), isCardProcessing(crdPrcss), roomID(roomId)
     { }
 };
 

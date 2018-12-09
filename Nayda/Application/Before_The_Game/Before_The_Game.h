@@ -82,6 +82,8 @@ signals:
     void SignalProcessServerReportsRoomHasChangedOwner(const QString& previousOwner, const QString& currentOwner);
 
     void SignalServerReportsTheGameIsAboutToStart(const TheGameIsAboutToStartData& data);
+    void SignalRoomIdHasBeenChanged(uint32_t roomID);
+    void SignalRoomNameHasBeenChanged(const QString& RoomName);
 
 public slots:
 
@@ -164,7 +166,8 @@ private:
     ServerHadClosedConnectionWindow* _serverHadClosedConnectionWindow = nullptr;
     RoomSelectionLobby* _roomSelectionLobby = nullptr;
 
-    uint32_t roomID = ROOM_ID_NOT_DEFINED;
+    uint32_t _roomID = ROOM_ID_NOT_DEFINED;
+    QString _roomName = "";
 
 private:
 

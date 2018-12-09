@@ -39,7 +39,7 @@ namespace protobuf_serverMessageSystem_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[23];
+  static const ::google::protobuf::internal::ParseTable schema[25];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -56,6 +56,9 @@ extern ClientConnectionToRoomReplyDefaultTypeInternal _ClientConnectionToRoomRep
 class ClientConnectionToRoomRequest;
 class ClientConnectionToRoomRequestDefaultTypeInternal;
 extern ClientConnectionToRoomRequestDefaultTypeInternal _ClientConnectionToRoomRequest_default_instance_;
+class ClientHasSoldCards;
+class ClientHasSoldCardsDefaultTypeInternal;
+extern ClientHasSoldCardsDefaultTypeInternal _ClientHasSoldCards_default_instance_;
 class ClientRoomCreationReply;
 class ClientRoomCreationReplyDefaultTypeInternal;
 extern ClientRoomCreationReplyDefaultTypeInternal _ClientRoomCreationReply_default_instance_;
@@ -113,6 +116,9 @@ extern ServerReportsTheGameIsAboutToStartDefaultTypeInternal _ServerReportsTheGa
 class ServerRoomChangesInSelectableList;
 class ServerRoomChangesInSelectableListDefaultTypeInternal;
 extern ServerRoomChangesInSelectableListDefaultTypeInternal _ServerRoomChangesInSelectableList_default_instance_;
+class SimpleCard;
+class SimpleCardDefaultTypeInternal;
+extern SimpleCardDefaultTypeInternal _SimpleCard_default_instance_;
 class TimeSettings;
 class TimeSettingsDefaultTypeInternal;
 extern TimeSettingsDefaultTypeInternal _TimeSettings_default_instance_;
@@ -122,6 +128,7 @@ namespace protobuf {
 template<> ::serverMessageSystem::ChartMessage* Arena::CreateMaybeMessage<::serverMessageSystem::ChartMessage>(Arena*);
 template<> ::serverMessageSystem::ClientConnectionToRoomReply* Arena::CreateMaybeMessage<::serverMessageSystem::ClientConnectionToRoomReply>(Arena*);
 template<> ::serverMessageSystem::ClientConnectionToRoomRequest* Arena::CreateMaybeMessage<::serverMessageSystem::ClientConnectionToRoomRequest>(Arena*);
+template<> ::serverMessageSystem::ClientHasSoldCards* Arena::CreateMaybeMessage<::serverMessageSystem::ClientHasSoldCards>(Arena*);
 template<> ::serverMessageSystem::ClientRoomCreationReply* Arena::CreateMaybeMessage<::serverMessageSystem::ClientRoomCreationReply>(Arena*);
 template<> ::serverMessageSystem::ClientRoomCreationRequest* Arena::CreateMaybeMessage<::serverMessageSystem::ClientRoomCreationRequest>(Arena*);
 template<> ::serverMessageSystem::ClientWantedToEnterTheRoom* Arena::CreateMaybeMessage<::serverMessageSystem::ClientWantedToEnterTheRoom>(Arena*);
@@ -141,6 +148,7 @@ template<> ::serverMessageSystem::ServerReportsOpponentIsEnteringRoom* Arena::Cr
 template<> ::serverMessageSystem::ServerReportsRoomHasChangedOwner* Arena::CreateMaybeMessage<::serverMessageSystem::ServerReportsRoomHasChangedOwner>(Arena*);
 template<> ::serverMessageSystem::ServerReportsTheGameIsAboutToStart* Arena::CreateMaybeMessage<::serverMessageSystem::ServerReportsTheGameIsAboutToStart>(Arena*);
 template<> ::serverMessageSystem::ServerRoomChangesInSelectableList* Arena::CreateMaybeMessage<::serverMessageSystem::ServerRoomChangesInSelectableList>(Arena*);
+template<> ::serverMessageSystem::SimpleCard* Arena::CreateMaybeMessage<::serverMessageSystem::SimpleCard>(Arena*);
 template<> ::serverMessageSystem::TimeSettings* Arena::CreateMaybeMessage<::serverMessageSystem::TimeSettings>(Arena*);
 }  // namespace protobuf
 }  // namespace google
@@ -242,6 +250,26 @@ inline bool ChartSubSysCommandsID_Parse(
     const ::std::string& name, ChartSubSysCommandsID* value) {
   return ::google::protobuf::internal::ParseNamedEnum<ChartSubSysCommandsID>(
     ChartSubSysCommandsID_descriptor(), name, value);
+}
+enum GameActionsSubSysCommandsID {
+  CLIENT_HAS_SOLD_CARDS = 0,
+  GameActionsSubSysCommandsID_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  GameActionsSubSysCommandsID_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
+};
+bool GameActionsSubSysCommandsID_IsValid(int value);
+const GameActionsSubSysCommandsID GameActionsSubSysCommandsID_MIN = CLIENT_HAS_SOLD_CARDS;
+const GameActionsSubSysCommandsID GameActionsSubSysCommandsID_MAX = CLIENT_HAS_SOLD_CARDS;
+const int GameActionsSubSysCommandsID_ARRAYSIZE = GameActionsSubSysCommandsID_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* GameActionsSubSysCommandsID_descriptor();
+inline const ::std::string& GameActionsSubSysCommandsID_Name(GameActionsSubSysCommandsID value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    GameActionsSubSysCommandsID_descriptor(), value);
+}
+inline bool GameActionsSubSysCommandsID_Parse(
+    const ::std::string& name, GameActionsSubSysCommandsID* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<GameActionsSubSysCommandsID>(
+    GameActionsSubSysCommandsID_descriptor(), name, value);
 }
 enum GameCreationRequest {
   JoinTheGame = 0,
@@ -3459,6 +3487,273 @@ class ServerReportsTheGameIsAboutToStart : public ::google::protobuf::Message /*
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_serverMessageSystem_2eproto::TableStruct;
 };
+// -------------------------------------------------------------------
+
+class SimpleCard : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:serverMessageSystem.SimpleCard) */ {
+ public:
+  SimpleCard();
+  virtual ~SimpleCard();
+
+  SimpleCard(const SimpleCard& from);
+
+  inline SimpleCard& operator=(const SimpleCard& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  SimpleCard(SimpleCard&& from) noexcept
+    : SimpleCard() {
+    *this = ::std::move(from);
+  }
+
+  inline SimpleCard& operator=(SimpleCard&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const SimpleCard& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const SimpleCard* internal_default_instance() {
+    return reinterpret_cast<const SimpleCard*>(
+               &_SimpleCard_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    23;
+
+  void Swap(SimpleCard* other);
+  friend void swap(SimpleCard& a, SimpleCard& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline SimpleCard* New() const final {
+    return CreateMaybeMessage<SimpleCard>(NULL);
+  }
+
+  SimpleCard* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<SimpleCard>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const SimpleCard& from);
+  void MergeFrom(const SimpleCard& from);
+  void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(SimpleCard* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // bool doorTreasure = 1;
+  void clear_doortreasure();
+  static const int kDoorTreasureFieldNumber = 1;
+  bool doortreasure() const;
+  void set_doortreasure(bool value);
+
+  // uint32 cardID = 2;
+  void clear_cardid();
+  static const int kCardIDFieldNumber = 2;
+  ::google::protobuf::uint32 cardid() const;
+  void set_cardid(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:serverMessageSystem.SimpleCard)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  bool doortreasure_;
+  ::google::protobuf::uint32 cardid_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::protobuf_serverMessageSystem_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class ClientHasSoldCards : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:serverMessageSystem.ClientHasSoldCards) */ {
+ public:
+  ClientHasSoldCards();
+  virtual ~ClientHasSoldCards();
+
+  ClientHasSoldCards(const ClientHasSoldCards& from);
+
+  inline ClientHasSoldCards& operator=(const ClientHasSoldCards& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  ClientHasSoldCards(ClientHasSoldCards&& from) noexcept
+    : ClientHasSoldCards() {
+    *this = ::std::move(from);
+  }
+
+  inline ClientHasSoldCards& operator=(ClientHasSoldCards&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ClientHasSoldCards& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const ClientHasSoldCards* internal_default_instance() {
+    return reinterpret_cast<const ClientHasSoldCards*>(
+               &_ClientHasSoldCards_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    24;
+
+  void Swap(ClientHasSoldCards* other);
+  friend void swap(ClientHasSoldCards& a, ClientHasSoldCards& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline ClientHasSoldCards* New() const final {
+    return CreateMaybeMessage<ClientHasSoldCards>(NULL);
+  }
+
+  ClientHasSoldCards* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<ClientHasSoldCards>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const ClientHasSoldCards& from);
+  void MergeFrom(const ClientHasSoldCards& from);
+  void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(ClientHasSoldCards* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated .serverMessageSystem.SimpleCard soldCards = 4;
+  int soldcards_size() const;
+  void clear_soldcards();
+  static const int kSoldCardsFieldNumber = 4;
+  ::serverMessageSystem::SimpleCard* mutable_soldcards(int index);
+  ::google::protobuf::RepeatedPtrField< ::serverMessageSystem::SimpleCard >*
+      mutable_soldcards();
+  const ::serverMessageSystem::SimpleCard& soldcards(int index) const;
+  ::serverMessageSystem::SimpleCard* add_soldcards();
+  const ::google::protobuf::RepeatedPtrField< ::serverMessageSystem::SimpleCard >&
+      soldcards() const;
+
+  // .serverMessageSystem.CommonHeader header = 1;
+  bool has_header() const;
+  void clear_header();
+  static const int kHeaderFieldNumber = 1;
+  private:
+  const ::serverMessageSystem::CommonHeader& _internal_header() const;
+  public:
+  const ::serverMessageSystem::CommonHeader& header() const;
+  ::serverMessageSystem::CommonHeader* release_header();
+  ::serverMessageSystem::CommonHeader* mutable_header();
+  void set_allocated_header(::serverMessageSystem::CommonHeader* header);
+
+  // .serverMessageSystem.GameActionsSubSysCommandsID connectionCmdID = 2;
+  void clear_connectioncmdid();
+  static const int kConnectionCmdIDFieldNumber = 2;
+  ::serverMessageSystem::GameActionsSubSysCommandsID connectioncmdid() const;
+  void set_connectioncmdid(::serverMessageSystem::GameActionsSubSysCommandsID value);
+
+  // uint32 gamerID = 3;
+  void clear_gamerid();
+  static const int kGamerIDFieldNumber = 3;
+  ::google::protobuf::uint32 gamerid() const;
+  void set_gamerid(::google::protobuf::uint32 value);
+
+  // uint32 levelDelta = 5;
+  void clear_leveldelta();
+  static const int kLevelDeltaFieldNumber = 5;
+  ::google::protobuf::uint32 leveldelta() const;
+  void set_leveldelta(::google::protobuf::uint32 value);
+
+  // bool isCardProcessing = 6;
+  void clear_iscardprocessing();
+  static const int kIsCardProcessingFieldNumber = 6;
+  bool iscardprocessing() const;
+  void set_iscardprocessing(bool value);
+
+  // uint32 roomID = 7;
+  void clear_roomid();
+  static const int kRoomIDFieldNumber = 7;
+  ::google::protobuf::uint32 roomid() const;
+  void set_roomid(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:serverMessageSystem.ClientHasSoldCards)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::serverMessageSystem::SimpleCard > soldcards_;
+  ::serverMessageSystem::CommonHeader* header_;
+  int connectioncmdid_;
+  ::google::protobuf::uint32 gamerid_;
+  ::google::protobuf::uint32 leveldelta_;
+  bool iscardprocessing_;
+  ::google::protobuf::uint32 roomid_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::protobuf_serverMessageSystem_2eproto::TableStruct;
+};
 // ===================================================================
 
 
@@ -6579,9 +6874,203 @@ ServerReportsTheGameIsAboutToStart::mutable_playersorder() {
   return &playersorder_;
 }
 
+// -------------------------------------------------------------------
+
+// SimpleCard
+
+// bool doorTreasure = 1;
+inline void SimpleCard::clear_doortreasure() {
+  doortreasure_ = false;
+}
+inline bool SimpleCard::doortreasure() const {
+  // @@protoc_insertion_point(field_get:serverMessageSystem.SimpleCard.doorTreasure)
+  return doortreasure_;
+}
+inline void SimpleCard::set_doortreasure(bool value) {
+  
+  doortreasure_ = value;
+  // @@protoc_insertion_point(field_set:serverMessageSystem.SimpleCard.doorTreasure)
+}
+
+// uint32 cardID = 2;
+inline void SimpleCard::clear_cardid() {
+  cardid_ = 0u;
+}
+inline ::google::protobuf::uint32 SimpleCard::cardid() const {
+  // @@protoc_insertion_point(field_get:serverMessageSystem.SimpleCard.cardID)
+  return cardid_;
+}
+inline void SimpleCard::set_cardid(::google::protobuf::uint32 value) {
+  
+  cardid_ = value;
+  // @@protoc_insertion_point(field_set:serverMessageSystem.SimpleCard.cardID)
+}
+
+// -------------------------------------------------------------------
+
+// ClientHasSoldCards
+
+// .serverMessageSystem.CommonHeader header = 1;
+inline bool ClientHasSoldCards::has_header() const {
+  return this != internal_default_instance() && header_ != NULL;
+}
+inline void ClientHasSoldCards::clear_header() {
+  if (GetArenaNoVirtual() == NULL && header_ != NULL) {
+    delete header_;
+  }
+  header_ = NULL;
+}
+inline const ::serverMessageSystem::CommonHeader& ClientHasSoldCards::_internal_header() const {
+  return *header_;
+}
+inline const ::serverMessageSystem::CommonHeader& ClientHasSoldCards::header() const {
+  const ::serverMessageSystem::CommonHeader* p = header_;
+  // @@protoc_insertion_point(field_get:serverMessageSystem.ClientHasSoldCards.header)
+  return p != NULL ? *p : *reinterpret_cast<const ::serverMessageSystem::CommonHeader*>(
+      &::serverMessageSystem::_CommonHeader_default_instance_);
+}
+inline ::serverMessageSystem::CommonHeader* ClientHasSoldCards::release_header() {
+  // @@protoc_insertion_point(field_release:serverMessageSystem.ClientHasSoldCards.header)
+  
+  ::serverMessageSystem::CommonHeader* temp = header_;
+  header_ = NULL;
+  return temp;
+}
+inline ::serverMessageSystem::CommonHeader* ClientHasSoldCards::mutable_header() {
+  
+  if (header_ == NULL) {
+    auto* p = CreateMaybeMessage<::serverMessageSystem::CommonHeader>(GetArenaNoVirtual());
+    header_ = p;
+  }
+  // @@protoc_insertion_point(field_mutable:serverMessageSystem.ClientHasSoldCards.header)
+  return header_;
+}
+inline void ClientHasSoldCards::set_allocated_header(::serverMessageSystem::CommonHeader* header) {
+  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == NULL) {
+    delete header_;
+  }
+  if (header) {
+    ::google::protobuf::Arena* submessage_arena = NULL;
+    if (message_arena != submessage_arena) {
+      header = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, header, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  header_ = header;
+  // @@protoc_insertion_point(field_set_allocated:serverMessageSystem.ClientHasSoldCards.header)
+}
+
+// .serverMessageSystem.GameActionsSubSysCommandsID connectionCmdID = 2;
+inline void ClientHasSoldCards::clear_connectioncmdid() {
+  connectioncmdid_ = 0;
+}
+inline ::serverMessageSystem::GameActionsSubSysCommandsID ClientHasSoldCards::connectioncmdid() const {
+  // @@protoc_insertion_point(field_get:serverMessageSystem.ClientHasSoldCards.connectionCmdID)
+  return static_cast< ::serverMessageSystem::GameActionsSubSysCommandsID >(connectioncmdid_);
+}
+inline void ClientHasSoldCards::set_connectioncmdid(::serverMessageSystem::GameActionsSubSysCommandsID value) {
+  
+  connectioncmdid_ = value;
+  // @@protoc_insertion_point(field_set:serverMessageSystem.ClientHasSoldCards.connectionCmdID)
+}
+
+// uint32 gamerID = 3;
+inline void ClientHasSoldCards::clear_gamerid() {
+  gamerid_ = 0u;
+}
+inline ::google::protobuf::uint32 ClientHasSoldCards::gamerid() const {
+  // @@protoc_insertion_point(field_get:serverMessageSystem.ClientHasSoldCards.gamerID)
+  return gamerid_;
+}
+inline void ClientHasSoldCards::set_gamerid(::google::protobuf::uint32 value) {
+  
+  gamerid_ = value;
+  // @@protoc_insertion_point(field_set:serverMessageSystem.ClientHasSoldCards.gamerID)
+}
+
+// repeated .serverMessageSystem.SimpleCard soldCards = 4;
+inline int ClientHasSoldCards::soldcards_size() const {
+  return soldcards_.size();
+}
+inline void ClientHasSoldCards::clear_soldcards() {
+  soldcards_.Clear();
+}
+inline ::serverMessageSystem::SimpleCard* ClientHasSoldCards::mutable_soldcards(int index) {
+  // @@protoc_insertion_point(field_mutable:serverMessageSystem.ClientHasSoldCards.soldCards)
+  return soldcards_.Mutable(index);
+}
+inline ::google::protobuf::RepeatedPtrField< ::serverMessageSystem::SimpleCard >*
+ClientHasSoldCards::mutable_soldcards() {
+  // @@protoc_insertion_point(field_mutable_list:serverMessageSystem.ClientHasSoldCards.soldCards)
+  return &soldcards_;
+}
+inline const ::serverMessageSystem::SimpleCard& ClientHasSoldCards::soldcards(int index) const {
+  // @@protoc_insertion_point(field_get:serverMessageSystem.ClientHasSoldCards.soldCards)
+  return soldcards_.Get(index);
+}
+inline ::serverMessageSystem::SimpleCard* ClientHasSoldCards::add_soldcards() {
+  // @@protoc_insertion_point(field_add:serverMessageSystem.ClientHasSoldCards.soldCards)
+  return soldcards_.Add();
+}
+inline const ::google::protobuf::RepeatedPtrField< ::serverMessageSystem::SimpleCard >&
+ClientHasSoldCards::soldcards() const {
+  // @@protoc_insertion_point(field_list:serverMessageSystem.ClientHasSoldCards.soldCards)
+  return soldcards_;
+}
+
+// uint32 levelDelta = 5;
+inline void ClientHasSoldCards::clear_leveldelta() {
+  leveldelta_ = 0u;
+}
+inline ::google::protobuf::uint32 ClientHasSoldCards::leveldelta() const {
+  // @@protoc_insertion_point(field_get:serverMessageSystem.ClientHasSoldCards.levelDelta)
+  return leveldelta_;
+}
+inline void ClientHasSoldCards::set_leveldelta(::google::protobuf::uint32 value) {
+  
+  leveldelta_ = value;
+  // @@protoc_insertion_point(field_set:serverMessageSystem.ClientHasSoldCards.levelDelta)
+}
+
+// bool isCardProcessing = 6;
+inline void ClientHasSoldCards::clear_iscardprocessing() {
+  iscardprocessing_ = false;
+}
+inline bool ClientHasSoldCards::iscardprocessing() const {
+  // @@protoc_insertion_point(field_get:serverMessageSystem.ClientHasSoldCards.isCardProcessing)
+  return iscardprocessing_;
+}
+inline void ClientHasSoldCards::set_iscardprocessing(bool value) {
+  
+  iscardprocessing_ = value;
+  // @@protoc_insertion_point(field_set:serverMessageSystem.ClientHasSoldCards.isCardProcessing)
+}
+
+// uint32 roomID = 7;
+inline void ClientHasSoldCards::clear_roomid() {
+  roomid_ = 0u;
+}
+inline ::google::protobuf::uint32 ClientHasSoldCards::roomid() const {
+  // @@protoc_insertion_point(field_get:serverMessageSystem.ClientHasSoldCards.roomID)
+  return roomid_;
+}
+inline void ClientHasSoldCards::set_roomid(::google::protobuf::uint32 value) {
+  
+  roomid_ = value;
+  // @@protoc_insertion_point(field_set:serverMessageSystem.ClientHasSoldCards.roomID)
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
@@ -6653,6 +7142,11 @@ template <> struct is_proto_enum< ::serverMessageSystem::ChartSubSysCommandsID> 
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::serverMessageSystem::ChartSubSysCommandsID>() {
   return ::serverMessageSystem::ChartSubSysCommandsID_descriptor();
+}
+template <> struct is_proto_enum< ::serverMessageSystem::GameActionsSubSysCommandsID> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::serverMessageSystem::GameActionsSubSysCommandsID>() {
+  return ::serverMessageSystem::GameActionsSubSysCommandsID_descriptor();
 }
 template <> struct is_proto_enum< ::serverMessageSystem::GameCreationRequest> : ::std::true_type {};
 template <>

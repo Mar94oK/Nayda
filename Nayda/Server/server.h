@@ -116,16 +116,34 @@ signals:
     void SignalServerQueryOversize();
 
     void SignalProcessClientConnectionToRoomReply(const ClientConnectionToRoomReplyData& data);
-
     void SignalProcessServerRoomChangesInSelectableList(const ServerRoomReadyToConnectData& data);
-
     void SignalProcessServerClientWantedToEnterTheRoomReply(const ServerClientWantedToEnterTheRoomReplyData& data);
-
     void SignalServerReportsClientIsLeavingRoom(const QString& name);
-
     void SignalProcessServerReportsRoomHasChangedOwner(const QString& previousOwner, const QString& currentOwner);
-
     void SignalServerReportsTheGameIsAboutToStart(const TheGameIsAboutToStartData& data);
+
+//===THE_GAME_PROCESS
+signals:
+
+    void SignalServerReportsPlayerSoldCards(const TheGameMainGamerHasSoldCards& data);
+
+
+public slots:
+
+    void SlotSendClientHasSoldCards(const TheGameMainGamerHasSoldCards& data);
+
+private:
+
+    void ProcessClientHasSoldCards(const QByteArray &data, int socketDescriptor);
+
+
+public:
+
+    QByteArray FormClientHasSoldCards(const TheGameMainGamerHasSoldCards& data);
+
+//THE_GAME_PROCESS===
+
+signals:
 
 //error signals
 

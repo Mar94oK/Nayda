@@ -1585,32 +1585,16 @@ void The_Game::GivingCardsToPlayers()
     uint32_t initialSizeDoors = _doorsDeck.size();
     uint32_t initialSizeTreasures = _treasuresDeck.size();
 
-    std::vector<Player*> orderOfMove;
-    for (uint32_t var = 0; var < _playersOrder.size(); ++var)
-    {
-        if (_mainPlayer->name() == _playersOrder[var])
-            orderOfMove.push_back(_mainPlayer);
-        for (uint32_t y = 0; y < _playersOpponents.size(); ++y)
-        {
-            if (_playersOpponents[y]->name() == _playersOrder[var])
-            {
-                orderOfMove.push_back(_playersOpponents[y]);
-                //NAY-002: MARK_EXPECTED_ERROR
-                //To Test under 3 or more players.
-                break;
-            }
-        }
-    }
-    qDebug() << "NAY-002: PlayersOrder size: " << orderOfMove.size();
-    if (orderOfMove.size() != _playersOpponents.size() + 1)
+    qDebug() << "NAY-002: PlayersOrder size: " << _orderOfMove.size();
+    if (_orderOfMove.size() != _playersOpponents.size() + 1)
         qDebug() << "NAY-002: ERROR WHILE void The_Game::GivingCardsToPlayers()"
                  << "orderOfMove.size() != _playersOpponents.size() + 1";
 
-    for (uint32_t var = 0; var < orderOfMove.size(); ++var)
+    for (uint32_t var = 0; var < _orderOfMove.size(); ++var)
     {
         for (unsigned int y = 0; y < cardsToGive; ++y)
         {
-            orderOfMove[var]->addCardToHands(_doorsDeck.front());
+            _orderOfMove[var]->addCardToHands(_doorsDeck.front());
             _doorsDeck.erase(_doorsDeck.begin());
         }
     }
@@ -1618,55 +1602,17 @@ void The_Game::GivingCardsToPlayers()
     ui->CardStacksWidget->updateDoorsLeft(initialSizeDoors - cardsToGive*(_gameSettings.maximumNumberOfPlayers()));
     qDebug() << "Doors are given to the players!";
 
-    for (uint32_t var = 0; var < orderOfMove.size(); ++var)
+    for (uint32_t var = 0; var < _orderOfMove.size(); ++var)
     {
         for (uint32_t y = 0; y < cardsToGive; ++y)
         {
-            orderOfMove[var]->addCardToHands(_treasuresDeck.front());
+            _orderOfMove[var]->addCardToHands(_treasuresDeck.front());
             _treasuresDeck.erase(_treasuresDeck.begin());
         }
     }
 
     ui->CardStacksWidget->updateTreasuresLeft(initialSizeTreasures - cardsToGive*_gameSettings.maximumNumberOfPlayers());
     qDebug() << "Treasures are given to the players!";
-
-
-
-//    for (unsigned int var = 0; var < cardsToGive; ++var) {
-
-//        _mainPlayer->addCardToHands(_doorsDeck.front());
-//        _doorsDeck.erase(_doorsDeck.begin());
-//    }
-
-//    //giving cards to the other players...
-
-//    for (uint32_t var = 0; var < totalOpponents; ++var) {
-
-//        for (uint32_t j = 0; j < cardsToGive; ++j ) {
-
-//            _playersOpponents[var]->addCardToHands(_doorsDeck.front());
-//            _doorsDeck.erase(_doorsDeck.begin());
-//        }
-//    }
-
-
-
-//    //treasures..
-//    for (uint32_t var = 0; var < cardsToGive; ++var)
-//    {
-//        _mainPlayer->addCardToHands(_treasuresDeck.front());
-//        _treasuresDeck.erase(_treasuresDeck.begin());
-//    }
-
-//    //giving cards to the other players...
-//    for (unsigned int var = 0; var < totalOpponents; ++var) {
-
-//        for (unsigned int j = 0; j < cardsToGive; ++j ) {
-
-//            _playersOpponents[var]->addCardToHands(_treasuresDeck.front());
-//            _treasuresDeck.erase(_treasuresDeck.begin());
-//        }
-//    }
 
 #endif
 }
@@ -2203,6 +2149,8 @@ void The_Game::Animation_StartPassSoldCardsFromHandToTreasureFold_Phase3(std::ve
                     [this, cardsToBeProcessed]{ProcessFoldObserver(cardsToBeProcessed);});
             connect(animation, &QPropertyAnimation::finished,
                     [this]{CheckThePlayerIsAbleToSell(_mainPlayer);});
+            connect(animation, &QPropertyAnimation::finished,
+                    [this]{RestoreGamePhase();});
         }
     }    
 
@@ -2334,6 +2282,21 @@ void The_Game::setGameSettings(const GameSettings &gameSettings)
     _gameSettings = gameSettings;
 }
 
+void The_Game::SlotClientIsLeavingTheRoom(const QString &name)
+{
+    for (uint32_t var = 0; var < _playersOrder.size(); ++var)
+    {
+        if (_playersOrder[var] == name)
+        {
+            qDebug() << "NAY-002: Opponent with name " << name << " is leaving.";
+            _playersOrder.erase(_playersOrder.begin() + var);
+            _playersOrder.shrink_to_fit();
+            return;
+        }
+    }
+    qDebug() << "NAY-002: Error during SlotClientIsLeavingTheRoom(). Client not found!";
+}
+
 void The_Game::SlotProcessServerReportsRoomHasChangedOwner(const QString &previousOwner, const QString &currentOwner)
 {
     //Если игра уже в процессе, удалить игрока из игры!
@@ -2461,18 +2424,45 @@ void The_Game::SetUpPlayersAndWidgets(uint32_t windowHeight, uint32_t windowWidt
         }
     }
 
+    //Set-Up order Of move
+    std::vector<Player*> orderOfMove;
+    for (uint32_t var = 0; var < _playersOrder.size(); ++var)
+    {
+        if (_mainPlayer->name() == _playersOrder[var])
+        {
+            _mainGamerOrderOfMove = var;
+            orderOfMove.push_back(_mainPlayer);
+        }
+        for (uint32_t y = 0; y < _playersOpponents.size(); ++y)
+        {
+            if (_playersOpponents[y]->name() == _playersOrder[var])
+            {
+                orderOfMove.push_back(_playersOpponents[y]);
+                //NAY-002: MARK_EXPECTED_ERROR
+                //To Test under 3 or more players.
+                break;
+            }
+        }
+    }
+
+    //save the order;
+    _orderOfMove = orderOfMove;
+
     //widgets for them
     for (uint32_t var = 0; var < playersOrder.size(); var++)
     {
 
        if (_gameSettings.clientName() != playersOrder[var])
        {
-            _widgets4Opponents.push_back(new GamerWidget);
+           _widgets4Opponents.push_back(new GamerWidget);
+           _GamerWidgetsWithIDs.insert(std::make_pair(var, _widgets4Opponents.back()));
             _widgets4Opponents.back()->RedrawAsASecondaryPlayer();
             _widgets4Opponents.back()->setIs_MainPlayer(false);
             if (playersOrder[var] == _roomMasterName)
                 _widgets4Opponents.back()->SetIsRoomMaster();
        }
+       else
+           _GamerWidgetsWithIDs.insert(std::make_pair(var, ui->MainGamer));
 
     }
     //first two of them to the top layout
@@ -2794,10 +2784,21 @@ void The_Game::SlotProcessCardsSelectedToBeSold(const std::vector<SimpleCard> ca
     _mainPlayer->SetPlayerLevel(_mainPlayer->GetPlayerLevel() + GetLevelPurchased(totalMoneySpent));
     _mainPlayer->SetWarPower(_mainPlayer->GetWarPower() + GetLevelPurchased(totalMoneySpent));
 
+    qDebug() << "NAY-002: Emitting Signal MainGamer Has Sold Cards: "
+             << " For Room with id: " << _roomID;
+
+    emit SignalMainGamerHasSoldCards(TheGameMainGamerHasSoldCards(
+                                         _mainGamerOrderOfMove,
+                                         cards,
+                                         GetLevelPurchased(totalMoneySpent),
+                                         true,
+                                         _roomID));
+
+
     ui->MainGamer->SlotChangeTheGamerLevel(static_cast<int32_t>(GetLevelPurchased(totalMoneySpent)));
 
     //1.1. Для этого сначала получить их позиции
-    std::vector<PositionedCard> posCards = GetPositionedCards(cards);
+    std::vector<PositionedCard> posCards = GetPositionedCards(ui->MainGamer, cards);
     qDebug() << "NAY-002: posCards size " << posCards.size();
 
     //Убрать проданные карты с руки. (Карты хранятся во временном векторе posCards)
@@ -2820,9 +2821,9 @@ void The_Game::SlotProcessCardsSelectedToBeSold(const std::vector<SimpleCard> ca
 
 }
 
-std::vector<PositionedCard> The_Game::GetPositionedCards(const std::vector<SimpleCard> &cards)
+std::vector<PositionedCard> The_Game::GetPositionedCards(GamerWidget* wt, const std::vector<SimpleCard> &cards)
 {
-    return ui->MainGamer->GetPositionedCards(cards);
+    return wt->GetPositionedCards(cards);
 }
 
 void The_Game::SlotAddPlayedCardToTheBattleField(SimpleCard card)
@@ -2954,6 +2955,50 @@ void The_Game::RealGameStart()
         //It is necessary to set correct GamePhase
         StartPhaseTimer(GamePhase::StartOfTheMove);
     }
+
+}
+
+void The_Game::SlotProcessOpponentHasSoldCards(TheGameMainGamerHasSoldCards data)
+{
+    //1. Вычислить оппонента
+    //2. Добавить ему уровень/боевую силу
+    //3. Отобразить анимацию продажи карт
+
+    uint32_t opponentId = data.gamerID; //explicitly relates to _playersOrder;
+    Player* currentPlayer = _orderOfMove[data.gamerID];
+
+    GamerWidget* currentWidget = _GamerWidgetsWithIDs[data.gamerID];
+
+    QPoint currentPosition = currentWidget->ProvideHandPosition();
+
+    //Т.к. карты известны, можно установить новый уровень/юоевую силу и начать продажу
+    currentPlayer->SetPlayerLevel(currentPlayer->GetPlayerLevel() + data.levelDelta);
+    currentPlayer->SetWarPower(currentPlayer->GetWarPower() + data.levelDelta);
+
+    currentWidget->SlotChangeTheGamerLevel(data.levelDelta);
+    currentWidget->SlotChangeTheGamerBattlePower(data.levelDelta);
+
+    //1.1. Для этого сначала получить их позиции
+    std::vector<PositionedCard> posCards = GetPositionedCards(currentWidget, data.soldCards);
+    qDebug() << "NAY-002: posCards size " << posCards.size();
+
+    //Убрать проданные карты с руки. (Карты хранятся во временном векторе posCards)
+    //Была либо фаза торговли, либо фаза "ход другого игрока"
+    SaveGamePhase();
+    _currentGamePhase = GamePhase::CardProcessing;
+    emit SignalHideTradeButton();
+    for (uint32_t var = 0; var < posCards.size(); ++var)
+    {
+        RemoveCardFromCardsAreAbleToBeSold(posCards[var].GetCard());
+        RemoveTheCardFromHand(ui->MainGamer, posCards[var].GetCard());
+    }
+    currentPlayer->RemoveGivenCardsFromHand(data.soldCards);
+
+    //start animation here
+    Animation_StartPassSoldCardsFromHandToTreasureFold_Phase1(posCards);
+
+    //RestoreGamePhase();
+
 
 }
 

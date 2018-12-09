@@ -82,6 +82,8 @@ void Before_The_Game::SlotProcessClientRoomCreationReplyData(ClientRoomCreationR
         //if Ok emit close signal to PlayMenu
         //and emit Creation Signal for RoomCreationWaitingLobby
         qDebug() << "NAY-0001: RoomCreation Allowed!";
+        _roomID = data._slotID;
+        emit SignalRoomIdHasBeenChanged(data._slotID);
         emit SignalRoomCreationAllowed(data);
     }
     else
@@ -262,6 +264,13 @@ void Before_The_Game::SlotProcessServerClientWantedToEnterTheRoomReply(const Ser
         //1. Apply New Settings (these settings are provided by another user)
         //Maybe better to save defaults.
         //_gameSettings.applyNewSettings(data.providedSettings);
+        _roomID = data.roomID;
+        _gameSettings.applyNewSettings(data.providedSettings);
+
+        emit SignalUserHaveChagedGameSettigs(_gameSettings);
+        emit SignalRoomIdHasBeenChanged(data.roomID);
+        emit SignalRoomNameHasBeenChanged(data.roomName);
+
 
         //2. Create New RoomCreation Lobby but with specified parameters;
         _roomCreationWaitingLobby = new RoomCreationWaitingLobby(_gameSettings);

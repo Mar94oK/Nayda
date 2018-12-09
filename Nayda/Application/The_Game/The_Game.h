@@ -320,6 +320,10 @@ private:
     std::vector <Player*> _playersOpponents; //5 at all - Maximum according to current settings.
 
     std::vector <QString> _playersOrder; //The first one in this list is an actual MASTER!
+    std::vector <Player*> _orderOfMove;
+    std::map<uint32_t, GamerWidget*> _GamerWidgetsWithIDs;
+
+    uint32_t _mainGamerOrderOfMove;
     //This entity is expected to be initialized before any action.
 
     //this stock depends on the Game Mode;
@@ -359,6 +363,10 @@ private:
 private:
 
     GamePhase _currentGamePhase = GamePhase::GameInitialization;
+    GamePhase _storedGamePhase = GamePhase::GameInitialization;
+
+    void SaveGamePhase() { _storedGamePhase = _currentGamePhase; }
+    void RestoreGamePhase() { _currentGamePhase = _storedGamePhase; }
 
 public slots:
 
@@ -397,11 +405,19 @@ public slots:
     void SlotProcessChartMessageSending(const QString& message)
     { emit SignalChartMessageSending(message);}
 
-//ServerRelated
+//===SERVER-RELATED SIGNALS AND SLOTS
 signals:
 
     void SignalChartMessageReceived(const QStringList& message);
     void SignalChartMessageSending(const QString& message);
+
+    void SignalMainGamerHasSoldCards(TheGameMainGamerHasSoldCards data);
+
+public slots:
+
+    void SlotProcessOpponentHasSoldCards(TheGameMainGamerHasSoldCards data);
+    void SlotRoomIdHasBeenChanged(uint32_t roomID) { _roomID = roomID; }
+    void SlotRoomNameHasBeenChanged(QString roomName) { _roomName = roomName; }
 
 private:
 
@@ -440,20 +456,7 @@ public slots:
     void SlotClientIsEnteringToRoom(const QString& name)
     { _playersOrder.push_back(name); }
 
-    void SlotClientIsLeavingTheRoom(const QString& name)
-    {
-        for (uint32_t var = 0; var < _playersOrder.size(); ++var)
-        {
-            if (_playersOrder[var] == name)
-            {
-                qDebug() << "NAY-002: Opponent with name " << name << " is leaving.";
-                _playersOrder.erase(_playersOrder.begin() + var);
-                _playersOrder.shrink_to_fit();
-                return;
-            }
-        }
-        qDebug() << "NAY-002: Error during SlotClientIsLeavingTheRoom(). Client not found!";
-    }
+    void SlotClientIsLeavingTheRoom(const QString& name);
 
     void SlotProcessServerReportsRoomHasChangedOwner(const QString& previousOwner, const QString& currentOwner);
 
@@ -537,7 +540,7 @@ public slots:
 private:
 
     std::vector<PositionedCard> _soldCards;
-    std::vector<PositionedCard> GetPositionedCards(const std::vector<SimpleCard>& cards);
+    std::vector<PositionedCard> GetPositionedCards(GamerWidget *wt, const std::vector<SimpleCard>& cards);
     void SoldProcess(const std::vector<PositionedCard>& soldCards);
 
 
@@ -626,6 +629,7 @@ private slots:
 private:
 
     uint32_t _roomID = ROOM_ID_NOT_DEFINED;
+    QString  _roomName = "";
 
 public:
 

@@ -356,6 +356,78 @@ void Server::SlotSendClientWantedToEnterTheRoom(uint32_t roomId)
     ConnectionSendOutgoingData(FormClientWantedToEnterTheRoom(roomId));
 }
 
+void Server::SlotSendClientHasSoldCards(const TheGameMainGamerHasSoldCards &data)
+{
+    qDebug() << "NAY-002: Send SlotSendClientHasSoldCards";
+    ConnectionSendOutgoingData(FormClientHasSoldCards(data));
+}
+
+void Server::ProcessClientHasSoldCards(const QByteArray &data, int socketDescriptor)
+{
+   qDebug() << ("NAY-0001: Error while ProcessClientHasSoldCards() ");
+   serverMessageSystem::ClientHasSoldCards message;
+
+   if (!message.ParseFromArray(data.data(), data.size()))
+   {
+       qDebug() << ("NAY-0001: Error while ProcessClientHasSoldCards() ");
+       return;
+   }
+
+//   uint32_t gamerID = message.gamerid();
+//   bool isCardProcessing = message.iscardprocessing();
+//   uint32_t levelDelta = message.leveldelta();
+
+   std::vector<SimpleCard> soldCards;
+
+   for (uint32_t var = 0; var < static_cast<uint32_t>(message.soldcards_size()); ++var)
+   {
+       soldCards.push_back(SimpleCard{ message.soldcards(static_cast<int32_t>(var)).doortreasure(),
+                           message.soldcards(static_cast<int32_t>(var)).cardid()});
+   }
+
+//   explicit TheGameMainGamerHasSoldCards(uint32_t gmrId, const std::vector<SimpleCard>& sldCards,
+//                                         uint32_t lvlDelta, bool crdPrcss) :
+//       gamerID(gmrId), soldCards(sldCards), levelDelta(lvlDelta), isCardProcessing(crdPrcss)
+//   { }
+
+   emit SignalServerReportsPlayerSoldCards(TheGameMainGamerHasSoldCards(message.gamerid(),
+                                                                        soldCards,
+                                                                        message.leveldelta(),
+                                                                        message.gamerid(),
+                                                                        message.roomid()));
+}
+
+QByteArray Server::FormClientHasSoldCards(const TheGameMainGamerHasSoldCards &data)
+{
+    serverMessageSystem::ClientHasSoldCards message;
+    serverMessageSystem::CommonHeader *header(message.mutable_header());
+    header->set_subsystem(serverMessageSystem::SubSystemID::GAME_ACTIONS_SUBSYSTEM);
+    header->set_commandid(static_cast<uint32_t>(serverMessageSystem::GameActionsSubSysCommandsID::CLIENT_HAS_SOLD_CARDS));
+    message.set_connectioncmdid(serverMessageSystem::GameActionsSubSysCommandsID::CLIENT_HAS_SOLD_CARDS);
+
+    message.set_gamerid(data.gamerID);
+    message.set_iscardprocessing(data.isCardProcessing);
+    message.set_leveldelta(data.levelDelta);
+    message.set_roomid(data.roomID);
+
+    for (uint32_t var = 0; var < data.soldCards.size(); ++var)
+    {
+        message.add_soldcards();
+        serverMessageSystem::SimpleCard *newCard(message.mutable_soldcards(var));
+        newCard->set_cardid(data.soldCards[var].second);
+        newCard->set_doortreasure(data.soldCards[var].first);
+    }
+
+
+    QByteArray block;
+    block.resize(message.ByteSize());
+    message.SerializeToArray(block.data(), block.size());
+    qDebug() << "NAY-002: Serialized FormClientHasSoldCards is ready.";
+    return block;
+
+
+}
+
 void Server::ProtobufMessageParser(const QByteArray &data, int socketDescriptor)
 {
 
@@ -433,10 +505,19 @@ void Server::ProtobufMessageParser(const QByteArray &data, int socketDescriptor)
                 }
             }
             break;
-       case serverMessageSystem::SubSystemID::GAME_ACTIONS_SUBSYSTEM:
-           qDebug() << ("NAY-0001: Message SubSystem"
-                                      " GAME_ACTIONS_SUBSYSTEM "
-                                      " Not supported yet.");
+            case serverMessageSystem::SubSystemID::GAME_ACTIONS_SUBSYSTEM:
+            {
+                switch (defaultMessage.header().commandid())
+                {
+                    case serverMessageSystem::GameActionsSubSysCommandsID::CLIENT_HAS_SOLD_CARDS:
+                    {
+                        ProcessClientHasSoldCards(data, socketDescriptor);
+                    }
+                    break;
+                }
+                qDebug() << ("NAY-002: Unsupported Command in CHART_SUBSYSTEM with CmdID: ") << QString::number(defaultMessage.header().commandid());
+            }
+
            break;
 
        case serverMessageSystem::SubSystemID::GAME_NOTIFICATION_SUBSYSTEM:
@@ -448,7 +529,6 @@ void Server::ProtobufMessageParser(const QByteArray &data, int socketDescriptor)
        case serverMessageSystem::SubSystemID::CHART_SUBSYSTEM:
            switch (defaultMessage.header().commandid())
            {
-           qDebug() << "Chart SubSystem! ";
            case serverMessageSystem::ChartSubSysCommandsID::CHART_MESSAGE:
                ProcessChartMessage(data, socketDescriptor);
                break;
