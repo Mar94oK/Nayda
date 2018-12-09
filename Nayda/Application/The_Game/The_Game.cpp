@@ -2478,11 +2478,16 @@ void The_Game::SetUpPlayersAndWidgets(uint32_t windowHeight, uint32_t windowWidt
            _GamerWidgetsWithIDs.insert(std::make_pair(var, _widgets4Opponents.back()));
             _widgets4Opponents.back()->RedrawAsASecondaryPlayer();
             _widgets4Opponents.back()->setIs_MainPlayer(false);
+            _widgets4Opponents.back()->SetGamerName(playersOrder[var]);
             if (playersOrder[var] == _roomMasterName)
                 _widgets4Opponents.back()->SetIsRoomMaster();
        }
        else
+       {
            _GamerWidgetsWithIDs.insert(std::make_pair(var, ui->MainGamer));
+           ui->MainGamer->SetGamerName(playersOrder[var]);
+       }
+
 
     }
     //first two of them to the top layout

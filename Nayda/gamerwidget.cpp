@@ -526,5 +526,10 @@ QPoint GamerWidget::ProvideHandPosition()
     return ui->widget->pos(); //Relative to Gamer Widget.
 }
 
+void GamerWidget::SetGamerName(const QString &gamerName)
+{
+    ui->lbl_Avatar->setText(gamerName);
+}
+
 
 

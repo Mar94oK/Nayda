@@ -257,6 +257,7 @@ public:
 
    QPoint ProvideSelfPosition();
    QPoint ProvideHandPosition();
+   void SetGamerName(const QString& gamerName);
 
 
 };
