@@ -26,6 +26,7 @@ private:
     bool _HardCodedSettings_AllowedToSellAtLevelNine = true;
     bool _HardCodedSettings_AllowedToOverSellAtLevelNine = true;
     bool _HardCodedSettings_AllowLevelOverSell = false;
+    bool _HardCodedSettings_ShowResistanceIcons = false;
 
 public:
     GameSettings();
