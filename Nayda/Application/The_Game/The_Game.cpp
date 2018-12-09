@@ -1941,7 +1941,8 @@ void The_Game::SlotServerReportsTheGameIsAboutToStart(const TheGameIsAboutToStar
     GivingCardsToPlayers();
     ShowInitialCardsOnHands();
     ui->GameField->InitializeStartUpProcedureVisualization();
-    showFullScreen();
+    //showFullScreen();
+    show();
 }
 
 void The_Game::SlotShowTheRejectedCardMessage(PositionedCard card)
