@@ -1620,23 +1620,34 @@ void The_Game::GivingCardsToPlayers()
 void The_Game::ShowInitialCardsOnHands()
 {
     qDebug() << "showInitialCardsOnHands:: Started";
-    for (unsigned int var = 0; var < _mainPlayer->cardsOnHandsVector()->size(); ++var)
-    {
-        ui->MainGamer->addTheCardToHandsWidget(*((_mainPlayer->cardsOnHandsVector())->begin() + static_cast<int>(var)));
-    }
+//    for (unsigned int var = 0; var < _mainPlayer->cardsOnHandsVector()->size(); ++var)
+//    {
+//        ui->MainGamer->addTheCardToHandsWidget(*((_mainPlayer->cardsOnHandsVector())->begin() + static_cast<int>(var)));
+//    }
 
-    qDebug() << "NAY-002: _playersOpponents.size(): " << _playersOpponents.size();
+//    qDebug() << "NAY-002: _playersOpponents.size(): " << _playersOpponents.size();
 
-    for (unsigned int var = 0; var < _playersOpponents.size(); ++var)
+//    for (unsigned int var = 0; var < _playersOpponents.size(); ++var)
+//    {
+//        unsigned int totalCardsToShow = _playersOpponents[var]->GetCardsOnHands().size();
+//        std::vector<SimpleCard> cardsOnHands = _playersOpponents[var]->GetCardsOnHands();
+//        for (unsigned int j = 0; j < cardsOnHands.size(); ++j)
+//        {
+//            _widgets4Opponents[var]->addTheCardToHandsWidget(cardsOnHands[j]);
+//        }
+//    }
+//    qDebug() << "showInitialCardsOnHands:: Completed";
+
+
+    for (uint32_t var = 0; var < _orderOfMove.size(); ++var)
     {
-        unsigned int totalCardsToShow = _playersOpponents[var]->GetCardsOnHands().size();
-        std::vector<SimpleCard> cardsOnHands = _playersOpponents[var]->GetCardsOnHands();
-        for (unsigned int j = 0; j < cardsOnHands.size(); ++j)
-        {            
-            _widgets4Opponents[var]->addTheCardToHandsWidget(cardsOnHands[j]);
+        std::vector<SimpleCard> cardsOnHands = _orderOfMove[var]->GetCardsOnHands();
+        for (uint32_t y = 0; y < cardsOnHands.size(); ++y)
+        {
+            qDebug() << "NAY-002: " << "Showing Card with id: " << cardsOnHands[y].second;
+            _GamerWidgetsWithIDs[var]->addTheCardToHandsWidget(cardsOnHands[y]);
         }
     }
-    qDebug() << "showInitialCardsOnHands:: Completed";
 }
 
 
@@ -2419,6 +2430,7 @@ void The_Game::SetUpPlayersAndWidgets(uint32_t windowHeight, uint32_t windowWidt
         if (_gameSettings.clientName() != playersOrder[var])
         {
             Player* currentPlayer = new Player (playersOrder[var]);
+            currentPlayer->SetPlayersName(playersOrder[var]);
             _playersOpponents.push_back(currentPlayer);
             qDebug() << "NAY-002: _playersOpponents Size: " << _playersOpponents.size();
         }
@@ -2428,14 +2440,14 @@ void The_Game::SetUpPlayersAndWidgets(uint32_t windowHeight, uint32_t windowWidt
     std::vector<Player*> orderOfMove;
     for (uint32_t var = 0; var < _playersOrder.size(); ++var)
     {
-        if (_mainPlayer->name() == _playersOrder[var])
+        if (_mainPlayer->GetPlayersName() == _playersOrder[var])
         {
             _mainGamerOrderOfMove = var;
             orderOfMove.push_back(_mainPlayer);
         }
         for (uint32_t y = 0; y < _playersOpponents.size(); ++y)
         {
-            if (_playersOpponents[y]->name() == _playersOrder[var])
+            if (_playersOpponents[y]->GetPlayersName() == _playersOrder[var])
             {
                 orderOfMove.push_back(_playersOpponents[y]);
                 //NAY-002: MARK_EXPECTED_ERROR
@@ -2447,6 +2459,12 @@ void The_Game::SetUpPlayersAndWidgets(uint32_t windowHeight, uint32_t windowWidt
 
     //save the order;
     _orderOfMove = orderOfMove;
+
+    qDebug() << "NAY-002: " << "Order of move: ";
+    for (uint32_t var = 0; var < _orderOfMove.size(); ++var)
+    {
+        _orderOfMove[var]->GetPlayersName();
+    }
 
     //widgets for them
     for (uint32_t var = 0; var < playersOrder.size(); var++)

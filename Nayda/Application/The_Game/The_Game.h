@@ -313,7 +313,7 @@ private:
     void SetIsRoomMaster(bool master);
     bool GetIsRoomMaster() { return _isRoomMaster; }
     bool CheckIsMainPlayerTheRoomMaster(const QString& master)
-    {return _mainPlayer->name() == master; }
+    {return _mainPlayer->GetPlayersName() == master; }
 
     QString _roomMasterName;
 

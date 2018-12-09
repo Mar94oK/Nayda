@@ -109,8 +109,8 @@ public:
     const std::vector<SimpleCard>& GetCardsInGame()
     { return _cardsInGame; }
 
-    QString name() const;
-    void setName(const QString &name);
+    QString GetPlayersName() const;
+    void SetPlayersName(const QString &GetPlayersName);
 
     void RemoveGivenCardsFromHand(const std::vector<SimpleCard>& cards);
     void RemoveGivenCardFromHand(SimpleCard card);

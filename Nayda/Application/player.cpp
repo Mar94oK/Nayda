@@ -1,11 +1,11 @@
 #include "player.h"
 
-QString Player::name() const
+QString Player::GetPlayersName() const
 {
     return _name;
 }
 
-void Player::setName(const QString &name)
+void Player::SetPlayersName(const QString &name)
 {
     _name = name;
 }
