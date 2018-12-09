@@ -1820,6 +1820,11 @@ void The_Game::SetCurrentGamePhase(const GamePhase &currentGamePhase)
     _currentGamePhase = currentGamePhase;
 }
 
+void The_Game::SetGlobalGamePhase(GlobalGamePhase phase)
+{
+    _globalGamePhase = phase;
+}
+
 QPoint The_Game::GetMainGamerWidgetPostion()
 {
     return ui->MainGamer->ProvideSelfPosition();
@@ -1883,6 +1888,22 @@ void The_Game::SlotCheckThePossibilityForTheCardToBePlayed(PositionedCard card)
     //check, first of all, what is the phase of the Game;
     //If the Phase is "WaitingForAnOpponentToMove", it is not possible to use any cards;
     //Even "Annihilation"
+
+    //Check Global Phase First:
+
+    //Проверить, что карта относится к тем, которые можно играть:
+    //1) в любой момент (проклятье)
+    //2) в чужой ход во время боя
+    //3) Требуется ли карте дополнительная карта (бродячая тварь)
+    //      и есть ли такая карта
+
+    if (_globalGamePhase == GlobalGamePhase::OtherPlayerMove)
+    {
+        qDebug() << "NAY-002: DEBUG:::: The Game is in the GlobalGamePhase::OtherPlayerMove when it is not possible to use cards!";
+        emit SignalCardIsRejectedToBePlayed(true);
+        return;
+    }
+
 
     if ((_currentGamePhase == GamePhase::GameInitialization)
             || (_currentGamePhase == GamePhase::WaitingForAnOpponentToMove)
@@ -2878,6 +2899,8 @@ void The_Game::SlotShowAllSoldCardsInCentre(const std::vector<SimpleCard> cards,
 bool The_Game::CheckThePlayerIsAbleToSell(Player* player)
 {
     qDebug() <<"NAY-002: Entering AbleToSell Checker";
+    if (_globalGamePhase == GlobalGamePhase::OtherPlayerMove)
+        return false;
 
     if (!_gameSettings.GetHardCodedSettingsAllowedToSellAtLevelNine()
             && (player->GetPlayerLevel() == 9))
@@ -2986,7 +3009,6 @@ void The_Game::RealGameStart()
     {
         InitializeOpponentMove(_playersOrder[0]);
         StartMoveTimer();
-
         //In fact, while another player is acting,
         //It is necessary to set correct GamePhase
         StartPhaseTimer(GamePhase::StartOfTheMove);
@@ -3074,6 +3096,7 @@ void The_Game::InitializeMainPlayerMove()
     //5.2  Разрешить сыграть монстра с руки
     //5.3  Разрешить сыграть монстра из колоды
 
+    SetGlobalGamePhase(GlobalGamePhase::OwnMove);
     SetCurrentGamePhase(GamePhase::StartOfTheMove);
 
     if (CheckThePlayerIsAbleToSell(_mainPlayer))
@@ -3082,7 +3105,9 @@ void The_Game::InitializeMainPlayerMove()
 
 void The_Game::InitializeOpponentMove(const QString &opponentsName)
 {
+    SetGlobalGamePhase(GlobalGamePhase::OtherPlayerMove);
     SetCurrentGamePhase(GamePhase::OtherPlayerMove);
+
     qDebug() << "NAY-002: Other PlayerMove!";
 }
 

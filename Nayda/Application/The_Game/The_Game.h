@@ -59,6 +59,13 @@ enum class GamePhase {
                         AfterBattleWin,
                         AfterBattleLoose //запрещено подкидывать игроку что-нибудь, пока он разбирается с непотребством
                       };
+
+enum class GlobalGamePhase
+{
+    OwnMove,
+    OtherPlayerMove
+};
+
 //Фазы:
 //Инициализация:
 // В этой фазе игра запускается. Она длится до тех пор, пока не отрисуется анимация.
@@ -368,6 +375,8 @@ private:
 
     GamePhase _currentGamePhase = GamePhase::GameInitialization;
     GamePhase _storedGamePhase = GamePhase::GameInitialization;
+    GlobalGamePhase _globalGamePhase = GlobalGamePhase::OtherPlayerMove;
+
 
     void SaveGamePhase() { _storedGamePhase = _currentGamePhase; }
     void RestoreGamePhase() { _currentGamePhase = _storedGamePhase; }
@@ -650,6 +659,7 @@ public:
 
     GamePhase GetCurrentGamePhase() const;
     void SetCurrentGamePhase(const GamePhase &GetCurrentGamePhase);
+    void SetGlobalGamePhase(GlobalGamePhase phase);
 
 //Visualization Engine
 private:
