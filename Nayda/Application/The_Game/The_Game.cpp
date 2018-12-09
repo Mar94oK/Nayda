@@ -75,7 +75,7 @@ The_Game::The_Game(QWidget *parent) :
     //_debugShowAllTheCards();
 
     //change the Game Phase:
-    _currentGamePhase = GamePhase::GameInitialization;
+    SetGamePhase(GamePhase::GameInitialization);
 
     //Initialize timers;
     InitializeMoveTimer();
@@ -1904,6 +1904,13 @@ void The_Game::SlotCheckThePossibilityForTheCardToBePlayed(PositionedCard card)
         return;
     }
 
+    if (_currentGamePhase == GamePhase::CardProcessing)
+    {
+        qDebug() << "NAY-002: DEBUG:::: The Game is in the GamePhase::CardProcessing when it is not possible to use cards!";
+        emit SignalCardIsRejectedToBePlayed(true);
+        return;
+    }
+
 
     if ((_currentGamePhase == GamePhase::GameInitialization)
             || (_currentGamePhase == GamePhase::WaitingForAnOpponentToMove)
@@ -2861,8 +2868,9 @@ void The_Game::SlotProcessCardsSelectedToBeSold(const std::vector<SimpleCard> ca
 
     //Убрать проданные карты с руки. (Карты хранятся во временном векторе posCards)
     //Была либо фаза торговли, либо фаза "ход другого игрока"
-    GamePhase savedPhase = _currentGamePhase;
-    _currentGamePhase = GamePhase::CardProcessing;
+    SaveGamePhase();
+    SetGamePhase(GamePhase::CardProcessing);
+
     emit SignalHideTradeButton();
     for (uint32_t var = 0; var < posCards.size(); ++var)
     {
@@ -2873,10 +2881,6 @@ void The_Game::SlotProcessCardsSelectedToBeSold(const std::vector<SimpleCard> ca
 
     //start animation here
     Animation_StartPassSoldCardsFromHandToTreasureFold_Phase1(ui->MainGamer, posCards);
-
-    _currentGamePhase = savedPhase;
-
-
 }
 
 std::vector<PositionedCard> The_Game::GetPositionedCards(GamerWidget* wt, const std::vector<SimpleCard> &cards)
@@ -3046,7 +3050,7 @@ void The_Game::SlotProcessOpponentHasSoldCards(TheGameMainGamerHasSoldCards data
     //Убрать проданные карты с руки. (Карты хранятся во временном векторе posCards)
     //Была либо фаза торговли, либо фаза "ход другого игрока"
     SaveGamePhase();
-    _currentGamePhase = GamePhase::CardProcessing;
+    SetGamePhase(GamePhase::CardProcessing);
     emit SignalHideTradeButton();
     for (uint32_t var = 0; var < posCards.size(); ++var)
     {

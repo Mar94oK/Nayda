@@ -380,6 +380,7 @@ private:
 
     void SaveGamePhase() { _storedGamePhase = _currentGamePhase; }
     void RestoreGamePhase() { _currentGamePhase = _storedGamePhase; }
+    void SetGamePhase(GamePhase phase) { _currentGamePhase = phase; }
 
 public slots:
 
