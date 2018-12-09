@@ -2344,10 +2344,21 @@ void The_Game::SlotGameInitialization(TheGameIsAboutToStartData data)
 
 }
 
-void The_Game::SlotSetUpGameSettings(const GameSettings &settings)
+void The_Game::SlotSetUpGameSettings(const GameSettings &settings, bool resetClientsName)
 {
-    _gameSettings.applyNewSettings(settings);
-    ui->GameField->ApplyNewSettings(settings);
+   if (!resetClientsName)
+   {
+       QString _nameWas = _gameSettings.clientName();
+       _gameSettings.applyNewSettings(settings);
+       _gameSettings.setClientName(_nameWas);
+       ui->GameField->ApplyNewSettings(settings);
+   }
+   else
+   {
+       _gameSettings.applyNewSettings(settings);
+       ui->GameField->ApplyNewSettings(settings);
+   }
+
 }
 
 void The_Game::SlotInitialAnimationCompleted()

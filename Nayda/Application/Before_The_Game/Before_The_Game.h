@@ -54,7 +54,7 @@ signals:
     void SignalSetUpConnection();
     void sig_sendTestDataToServer();
 
-    void SignalUserHaveChagedGameSettigs(const GameSettings&);
+    void SignalUserHaveChagedGameSettigs(const GameSettings&, bool resetClientsName);
 
     void SignalServerQueryReplyData(ServerQueryReplyData data);
 

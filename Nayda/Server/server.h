@@ -106,7 +106,7 @@ signals:
     void valueChanged(int newValue);
     void socketErrorReportToGUI(QAbstractSocket::SocketError signal);
     void SignalSocketConnectionSuccessReportToGui(bool);
-    void SignalServerHasChangedGameSettings(const GameSettings&);
+    void SignalServerHasChangedGameSettings(const GameSettings&, bool resetClientsName = false);
     void SignalReportServerQueryReplyData(ServerQueryReplyData data);
     void SignalReportClientRoomCreationReplyData(ClientRoomCreationReplyData data);
     void SignalServerReportsOpponentIsEnteringRoom(const QString& clientName);

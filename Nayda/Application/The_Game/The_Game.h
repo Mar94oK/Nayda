@@ -477,7 +477,7 @@ public slots:
     void SlotGameInitialization(TheGameIsAboutToStartData data);
 
     //The_Game should allways have correct settings
-    void SlotSetUpGameSettings(const GameSettings& settings);
+    void SlotSetUpGameSettings(const GameSettings& settings, bool resetClientsName);
 
     void SlotInitialAnimationCompleted();
 

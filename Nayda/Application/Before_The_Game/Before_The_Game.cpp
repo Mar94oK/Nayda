@@ -51,7 +51,7 @@ void Before_The_Game::slot_userHaveChangedServerSettings(serverSettings settings
 
 void Before_The_Game::SlotSetUpConnection()
 {
-    emit SignalUserHaveChagedGameSettigs(_gameSettings);
+    emit SignalUserHaveChagedGameSettigs(_gameSettings, true);
     emit SignalSetUpConnection();
 }
 
@@ -65,7 +65,7 @@ void Before_The_Game::slot_sendTestDataToServer()
 void Before_The_Game::SlotApplyNewGameSettings(GameSettings settings)
 {
     _gameSettings.applyNewSettings(settings);
-    emit SignalUserHaveChagedGameSettigs(settings);
+    emit SignalUserHaveChagedGameSettigs(settings, true);
 }
 
 void Before_The_Game::SlotProcessServerQueryReplyData(ServerQueryReplyData data)
@@ -267,7 +267,7 @@ void Before_The_Game::SlotProcessServerClientWantedToEnterTheRoomReply(const Ser
         _roomID = data.roomID;
         _gameSettings.applyNewSettings(data.providedSettings);
 
-        emit SignalUserHaveChagedGameSettigs(_gameSettings);
+        emit SignalUserHaveChagedGameSettigs(_gameSettings, false);
         emit SignalRoomIdHasBeenChanged(data.roomID);
         emit SignalRoomNameHasBeenChanged(data.roomName);
 
