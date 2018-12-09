@@ -1911,7 +1911,6 @@ void The_Game::SlotCheckThePossibilityForTheCardToBePlayed(PositionedCard card)
         return;
     }
 
-
     if ((_currentGamePhase == GamePhase::GameInitialization)
             || (_currentGamePhase == GamePhase::WaitingForAnOpponentToMove)
             || (_currentGamePhase == GamePhase::Theft)
@@ -1928,7 +1927,6 @@ void The_Game::SlotCheckThePossibilityForTheCardToBePlayed(PositionedCard card)
     }
     else
     {
-
         //testing
         DEBUGPassTheCardToTheBattleField(card);
         emit SignalCardIsRejectedToBePlayed(false);
