@@ -2419,6 +2419,7 @@ void The_Game::SetUpPlayersAndWidgets(uint32_t windowHeight, uint32_t windowWidt
     _roomMasterName = _playersOrder[0];
     SetIsRoomMaster(CheckIsMainPlayerTheRoomMaster(_playersOrder[0]));
     qDebug() << "NAY-001: Master's name: " << playersOrder[0];
+    qDebug() << "NAY-002: Clients name: " << _gameSettings.clientName();
     //Set Players name:
 
     if (totalOpponents != playersOrder.size())
@@ -2464,7 +2465,7 @@ void The_Game::SetUpPlayersAndWidgets(uint32_t windowHeight, uint32_t windowWidt
     qDebug() << "NAY-002: " << "Order of move: ";
     for (uint32_t var = 0; var < _orderOfMove.size(); ++var)
     {
-        _orderOfMove[var]->GetPlayersName();
+        qDebug() << _orderOfMove[var]->GetPlayersName();
     }
 
     //widgets for them
