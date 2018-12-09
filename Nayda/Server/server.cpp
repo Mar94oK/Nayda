@@ -317,9 +317,17 @@ void Server::slot_sessionOpened()
     settings.endGroup();
 }
 
-void Server::SlotUserHaveChangedGameSettings(const GameSettings &settings)
+void Server::SlotUserHaveChangedGameSettings(const GameSettings &settings, bool resetClientsName)
 {
-    _gameSettings.applyNewSettings(settings);
+    if (!resetClientsName)
+    {
+        QString nameWas = _gameSettings.clientName();
+        _gameSettings.applyNewSettings(settings);
+        _gameSettings.setClientName(nameWas);
+    }
+    else
+        _gameSettings.applyNewSettings(settings);
+
     //NAY-001: EMIT HERE SIGNAL TO NOTIFY REMMOTE SERVER
 }
 

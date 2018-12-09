@@ -93,7 +93,7 @@ public slots:
     void SlotSetUpConnection();
     void slot_sessionOpened();
 
-    void SlotUserHaveChangedGameSettings(const GameSettings& settings);
+    void SlotUserHaveChangedGameSettings(const GameSettings& settings, bool resetClientsName);
     void SlotSendClientRoomCreationRequest();
     void SlotCloseConnectionByUserInitiative();
     void SlotSendChartMessage(const QString& message);
