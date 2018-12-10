@@ -88,6 +88,8 @@ enum class Additional_Request {noCompanion, failedToFlee,
                               succeededToFlee, win, onceReceived,
                               haveCompanion, thereIsDwarf, noRequest};
 
+
+
 #endif
 
 
@@ -238,6 +240,37 @@ protected:
     cardAddon _cardAddOn;
 
 };
+
+enum class CardType
+{
+    DorsMonster
+};
+
+//_monstersDeck = data._monstersDeck;
+//_amplifiersDeck = data._amplifiersDeck;
+//_cursesDeck = data._cursesDeck;
+//_professionsDeck = data._professionsDeck;
+//_racesDeck = data._racesDeck;
+//_specialMechanicsDeck = data._specialMechanicsDeck;
+
+//_armorDeck = data._armorDeck;
+//_armorAmplifiersDeck = data._armorAmplifiersDeck;
+//_battleAmplifiersDeck = data._battleAmplifiersDeck;
+//_levelUpDeck = data._levelUpDeck;
+//_specialMechanicsTreasureDeck = data._specialMechanicsTreasureDeck;
+//_thingsAmplifiersDeck = data._thingsAmplifiersDeck;
+//_weaponsDeck = data._weaponsDeck;
+
+
+
+
+//Fake-class to return it's pointer in the card-detector
+class GameCardBasis
+{
+
+
+};
+
 
 class gameCardDoorMonster {
 

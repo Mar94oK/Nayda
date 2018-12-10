@@ -1887,6 +1887,21 @@ void The_Game::SlotCheckThePossibilityForTheCardToBePlayed(PositionedCard card)
     //3) Требуется ли карте дополнительная карта (бродячая тварь)
     //      и есть ли такая карта
 
+    SimpleCard givenCard = card;
+    //Treasures Switch
+    if (givenCard.first)
+    {
+
+    }
+    //Door Switch
+    else
+    {
+
+    }
+
+
+
+
     if (_globalGamePhase == GlobalGamePhase::OtherPlayerMove)
     {
         qDebug() << "NAY-002: DEBUG:::: The Game is in the GlobalGamePhase::OtherPlayerMove when it is not possible to use cards!";
