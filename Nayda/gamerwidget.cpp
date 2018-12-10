@@ -139,6 +139,12 @@ GamerWidget::GamerWidget(QWidget *parent) :
     connect(ui->widget, &Hand::SignalReportCardPosition,
             [this](PositionedCard card){emit SignalReportPostionedCard(card);});
     connect(this, &GamerWidget::SignalGetPositionedCard, ui->widget, &Hand::SlotGetCardPostion);
+
+
+    //Create with emty vector first
+    //std::vector<CardInGame> cards;
+    _cardsInGameObserver = new CardsInGameObserver(QSize(HW_Screen_Size.width(),
+                                                         HW_Screen_Size.height()), QString("Player1"));
 }
 
 GamerWidget::~GamerWidget()
@@ -185,6 +191,8 @@ void GamerWidget::SetDecks(const AllDecksToBePassed& data)
     _specialMechanicsTreasureDeck = data._specialMechanicsTreasureDeck;
     _thingsAmplifiersDeck = data._thingsAmplifiersDeck;
     _weaponsDeck = data._weaponsDeck;
+
+
 }
 
 void GamerWidget::SetIsRoomMaster()
@@ -192,25 +200,14 @@ void GamerWidget::SetIsRoomMaster()
     ui->btn_Master->show();
 }
 
-void GamerWidget::passCardsDecksToHandsWidget()
+void GamerWidget::PassCardsDecksToHandsAndCardsInGameWidgets(const AllDecksToBePassed& data)
 {
 
-    ui->widget->setMonsersDeck(_monstersDeck);
-    ui->widget->setAmplifiersDeck(_amplifiersDeck);
-    ui->widget->setArmorAmplifiersDeck(_armorAmplifiersDeck);
-    ui->widget->setArmorDeck(_armorDeck);
-    ui->widget->setBattleAmplifiersDeck(_battleAmplifiersDeck);
-    ui->widget->setCursesDeck(_cursesDeck);
-    ui->widget->setLevelUpDeck(_levelUpDeck);
-    ui->widget->setProfessionsDeck(_professionsDeck);
-    ui->widget->setRacesDeck(_racesDeck);
-    ui->widget->setSpecialMechanicsDeck(_specialMechanicsDeck);
-    ui->widget->setSpecialMechanicsTreasureDeck(_specialMechanicsTreasureDeck);
-    ui->widget->setThingsAmplifiersDeck(_thingsAmplifiersDeck);
-    ui->widget->setWeaponsDeck(_weaponsDeck);
+    ui->widget->SetDecks(data);
+    _cardsInGameObserver->SetDecks(data);
 }
 
-void GamerWidget::addTheCardToHandsWidget(SimpleCard card)
+void GamerWidget::AddTheCardToHandsWidget(SimpleCard card)
 {
 
     qDebug() << "NAY-002: IsMainPlayer: " << is_MainPlayer();
@@ -486,6 +483,8 @@ QPoint GamerWidget::ProvideHandPosition()
 void GamerWidget::SetGamerName(const QString &gamerName)
 {
     ui->lbl_Avatar->setText(gamerName);
+    _playerName = gamerName;
+    _cardsInGameObserver->SetPlayerName(gamerName);
 }
 
 

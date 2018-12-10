@@ -219,7 +219,7 @@ public:
 
     void _debugShowAllTheCards();
     void PassDecksToBattleField();
-    void passDecksToPlayerWidgets();
+    void PassDecksToPlayerWidgets();
     void PassDecksToPopUpCardWidget();
     void PassDecksToCardsStacksWidget();
     void PassDecksToCardsInspectorWidget();

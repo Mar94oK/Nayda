@@ -15,9 +15,8 @@ class CardsInGameObserver : public QWidget
     Q_OBJECT
 
 public:
-    explicit CardsInGameObserver(AllDecksToBePassed decksData,
-                                 QSize mainWindowSize,
-                                 const std::vector<CardInGame>& data,
+    //Due to cards-set-up mode, decks of this widget should be passed a little bit later then constructor.
+    explicit CardsInGameObserver(QSize mainWindowSize,
                                  const QString& playerName,
                                  QWidget *parent = 0);
     ~CardsInGameObserver();
@@ -43,6 +42,7 @@ public:
     void AddCard(CardInGame card);
     void RemoveCard(SimpleCard card);
     void DisableCard(SimpleCard card);
+    void SetPlayerName(const QString& name) { _playerName = name; }
 
 private:
 
@@ -73,9 +73,12 @@ private:
     uint32_t _widnowSizeWidth;
     QSize    _mainWindowSize;
 
-private:
+public:
 
     void SetDecks(const AllDecksToBePassed& data);
+
+private:
+
     QString GetCardPictureAddress(SimpleCard card);
     void SetFontAndAlignment(QLabel* lbl);
     CardPosition GetCurrentCardPosition(bool disabledActive);

@@ -1,13 +1,11 @@
 #include "cardsingameobserver.h"
 #include "ui_cardsingameobserver.h"
 
-CardsInGameObserver::CardsInGameObserver(AllDecksToBePassed decksData, QSize mainWindowSize, const std::vector<CardInGame> &data, const QString &playerName, QWidget *parent) :
+CardsInGameObserver::CardsInGameObserver(QSize mainWindowSize, const QString &playerName, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::CardsInGameObserver)
 {
     ui->setupUi(this);
-
-    SetDecks(decksData);
 
     _mainWindowSize = mainWindowSize;
     qDebug() << "NAY-002: Size" << _mainWindowSize;
@@ -18,13 +16,6 @@ CardsInGameObserver::CardsInGameObserver(AllDecksToBePassed decksData, QSize mai
 
     SetFontAndAlignment(ui->lbl_Name);
     ui->lbl_Name->setText(_widgetName + " игрока " + _playerName);
-
-    //if (_cardsInGameHolder)
-
-    for (uint32_t var = 0; var < data.size(); ++var)
-    {
-        AddCard(data[var]);
-    }
 
     connect(ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok), &QPushButton::pressed,
             this, &CardsInGameObserver::close);

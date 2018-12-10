@@ -1324,45 +1324,30 @@ void The_Game::PassDecksToBattleField()
     ui->GameField->setWeaponsDeck(weaponsDeck());
 }
 
-void The_Game::passDecksToPlayerWidgets()
+void The_Game::PassDecksToPlayerWidgets()
 {
+    AllDecksToBePassed decks(_monstersDeck,
+                             _amplifiersDeck,
+                             _cursesDeck,
+                             _professionsDeck,
+                             _racesDeck,
+                             _specialMechanicsDeck,
 
-    ui->MainGamer->SetDecks(AllDecksToBePassed(
-                                _monstersDeck,
-                                _amplifiersDeck,
-                                _cursesDeck,
-                                _professionsDeck,
-                                _racesDeck,
-                                _specialMechanicsDeck,
+                             _armorDeck,
+                             _armorAmplifiersDeck,
+                             _battleAmplifiersDeck,
+                             _levelUpDeck,
+                             _specialMechanicsTreasureDeck,
+                             _thingsAmplifiersDeck,
+                             _weaponsDeck);
 
-                                _armorDeck,
-                                _armorAmplifiersDeck,
-                                _battleAmplifiersDeck,
-                                _levelUpDeck,
-                                _specialMechanicsTreasureDeck,
-                                _thingsAmplifiersDeck,
-                                _weaponsDeck));
-
-    ui->MainGamer->passCardsDecksToHandsWidget();
+    ui->MainGamer->SetDecks(decks);
+    ui->MainGamer->PassCardsDecksToHandsAndCardsInGameWidgets(decks);
 
     for (unsigned int var = 0; var < _widgets4Opponents.size(); ++var)
     {
-        _widgets4Opponents[var]->SetDecks(AllDecksToBePassed(
-                                               _monstersDeck,
-                                               _amplifiersDeck,
-                                               _cursesDeck,
-                                               _professionsDeck,
-                                               _racesDeck,
-                                               _specialMechanicsDeck,
-
-                                               _armorDeck,
-                                               _armorAmplifiersDeck,
-                                               _battleAmplifiersDeck,
-                                               _levelUpDeck,
-                                               _specialMechanicsTreasureDeck,
-                                               _thingsAmplifiersDeck,
-                                               _weaponsDeck));
-        (_widgets4Opponents[var])->passCardsDecksToHandsWidget();
+        _widgets4Opponents[var]->SetDecks(decks);
+        (_widgets4Opponents[var])->PassCardsDecksToHandsAndCardsInGameWidgets(decks);
     }
 }
 
@@ -1650,7 +1635,7 @@ void The_Game::ShowInitialCardsOnHands()
         for (uint32_t y = 0; y < cardsOnHands.size(); ++y)
         {
             qDebug() << "NAY-002: " << "Showing Card with id: " << cardsOnHands[y].second;
-            _GamerWidgetsWithIDs[var]->addTheCardToHandsWidget(cardsOnHands[y]);
+            _GamerWidgetsWithIDs[var]->AddTheCardToHandsWidget(cardsOnHands[y]);
         }
     }
 }
@@ -1758,7 +1743,7 @@ void The_Game::DEBUG_SlotWasPushedToGameMode()
     //Set Up Players And Widgets
     QRect HW_Screen_Size = QApplication::desktop()->screenGeometry();
     SetUpPlayersAndWidgets(HW_Screen_Size.height(), HW_Screen_Size.width(), _playersOrder);
-    PassCardsToWidgets();
+
     ui->GameField->setPlayersOrder(_playersOrder);
 
     DEBUGformingInitialDecks();
@@ -1958,7 +1943,7 @@ void The_Game::SlotServerReportsTheGameIsAboutToStart(const TheGameIsAboutToStar
     //Set Up Players And Widgets
     QRect HW_Screen_Size = QApplication::desktop()->screenGeometry();
     SetUpPlayersAndWidgets(HW_Screen_Size.height(), HW_Screen_Size.width(), data.playersOrder);
-    PassCardsToWidgets();
+
 
     //Set players order for battlefield
     ui->GameField->setPlayersOrder(_playersOrder);
@@ -2459,6 +2444,11 @@ void The_Game::SetUpPlayersAndWidgets(uint32_t windowHeight, uint32_t windowWidt
     qDebug() << "Total players given by SetUp Opponents: " << playersOrder.size();
 
     _mainPlayer = new Player(_gameSettings.clientName());
+    //Из-за того, что я сделал давным давно основного игрока также не динамически создаваемым,
+    //получилась разница в сущностях. Неудобно разнобоко назначать одно и то же.
+    //С другой стороны было очень удобно при создании и отладке.
+    //Так что сохраню эту концепцию.
+    ui->MainGamer->SetGamerName(_gameSettings.clientName());
     _roomMasterName = _playersOrder[0];
     SetIsRoomMaster(CheckIsMainPlayerTheRoomMaster(_playersOrder[0]));
     qDebug() << "NAY-001: Master's name: " << playersOrder[0];
@@ -2517,13 +2507,14 @@ void The_Game::SetUpPlayersAndWidgets(uint32_t windowHeight, uint32_t windowWidt
 
        if (_gameSettings.clientName() != playersOrder[var])
        {
-           _widgets4Opponents.push_back(new GamerWidget);
+           _widgets4Opponents.push_back(new GamerWidget());
            _GamerWidgetsWithIDs.insert(std::make_pair(var, _widgets4Opponents.back()));
-            _widgets4Opponents.back()->RedrawAsASecondaryPlayer();
-            _widgets4Opponents.back()->setIs_MainPlayer(false);
-            _widgets4Opponents.back()->SetGamerName(playersOrder[var]);
-            if (playersOrder[var] == _roomMasterName)
-                _widgets4Opponents.back()->SetIsRoomMaster();
+           _widgets4Opponents.back()->RedrawAsASecondaryPlayer();
+           _widgets4Opponents.back()->setIs_MainPlayer(false);
+           _widgets4Opponents.back()->SetGamerName(playersOrder[var]);
+
+           if (playersOrder[var] == _roomMasterName)
+               _widgets4Opponents.back()->SetIsRoomMaster();
        }
        else
        {
@@ -2564,6 +2555,9 @@ void The_Game::SetUpPlayersAndWidgets(uint32_t windowHeight, uint32_t windowWidt
         connect(_widgets4Opponents[var], &GamerWidget::SignalRepresentTheCardInCentre, this, &The_Game::SlotShowTheCardInCentre);
         connect(_widgets4Opponents[var], &GamerWidget::SignalHideTheCardInCentre, this, &The_Game::SlotHideTheCardInCentre);
     }
+
+
+    PassCardsToWidgets();
 
 #endif
 }
@@ -2769,7 +2763,7 @@ void The_Game::SetUpBackgroundPicture()
 void The_Game::PassCardsToWidgets()
 {
     PassDecksToBattleField();
-    passDecksToPlayerWidgets();
+    PassDecksToPlayerWidgets();
     PassDecksToCardsInspectorWidget();
     PassDecksToPopUpCardWidget();
     PassDecksToCardsStacksWidget();

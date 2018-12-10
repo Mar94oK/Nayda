@@ -11,6 +11,8 @@
 #include "munchkinglobaldefines.h"
 #include "cardsingameobserver.h"
 
+#include "Application/card.h"
+
 #define DEBUG_GAMER_WIDGET
 
 namespace Ui {
@@ -22,7 +24,7 @@ class GamerWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit GamerWidget(QWidget *parent = 0);
+    explicit GamerWidget( QWidget *parent = 0);
     ~GamerWidget();
 
     bool is_MainPlayer() const;
@@ -37,13 +39,14 @@ private:
     bool _isMainPlayer;
     bool _isRoomMaster;
 
+    QString _playerName;
+
     CardsInGameObserver* _cardsInGameObserver = nullptr;
-
-
 
 public:
 
     void SetIsRoomMaster();
+    void SetName(const QString& name) { _playerName = name; }
 
     std::map<int, gameCardDoorMonster> _monstersDeck;
     std::map<int, gameCardDoorAmplifier> _amplifiersDeck;
@@ -77,8 +80,8 @@ public:
 
 public:
 
-    void passCardsDecksToHandsWidget();
-    void addTheCardToHandsWidget(SimpleCard card);
+    void PassCardsDecksToHandsAndCardsInGameWidgets(const AllDecksToBePassed& data);
+    void AddTheCardToHandsWidget(SimpleCard card);
 
     bool eventFilter(QObject *o, QEvent *e);
 

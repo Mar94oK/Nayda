@@ -55,69 +55,23 @@ Hand::Hand(QWidget *parent) :
 }
 
 
-void Hand::setMonsersDeck(const std::map<int, gameCardDoorMonster> &monsersDeck)
-{
-    _monstersDeck = monsersDeck;
-}
 
-void Hand::setAmplifiersDeck(const std::map<int, gameCardDoorAmplifier> &amplifiersDeck)
+void Hand::SetDecks(const AllDecksToBePassed &data)
 {
-    _amplifiersDeck = amplifiersDeck;
-}
+    _monstersDeck = data._monstersDeck;
+    _amplifiersDeck = data._amplifiersDeck;
+    _cursesDeck = data._cursesDeck;
+    _professionsDeck = data._professionsDeck;
+    _racesDeck = data._racesDeck;
+    _specialMechanicsDeck = data._specialMechanicsDeck;
 
-void Hand::setCursesDeck(const std::map<int, gameCardDoorCurse> &cursesDeck)
-{
-    _cursesDeck = cursesDeck;
-}
-
-void Hand::setProfessionsDeck(const std::map<int, gameCardDoorProfession> &professionsDeck)
-{
-    _professionsDeck = professionsDeck;
-}
-
-void Hand::setRacesDeck(const std::map<int, gameCardDoorRace> &racesDeck)
-{
-    _racesDeck = racesDeck;
-}
-
-void Hand::setSpecialMechanicsDeck(const std::map<int, gameCardDoorSpecialMechanic> &specialMechanicsDeck)
-{
-    _specialMechanicsDeck = specialMechanicsDeck;
-}
-
-void Hand::setArmorDeck(const std::map<int, gameCardTreasureArmor> &armorDeck)
-{
-    _armorDeck = armorDeck;
-}
-
-void Hand::setArmorAmplifiersDeck(const std::map<int, gameCardTreasureArmorAmplifier> &armorAmplifiersDeck)
-{
-    _armorAmplifiersDeck = armorAmplifiersDeck;
-}
-
-void Hand::setBattleAmplifiersDeck(const std::map<int, gameCardTreasureBattleAmplifier> &battleAmplifiersDeck)
-{
-    _battleAmplifiersDeck = battleAmplifiersDeck;
-}
-
-void Hand::setLevelUpDeck(const std::map<int, gameCardTreasureLevelUp> &levelUpDeck)
-{
-    _levelUpDeck = levelUpDeck;
-}
-
-void Hand::setSpecialMechanicsTreasureDeck(const std::map<int, gameCardTreasureSpecialMechanic> &specialMechanicsTreasureDeck)
-{
-    _specialMechanicsTreasureDeck = specialMechanicsTreasureDeck;
-}
-
-void Hand::setThingsAmplifiersDeck(const std::map<int, gameCardTreasureThingsAmplifiers> &thingsAmplifiersDeck)
-{
-    _thingsAmplifiersDeck = thingsAmplifiersDeck;
-}
-
-void Hand::setWeaponsDeck(const std::map<int, gameCardTreasureWeapon> &weaponsDeck)
-{
-    _weaponsDeck = weaponsDeck;
+    _armorDeck = data._armorDeck;
+    _armorAmplifiersDeck = data._armorAmplifiersDeck;
+    _battleAmplifiersDeck = data._battleAmplifiersDeck;
+    _levelUpDeck = data._levelUpDeck;
+    _specialMechanicsTreasureDeck = data._specialMechanicsTreasureDeck;
+    _thingsAmplifiersDeck = data._thingsAmplifiersDeck;
+    _weaponsDeck = data._weaponsDeck;
 }
 
 Hand::~Hand()

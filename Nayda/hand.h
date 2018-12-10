@@ -81,19 +81,7 @@ private:
 
 public:
 
-    void setMonsersDeck(const std::map<int, gameCardDoorMonster> &monsersDeck);
-    void setAmplifiersDeck(const std::map<int, gameCardDoorAmplifier> &amplifiersDeck);
-    void setCursesDeck(const std::map<int, gameCardDoorCurse> &cursesDeck);
-    void setProfessionsDeck(const std::map<int, gameCardDoorProfession> &professionsDeck);
-    void setRacesDeck(const std::map<int, gameCardDoorRace> &racesDeck);
-    void setSpecialMechanicsDeck(const std::map<int, gameCardDoorSpecialMechanic> &specialMechanicsDeck);
-    void setArmorDeck(const std::map<int, gameCardTreasureArmor> &armorDeck);
-    void setArmorAmplifiersDeck(const std::map<int, gameCardTreasureArmorAmplifier> &armorAmplifiersDeck);
-    void setBattleAmplifiersDeck(const std::map<int, gameCardTreasureBattleAmplifier> &battleAmplifiersDeck);
-    void setLevelUpDeck(const std::map<int, gameCardTreasureLevelUp> &levelUpDeck);
-    void setSpecialMechanicsTreasureDeck(const std::map<int, gameCardTreasureSpecialMechanic> &specialMechanicsTreasureDeck);
-    void setThingsAmplifiersDeck(const std::map<int, gameCardTreasureThingsAmplifiers> &thingsAmplifiersDeck);
-    void setWeaponsDeck(const std::map<int, gameCardTreasureWeapon> &weaponsDeck);
+    void SetDecks(const AllDecksToBePassed& data);
 
 public:
 
