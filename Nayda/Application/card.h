@@ -117,6 +117,8 @@ struct CardPosition
 //use this as the elements of arrays, controlled by The Game.
 typedef std::pair<bool, unsigned int> SimpleCard;
 
+typedef std::pair<bool, SimpleCard> CardInGame;
+
 enum class SelectableCardMode { SellMenu, Theft, HandAlignment, DiplomacyTrade };
 QDebug operator<<(QDebug debug, const SelectableCardMode& dt);
 

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CardsInGameObserver</class>
+ <widget class="QWidget" name="CardsInGameObserver">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="2" column="0">
+    <layout class="QGridLayout" name="lyt_ActiveCards"/>
+   </item>
+   <item row="1" column="0">
+    <layout class="QVBoxLayout" name="lyt_ActiveCardsName">
+     <item>
+      <widget class="QLabel" name="lbl_ActiveCardsName">
+       <property name="text">
+        <string>Активные карты</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="0" column="0">
+    <layout class="QVBoxLayout" name="lyt_Name">
+     <item>
+      <widget class="QLabel" name="lbl_Name">
+       <property name="text">
+        <string>Карты на руке</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="3" column="0">
+    <layout class="QVBoxLayout" name="lyt_DisabledCardsName">
+     <item>
+      <widget class="QLabel" name="lbl_DisabledCardsName">
+       <property name="text">
+        <string>Неактивные карты</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="4" column="0">
+    <layout class="QGridLayout" name="lyt_DisabledCards"/>
+   </item>
+   <item row="5" column="0">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Ok</set>
+     </property>
+     <property name="centerButtons">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

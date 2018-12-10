@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>835</width>
+    <width>851</width>
     <height>422</height>
    </rect>
   </property>
@@ -96,6 +96,13 @@
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btn_Avatar">
+           <property name="text">
+            <string>Avatar</string>
            </property>
           </widget>
          </item>
