@@ -55,67 +55,67 @@ Hand::Hand(QWidget *parent) :
 }
 
 
-void Hand::setMonsersDeck(const std::map<int, gameCardDoorMonster> *monsersDeck)
+void Hand::setMonsersDeck(const std::map<int, gameCardDoorMonster> &monsersDeck)
 {
     _monstersDeck = monsersDeck;
 }
 
-void Hand::setAmplifiersDeck(const std::map<int, gameCardDoorAmplifier> *amplifiersDeck)
+void Hand::setAmplifiersDeck(const std::map<int, gameCardDoorAmplifier> &amplifiersDeck)
 {
     _amplifiersDeck = amplifiersDeck;
 }
 
-void Hand::setCursesDeck(const std::map<int, gameCardDoorCurse> *cursesDeck)
+void Hand::setCursesDeck(const std::map<int, gameCardDoorCurse> &cursesDeck)
 {
     _cursesDeck = cursesDeck;
 }
 
-void Hand::setProfessionsDeck(const std::map<int, gameCardDoorProfession> *professionsDeck)
+void Hand::setProfessionsDeck(const std::map<int, gameCardDoorProfession> &professionsDeck)
 {
     _professionsDeck = professionsDeck;
 }
 
-void Hand::setRacesDeck(const std::map<int, gameCardDoorRace> *racesDeck)
+void Hand::setRacesDeck(const std::map<int, gameCardDoorRace> &racesDeck)
 {
     _racesDeck = racesDeck;
 }
 
-void Hand::setSpecialMechanicsDeck(const std::map<int, gameCardDoorSpecialMechanic> *specialMechanicsDeck)
+void Hand::setSpecialMechanicsDeck(const std::map<int, gameCardDoorSpecialMechanic> &specialMechanicsDeck)
 {
     _specialMechanicsDeck = specialMechanicsDeck;
 }
 
-void Hand::setArmorDeck(const std::map<int, gameCardTreasureArmor> *armorDeck)
+void Hand::setArmorDeck(const std::map<int, gameCardTreasureArmor> &armorDeck)
 {
     _armorDeck = armorDeck;
 }
 
-void Hand::setArmorAmplifiersDeck(const std::map<int, gameCardTreasureArmorAmplifier> *armorAmplifiersDeck)
+void Hand::setArmorAmplifiersDeck(const std::map<int, gameCardTreasureArmorAmplifier> &armorAmplifiersDeck)
 {
     _armorAmplifiersDeck = armorAmplifiersDeck;
 }
 
-void Hand::setBattleAmplifiersDeck(const std::map<int, gameCardTreasureBattleAmplifier> *battleAmplifiersDeck)
+void Hand::setBattleAmplifiersDeck(const std::map<int, gameCardTreasureBattleAmplifier> &battleAmplifiersDeck)
 {
     _battleAmplifiersDeck = battleAmplifiersDeck;
 }
 
-void Hand::setLevelUpDeck(const std::map<int, gameCardTreasureLevelUp> *levelUpDeck)
+void Hand::setLevelUpDeck(const std::map<int, gameCardTreasureLevelUp> &levelUpDeck)
 {
     _levelUpDeck = levelUpDeck;
 }
 
-void Hand::setSpecialMechanicsTreasureDeck(const std::map<int, gameCardTreasureSpecialMechanic> *specialMechanicsTreasureDeck)
+void Hand::setSpecialMechanicsTreasureDeck(const std::map<int, gameCardTreasureSpecialMechanic> &specialMechanicsTreasureDeck)
 {
     _specialMechanicsTreasureDeck = specialMechanicsTreasureDeck;
 }
 
-void Hand::setThingsAmplifiersDeck(const std::map<int, gameCardTreasureThingsAmplifiers> *thingsAmplifiersDeck)
+void Hand::setThingsAmplifiersDeck(const std::map<int, gameCardTreasureThingsAmplifiers> &thingsAmplifiersDeck)
 {
     _thingsAmplifiersDeck = thingsAmplifiersDeck;
 }
 
-void Hand::setWeaponsDeck(const std::map<int, gameCardTreasureWeapon> *weaponsDeck)
+void Hand::setWeaponsDeck(const std::map<int, gameCardTreasureWeapon> &weaponsDeck)
 {
     _weaponsDeck = weaponsDeck;
 }
@@ -146,42 +146,42 @@ void Hand::addNewCardToHands(SimpleCard card)
     bool isFound = false;
     if (!card.first) { //door
 
-        _monstersIterator = _monstersDeck->find(static_cast <int> (card.second));
-        if (_monstersIterator != _monstersDeck->end()) {
+        _monstersIterator = _monstersDeck.find(static_cast <int> (card.second));
+        if (_monstersIterator != _monstersDeck.end()) {
             currentPictureAddress = (*_monstersIterator).second.pictureAddress();
             isFound = true;
         }
         if (!isFound) {
-            _amplifiersIterator = _amplifiersDeck->find(static_cast <int> (card.second));
-            if (_amplifiersIterator != _amplifiersDeck->end()) {
+            _amplifiersIterator = _amplifiersDeck.find(static_cast <int> (card.second));
+            if (_amplifiersIterator != _amplifiersDeck.end()) {
                 currentPictureAddress = (*_amplifiersIterator).second.pictureAddress();
                 isFound = true;
             }
         }
         if (!isFound) {
-            _cursesIterator = _cursesDeck->find(static_cast <int> (card.second));
-            if (_cursesIterator != _cursesDeck->end()) {
+            _cursesIterator = _cursesDeck.find(static_cast <int> (card.second));
+            if (_cursesIterator != _cursesDeck.end()) {
                 currentPictureAddress = (*_cursesIterator).second.pictureAddress();
                 isFound = true;
             }
         }
         if (!isFound) {
-            _professionsIterator = _professionsDeck->find(static_cast <int> (card.second));
-            if (_professionsIterator != _professionsDeck->end()) {
+            _professionsIterator = _professionsDeck.find(static_cast <int> (card.second));
+            if (_professionsIterator != _professionsDeck.end()) {
                 currentPictureAddress = (*_professionsIterator).second.pictureAddress();
                 isFound = true;
             }
         }
         if (!isFound) {
-            _racesIterator = _racesDeck->find(static_cast <int> (card.second));
-            if (_racesIterator != _racesDeck->end()) {
+            _racesIterator = _racesDeck.find(static_cast <int> (card.second));
+            if (_racesIterator != _racesDeck.end()) {
                 currentPictureAddress = (*_racesIterator).second.pictureAddress();
                 isFound = true;
             }
         }
         if (!isFound) {
-            _specialMechanicsIterator = _specialMechanicsDeck->find(static_cast <int> (card.second));
-            if (_specialMechanicsIterator != _specialMechanicsDeck->end()) {
+            _specialMechanicsIterator = _specialMechanicsDeck.find(static_cast <int> (card.second));
+            if (_specialMechanicsIterator != _specialMechanicsDeck.end()) {
                 currentPictureAddress = (*_specialMechanicsIterator).second.pictureAddress();
                 isFound = true;
             }
@@ -190,49 +190,49 @@ void Hand::addNewCardToHands(SimpleCard card)
     else { //treasure
 
 
-        _armorIterator = _armorDeck->find(static_cast <int> (card.second));
-        if (_armorIterator != _armorDeck->end()) {
+        _armorIterator = _armorDeck.find(static_cast <int> (card.second));
+        if (_armorIterator != _armorDeck.end()) {
             currentPictureAddress = (*_armorIterator).second.pictureAddress();
             isFound = true;
         }
         if (!isFound) {
-            _armorAmplifiersIterator = _armorAmplifiersDeck->find(static_cast <int> (card.second));
-            if (_armorAmplifiersIterator != _armorAmplifiersDeck->end()) {
+            _armorAmplifiersIterator = _armorAmplifiersDeck.find(static_cast <int> (card.second));
+            if (_armorAmplifiersIterator != _armorAmplifiersDeck.end()) {
                 currentPictureAddress = (*_armorAmplifiersIterator).second.pictureAddress();
                 isFound = true;
             }
         }
         if (!isFound) {
-            _battleAmplifiersIterator = _battleAmplifiersDeck->find(static_cast <int> (card.second));
-            if (_battleAmplifiersIterator != _battleAmplifiersDeck->end()) {
+            _battleAmplifiersIterator = _battleAmplifiersDeck.find(static_cast <int> (card.second));
+            if (_battleAmplifiersIterator != _battleAmplifiersDeck.end()) {
                 currentPictureAddress = (*_battleAmplifiersIterator).second.pictureAddress();
                 isFound = true;
             }
         }
         if (!isFound) {
-            _levelUpIterator = _levelUpDeck->find(static_cast <int> (card.second));
-            if (_levelUpIterator != _levelUpDeck->end()) {
+            _levelUpIterator = _levelUpDeck.find(static_cast <int> (card.second));
+            if (_levelUpIterator != _levelUpDeck.end()) {
                 currentPictureAddress = (*_levelUpIterator).second.pictureAddress();
                 isFound = true;
             }
         }
         if (!isFound) {
-            _specialMechanicsTreasureIterator = _specialMechanicsTreasureDeck->find(static_cast <int> (card.second));
-            if (_specialMechanicsTreasureIterator != _specialMechanicsTreasureDeck->end()) {
+            _specialMechanicsTreasureIterator = _specialMechanicsTreasureDeck.find(static_cast <int> (card.second));
+            if (_specialMechanicsTreasureIterator != _specialMechanicsTreasureDeck.end()) {
                 currentPictureAddress = (*_specialMechanicsTreasureIterator).second.pictureAddress();
                 isFound = true;
             }
         }
         if (!isFound) {
-            _thingsAmplifiersIterator = _thingsAmplifiersDeck->find(static_cast <int> (card.second));
-            if (_thingsAmplifiersIterator != _thingsAmplifiersDeck->end()) {
+            _thingsAmplifiersIterator = _thingsAmplifiersDeck.find(static_cast <int> (card.second));
+            if (_thingsAmplifiersIterator != _thingsAmplifiersDeck.end()) {
                 currentPictureAddress = (*_thingsAmplifiersIterator).second.pictureAddress();
                 isFound = true;
             }
         }
         if (!isFound) {
-            _weaponsIterator = _weaponsDeck->find(static_cast <int> (card.second));
-            if (_weaponsIterator != _weaponsDeck->end()) {
+            _weaponsIterator = _weaponsDeck.find(static_cast <int> (card.second));
+            if (_weaponsIterator != _weaponsDeck.end()) {
                 currentPictureAddress = (*_weaponsIterator).second.pictureAddress();
                 isFound = true;
             }
