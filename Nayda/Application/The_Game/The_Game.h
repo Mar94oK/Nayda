@@ -361,6 +361,8 @@ private:
     std::map <int, gameCardTreasureThingsAmplifiers> _thingsAmplifiersDeck;
     std::map <int, gameCardTreasureWeapon> _weaponsDeck;
 
+    GameCardBasis GetRealCard(SimpleCard card);
+
 private:
 
     PopUpCard* _popUpCardWidget;
@@ -385,7 +387,11 @@ private:
 public slots:
 
     void SlotAdjustSizeOfTheGamerWidgetToMakeCardsToBeInPlace();
-    void SlotCheckThePossibilityForTheCardToBePlayed(PositionedCard card);
+    void SlotCheckCardIsAbleToBePlayed(PositionedCard card);
+
+private:
+
+    bool CardISAbleToPlayChecker_TreasureArmor(const gameCardTreasureArmor *card);
 
 signals:
 

@@ -1817,6 +1817,86 @@ void The_Game::SetIsRoomMaster(bool master)
         ui->MainGamer->SetIsRoomMaster();
 }
 
+GameCardBasis The_Game::GetRealCard(SimpleCard card)
+{
+    std::map<int, gameCardDoorMonster> :: const_iterator  _monstersIterator;
+    std::map<int, gameCardDoorAmplifier> :: const_iterator _amplifiersIterator;
+    std::map<int, gameCardDoorCurse> :: const_iterator _cursesIterator;
+    std::map<int, gameCardDoorProfession> :: const_iterator _professionsIterator;
+    std::map<int, gameCardDoorRace> :: const_iterator _racesIterator;
+    std::map<int, gameCardDoorSpecialMechanic> :: const_iterator _specialMechanicsIterator;
+
+    std::map<int, gameCardTreasureArmor> :: const_iterator _armorIterator;
+    std::map<int, gameCardTreasureArmorAmplifier> :: const_iterator _armorAmplifiersIterator;
+    std::map<int, gameCardTreasureBattleAmplifier> :: const_iterator _battleAmplifiersIterator;
+    std::map<int, gameCardTreasureLevelUp> :: const_iterator _levelUpIterator;
+    std::map<int, gameCardTreasureSpecialMechanic> :: const_iterator _specialMechanicsTreasureIterator;
+    std::map<int, gameCardTreasureThingsAmplifiers> :: const_iterator _thingsAmplifiersIterator;
+    std::map<int, gameCardTreasureWeapon> :: const_iterator _weaponsIterator;
+
+
+    if (!card.first)
+    { //door
+        _monstersIterator = _monstersDeck.find(static_cast <int> (card.second));
+        if (_monstersIterator != _monstersDeck.end())
+            return (*_monstersIterator).second;
+
+        _amplifiersIterator = _amplifiersDeck.find(static_cast <int> (card.second));
+        if (_amplifiersIterator != _amplifiersDeck.end())
+            return (*_amplifiersIterator).second;
+
+        _cursesIterator = _cursesDeck.find(static_cast <int> (card.second));
+        if (_cursesIterator != _cursesDeck.end())
+            return (*_cursesIterator).second;
+
+        _professionsIterator = _professionsDeck.find(static_cast <int> (card.second));
+        if (_professionsIterator != _professionsDeck.end())
+            return (*_professionsIterator).second;
+
+        _racesIterator = _racesDeck.find(static_cast <int> (card.second));
+        if (_racesIterator != _racesDeck.end())
+            return (*_racesIterator).second;
+
+        _specialMechanicsIterator = _specialMechanicsDeck.find(static_cast <int> (card.second));
+        if (_specialMechanicsIterator != _specialMechanicsDeck.end())
+            return (*_specialMechanicsIterator).second;
+    }
+    else
+    { //treasure
+        _armorIterator = _armorDeck.find(static_cast <int> (card.second));
+        if (_armorIterator != _armorDeck.end())
+            return (*_armorIterator).second;
+
+        _armorAmplifiersIterator = _armorAmplifiersDeck.find(static_cast <int> (card.second));
+        if (_armorAmplifiersIterator != _armorAmplifiersDeck.end())
+            return (*_armorAmplifiersIterator).second;
+
+        _battleAmplifiersIterator = _battleAmplifiersDeck.find(static_cast <int> (card.second));
+        if (_battleAmplifiersIterator != _battleAmplifiersDeck.end())
+            return (*_battleAmplifiersIterator).second;
+
+        _levelUpIterator = _levelUpDeck.find(static_cast <int> (card.second));
+        if (_levelUpIterator != _levelUpDeck.end())
+            return (*_levelUpIterator).second;
+
+        _specialMechanicsTreasureIterator = _specialMechanicsTreasureDeck.find(static_cast <int> (card.second));
+        if (_specialMechanicsTreasureIterator != _specialMechanicsTreasureDeck.end())
+            return (*_specialMechanicsTreasureIterator).second;
+
+        _thingsAmplifiersIterator = _thingsAmplifiersDeck.find(static_cast <int> (card.second));
+        if (_thingsAmplifiersIterator != _thingsAmplifiersDeck.end())
+            return (*_thingsAmplifiersIterator).second;
+
+        _weaponsIterator = _weaponsDeck.find(static_cast <int> (card.second));
+        if (_weaponsIterator != _weaponsDeck.end())
+            return (*_weaponsIterator).second;
+
+    }
+    qDebug() << "NAY-002: Error while GameCardBasis The_Game::GetRealCard(SimpleCard card)"
+             << "Card Not found! May be unsupported yet?";
+    return GameCardBasis();
+}
+
 GamePhase The_Game::GetCurrentGamePhase() const
 {
     return _currentGamePhase;
@@ -1888,7 +1968,7 @@ void The_Game::SlotAdjustSizeOfTheGamerWidgetToMakeCardsToBeInPlace()
     ui->MainGamer->adjustSize();
 }
 
-void The_Game::SlotCheckThePossibilityForTheCardToBePlayed(PositionedCard card)
+void The_Game::SlotCheckCardIsAbleToBePlayed(PositionedCard card)
 {
     qDebug() << "The Card is checking!!!";
 
@@ -1905,15 +1985,38 @@ void The_Game::SlotCheckThePossibilityForTheCardToBePlayed(PositionedCard card)
     //      и есть ли такая карта
 
     SimpleCard givenCard = card.GetCard();
+    GameCardBasis realCard = GetRealCard(givenCard);
+    CardType currentType = realCard.GetCardType();
     //Treasures Switch
     if (givenCard.first)
     {
+        qDebug() << "NAY-002: SlotCheckCardIsAbleToBePlayed(): Card is terasure! ";
+        switch (currentType)
+        {
+
+        case CardType::TreasureArmor:
+            CardISAbleToPlayChecker_TreasureArmor(static_cast<const gameCardTreasureArmor* >(&realCard));
+            break;
+
+        default:
+            qDebug() << "NAY-002: SlotCheckCardIsAbleToBePlayed(): Unsupported yet! ";
+            break;
+        }
 
     }
     //Door Switch
     else
     {
+        qDebug() << "NAY-002: SlotCheckCardIsAbleToBePlayed(): Card is door! ";
+//        switch (realCard.GetCardType())
+//        {
+//        case value:
 
+//            break;
+
+//        default:
+//            break;
+//        }
     }
 
 
@@ -1953,6 +2056,11 @@ void The_Game::SlotCheckThePossibilityForTheCardToBePlayed(PositionedCard card)
         DEBUGPassTheCardToTheBattleField(card);
         emit SignalCardIsRejectedToBePlayed(false);
     }
+}
+
+bool The_Game::CardISAbleToPlayChecker_TreasureArmor(const gameCardTreasureArmor* card)
+{
+
 }
 
 void The_Game::SlotServerReportsTheGameIsAboutToStart(const TheGameIsAboutToStartData &data)
@@ -2739,7 +2847,7 @@ void The_Game::SetUpSignalSlotsConnections()
     connect(ui->MainGamer, &GamerWidget::SignalAdjustSize, this, &The_Game::SlotAdjustSizeOfTheGamerWidgetToMakeCardsToBeInPlace);
 
     //connect theHand with checking the card slot;
-    connect(ui->MainGamer, &GamerWidget::SignalSendTheCardToTheGameCheck, this, &The_Game::SlotCheckThePossibilityForTheCardToBePlayed);
+    connect(ui->MainGamer, &GamerWidget::SignalSendTheCardToTheGameCheck, this, &The_Game::SlotCheckCardIsAbleToBePlayed);
     //pass the answer form The_Game card check back to the Hand
     connect(this, &The_Game::SignalCardIsRejectedToBePlayed, ui->MainGamer, &GamerWidget::SlotCardIsRejectedToBePlayed);
 

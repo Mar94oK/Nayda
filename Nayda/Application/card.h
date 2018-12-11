@@ -243,7 +243,8 @@ enum class CardType
 {
     DoorMonster, DoorAmplifier, DoorCurse, DoorProfession, DoorRace, DoorSpecialMechanic,
     TreasureArmor, TreasureArmorAmplifier, TreasureBattleAmplifier, TreasureLevelUp, TreasureSpecialMechanic,
-    TreasureThingAmplifier, TreasureWeapon
+    TreasureThingAmplifier, TreasureWeapon,
+    NotSupported
 };
 
 //_monstersDeck = data._monstersDeck;
@@ -270,7 +271,7 @@ class GameCardBasis
 
 private:
 
-    CardType _type;
+    CardType _type = CardType::NotSupported;
 
 public:
 
