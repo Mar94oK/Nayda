@@ -170,9 +170,9 @@ gameCardDoorMonster The_Game::monsterStringParser(const QString &monster_string)
 
     }
 
+    theMonster.SetCardType(CardType::DoorMonster);
+
     return theMonster;
-
-
 }
 
 strongAgainst The_Game::theMonsterStrongAgainstParser(const QString &strongAgainstString)
@@ -301,6 +301,8 @@ gameCardDoorAmplifier The_Game::amplifierStringParser(const QString &amplifier_s
 
     theAmplifier.setAdditionalTreasures(lst.first().toInt());
 
+    theAmplifier.SetCardType(CardType::DoorAmplifier);
+
     return theAmplifier;
 }
 
@@ -354,6 +356,8 @@ gameCardDoorCurse The_Game::curseStringParser(const QString &curse_string)
     lst.removeFirst();
     theCurse.setCurseMechanicID(lst.first().toInt());
 
+    theCurse.SetCardType(CardType::DoorCurse);
+
     return theCurse;
 }
 
@@ -405,6 +409,8 @@ gameCardDoorProfession The_Game::professionStringParser(const QString &professio
     else if (lst.first() == "ClericalErrors") theProfession.setAddOn(cardAddon::ClericalErrors);
     lst.removeFirst();
     theProfession.setType(doorType::Profession);
+
+    theProfession.SetCardType(CardType::DoorProfession);
 
     return theProfession;
 }
@@ -460,6 +466,8 @@ gameCardDoorRace The_Game::racesStringParser(const QString &race_string)
     lst.removeFirst();
     theRace.setType(doorType::Race);
 
+    theRace.SetCardType(CardType::DoorRace);
+
     return theRace;
 }
 
@@ -508,6 +516,8 @@ gameCardDoorSpecialMechanic The_Game::specialMechanicStringParser(const QString 
     lst.removeFirst();
     theSpecialMechanic.setSpecialFunctionId(lst.first().toInt());
 
+    theSpecialMechanic.SetCardType(CardType::DoorSpecialMechanic);
+
     return theSpecialMechanic;
 }
 
@@ -531,9 +541,6 @@ void The_Game::theArmorsParser(const QString &filename)
     {
         qDebug()<< "Cannot open this file!";
     }
-
-
-
 }
 
 gameCardTreasureArmor The_Game::armorsStringParser(const QString &armor_string)
@@ -607,6 +614,8 @@ gameCardTreasureArmor The_Game::armorsStringParser(const QString &armor_string)
     if (lst.first() == "yes\n") {
         theArmor.setIsCombined(true);
     };
+
+    theArmor.SetCardType(CardType::TreasureArmor);
 
     return theArmor;
 }
@@ -703,6 +712,8 @@ gameCardTreasureArmorAmplifier The_Game::armorAmplifierStringParser(const QStrin
 
     theArmorAmplifier.setBonus(lst.first().toInt());
 
+    theArmorAmplifier.SetCardType(CardType::TreasureArmorAmplifier);
+
     return theArmorAmplifier;
 }
 
@@ -776,11 +787,9 @@ gameCardTreasureBattleAmplifier The_Game::battleAmplifierStringParser(const QStr
 
     theBattleAmplifier.setPrice(static_cast<uint32_t>(lst.first().toInt()));
 
+    theBattleAmplifier.SetCardType(CardType::TreasureBattleAmplifier);
 
     return theBattleAmplifier;
-
-
-
 }
 
 void The_Game::theLevelUpParser(const QString &filename)
@@ -834,6 +843,9 @@ gameCardTreasureLevelUp The_Game::levelUpStringParser(const QString &levelUp_str
     if (lst.first().toInt()) {
         theLevelUp.setHasSpecialMechanic(true);
     }
+
+    theLevelUp.SetCardType(CardType::TreasureLevelUp);
+
     return theLevelUp;
 }
 
@@ -967,6 +979,8 @@ gameCardTreasureSpecialMechanic The_Game::SpecialMechanicTreasureStringParser(co
     lst.removeFirst();
 
     theSpecialMechanic.setAdditionalRequest(theAdditionalRequestParser(lst.first()));
+
+    theSpecialMechanic.SetCardType(CardType::TreasureSpecialMechanic);
 
     return theSpecialMechanic;
 }
@@ -1122,6 +1136,8 @@ gameCardTreasureThingsAmplifiers The_Game::ThingsAmplifiersStringParser(const QS
     if (lst.first().toInt()) {
         theThingAmplifier.setAllowedToWearElven(true);
     }
+
+    theThingAmplifier.SetCardType(CardType::TreasureThingAmplifier);
 
     return theThingAmplifier;
 }
@@ -1298,11 +1314,12 @@ gameCardTreasureWeapon The_Game::WeaponStringParser(const QString &weapons_strin
          theWeapon.setAddingThiefAbility(true);
     }
 
-    return theWeapon;
+    theWeapon.SetCardType(CardType::TreasureWeapon);
 
+    return theWeapon;
 }
 
-void The_Game::_debugShowAllTheCards()
+void The_Game::DEBUG_ShowAllTheCards()
 {
     ui->GameField->cardsRepresenter();
 }
@@ -1887,7 +1904,7 @@ void The_Game::SlotCheckThePossibilityForTheCardToBePlayed(PositionedCard card)
     //3) Требуется ли карте дополнительная карта (бродячая тварь)
     //      и есть ли такая карта
 
-    SimpleCard givenCard = card;
+    SimpleCard givenCard = card.GetCard();
     //Treasures Switch
     if (givenCard.first)
     {

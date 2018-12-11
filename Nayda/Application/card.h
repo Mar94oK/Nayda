@@ -75,8 +75,6 @@ enum class Abilities_Keys_Professions {warriors_ability_1, warriors_ability_2, r
 
 enum class Players_Sex {Man, Woman};
 
-enum class Card_Type {Monster, Monsters_Amplifier, Curse, Race, Profession, Special_Mechanics};
-
 enum class Body_Part {Head, Armor, Feet};
 
 enum class Size {Big, Small};
@@ -243,7 +241,9 @@ protected:
 
 enum class CardType
 {
-    DorsMonster
+    DoorMonster, DoorAmplifier, DoorCurse, DoorProfession, DoorRace, DoorSpecialMechanic,
+    TreasureArmor, TreasureArmorAmplifier, TreasureBattleAmplifier, TreasureLevelUp, TreasureSpecialMechanic,
+    TreasureThingAmplifier, TreasureWeapon
 };
 
 //_monstersDeck = data._monstersDeck;
@@ -268,11 +268,20 @@ enum class CardType
 class GameCardBasis
 {
 
+private:
+
+    CardType _type;
+
+public:
+
+    CardType GetCardType() { return _type; }
+    void SetCardType(CardType type) { _type = type; }
 
 };
 
 
-class gameCardDoorMonster {
+class gameCardDoorMonster : public GameCardBasis
+{
 
     int _cardID;
     QString _pictureAddress;
@@ -401,7 +410,8 @@ public:
     void setSpecialMechanicAgainstHalfling(bool specialMechanicAgainstHalfling);
 };
 
-class gameCardDoorAmplifier {
+class gameCardDoorAmplifier : public GameCardBasis
+{
 
     int _cardID;
     QString _pictureAddress;
@@ -454,7 +464,8 @@ public:
     void setIsVeryDepressed(bool isVeryDepressed);
 };
 
-class gameCardDoorCurse {
+class gameCardDoorCurse : public GameCardBasis
+{
 
     int _cardID;
     QString _pictureAddress;
@@ -482,7 +493,8 @@ public:
     void setMechanic(const QString &mechanic);
 };
 
-class gameCardDoorProfession {
+class gameCardDoorProfession : public GameCardBasis
+{
 
     int _cardID;
     QString _pictureAddress;
@@ -507,7 +519,8 @@ public:
     void setAddOn(const cardAddon &addOn);
 };
 
-class gameCardDoorRace {
+class gameCardDoorRace : public GameCardBasis
+{
 
     int _cardID;
     QString _pictureAddress;
@@ -532,7 +545,8 @@ public:
     void setRace(const Race &race);
 };
 
-class gameCardDoorSpecialMechanic {
+class gameCardDoorSpecialMechanic : public GameCardBasis
+{
 
     int _cardID;
     QString _pictureAddress;
@@ -560,7 +574,8 @@ public:
 
 
 
-class gameCardTreasureArmor {
+class gameCardTreasureArmor : public GameCardBasis
+{
 
     int _cardID;
     QString _pictureAddress;
@@ -636,7 +651,8 @@ public:
 };
 
 
-class gameCardTreasureArmorAmplifier {
+class gameCardTreasureArmorAmplifier : public GameCardBasis
+{
 
     int _cardID;
     QString _pictureAddress;
@@ -663,7 +679,8 @@ public:
 };
 
 
-class gameCardTreasureBattleAmplifier {
+class gameCardTreasureBattleAmplifier : public GameCardBasis
+{
 
     int _cardID;
     QString _pictureAddress;
@@ -698,7 +715,8 @@ public:
     void setPrice(const uint32_t &price);
 };
 
-class gameCardTreasureLevelUp {
+class gameCardTreasureLevelUp : public GameCardBasis
+{
 
     int _cardID;
     QString _pictureAddress;
@@ -726,7 +744,8 @@ public:
 
 
 
-class gameCardTreasureSpecialMechanic {
+class gameCardTreasureSpecialMechanic : public GameCardBasis
+{
 
     int _cardID;
     QString _pictureAddress;
@@ -763,7 +782,8 @@ public:
 
 
 
-class gameCardTreasureThingsAmplifiers {
+class gameCardTreasureThingsAmplifiers : public GameCardBasis
+{
 
     int _cardID;
     QString _pictureAddress;
@@ -846,7 +866,8 @@ public:
 };
 
 
-class gameCardTreasureWeapon {
+class gameCardTreasureWeapon : public GameCardBasis
+{
 
     int _cardID;
     QString _pictureAddress;
