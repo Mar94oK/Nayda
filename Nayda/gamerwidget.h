@@ -205,11 +205,11 @@ signals:
 
 public slots:
 
-    void SlotSendTheCardToTheGameCheck(PositionedCard card);
+    void SlotSendTheCardToTheGameCheck(PositionedCard card, bool fromHand);
 
 signals:
 
-    void SignalSendTheCardToTheGameCheck(PositionedCard);
+    void SignalSendTheCardToTheGameCheck(PositionedCard card, bool fromHand);
 
 public slots:
 

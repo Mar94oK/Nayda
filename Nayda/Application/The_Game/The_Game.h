@@ -383,15 +383,16 @@ private:
     void SaveGamePhase() { _storedGamePhase = _currentGamePhase; }
     void RestoreGamePhase() { _currentGamePhase = _storedGamePhase; }
     void SetGamePhase(GamePhase phase) { _currentGamePhase = phase; }
+    GamePhase GetCurrentGamePhase() { return _currentGamePhase; }
 
 public slots:
 
     void SlotAdjustSizeOfTheGamerWidgetToMakeCardsToBeInPlace();
-    void SlotCheckCardIsAbleToBePlayed(PositionedCard card);
+    void SlotCheckCardIsAbleToBePlayed(PositionedCard card, bool fromHand);
 
 private:
 
-    bool CardISAbleToPlayChecker_TreasureArmor(const gameCardTreasureArmor *card);
+    TreasureArmorAllowance CardISAbleToPlayChecker_TreasureArmor(const gameCardTreasureArmor *card, bool fromHand);
 
 signals:
 
@@ -664,7 +665,7 @@ public:
     constexpr static float koeff_GameInfoBox_size_Height = 0.66f; //why it is impossible 2/3???
     constexpr static float koeff_GameInfoBox_size_Width = (1 - koeff_GameField_size) / 2;
 
-    GamePhase GetCurrentGamePhase() const;
+    GamePhase GetCurrentGamePhase() const { return _currentGamePhase; }
     void SetCurrentGamePhase(const GamePhase &GetCurrentGamePhase);
     void SetGlobalGamePhase(GlobalGamePhase phase);
 

@@ -17,4 +17,13 @@ public:
 
 };
 
+class HardCodedSettingsLimitations
+{
+public:
+
+    static constexpr uint32_t totalCardsToGiveFromTheStart = 4;
+    static constexpr uint32_t maximumCardsOnHandsInitialLimitation = 5;
+
+};
+
 #endif // MUNCHKINGLOBALDEFINES_H

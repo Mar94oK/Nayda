@@ -4,41 +4,41 @@
 #include <map>
 #include "card.h" //since it is better to store "Races", "Professions" inside the class of card.h
 #include <QDebug>
+#include "munchkinglobaldefines.h"
 
 
 
 class Player
 {
-    QString _name;
+    QString _name = "";
 
-    bool _isMainPlayer;
+    bool _isMainPlayer = false;
 
-    uint32_t _playerLevel;
-    int _warPower;
-    uint32_t _totalCardsOnHands;
-    uint32_t _cardsOnHandsLimit;
-    uint32_t _totalCardsInGame;
+    uint32_t _playerLevel = 1;
+    int _warPower = 1;
+    uint32_t _totalCardsOnHands = HardCodedSettingsLimitations::totalCardsToGiveFromTheStart *2;
+    uint32_t _cardsOnHandsLimit = HardCodedSettingsLimitations::maximumCardsOnHandsInitialLimitation;
+    uint32_t _totalCardsInGame = 0;
 
-    bool _headSlotFull;
-    bool _legsSlotFull;
-    bool _leftHandSlotFull;
-    bool _rightHandSlotFull;
-    bool _thereIsOneBigThing;
-    bool _thereIsLimitOnBigThings; //may be remove it if checking the race
+    bool _headSlotFull = false;
+    bool _legsSlotFull = false;
+    bool _leftHandSlotFull = false;
+    bool _rightHandSlotFull = false;
+    bool _thereIsOneBigThing = false;
+    bool _thereIsLimitOnBigThings= true; //may be remove it if checking the race
 
-    Race _race;
-    Profession _profession;
-    Players_Sex _playersSex;
+    Race _race = Race::Human;
+    Profession _profession = Profession::No_Profession;
+    Players_Sex _playersSex = Players_Sex::Man;
 
+    bool _halfBreed = false;
+    bool _superMunchkin = false;
 
-    bool _halfBreed;
-    bool _superMunchkin;
+    Race _second_race = Race::Human;
+    Profession _second_profession = Profession::No_Profession;
 
-    Race _second_race;
-    Profession _second_profession;
-
-    bool _halfBlood_without_second_race;
-    bool _superMunchkin_without_second_profession;
+    bool _halfBloodWithoutSecondRace = false;
+    bool _superMunchkinWithoutSecondProfession = false;
 
     std::map <Race_Active_Abilities, Abilities_Keys_Races> _raceActiveAbilities;
     std::map <Race_Passive_Abilities, Abilities_Keys_Races> _racePassiveAbilities;
@@ -68,37 +68,37 @@ public:
     int GetWarPower() const;
     void SetWarPower(int GetWarPower);
     uint32_t GetCardsOnHands() const;
-    uint32_t cardsOnHandsLimit() const;
-    void setCardsOnHandsLimit(int cardsOnHandsLimit);
-    uint32_t cardsInGame() const;
-    void setCards_in_game(int cardsInGame);
-    bool headSlotFull() const;
-    void setHeadSlotFull(bool headSlotFull);
-    bool legsSlotFull() const;
-    void setLegsSlotFull(bool legsSlotFull);
-    bool leftHandSlotFull() const;
-    void setLeftHandSlotFull(bool leftHandSlotFull);
-    bool rightHandSlotFull() const;
-    void setRightHandSlotFull(bool rightHandSlotFull);
-    bool thereIsOneBigThing() const;
-    void setThereIsOneBigThing(bool thereIsOneBigThing);
-    bool thereIsLimitOnBigThings() const;
-    void setThereIsLimitOnBigThings(bool thereIsLimitOnBigThings);
-    Race race() const;
-    void setRace(const Race &race);
-    Profession profession() const;
-    void setProfession(const Profession &profession);
-    Race second_race() const;
-    void setSecond_race(const Race &second_race);
-    Profession second_profession() const;
-    void setSecond_profession(const Profession &second_profession);
-    bool halfBlood_without_second_race() const;
-    void setHalfBlood_without_second_race(bool halfBlood_without_second_race);
-    bool superMunchkin_without_second_profession() const;
-    void setSuperMunchkin_without_second_profession(bool superMunchkin_without_second_profession);
+    uint32_t GetCardsOnHandsLimit() const;
+    void SetCardsOnHandsLimit(int GetCardsOnHandsLimit);
+    uint32_t GetTotalCardsInGame() const;
+    void SetTotalCardsInGame(int GetTotalCardsInGame);
+    bool GetHeadSlotIsFull() const;
+    void SetHeadSlotIsFull(bool GetHeadSlotIsFull);
+    bool GetLegsSlotIsFull() const;
+    void SetLegsSlotIsFull(bool GetLegsSlotIsFull);
+    bool LeftHandSlotIsFull() const;
+    void SetLeftHandSlotIsFull(bool LeftHandSlotIsFull);
+    bool GetRightHandSlotIsFull() const;
+    void SetRightHandSlotIsFull(bool GetRightHandSlotIsFull);
+    bool GetThereIsOneBigThing() const;
+    void SetThereIsOneBigThing(bool GetThereIsOneBigThing);
+    bool GetThereIsLimitOnBigThings() const;
+    void SetThereIsLimitOnBigThings(bool GetThereIsLimitOnBigThings);
+    Race GetRace() const;
+    void SetRace(const Race &GetRace);
+    Profession GetProfession() const;
+    void SetProfession(const Profession &GetProfession);
+    Race GetSecondRace() const;
+    void SetSecondRace(const Race &GetSecondRace);
+    Profession GetSecondProfession() const;
+    void SetSecondProfession(const Profession &GetSecondProfession);
+    bool GetIsHalfBloodWithoutSecondRace() const;
+    void SetHalfBloodWithoutSecondRace(bool GetIsHalfBloodWithoutSecondRace);
+    bool GetSuperMunchkinWithoutSecondProfession() const;
+    void SetSuperMunchkinWithoutSecondProfession(bool GetSuperMunchkinWithoutSecondProfession);
 
-    void addCardToHands(SimpleCard);
-    void removeCardFromHands(SimpleCard);
+    void AddCardToHands(SimpleCard);
+    void RemoveCardFromHands(SimpleCard);
 
     std::vector<SimpleCard>* cardsOnHandsVector();
     std::vector<SimpleCard>* cardsInGameVector();
@@ -115,6 +115,8 @@ public:
     void RemoveGivenCardsFromHand(const std::vector<SimpleCard>& cards);
     void RemoveGivenCardFromHand(SimpleCard card);
 
+    Players_Sex playersSex() const;
+    void setPlayersSex(const Players_Sex &playersSex);
 
 private:
 

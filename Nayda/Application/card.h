@@ -11,6 +11,13 @@
 #include <iostream>
 #include <QDebug>
 
+
+namespace GlobalCardDefinitions
+{
+#define TOTAL_CARDS_TO_GIVE_FROM_THE_START 4
+}
+
+
 /*
  * There are .csv tables of all the cards.
  * The_Game receives from Before_The_Game stock type (calculated basing on the settings selected in a
@@ -246,6 +253,56 @@ enum class CardType
     TreasureThingAmplifier, TreasureWeapon,
     NotSupported
 };
+
+
+
+
+
+//Первый параметр разрешает играть карту,
+//Второй присутствует, если первый не пустой.
+//У меня нет std::optional, по-этому второй параметр используем, если первый == false;
+//typedef std::pair<bool, QString> cardPlayAllowance;
+//Но после небольших раздумий я решил сделать базовый класс, чтобы возвращать разные значения для разных
+//проверяльщиков, но при этом сохранить возможность передачи их в один на всех парсер проверки.
+//По сути его результатом будет применение/неприменение карт
+class CardPlayAllowanceBase
+{
+
+private:
+
+    bool _allowedToBePlayed;
+    QString _reasonOfRestriction = "";
+
+public:
+
+    void SetAllowance(bool allowedToBePlayed) { _allowedToBePlayed = allowedToBePlayed; }
+    void SetReasonOfRestriction(const QString& reason) { _reasonOfRestriction = reason; }
+    bool GetAllowance() { return _allowedToBePlayed; }
+    QString GetReasonOfRestriction() { return _reasonOfRestriction; }
+};
+
+
+class TreasureArmorAllowance : public CardPlayAllowanceBase
+{
+    bool _active;
+
+public:
+
+    void Setctive(bool active) { _active = active; }
+    bool GetIsActive() { return _active; }
+
+public:
+
+    explicit TreasureArmorAllowance(bool allowedToBePlayed, const QString& reason, bool active) :
+        _active(active)
+    {
+        SetAllowance(allowedToBePlayed);
+        SetReasonOfRestriction(reason);
+    }
+
+
+};
+
 
 //_monstersDeck = data._monstersDeck;
 //_amplifiersDeck = data._amplifiersDeck;

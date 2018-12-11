@@ -39,6 +39,16 @@ void Player::RemoveGivenCardFromHand(SimpleCard card)
     qDebug() << "NAY-002: ERROR WHILE void Player::RemoveGivenCardFromHand(SimpleCard card). Card not found!";
 }
 
+Players_Sex Player::playersSex() const
+{
+    return _playersSex;
+}
+
+void Player::setPlayersSex(const Players_Sex &playersSex)
+{
+    _playersSex = playersSex;
+}
+
 Player::Player(const QString& name) : _name(name)
 {
     _isMainPlayer = false;
@@ -65,8 +75,8 @@ Player::Player(const QString& name) : _name(name)
     _second_race = Race::Human;
     _second_profession = Profession::No_Profession;
 
-    _halfBlood_without_second_race = false;
-    _superMunchkin_without_second_profession = false;
+    _halfBloodWithoutSecondRace = false;
+    _superMunchkinWithoutSecondProfession = false;
 
     //set default cards for races and classes;
 
@@ -108,19 +118,19 @@ void Player::addProfessionPassiveAbility(Profession_Passive_Abilities profession
 }
 
 
-bool Player::superMunchkin_without_second_profession() const
+bool Player::GetSuperMunchkinWithoutSecondProfession() const
 {
-    return _superMunchkin_without_second_profession;
+    return _superMunchkinWithoutSecondProfession;
 }
 
 
-void Player::setSuperMunchkin_without_second_profession(bool superMunchkin_without_second_profession)
+void Player::SetSuperMunchkinWithoutSecondProfession(bool superMunchkin_without_second_profession)
 {
-    _superMunchkin_without_second_profession = superMunchkin_without_second_profession;
+    _superMunchkinWithoutSecondProfession = superMunchkin_without_second_profession;
 }
 
 
-void Player::addCardToHands(SimpleCard cardToBeAdded)
+void Player::AddCardToHands(SimpleCard cardToBeAdded)
 {
     _cardsOnHands.push_back(cardToBeAdded);
     //qDebug() << "Card"<< (cardToBeAdded.first == 0 ? "Door" : "Treasure") << "with cardID = " << cardToBeAdded.second << "was successfully added to _cardsOnHands!";
@@ -128,7 +138,7 @@ void Player::addCardToHands(SimpleCard cardToBeAdded)
 }
 
 
-void Player::removeCardFromHands(SimpleCard cardToBeRemoved)
+void Player::RemoveCardFromHands(SimpleCard cardToBeRemoved)
 {
     std::vector<SimpleCard>::iterator it;
     it = std::find(_cardsOnHands.begin(), _cardsOnHands.end(), cardToBeRemoved);
@@ -156,157 +166,157 @@ std::vector<SimpleCard> *Player::cardsInGameVector()
 }
 
 
-bool Player::halfBlood_without_second_race() const
+bool Player::GetIsHalfBloodWithoutSecondRace() const
 {
-    return _halfBlood_without_second_race;
+    return _halfBloodWithoutSecondRace;
 }
 
 
-void Player::setHalfBlood_without_second_race(bool halfBlood_without_second_race)
+void Player::SetHalfBloodWithoutSecondRace(bool halfBlood_without_second_race)
 {
-    _halfBlood_without_second_race = halfBlood_without_second_race;
+    _halfBloodWithoutSecondRace = halfBlood_without_second_race;
 }
 
 
-Profession Player::second_profession() const
+Profession Player::GetSecondProfession() const
 {
     return _second_profession;
 }
 
 
-void Player::setSecond_profession(const Profession &second_profession)
+void Player::SetSecondProfession(const Profession &second_profession)
 {
     _second_profession = second_profession;
 }
 
 
-Race Player::second_race() const
+Race Player::GetSecondRace() const
 {
     return _second_race;
 }
 
 
-void Player::setSecond_race(const Race &second_race)
+void Player::SetSecondRace(const Race &second_race)
 {
     _second_race = second_race;
 }
 
 
-Profession Player::profession() const
+Profession Player::GetProfession() const
 {
     return _profession;
 }
 
 
-void Player::setProfession(const Profession &profession)
+void Player::SetProfession(const Profession &profession)
 {
     _profession = profession;
 }
 
 
-Race Player::race() const
+Race Player::GetRace() const
 {
     return _race;
 }
 
 
-void Player::setRace(const Race &race)
+void Player::SetRace(const Race &race)
 {
     _race = race;
 }
 
 
-bool Player::thereIsLimitOnBigThings() const
+bool Player::GetThereIsLimitOnBigThings() const
 {
     return _thereIsLimitOnBigThings;
 }
 
 
-void Player::setThereIsLimitOnBigThings(bool thereIsLimitOnBigThings)
+void Player::SetThereIsLimitOnBigThings(bool thereIsLimitOnBigThings)
 {
     _thereIsLimitOnBigThings = thereIsLimitOnBigThings;
 }
 
 
-bool Player::thereIsOneBigThing() const
+bool Player::GetThereIsOneBigThing() const
 {
     return _thereIsOneBigThing;
 }
 
 
-void Player::setThereIsOneBigThing(bool thereIsOneBigThing)
+void Player::SetThereIsOneBigThing(bool thereIsOneBigThing)
 {
     _thereIsOneBigThing = thereIsOneBigThing;
 }
 
 
-bool Player::rightHandSlotFull() const
+bool Player::GetRightHandSlotIsFull() const
 {
     return _rightHandSlotFull;
 }
 
 
-void Player::setRightHandSlotFull(bool rightHandSlotFull)
+void Player::SetRightHandSlotIsFull(bool rightHandSlotFull)
 {
     _rightHandSlotFull = rightHandSlotFull;
 }
 
 
-bool Player::leftHandSlotFull() const
+bool Player::LeftHandSlotIsFull() const
 {
     return _leftHandSlotFull;
 }
 
 
-void Player::setLeftHandSlotFull(bool leftHandSlotFull)
+void Player::SetLeftHandSlotIsFull(bool leftHandSlotFull)
 {
     _leftHandSlotFull = leftHandSlotFull;
 }
 
 
-bool Player::legsSlotFull() const
+bool Player::GetLegsSlotIsFull() const
 {
     return _legsSlotFull;
 }
 
 
-void Player::setLegsSlotFull(bool legsSlotFull)
+void Player::SetLegsSlotIsFull(bool legsSlotFull)
 {
     _legsSlotFull = legsSlotFull;
 }
 
 
-bool Player::headSlotFull() const
+bool Player::GetHeadSlotIsFull() const
 {
     return _headSlotFull;
 }
 
 
-void Player::setHeadSlotFull(bool headSlotFull)
+void Player::SetHeadSlotIsFull(bool headSlotFull)
 {
     _headSlotFull = headSlotFull;
 }
 
 
-uint32_t Player::cardsInGame() const
+uint32_t Player::GetTotalCardsInGame() const
 {
     return _cardsInGame.size();
 }
 
 
-void Player::setCards_in_game(int cards_in_game)
+void Player::SetTotalCardsInGame(int cards_in_game)
 {
     _totalCardsInGame = cards_in_game;
 }
 
 
-uint32_t Player::cardsOnHandsLimit() const
+uint32_t Player::GetCardsOnHandsLimit() const
 {
     return _cardsOnHandsLimit;
 }
 
 
-void Player::setCardsOnHandsLimit(int cardsOnHandsLimit)
+void Player::SetCardsOnHandsLimit(int cardsOnHandsLimit)
 {
     _cardsOnHandsLimit = cardsOnHandsLimit;
 }

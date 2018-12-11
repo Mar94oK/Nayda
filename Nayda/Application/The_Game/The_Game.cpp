@@ -1582,7 +1582,7 @@ void The_Game::GivingCardsToPlayers()
     //define, how many players are presented;
     //this value is received once from server side and can't be changed during the game if only the player is leaving the game;
     uint32_t totalOpponents = _gameSettings.maximumNumberOfPlayers() - 1; //6 as default
-    uint32_t cardsToGive = 4;
+    uint32_t cardsToGive = HardCodedSettingsLimitations::totalCardsToGiveFromTheStart;
 
     //then it is necessary to give m_number_of_players*4 cards from doors stack, and
     //the same quantity from the Treasures stack.
@@ -1601,7 +1601,7 @@ void The_Game::GivingCardsToPlayers()
     {
         for (unsigned int y = 0; y < cardsToGive; ++y)
         {
-            _orderOfMove[var]->addCardToHands(_doorsDeck.front());
+            _orderOfMove[var]->AddCardToHands(_doorsDeck.front());
             _doorsDeck.erase(_doorsDeck.begin());
         }
     }
@@ -1613,7 +1613,7 @@ void The_Game::GivingCardsToPlayers()
     {
         for (uint32_t y = 0; y < cardsToGive; ++y)
         {
-            _orderOfMove[var]->addCardToHands(_treasuresDeck.front());
+            _orderOfMove[var]->AddCardToHands(_treasuresDeck.front());
             _treasuresDeck.erase(_treasuresDeck.begin());
         }
     }
@@ -1897,10 +1897,7 @@ GameCardBasis The_Game::GetRealCard(SimpleCard card)
     return GameCardBasis();
 }
 
-GamePhase The_Game::GetCurrentGamePhase() const
-{
-    return _currentGamePhase;
-}
+
 
 void The_Game::SetCurrentGamePhase(const GamePhase &currentGamePhase)
 {
@@ -1968,7 +1965,7 @@ void The_Game::SlotAdjustSizeOfTheGamerWidgetToMakeCardsToBeInPlace()
     ui->MainGamer->adjustSize();
 }
 
-void The_Game::SlotCheckCardIsAbleToBePlayed(PositionedCard card)
+void The_Game::SlotCheckCardIsAbleToBePlayed(PositionedCard card, bool fromHand)
 {
     qDebug() << "The Card is checking!!!";
 
@@ -1995,7 +1992,7 @@ void The_Game::SlotCheckCardIsAbleToBePlayed(PositionedCard card)
         {
 
         case CardType::TreasureArmor:
-            CardISAbleToPlayChecker_TreasureArmor(static_cast<const gameCardTreasureArmor* >(&realCard));
+            CardISAbleToPlayChecker_TreasureArmor(static_cast<const gameCardTreasureArmor* >(&realCard), fromHand);
             break;
 
         default:
@@ -2058,8 +2055,26 @@ void The_Game::SlotCheckCardIsAbleToBePlayed(PositionedCard card)
     }
 }
 
-bool The_Game::CardISAbleToPlayChecker_TreasureArmor(const gameCardTreasureArmor* card)
+TreasureArmorAllowance The_Game::CardISAbleToPlayChecker_TreasureArmor(const gameCardTreasureArmor* card, bool fromHand)
 {
+    //Играть карту "Броня" можно в любой момент игры, кроме собственного боя.
+    //Причём она может быть как "активной, так и не активной"
+
+    //MunRules
+    //https://hobbyworld.ru/download/rules/m_color_rules.pdf
+    //https://hobbyworld.ru/chastie-voprosi-po-manchkin#cardsitems
+
+    //Проверка, что нет боя:
+    if (GetCurrentGamePhase() == GamePhase::Battle)
+        return TreasureArmorAllowance(false, "Нельзя надевать броню в бою!", false);
+
+    //if ()
+
+    //Проверить, есть ли у брони ограничения по калссам/рассапм
+
+    //Проверка на возможность носить:
+    Profession currentProfession_First = _mainPlayer->GetProfession();
+    Profession currentProfession_Second = _mainPlayer->GetSecondProfession();
 
 }
 
