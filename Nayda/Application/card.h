@@ -277,8 +277,8 @@ public:
 
     void SetAllowance(bool allowedToBePlayed) { _allowedToBePlayed = allowedToBePlayed; }
     void SetReasonOfRestriction(const QString& reason) { _reasonOfRestriction = reason; }
-    bool GetAllowance() { return _allowedToBePlayed; }
-    QString GetReasonOfRestriction() { return _reasonOfRestriction; }
+    bool GetAllowance() const { return _allowedToBePlayed; }
+    QString GetReasonOfRestriction() const { return _reasonOfRestriction; }
 };
 
 
@@ -289,7 +289,7 @@ class TreasureArmorAllowance : public CardPlayAllowanceBase
 public:
 
     void Setctive(bool active) { _active = active; }
-    bool GetIsActive() { return _active; }
+    bool GetIsActive() const { return _active; }
 
 public:
 
@@ -332,7 +332,7 @@ private:
 
 public:
 
-    CardType GetCardType() { return _type; }
+    CardType GetCardType() const { return _type; }
     void SetCardType(CardType type) { _type = type; }
 
 };
@@ -660,7 +660,7 @@ class gameCardTreasureArmor : public GameCardBasis
 
     int _price;
 
-    int _bonusToFleeing;
+    int _bonusToFleeing
 
     bool _isCombined;
 

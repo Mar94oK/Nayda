@@ -2065,6 +2065,61 @@ void The_Game::SlotCheckCardIsAbleToBePlayed(PositionedCard card, bool fromHand)
     }
 }
 
+void The_Game::CardImplementer(const CardPlayAllowanceBase *allowance, const GameCardBasis *card)
+{
+    if (!allowance->GetAllowance())
+    {
+        ShowCardIsForbiddenToPlayMessage(allowance->GetReasonOfRestriction());
+        return;
+    }
+
+    switch (card->GetCardType())
+    {
+    case CardType::TreasureArmor :
+    {
+        ApplyNewAror(static_cast<const gameCardTreasureArmor*> (card));
+    }
+
+        break;
+
+    default:
+        qDebug() << "NAY-002: The_Game::CardImplementer() Card is not implemented yet!";
+        break;
+    }
+}
+
+void The_Game::ShowCardIsForbiddenToPlayMessage(const QString &message)
+{
+    qDebug() << "NAY-002: Show Card is forbiden to play message: " << message;
+}
+
+void The_Game::ApplyNewAror(const gameCardTreasureArmor *card)
+{
+    uint32_t totalBonus = static_cast<uint32_t>(card->bonus());
+
+    if (card->additionalBonusforElf() &&
+        ((_mainPlayer->GetRace() == Race::Elf) || (_mainPlayer->GetSecondRace() == Race::Elf)))
+        totalBonus += static_cast<uint32_t>(card->additionalBonusforElf());
+
+    if (card->additionalBonusforOrk() &&
+        ((_mainPlayer->GetRace() == Race::Ork) || (_mainPlayer->GetSecondRace() == Race::Ork)))
+        totalBonus += static_cast<uint32_t>(card->additionalBonusforOrk());
+
+    //кажется, нет смысла проверять, есть ли такой бонус.
+    //Парсер написан так, что должен вписывать в эти поля нули.
+    //Можно перестраховаться, добавив куда можно, нулевые значения
+    //Может возникнуть ошибка при установке бонусов.
+    //NAY-002: EXPECTED_IMPROVEMENT
+    //NAY-002: EXPECTED_ERROR
+//    if (card->bonusToFleeing())
+        _mainPlayer->SetFleeChance(_mainPlayer->GetFleeChance() + card->bonusToFleeing());
+
+//12.12.2018 продолжить здесь
+
+
+
+}
+
 TreasureArmorAllowance The_Game::CardISAbleToPlayChecker_TreasureArmor(const gameCardTreasureArmor* card, bool fromHand)
 {
     //Все подобные парсеры предполагают, что проверка на глобальные запреты уже пройдена.
@@ -2089,43 +2144,58 @@ TreasureArmorAllowance The_Game::CardISAbleToPlayChecker_TreasureArmor(const gam
     //Т.к. на ДАННЫЙ МОМЕНТ имеется лишь одна шмотка "Мифрильная броня", имеющая тип "большая"
     //Я не буду дописывать в таблицу целое поле и дополнительно его парсить.
     //Ниже сделаю привязку к конкретному Card-ID
+
+    //Ан-нет, я сделал это ещё тогда. =))))
     if (_mainPlayer->GetThereIsLimitOnBigThings() && _mainPlayer->GetThereIsOneBigThing()
-            && (card->cardID() == 10))
+            && (card->size() == Size::Big))
         return TreasureArmorAllowance(false, "К сожалению, у Вас уже есть большие шмотки в игре!", false);
 
     //Запреты кончились, теперь принятие решения о том, какой параметр ставить для активна/неактивна
 
     //Наличие карты "Чит" пока не рассматривается
-    bool setAsActive = true;
 
     if (card->isOnlyForDwarf()
             && _mainPlayer->GetRace() != Race::Dwarf
             && _mainPlayer->GetSecondRace() != Race::Dwarf)
     {
-        return TreasureArmorAllowance(true, "Увы, карта активна только для дворфа! Разве вы дфорф?", false);
+        return TreasureArmorAllowance(true, "Увы, карта активна только для дворфа!/n Разве вы дфорф?", false);
     }
 
     if (card->isOnlyForGnome()
             && _mainPlayer->GetRace() != Race::Gnome
             && _mainPlayer->GetSecondRace() != Race::Gnome)
     {
-        return TreasureArmorAllowance(true, "Увы, карта активна только для гнома! Разве вы гном?", false);
+        return TreasureArmorAllowance(true, "Увы, карта активна только для гнома!/n Разве вы гном?", false);
     }
 
     if (card->isOnlyForWizard()
             && _mainPlayer->GetProfession() != Profession::Wizard
             && _mainPlayer->GetSecondProfession() != Profession::Wizard)
     {
-        return TreasureArmorAllowance(true, "Увы, карта активна только для волшебника!"
-                                            "Разве к вам в детстве прилетала сова с письмом?"
-                                            "Но ведь вы её ждали?", false);
+        return TreasureArmorAllowance(true, "Увы, карта активна только для волшебника!/n"
+                                            "Разве к вам в детстве прилетала сова с письмом?/n"
+                                            "...Но ведь вы её ждали?/n", false);
     }
 
     if (card->isOnlyForHuman()
             && _mainPlayer->GetRace() != Race::Human)
     {
-        return TreasureArmorAllowance(true, "Увы, карта активна только для человека. Теперь вы другой.", false);
+        return TreasureArmorAllowance(true, "Увы, карта активна только для человека./n Теперь вы другой.", false);
     }
+
+    //NAY-002: EXPECTED_ERROR
+    //NAY-002: EXPECTED_IMPROVEMENT
+    //На будущее надо бы сделать защиту от возможности надеть сразу два "комбинируемых" доспеха.
+    //С другой стороны, может юыть, их можно надевать по несколько - капусточка. =)))
+    if (_mainPlayer->GetLegsSlotIsFull() && (card->part()  == Body_Part::Feet) && (!card->isCombined()))
+        return TreasureArmorAllowance(true, "Вторые штаны не натянуть на уже надетые./n Но при большом желании...", false);
+
+    if (_mainPlayer->GetArmorSlotFull() && (card->part()  == Body_Part::Armor) && (!card->isCombined()))
+        return TreasureArmorAllowance(true, "Доспех надевали поверх кольчуги./n Но игра такое, увы, запрещает.", false);
+
+    if (_mainPlayer->GetLegsSlotIsFull() && (card->part()  == Body_Part::Feet) && (!card->isCombined()))
+        return TreasureArmorAllowance(true, "Вторые ботинки поверх существующих/n никак не надеть.", false);
+
 
     //Запретов больше нет
     return TreasureArmorAllowance(true, "", true);

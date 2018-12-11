@@ -16,6 +16,9 @@ class Player
 
     uint32_t _playerLevel = 1;
     int _warPower = 1;
+
+    int _fleeChance = 5; //less than - loose
+
     uint32_t _totalCardsOnHands = HardCodedSettingsLimitations::totalCardsToGiveFromTheStart *2;
     uint32_t _cardsOnHandsLimit = HardCodedSettingsLimitations::maximumCardsOnHandsInitialLimitation;
     uint32_t _totalCardsInGame = 0;
@@ -24,6 +27,8 @@ class Player
     bool _legsSlotFull = false;
     bool _leftHandSlotFull = false;
     bool _rightHandSlotFull = false;
+    bool _armorSlotFull = false;
+
     bool _thereIsOneBigThing = false;
     bool _thereIsLimitOnBigThings= true; //may be remove it if checking the race
 
@@ -57,6 +62,16 @@ class Player
     SimpleCard _class1Card;
     SimpleCard _class2Card;
 
+
+    //Enabling additional passive mechanics:
+    bool _protectedFromCursesFromDoors = false; // Шапочка из фольги
+    bool _protecetdFromCursesFromDoors = false; // Саналеты-Протекторы
+    bool _cursesMirroring = false; // Сиятельная шляпа
+    bool _notAbleToHelp = false; // Вонючие потники
+    bool _protectedFromOthersPotions = false; //Дождевик
+
+    bool _bonusFromNoseActive = false; //вонючие носки дадут плюс 5;
+
 public:
 
     explicit Player(const QString& player);
@@ -70,17 +85,29 @@ public:
     void SetPlayerLevel(uint32_t GetPlayerLevel);
     int GetWarPower() const;
     void SetWarPower(int GetWarPower);
+    int GetFleeChance() const;
+    void SetFleeChance(int GetFleeChance);
+
+
     uint32_t GetCardsOnHands() const;
     uint32_t GetCardsOnHandsLimit() const;
     void SetCardsOnHandsLimit(int GetCardsOnHandsLimit);
     uint32_t GetTotalCardsInGame() const;
     void SetTotalCardsInGame(int GetTotalCardsInGame);
+
+
     bool GetHeadSlotIsFull() const;
     void SetHeadSlotIsFull(bool GetHeadSlotIsFull);
     bool GetLegsSlotIsFull() const;
     void SetLegsSlotIsFull(bool GetLegsSlotIsFull);
-    bool LeftHandSlotIsFull() const;
-    void SetLeftHandSlotIsFull(bool LeftHandSlotIsFull);
+    bool GetLeftHandSlotIsFull() const;
+    void SetLeftHandSlotIsFull(bool GetLeftHandSlotIsFull);
+    bool GetRightHandSlotFull() const;
+    void SetRightHandSlotFull(bool GetRightHandSlotFull);
+    bool GetArmorSlotFull() const;
+    void SetArmorSlotFull(bool GetArmorSlotFull);
+
+
     bool GetRightHandSlotIsFull() const;
     void SetRightHandSlotIsFull(bool GetRightHandSlotIsFull);
     bool GetThereIsOneBigThing() const;
@@ -123,6 +150,24 @@ public:
 
     bool GetHasFreeHireling() const;
     void SetHasFreeHireling(bool GetHasFreeHireling);
+
+    bool GetIsProtectedFromCursesFromDoors() const;
+    void SetIsProtectedFromCursesFromDoors(bool GetIsProtectedFromCursesFromDoors);
+
+    bool GetProtecetdFromCursesFromDoors() const;
+    void SetProtecetdFromCursesFromDoors(bool GetProtecetdFromCursesFromDoors);
+
+    bool GetCursesMirroring() const;
+    void SetCursesMirroring(bool GetCursesMirroring);
+
+    bool GetNotAbleToHelp() const;
+    void SetNotAbleToHelp(bool GetNotAbleToHelp);
+
+    bool GetIsProtectedFromOthersPotions() const;
+    void SetIsProtectedFromOthersPotions(bool GetIsProtectedFromOthersPotions);
+
+    bool GetBonusFromNoseActive() const;
+    void SetBonusFromNoseActive(bool GetBonusFromNoseActive);
 
 private:
 

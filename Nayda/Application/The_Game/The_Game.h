@@ -392,6 +392,11 @@ public slots:
 
 private:
 
+    void CardImplementer(const CardPlayAllowanceBase* allowance, const GameCardBasis* card);
+    void ShowCardIsForbiddenToPlayMessage(const QString& message);
+
+    void ApplyNewAror(const gameCardTreasureArmor *card);
+
     TreasureArmorAllowance CardISAbleToPlayChecker_TreasureArmor(const gameCardTreasureArmor *card, bool fromHand);
 
 signals:
