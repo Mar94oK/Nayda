@@ -27,6 +27,8 @@ private:
     bool _HardCodedSettings_AllowedToOverSellAtLevelNine = true;
     bool _HardCodedSettings_AllowLevelOverSell = false;
     bool _HardCodedSettings_ShowResistanceIcons = false;
+    bool _HardCodedSettings_SilentActivatingNotActiveCardIfThePlayerHasFreeHireling = false;
+    bool _HardCodedSettings_WarningMessagesForPlayedNonActiveTreasuresEnabled = true;
 
 public:
     GameSettings();
@@ -70,6 +72,10 @@ public:
     bool GetHardCodedSettingsAllowedToSellAtLevelNine() const { return _HardCodedSettings_AllowedToSellAtLevelNine; }
     bool GetHardCodedSettingsAllowedToOverSellAtLevelNine() const { return _HardCodedSettings_AllowedToOverSellAtLevelNine; }
     bool GetHardCodedSettingsAllowLevelOverSell() const { return _HardCodedSettings_AllowLevelOverSell; }
+    bool GetHardCodedSettingsSilentActivatingNotActiveCardIfThePlayerHasFreeHireling() const
+    { return _HardCodedSettings_SilentActivatingNotActiveCardIfThePlayerHasFreeHireling; }
+    bool GetHardCodedSettingsWarningMessagesForPlayedNonActiveTreasuresEnabled() const
+    { return _HardCodedSettings_WarningMessagesForPlayedNonActiveTreasuresEnabled; }
 };
 
 #endif // GAMESETTINGS_H

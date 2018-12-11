@@ -1969,17 +1969,32 @@ void The_Game::SlotCheckCardIsAbleToBePlayed(PositionedCard card, bool fromHand)
 {
     qDebug() << "The Card is checking!!!";
 
-    //check, first of all, what is the phase of the Game;
-    //If the Phase is "WaitingForAnOpponentToMove", it is not possible to use any cards;
-    //Even "Annihilation"
 
-    //Check Global Phase First:
+    //Перед запуском парсеров с указателями причин невозможности разыграть карту
+    //сначала проверить, что не идёт процесс анимации карт.
 
-    //Проверить, что карта относится к тем, которые можно играть:
-    //1) в любой момент (проклятье)
-    //2) в чужой ход во время боя
-    //3) Требуется ли карте дополнительная карта (бродячая тварь)
-    //      и есть ли такая карта
+    if (_currentGamePhase == GamePhase::CardProcessing)
+    {
+        qDebug() << "NAY-002: DEBUG:::: The Game is in the GamePhase::CardProcessing when it is not possible to use cards!";
+        emit SignalCardIsRejectedToBePlayed(true);
+        return;
+    }
+
+
+
+    //Далее требуется найти текущую карту, и запустить для неё соответствующий парсер
+    //В зависимости от того, играется ли карта с руки или из игры
+    //парсер должен по-разному оценивать возможности розыграша данной карты в данный момент.
+    //Для некоторых карт возможность её сыграть означает смену текущей карты и т.п.
+    //В текущей версии для шмоток игрок должен сам оценть, будет ли воздействовать для него эффект карты.
+    //Для карт, которые сменят класс/рассу потребуется вводить дополнительную механику
+
+    //Механика будет внедрена позднее, и реализована не черз текущие парсеры.
+    //Длительное зажатие карты позволит выбрать дополнительные действия, возможные для этой карты.
+    //Должен быть в т.ч. и диалог "Вы уверены?"
+
+    //Но данный парсер оценивает только возможность разыгрывать карты в текущем бою.
+
 
     SimpleCard givenCard = card.GetCard();
     GameCardBasis realCard = GetRealCard(givenCard);
@@ -2026,12 +2041,7 @@ void The_Game::SlotCheckCardIsAbleToBePlayed(PositionedCard card, bool fromHand)
         return;
     }
 
-    if (_currentGamePhase == GamePhase::CardProcessing)
-    {
-        qDebug() << "NAY-002: DEBUG:::: The Game is in the GamePhase::CardProcessing when it is not possible to use cards!";
-        emit SignalCardIsRejectedToBePlayed(true);
-        return;
-    }
+
 
     if ((_currentGamePhase == GamePhase::GameInitialization)
             || (_currentGamePhase == GamePhase::WaitingForAnOpponentToMove)
@@ -2057,6 +2067,9 @@ void The_Game::SlotCheckCardIsAbleToBePlayed(PositionedCard card, bool fromHand)
 
 TreasureArmorAllowance The_Game::CardISAbleToPlayChecker_TreasureArmor(const gameCardTreasureArmor* card, bool fromHand)
 {
+    //Все подобные парсеры предполагают, что проверка на глобальные запреты уже пройдена.
+    //На 11.12.2018 это только процесс анимирования карт (карт-процессинг CardProcessing)
+
     //Играть карту "Броня" можно в любой момент игры, кроме собственного боя.
     //Причём она может быть как "активной, так и не активной"
 
@@ -2068,13 +2081,54 @@ TreasureArmorAllowance The_Game::CardISAbleToPlayChecker_TreasureArmor(const gam
     if (GetCurrentGamePhase() == GamePhase::Battle)
         return TreasureArmorAllowance(false, "Нельзя надевать броню в бою!", false);
 
-    //if ()
+    if (GetCurrentGamePhase() == GamePhase::OtherPlayerMove)
+        return TreasureArmorAllowance(false, "Сейчас чужой ход. Броню можно вводить в игру только в свой ход.", false);
 
-    //Проверить, есть ли у брони ограничения по калссам/рассапм
+    //NAY-002: HARDCODED_BEHAVIOUR
+    //К сожалению, таблица сокровищ-доспехов не предусматривала поле "большой"
+    //Т.к. на ДАННЫЙ МОМЕНТ имеется лишь одна шмотка "Мифрильная броня", имеющая тип "большая"
+    //Я не буду дописывать в таблицу целое поле и дополнительно его парсить.
+    //Ниже сделаю привязку к конкретному Card-ID
+    if (_mainPlayer->GetThereIsLimitOnBigThings() && _mainPlayer->GetThereIsOneBigThing()
+            && (card->cardID() == 10))
+        return TreasureArmorAllowance(false, "К сожалению, у Вас уже есть большие шмотки в игре!", false);
 
-    //Проверка на возможность носить:
-    Profession currentProfession_First = _mainPlayer->GetProfession();
-    Profession currentProfession_Second = _mainPlayer->GetSecondProfession();
+    //Запреты кончились, теперь принятие решения о том, какой параметр ставить для активна/неактивна
+
+    //Наличие карты "Чит" пока не рассматривается
+    bool setAsActive = true;
+
+    if (card->isOnlyForDwarf()
+            && _mainPlayer->GetRace() != Race::Dwarf
+            && _mainPlayer->GetSecondRace() != Race::Dwarf)
+    {
+        return TreasureArmorAllowance(true, "Увы, карта активна только для дворфа! Разве вы дфорф?", false);
+    }
+
+    if (card->isOnlyForGnome()
+            && _mainPlayer->GetRace() != Race::Gnome
+            && _mainPlayer->GetSecondRace() != Race::Gnome)
+    {
+        return TreasureArmorAllowance(true, "Увы, карта активна только для гнома! Разве вы гном?", false);
+    }
+
+    if (card->isOnlyForWizard()
+            && _mainPlayer->GetProfession() != Profession::Wizard
+            && _mainPlayer->GetSecondProfession() != Profession::Wizard)
+    {
+        return TreasureArmorAllowance(true, "Увы, карта активна только для волшебника!"
+                                            "Разве к вам в детстве прилетала сова с письмом?"
+                                            "Но ведь вы её ждали?", false);
+    }
+
+    if (card->isOnlyForHuman()
+            && _mainPlayer->GetRace() != Race::Human)
+    {
+        return TreasureArmorAllowance(true, "Увы, карта активна только для человека. Теперь вы другой.", false);
+    }
+
+    //Запретов больше нет
+    return TreasureArmorAllowance(true, "", true);
 
 }
 

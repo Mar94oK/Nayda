@@ -27,6 +27,9 @@ class Player
     bool _thereIsOneBigThing = false;
     bool _thereIsLimitOnBigThings= true; //may be remove it if checking the race
 
+    bool _hasFreeHireling = false;
+    uint32_t _totalHireLings = 0;
+
     Race _race = Race::Human;
     Profession _profession = Profession::No_Profession;
     Players_Sex _playersSex = Players_Sex::Man;
@@ -94,8 +97,8 @@ public:
     void SetSecondProfession(const Profession &GetSecondProfession);
     bool GetIsHalfBloodWithoutSecondRace() const;
     void SetHalfBloodWithoutSecondRace(bool GetIsHalfBloodWithoutSecondRace);
-    bool GetSuperMunchkinWithoutSecondProfession() const;
-    void SetSuperMunchkinWithoutSecondProfession(bool GetSuperMunchkinWithoutSecondProfession);
+    bool GetIsSuperMunchkinWithoutSecondProfession() const;
+    void SetSuperMunchkinWithoutSecondProfession(bool GetIsSuperMunchkinWithoutSecondProfession);
 
     void AddCardToHands(SimpleCard);
     void RemoveCardFromHands(SimpleCard);
@@ -117,6 +120,9 @@ public:
 
     Players_Sex playersSex() const;
     void setPlayersSex(const Players_Sex &playersSex);
+
+    bool GetHasFreeHireling() const;
+    void SetHasFreeHireling(bool GetHasFreeHireling);
 
 private:
 

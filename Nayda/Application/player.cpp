@@ -49,6 +49,16 @@ void Player::setPlayersSex(const Players_Sex &playersSex)
     _playersSex = playersSex;
 }
 
+bool Player::GetHasFreeHireling() const
+{
+    return _hasFreeHireling;
+}
+
+void Player::SetHasFreeHireling(bool hasFreeHireling)
+{
+    _hasFreeHireling = hasFreeHireling;
+}
+
 Player::Player(const QString& name) : _name(name)
 {
     _isMainPlayer = false;
@@ -118,7 +128,7 @@ void Player::addProfessionPassiveAbility(Profession_Passive_Abilities profession
 }
 
 
-bool Player::GetSuperMunchkinWithoutSecondProfession() const
+bool Player::GetIsSuperMunchkinWithoutSecondProfession() const
 {
     return _superMunchkinWithoutSecondProfession;
 }
