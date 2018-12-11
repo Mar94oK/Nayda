@@ -660,7 +660,7 @@ class gameCardTreasureArmor : public GameCardBasis
 
     int _price;
 
-    int _bonusToFleeing
+    int _bonusToFleeing;
 
     bool _isCombined;
 

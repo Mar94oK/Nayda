@@ -69,25 +69,6 @@ void Player::SetRightHandSlotFull(bool rightHandSlotFull)
     _rightHandSlotFull = rightHandSlotFull;
 }
 
-bool Player::leftHandSlotFull() const
-{
-    return _leftHandSlotFull;
-}
-
-void Player::setLeftHandSlotFull(bool leftHandSlotFull)
-{
-    _leftHandSlotFull = leftHandSlotFull;
-}
-
-bool Player::legsSlotFull() const
-{
-    return _legsSlotFull;
-}
-
-void Player::setLegsSlotFull(bool legsSlotFull)
-{
-    _legsSlotFull = legsSlotFull;
-}
 
 bool Player::GetArmorSlotFull() const
 {
