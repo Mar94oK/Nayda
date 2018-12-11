@@ -59,6 +59,116 @@ void Player::SetHasFreeHireling(bool hasFreeHireling)
     _hasFreeHireling = hasFreeHireling;
 }
 
+bool Player::GetRightHandSlotFull() const
+{
+    return _rightHandSlotFull;
+}
+
+void Player::SetRightHandSlotFull(bool rightHandSlotFull)
+{
+    _rightHandSlotFull = rightHandSlotFull;
+}
+
+bool Player::leftHandSlotFull() const
+{
+    return _leftHandSlotFull;
+}
+
+void Player::setLeftHandSlotFull(bool leftHandSlotFull)
+{
+    _leftHandSlotFull = leftHandSlotFull;
+}
+
+bool Player::legsSlotFull() const
+{
+    return _legsSlotFull;
+}
+
+void Player::setLegsSlotFull(bool legsSlotFull)
+{
+    _legsSlotFull = legsSlotFull;
+}
+
+bool Player::GetArmorSlotFull() const
+{
+    return _armorSlotFull;
+}
+
+void Player::SetArmorSlotFull(bool armorSlotFull)
+{
+    _armorSlotFull = armorSlotFull;
+}
+
+int Player::GetFleeChance() const
+{
+    return _fleeChance;
+}
+
+void Player::SetFleeChance(int fleeChance)
+{
+    _fleeChance = fleeChance;
+}
+
+bool Player::GetIsProtectedFromCursesFromDoors() const
+{
+    return _protectedFromCursesFromDoors;
+}
+
+void Player::SetIsProtectedFromCursesFromDoors(bool protectedFromCursesFromDoors)
+{
+    _protectedFromCursesFromDoors = protectedFromCursesFromDoors;
+}
+
+bool Player::GetProtecetdFromCursesFromDoors() const
+{
+    return _protecetdFromCursesFromDoors;
+}
+
+void Player::SetProtecetdFromCursesFromDoors(bool protecetdFromCursesFromDoors)
+{
+    _protecetdFromCursesFromDoors = protecetdFromCursesFromDoors;
+}
+
+bool Player::GetCursesMirroring() const
+{
+    return _cursesMirroring;
+}
+
+void Player::SetCursesMirroring(bool cursesMirroring)
+{
+    _cursesMirroring = cursesMirroring;
+}
+
+bool Player::GetNotAbleToHelp() const
+{
+    return _notAbleToHelp;
+}
+
+void Player::SetNotAbleToHelp(bool notAbleToHelp)
+{
+    _notAbleToHelp = notAbleToHelp;
+}
+
+bool Player::GetIsProtectedFromOthersPotions() const
+{
+    return _protectedFromOthersPotions;
+}
+
+void Player::SetIsProtectedFromOthersPotions(bool protectedFromOthersPotions)
+{
+    _protectedFromOthersPotions = protectedFromOthersPotions;
+}
+
+bool Player::GetBonusFromNoseActive() const
+{
+    return _bonusFromNoseActive;
+}
+
+void Player::SetBonusFromNoseActive(bool bonusFromNoseActive)
+{
+    _bonusFromNoseActive = bonusFromNoseActive;
+}
+
 Player::Player(const QString& name) : _name(name)
 {
     _isMainPlayer = false;
@@ -68,7 +178,7 @@ Player::Player(const QString& name) : _name(name)
     _totalCardsOnHands = 0;
     _cardsOnHandsLimit = 5;
     _totalCardsInGame = 0;
-
+    
     _headSlotFull = false;
     _legsSlotFull = false;
     _leftHandSlotFull = false;
@@ -272,7 +382,7 @@ void Player::SetRightHandSlotIsFull(bool rightHandSlotFull)
 }
 
 
-bool Player::LeftHandSlotIsFull() const
+bool Player::GetLeftHandSlotIsFull() const
 {
     return _leftHandSlotFull;
 }
