@@ -1,22 +1,22 @@
-1;Pictures/treasures_armor/Horny Helmet.jpg;Horny Helmet;Basic;Armor;Head;small;1;Elf_2;all;no;600;0;no
-2;Pictures/treasures_armor/Leather Armor.jpg;Leather Armor;Basic;Armor;Armor;small;1;no;all ;no;200;0;no
-3;Pictures/treasures_armor/Boots of Butt-Kicking.jpg;Boots of Butt-Kicking;Basic;Armor;Feet;small;2;no;all;no;400;0;no
-4;Pictures/treasures_armor/Boots of Running Really Fast.jpg;Boots of Running Really Fast;Basic;Armor;Feet;small;0;no;all;no;400;2;no
-5;Pictures/treasures_armor/Slimy Armor.jpg;Slimy Armor;Basic;Armor;Armor;small;1;no;all;no;200;0;no
-6;Pictures/treasures_armor/Bad-Ass Bandana.jpg;Bad-Ass Bandana;Basic;Armor;Head;small;3;no;Human;no;400;0;no
-7;Pictures/treasures_armor/Flaming Armor.jpg;Flaming Armor;Basic;Armor;Armor;small;2;no;all;no;400;0;no
-8;Pictures/treasures_armor/Pointy Hat of Power.jpg;Pointy Hat of Power;Basic;Armor;Head;small;3;no;Wizard;no;400;0;no
-9;Pictures/treasures_armor/Helm of Courage.jpg;Helm of Courage;Basic;Armor;Head;small;1;no;all;no;200;0;no
-10;Pictures/treasures_armor/Mithril Armor.jpg;Mithril Armor;Basic;Armor;Armor;big;3;no;ex_Wizard;no;600;0;no
-11;Pictures/treasures_armor/Short Wide Armor.jpg;Short Wide Armor;Basic;Armor;Armor;small;3;no;Dwarf;no;400;0;no
-12;Pictures/treasures_armor/Sandals of Protection.jpg;Sandals of Protection;Basic;Armor;Feet;small;0;no;all;yes;700;0;no
-74;Pictures/treasures_armor/Raincoat.jpg;Raincoat;WildAxe;Armor;Armor;small;0;no;all;yes;100;0;yes
-75;Pictures/treasures_armor/Tinfoil Hat.jpg;Tinfoil Hat;WildAxe;Armor;Head;small;0;no;all;yes;800;0;no
-76;Pictures/treasures_armor/Helm of Peripheral Vision.jpg;Helm of Peripheral Vision;WildAxe;Armor;Head;small;2;no;all;yes;600;0;no
-77;Pictures/treasures_armor/Knight Light.jpg;Knight Light;WildAxe;Armor;Head;small;2;no;all;no;400;0;yes
-78;Pictures/treasures_armor/Skull Helmet.jpg;Skull Helmet;WildAxe;Armor;Head;small;2;Ork_2;all;no;400;0;no
-118;Pictures/treasures_armor/Gnomex Suit.jpg;Gnomex Suit;ClericalErrors;Armor;Armor;small;4;no;Gnome;no;600;0;yes
-119;Pictures/treasures_armor/Chainmail Bikini.jpg;Chainmail Bikini;ClericalErrors;Armor;Feet;small;4;no;ex_Gnome;no;200;0;yes
-120;Pictures/treasures_armor/Magnificent Hat.jpg;Magnificent Hat;ClericalErrors;Armor;Head;small;2;no;all;yes;900;0;no
-121;Pictures/treasures_armor/Freudian Slippers.jpg;Freudian Slippers;ClericalErrors;Armor;Feet;small;0;no;all;yes;600;0;no
-122;Pictures/treasures_armor/Awful Socks.jpg;Awful Socks;ClericalErrors;Armor;Armor;small;3;no;all;no;600;0;no
+1,Pictures/treasures_armor/Horny Helmet.jpg,Horny Helmet,Basic,Armor,Head,small,1,Elf_2,all,no,600,0,no
+2,Pictures/treasures_armor/Leather Armor.jpg,Leather Armor,Basic,Armor,Armor,small,1,no,all ,no,200,0,no
+3,Pictures/treasures_armor/Boots of Butt-Kicking.jpg,Boots of Butt-Kicking,Basic,Armor,Feet,small,2,no,all,no,400,0,no
+4,Pictures/treasures_armor/Boots of Running Really Fast.jpg,Boots of Running Really Fast,Basic,Armor,Feet,small,0,no,all,no,400,2,no
+5,Pictures/treasures_armor/Slimy Armor.jpg,Slimy Armor,Basic,Armor,Armor,small,1,no,all,no,200,0,no
+6,Pictures/treasures_armor/Bad-Ass Bandana.jpg,Bad-Ass Bandana,Basic,Armor,Head,small,3,no,Human,no,400,0,no
+7,Pictures/treasures_armor/Flaming Armor.jpg,Flaming Armor,Basic,Armor,Armor,small,2,no,all,yes,400,0,no
+8,Pictures/treasures_armor/Pointy Hat of Power.jpg,Pointy Hat of Power,Basic,Armor,Head,small,3,no,Wizard,no,400,0,no
+9,Pictures/treasures_armor/Helm of Courage.jpg,Helm of Courage,Basic,Armor,Head,small,1,no,all,no,200,0,no
+10,Pictures/treasures_armor/Mithril Armor.jpg,Mithril Armor,Basic,Armor,Armor,big,3,no,ex_Wizard,no,600,0,no
+11,Pictures/treasures_armor/Short Wide Armor.jpg,Short Wide Armor,Basic,Armor,Armor,small,3,no,Dwarf,no,400,0,no
+12,Pictures/treasures_armor/Sandals of Protection.jpg,Sandals of Protection,Basic,Armor,Feet,small,0,no,all,yes,700,0,no
+74,Pictures/treasures_armor/Raincoat.jpg,Raincoat,WildAxe,Armor,Armor,small,0,no,all,yes,100,0,yes
+75,Pictures/treasures_armor/Tinfoil Hat.jpg,Tinfoil Hat,WildAxe,Armor,Head,small,0,no,all,yes,800,0,no
+76,Pictures/treasures_armor/Helm of Peripheral Vision.jpg,Helm of Peripheral Vision,WildAxe,Armor,Head,small,2,no,all,yes,600,0,no
+77,Pictures/treasures_armor/Knight Light.jpg,Knight Light,WildAxe,Armor,Head,small,2,no,all,no,400,0,yes
+78,Pictures/treasures_armor/Skull Helmet.jpg,Skull Helmet,WildAxe,Armor,Head,small,2,Ork_2,all,no,400,0,no
+118,Pictures/treasures_armor/Gnomex Suit.jpg,Gnomex Suit,ClericalErrors,Armor,Armor,small,4,no,Gnome,no,600,0,yes
+119,Pictures/treasures_armor/Chainmail Bikini.jpg,Chainmail Bikini,ClericalErrors,Armor,Feet,small,4,no,ex_Gnome,no,200,0,yes
+120,Pictures/treasures_armor/Magnificent Hat.jpg,Magnificent Hat,ClericalErrors,Armor,Head,small,2,no,all,yes,900,0,no
+121,Pictures/treasures_armor/Freudian Slippers.jpg,Freudian Slippers,ClericalErrors,Armor,Feet,small,0,no,all,yes,600,0,no
+122,Pictures/treasures_armor/Awful Socks.jpg,Awful Socks,ClericalErrors,Armor,Armor,small,3,no,all,yes,600,0,no

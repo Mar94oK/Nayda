@@ -150,6 +150,26 @@ void Player::SetBonusFromNoseActive(bool bonusFromNoseActive)
     _bonusFromNoseActive = bonusFromNoseActive;
 }
 
+bool Player::GetHasFireArmor() const
+{
+    return _hasFireArmor;
+}
+
+void Player::SetHasFireArmor(bool hasFireArmor)
+{
+    _hasFireArmor = hasFireArmor;
+}
+
+bool Player::GetAbleToChangeSexOnline() const
+{
+    return _ableToChangeSexOnline;
+}
+
+void Player::SetAbleToChangeSexOnline(bool ableToChangeSexOnline)
+{
+    _ableToChangeSexOnline = ableToChangeSexOnline;
+}
+
 Player::Player(const QString& name) : _name(name)
 {
     _isMainPlayer = false;
