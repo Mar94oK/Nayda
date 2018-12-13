@@ -319,13 +319,21 @@ public:
 
 public:
 
-    explicit TreasureArmorAllowance(bool allowedToBePlayed, const QString& reason, bool active) :
+    TreasureArmorAllowance(bool allowedToBePlayed, const QString& reason, bool active) :
         _active(active)
     {
         SetAllowance(allowedToBePlayed);
         SetReasonOfRestriction(reason);
     }
 
+public:
+
+    TreasureArmorAllowance(const TreasureArmorAllowance* ptr)
+    {
+        _active = ptr->GetIsActive();
+        SetAllowance(ptr->GetAllowance());
+        SetReasonOfRestriction(ptr->GetReasonOfRestriction());
+    }
 
 };
 
@@ -732,6 +740,12 @@ public:
     void setBonusToFleeing(int bonusToFleeing);
     bool isCombined() const;
     void setIsCombined(bool isCombined);
+
+public:
+
+    gameCardTreasureArmor(const gameCardTreasureArmor* ptr);
+    gameCardTreasureArmor();
+
 };
 
 

@@ -71,6 +71,11 @@ void CardsInGameObserver::AddCard(CardInGame card)
 
 }
 
+void CardsInGameObserver::RemoveCard(SimpleCard card)
+{
+
+}
+
 void CardsInGameObserver::SetDecks(const AllDecksToBePassed &data)
 {
     _monstersDeck = data._monstersDeck;

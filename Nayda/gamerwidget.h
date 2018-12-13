@@ -255,6 +255,21 @@ public:
    QPoint ProvideHandPosition();
    void SetGamerName(const QString& gamerName);
 
+public slots:
+
+   void SlotShowCardsInGame();
+   void SlotHideCardsInGame();
+
+   void SlotAddCardToCardsInGame(CardInGame card);
+   void SlotDeleteCardFromCardsInGame(SimpleCard card);
+
+private:
+
+   void SetUpSignalsSlotsConnections();
+   void SetUpTestTimer();
+   void SetUpShowTimer();
+   void SetUpWidgetsPerfomance();
+
 
 };
 

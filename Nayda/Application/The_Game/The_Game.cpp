@@ -1997,9 +1997,24 @@ void The_Game::SlotCheckCardIsAbleToBePlayed(PositionedCard card, bool fromHand)
 
 
     SimpleCard givenCard = card.GetCard();
-    GameCardBasis realCard = GetRealCard(givenCard);
+    GameCardBasis basisCard = GetRealCard(givenCard);
     CardType currentType = realCard.GetCardType();
+
+    if (realCard.GetCardType() == CardType::TreasureArmor)
+    {
+        //Получить (сделать) здесь карту из текущей (привести указатель к требуемому виду, т.к. известно,
+        //какой объект вернулся)
+        const gameCardTreasureArmor* cardPointer = static_cast<const gameCardTreasureArmor*>(&basisCard);
+        gameCardTreasureArmor realCard(cardPointer);
+
+    }
+
     //Treasures Switch
+    //Преобразовать к правильному типу
+
+
+
+
     if (givenCard.first)
     {
         qDebug() << "NAY-002: SlotCheckCardIsAbleToBePlayed(): Card is terasure! ";
@@ -2007,7 +2022,11 @@ void The_Game::SlotCheckCardIsAbleToBePlayed(PositionedCard card, bool fromHand)
         {
 
         case CardType::TreasureArmor:
-            CardISAbleToPlayChecker_TreasureArmor(static_cast<const gameCardTreasureArmor* >(&realCard), fromHand);
+        {
+
+        }
+            CardImplementer(CardISAbleToPlayChecker_TreasureArmor(castedCard, fromHand),
+                            card.GetCard());
             break;
 
         default:
@@ -2065,19 +2084,26 @@ void The_Game::SlotCheckCardIsAbleToBePlayed(PositionedCard card, bool fromHand)
     }
 }
 
-void The_Game::CardImplementer(const CardPlayAllowanceBase *allowance, const GameCardBasis *card)
+void The_Game::CardImplementer(const CardPlayAllowanceBase &allowance, const GameCardBasis &basisCard)
 {
-    if (!allowance->GetAllowance())
+    if (!allowance.GetAllowance())
     {
-        ShowCardIsForbiddenToPlayMessage(allowance->GetReasonOfRestriction());
+        ShowCardIsForbiddenToPlayMessage(allowance.GetReasonOfRestriction());
         return;
     }
 
-    switch (card->GetCardType())
+    switch (card.GetCardType())
     {
     case CardType::TreasureArmor :
     {
-        ApplyNewArmor(static_cast<const gameCardTreasureArmor*> (card));
+        TreasureArmorAllowance allowance(static_cast<const TreasureArmorAllowance*>(allowance));
+        //проверить активна/неактивна и выложить
+
+
+        const gameCardTreasureArmor* cardPointer = static_cast<const gameCardTreasureArmor*>(basisCard);
+        gameCardTreasureArmor realCard(cardPointer);
+        //если аткивна, применить
+        ApplyNewArmor(realCard);
     }
 
         break;
@@ -2093,17 +2119,17 @@ void The_Game::ShowCardIsForbiddenToPlayMessage(const QString &message)
     qDebug() << "NAY-002: Show Card is forbiden to play message: " << message;
 }
 
-void The_Game::ApplyNewArmor(const gameCardTreasureArmor *card)
+void The_Game::ApplyNewArmor(const gameCardTreasureArmor &card)
 {
-    uint32_t totalBonus = static_cast<uint32_t>(card->GetBonus());
+    uint32_t totalBonus = static_cast<uint32_t>(card.GetBonus());
 
-    if (card->GetAdditionalBonusforElf() &&
+    if (card.GetAdditionalBonusforElf() &&
         ((_mainPlayer->GetRace() == Race::Elf) || (_mainPlayer->GetSecondRace() == Race::Elf)))
-        totalBonus += static_cast<uint32_t>(card->GetAdditionalBonusforElf());
+        totalBonus += static_cast<uint32_t>(card.GetAdditionalBonusforElf());
 
-    if (card->GetAdditionalBonusforOrk() &&
+    if (card.GetAdditionalBonusforOrk() &&
         ((_mainPlayer->GetRace() == Race::Ork) || (_mainPlayer->GetSecondRace() == Race::Ork)))
-        totalBonus += static_cast<uint32_t>(card->GetAdditionalBonusforOrk());
+        totalBonus += static_cast<uint32_t>(card.GetAdditionalBonusforOrk());
 
     //кажется, нет смысла проверять, есть ли такой бонус.
     //Парсер написан так, что должен вписывать в эти поля нули.
@@ -2117,11 +2143,11 @@ void The_Game::ApplyNewArmor(const gameCardTreasureArmor *card)
 //12.12.2018 продолжить здесь
 
     //Проверка на наличие специальных фич
-    if (card->hasSpecialMechanic()) //FlamingArmor
+    if (card.hasSpecialMechanic()) //FlamingArmor
     {
-        qDebug() << "NAY-002: cardID: " << card->GetCardID();
+        qDebug() << "NAY-002: cardID: " << card.GetCardID();
 
-        switch (card->GetCardID())
+        switch (card.GetCardID())
         {
             case static_cast<uint32_t>(CardsWithPassiveSpecialFunctions_TreasureArmor::AwfulSocks):
                 _mainPlayer->SetNotAbleToHelp(true);
@@ -2160,36 +2186,36 @@ void The_Game::ApplyNewArmor(const gameCardTreasureArmor *card)
 
     //Добавление обычных бонусов:
 
-    _mainPlayer->SetFleeChance(_mainPlayer->GetFleeChance() + card->bonusToFleeing());
-    _mainPlayer->SetWarPower(_mainPlayer->GetWarPower() + card->GetBonus());
+    _mainPlayer->SetFleeChance(_mainPlayer->GetFleeChance() + card.bonusToFleeing());
+    _mainPlayer->SetWarPower(_mainPlayer->GetWarPower() + card.GetBonus());
 
     if (card->GetAdditionalBonusforElf() &&
             (_mainPlayer->GetRace() == Race::Elf || _mainPlayer->GetSecondRace() == Race::Elf))
-        _mainPlayer->SetWarPower(_mainPlayer->GetWarPower() + card->GetAdditionalBonusforElf());
+        _mainPlayer->SetWarPower(_mainPlayer->GetWarPower() + card.GetAdditionalBonusforElf());
 
     if (card->GetAdditionalBonusforOrk() &&
             (_mainPlayer->GetRace() == Race::Ork || _mainPlayer->GetSecondRace() == Race::Ork))
-        _mainPlayer->SetWarPower(_mainPlayer->GetWarPower() + card->GetAdditionalBonusforOrk());
+        _mainPlayer->SetWarPower(_mainPlayer->GetWarPower() + card.GetAdditionalBonusforOrk());
 
     //Установка карты в слот
     //слоты такой картой не занимаются
-    if (card->GetBodyPart() == Body_Part::Armor)
+    if (card.GetBodyPart() == Body_Part::Armor)
     {
-        if (card->isCombined())
+        if (card.isCombined())
             _mainPlayer->SetCombinedArmor(_mainPlayer->GetCombinedArmor() + 1);
         else
             _mainPlayer->SetArmorSlotFull(true);
     }
-    if (card->GetBodyPart() == Body_Part::Feet)
+    if (card.GetBodyPart() == Body_Part::Feet)
     {
-        if (card->isCombined())
+        if (card.isCombined())
             _mainPlayer->SetCombinedArmor(_mainPlayer->GetCombinedFeet() + 1);
         else
             _mainPlayer->SetLegsSlotIsFull(true);
     }
-    if (card->GetBodyPart() == Body_Part::Head)
+    if (card.GetBodyPart() == Body_Part::Head)
     {
-        if (card->isCombined())
+        if (card.isCombined())
             _mainPlayer->SetCombinedHead(_mainPlayer->GetCombinedHead() + 1);
         else
             _mainPlayer->SetHeadSlotIsFull(true);
@@ -2197,9 +2223,14 @@ void The_Game::ApplyNewArmor(const gameCardTreasureArmor *card)
 
     //Теперь  можно передать карту анимации
 
+
+    //Анимация должна отдать карту в cardsInGameObserver
+
+    ui->MainGamer->SlotAddCardToCardsInGame(std::make_pair(true, SimpleCard(true, card.GetCardID())));
+
 }
 
-TreasureArmorAllowance The_Game::CardISAbleToPlayChecker_TreasureArmor(const gameCardTreasureArmor* card, bool fromHand)
+TreasureArmorAllowance The_Game::CardISAbleToPlayChecker_TreasureArmor(gameCardTreasureArmor card, bool fromHand)
 {
     //Все подобные парсеры предполагают, что проверка на глобальные запреты уже пройдена.
     //На 11.12.2018 это только процесс анимирования карт (карт-процессинг CardProcessing)
@@ -2226,28 +2257,28 @@ TreasureArmorAllowance The_Game::CardISAbleToPlayChecker_TreasureArmor(const gam
 
     //Ан-нет, я сделал это ещё тогда. =))))
     if (_mainPlayer->GetThereIsLimitOnBigThings() && _mainPlayer->GetThereIsOneBigThing()
-            && (card->size() == Size::Big))
+            && (card.size() == Size::Big))
         return TreasureArmorAllowance(false, "К сожалению, у Вас уже есть большие шмотки в игре!", false);
 
     //Запреты кончились, теперь принятие решения о том, какой параметр ставить для активна/неактивна
 
     //Наличие карты "Чит" пока не рассматривается
 
-    if (card->isOnlyForDwarf()
+    if (card.isOnlyForDwarf()
             && _mainPlayer->GetRace() != Race::Dwarf
             && _mainPlayer->GetSecondRace() != Race::Dwarf)
     {
         return TreasureArmorAllowance(true, "Увы, карта активна только для дворфа!/n Разве вы дфорф?", false);
     }
 
-    if (card->isOnlyForGnome()
+    if (card.isOnlyForGnome()
             && _mainPlayer->GetRace() != Race::Gnome
             && _mainPlayer->GetSecondRace() != Race::Gnome)
     {
         return TreasureArmorAllowance(true, "Увы, карта активна только для гнома!/n Разве вы гном?", false);
     }
 
-    if (card->isOnlyForWizard()
+    if (card.isOnlyForWizard()
             && _mainPlayer->GetProfession() != Profession::Wizard
             && _mainPlayer->GetSecondProfession() != Profession::Wizard)
     {
@@ -2256,18 +2287,18 @@ TreasureArmorAllowance The_Game::CardISAbleToPlayChecker_TreasureArmor(const gam
                                             "...Но ведь вы её ждали?/n", false);
     }
 
-    if (card->isOnlyForHuman()
+    if (card.isOnlyForHuman()
             && _mainPlayer->GetRace() != Race::Human)
     {
         return TreasureArmorAllowance(true, "Увы, карта активна только для человека./n Теперь вы другой.", false);
     }
     
-    if (card->isRestrictedToGnome() && 
+    if (card.isRestrictedToGnome() &&
             ((_mainPlayer->GetRace() == Race::Gnome) || (_mainPlayer->GetSecondRace() == Race::Gnome))
             && !_mainPlayer->GetIsHalfBloodWithoutSecondRace())
         return TreasureArmorAllowance(true, "Увы, этот доспех /n не могут носить гномы.", false);
     
-    if (card->isRestrictedToWizard() && 
+    if (card.isRestrictedToWizard() &&
             ((_mainPlayer->GetProfession() == Profession::Wizard) || (_mainPlayer->GetSecondProfession() == Profession::Wizard))
             && !_mainPlayer->GetIsSuperMunchkinWithoutSecondProfession())
         return TreasureArmorAllowance(true, "Увы, этот доспех /n слишком тяжёл для магов.", false);
@@ -2276,13 +2307,13 @@ TreasureArmorAllowance The_Game::CardISAbleToPlayChecker_TreasureArmor(const gam
     //NAY-002: EXPECTED_IMPROVEMENT
     //На будущее надо бы сделать защиту от возможности надеть сразу два "комбинируемых" доспеха.
     //С другой стороны, может юыть, их можно надевать по несколько - капусточка. =)))
-    if (_mainPlayer->GetLegsSlotIsFull() && (card->GetBodyPart()  == Body_Part::Feet) && (!card->isCombined()))
+    if (_mainPlayer->GetLegsSlotIsFull() && (card.GetBodyPart()  == Body_Part::Feet) && (!card.isCombined()))
         return TreasureArmorAllowance(true, "Вторые штаны не натянуть на уже надетые./n Но при большом желании...", false);
 
-    if (_mainPlayer->GetArmorSlotFull() && (card->GetBodyPart()  == Body_Part::Armor) && (!card->isCombined()))
+    if (_mainPlayer->GetArmorSlotFull() && (card.GetBodyPart()  == Body_Part::Armor) && (!card.isCombined()))
         return TreasureArmorAllowance(true, "Доспех надевали поверх кольчуги./n Но игра такое, увы, запрещает.", false);
 
-    if (_mainPlayer->GetLegsSlotIsFull() && (card->GetBodyPart()  == Body_Part::Feet) && (!card->isCombined()))
+    if (_mainPlayer->GetLegsSlotIsFull() && (card.GetBodyPart()  == Body_Part::Feet) && (!card.isCombined()))
         return TreasureArmorAllowance(true, "Вторые ботинки поверх существующих/n никак не надеть.", false);
 
 

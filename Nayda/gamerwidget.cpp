@@ -10,141 +10,14 @@ GamerWidget::GamerWidget(QWidget *parent) :
 
     //https://wiki.qt.io/Qt_Coding_Style/ru
 
-    //find the HW size of the window
-    QRect HW_Screen_Size = QApplication::desktop()->screenGeometry();
-    int HW_Screen_Size_Width = HW_Screen_Size.width();
-    int HW_Screen_Size_Height = HW_Screen_Size.height();
-
-    //Hide odds
-    ui->btn_race_2->hide();
-    ui->lbl_halfblood->hide();
-    ui->btn_class_2->hide();
-    ui->lbl_supermunchkin->hide();
-    ui->btn_Master->hide();
-
-    //setup the "card"-race and "card"-class size
-    ui->btn_race_1->setMaximumWidth(_race_class_btn_size_width*HW_Screen_Size_Width);
-    ui->btn_race_1->setMaximumHeight(_race_class_btn_size_height*HW_Screen_Size_Height);
-    ui->btn_race_1->setMinimumWidth(_race_class_btn_size_width*HW_Screen_Size_Width);
-    ui->btn_race_1->setMinimumHeight(_race_class_btn_size_height*HW_Screen_Size_Height);
-
-    ui->btn_class_1->setMaximumWidth(_race_class_btn_size_width*HW_Screen_Size_Width);
-    ui->btn_class_1->setMaximumHeight(_race_class_btn_size_height*HW_Screen_Size_Height);
-    ui->btn_class_1->setMinimumWidth(_race_class_btn_size_width*HW_Screen_Size_Width);
-    ui->btn_class_1->setMinimumHeight(_race_class_btn_size_height*HW_Screen_Size_Height);
-
-    //http://www.prog.org.ru/topic_7215_0.html
-
-#ifndef USE_RESOURCES
-    QPixmap pxmp_icon_race_1("Pictures/No_Race_dbg.png");
-#else
-    QPixmap pxmp_icon_race_1(":/Pictures/No_Race_dbg.png");
-#endif
-
-    QPalette plte_icon_race_1;
-    plte_icon_race_1.setBrush(ui->btn_race_1->backgroundRole(),
-    QBrush(pxmp_icon_race_1.scaled(_race_class_btn_size_width*HW_Screen_Size_Width,
-                                                             _race_class_btn_size_height*HW_Screen_Size_Height,
-                                                             Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
-#ifndef USE_RESOURCES
-    QPixmap pxmp_icon_class_1("Pictures/No_Class_dbg.png");
-#else
-    QPixmap pxmp_icon_class_1(":/Pictures/No_Class_dbg.png");
-#endif
-
-    QPalette plte_icon_class_1;
-    plte_icon_class_1.setBrush(ui->btn_class_1->backgroundRole(),
-    QBrush(pxmp_icon_class_1.scaled(_race_class_btn_size_width*HW_Screen_Size_Width,
-                                                             _race_class_btn_size_height*HW_Screen_Size_Height,
-                                                             Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
-
-    ui->btn_race_1->setFlat(true);
-    ui->btn_race_1->setAutoFillBackground(true);
-    ui->btn_race_1->setPalette(plte_icon_race_1);
-    ui->btn_race_1->setText("");
-    ui->btn_race_1->installEventFilter(this);
-
-    ui->btn_class_1->setFlat(true);
-    ui->btn_class_1->setAutoFillBackground(true);
-    ui->btn_class_1->setPalette(plte_icon_class_1);
-    ui->btn_class_1->setText("");
-    ui->btn_class_1->installEventFilter(this);
-
-    ui->btn_diplomacy->installEventFilter(this);
-
-    //fill the classes-races vector with 0,0 card - this means "NoClass (0,1777)" and "NoRace (0, 0)" card.
-    _cardsRacesClassesGamerWidgetProperty.push_back({0,0}); //put there NoRace
-    _cardsRacesClassesGamerWidgetProperty.push_back({0,1777}); //put there NoClass
-
-    //qDebug() <<"Size of the pixmap.scaled, Width: " << pxmp_icon_race_1.scaled(118,180,
-    //                                                                           Qt::IgnoreAspectRatio, Qt::SmoothTransformation).size().width();
-    //qDebug() << "Size of the pixmap.scaled, Height: " << pxmp_icon_race_1.scaled(118,180,
-    //                                                                           Qt::IgnoreAspectRatio, Qt::SmoothTransformation).size().height();
-
-    //qDebug() << "Size of the button, Width: " << _race_class_btn_size_width*HW_Screen_Size_Width;
-   // qDebug() << "Size of the button, Height: " << _race_class_btn_size_height*HW_Screen_Size_Height;
-
-    //Initialize the timer for cards show
-    _showCardsTimer = new QTimer(this);
-    _showCardsTimer->setSingleShot(true);
-    //connect timeout issue
-    connect(_showCardsTimer, &QTimer::timeout, this, &GamerWidget::SlotRepresentTheCardInCentre);
-    connect(ui->widget, &Hand::SignalShowTheCard, this, &GamerWidget::SlotRepresentTheCardFromHandsInCentre);
-    connect(ui->widget, &Hand::SignalHideTheCard, this, &GamerWidget::SlotHideTheCardInCentre);
-
-#ifdef DEBUG_GAMER_WIDGET
-
-    _testTimer = new QTimer();
-    _testTimer->setInterval(1000);
-    _testTimer->setSingleShot(false);
-
-    connect(ui->btn_Test, &QPushButton::clicked, this, &GamerWidget::DEBUGSlotStartTestCards);
-    connect(_testTimer, &QTimer::timeout, this, &GamerWidget::DEBUGSlotTestGamerLevels);
-    connect(_testTimer, &QTimer::timeout, this, &GamerWidget::DEBUGSlotTestGamerBattlePower);
-
-#endif
-    //forming the vector of pictures;
-    //set the initial levelel's pictures.
-
-    QPixmap levelImage(_levelsPictures[_gamerLevel-1]);
-    ui->lbl_Level->setPixmap(levelImage.scaled(_race_class_btn_size_width*HW_Screen_Size_Width,
-                                               _race_class_btn_size_height*HW_Screen_Size_Height,
-                                               Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-
-    //set The BattlePower Picture and Digit Lables;
-    QPixmap battlePowerImage(_battlePowerPictures[0]);
-    ui->lbl_BattlePowerPicture->setPixmap(battlePowerImage.scaled(_race_class_btn_size_width*HW_Screen_Size_Width,
-                                                            _race_class_btn_size_height*HW_Screen_Size_Height / 2,
-                                                            Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-
-    ui->lbl_BattlePowerDigit->setStyleSheet("QLabel {color: #FAAB21; }");
-    ui->lbl_BattlePowerDigit->setText(QString::number(_battlePower));
-    ui->lbl_BattlePowerDigit->setStyleSheet("font: 28pt;");
-
-//    qDebug() << "The Size of The Gamer Widget " << size();
-    connect(ui->widget, &Hand::adjustSize, this, &GamerWidget::_adjustSizeSlot);
-
-    //connect the Hand with the Game... (checking the possibility for the Card to be played)
-    connect(ui->widget, &Hand::SignalCardIsSendedToTheGameCheck,
-            [this](PositionedCard card) {SlotSendTheCardToTheGameCheck(card, true);});
-
-    //connect the Hand with the answer from The_Game Card check slot;
-    connect(this, &GamerWidget::SignalCardIsRejectedToBePlayed,
-            ui->widget, &Hand::SlotCardIsRejectedToBePlayed);
-
-
+    SetUpWidgetsPerfomance();
     ui->btn_Trade->hide();
 
-    connect(ui->btn_Trade, &QPushButton::pressed, [this]{emit SignalTradeButtonWasPressed();});
-    connect(ui->widget, &Hand::SignalReportCardPosition,
-            [this](PositionedCard card){emit SignalReportPostionedCard(card);});
-    connect(this, &GamerWidget::SignalGetPositionedCard, ui->widget, &Hand::SlotGetCardPostion);
+    SetUpTestTimer();
+    SetUpShowTimer();
+    SetUpSignalsSlotsConnections();
 
 
-    //Create with emty vector first
-    //std::vector<CardInGame> cards;
-    _cardsInGameObserver = new CardsInGameObserver(QSize(HW_Screen_Size.width(),
-                                                         HW_Screen_Size.height()), QString("Player1"));
 }
 
 GamerWidget::~GamerWidget()
@@ -485,6 +358,167 @@ void GamerWidget::SetGamerName(const QString &gamerName)
     ui->lbl_Avatar->setText(gamerName);
     _playerName = gamerName;
     _cardsInGameObserver->SetPlayerName(gamerName);
+}
+
+void GamerWidget::SlotShowCardsInGame()
+{
+    _cardsInGameObserver->show();
+}
+
+void GamerWidget::SlotHideCardsInGame()
+{
+    _cardsInGameObserver->hide();
+}
+
+void GamerWidget::SlotAddCardToCardsInGame(CardInGame card)
+{
+    _cardsInGameObserver->AddCard(card);
+}
+
+void GamerWidget::SlotDeleteCardFromCardsInGame(SimpleCard card)
+{
+    _cardsInGameObserver->RemoveCard(card);
+}
+
+void GamerWidget::SetUpSignalsSlotsConnections()
+{
+
+    connect(ui->widget, &Hand::adjustSize, this, &GamerWidget::_adjustSizeSlot);
+
+    //connect the Hand with the Game... (checking the possibility for the Card to be played)
+    connect(ui->widget, &Hand::SignalCardIsSendedToTheGameCheck,
+            [this](PositionedCard card) {SlotSendTheCardToTheGameCheck(card, true);});
+
+    //connect the Hand with the answer from The_Game Card check slot;
+    connect(this, &GamerWidget::SignalCardIsRejectedToBePlayed,
+            ui->widget, &Hand::SlotCardIsRejectedToBePlayed);
+
+    connect(ui->btn_Trade, &QPushButton::pressed, [this]{emit SignalTradeButtonWasPressed();});
+    connect(ui->widget, &Hand::SignalReportCardPosition,
+            [this](PositionedCard card){emit SignalReportPostionedCard(card);});
+    connect(this, &GamerWidget::SignalGetPositionedCard, ui->widget, &Hand::SlotGetCardPostion);
+
+    connect(ui->btn_Avatar, &QPushButton::pressed, this, &GamerWidget::SlotShowCardsInGame);
+
+}
+
+void GamerWidget::SetUpTestTimer()
+{
+#ifdef DEBUG_GAMER_WIDGET
+
+    _testTimer = new QTimer();
+    _testTimer->setInterval(1000);
+    _testTimer->setSingleShot(false);
+
+    connect(ui->btn_Test, &QPushButton::clicked, this, &GamerWidget::DEBUGSlotStartTestCards);
+    connect(_testTimer, &QTimer::timeout, this, &GamerWidget::DEBUGSlotTestGamerLevels);
+    connect(_testTimer, &QTimer::timeout, this, &GamerWidget::DEBUGSlotTestGamerBattlePower);
+
+#endif
+}
+
+void GamerWidget::SetUpShowTimer()
+{
+    //Initialize the timer for cards show
+    _showCardsTimer = new QTimer(this);
+    _showCardsTimer->setSingleShot(true);
+    //connect timeout issue
+    connect(_showCardsTimer, &QTimer::timeout, this, &GamerWidget::SlotRepresentTheCardInCentre);
+    connect(ui->widget, &Hand::SignalShowTheCard, this, &GamerWidget::SlotRepresentTheCardFromHandsInCentre);
+    connect(ui->widget, &Hand::SignalHideTheCard, this, &GamerWidget::SlotHideTheCardInCentre);
+}
+
+void GamerWidget::SetUpWidgetsPerfomance()
+{
+    //find the HW size of the window
+    QRect HW_Screen_Size = QApplication::desktop()->screenGeometry();
+    int HW_Screen_Size_Width = HW_Screen_Size.width();
+    int HW_Screen_Size_Height = HW_Screen_Size.height();
+
+    //Hide odds
+    ui->btn_race_2->hide();
+    ui->lbl_halfblood->hide();
+    ui->btn_class_2->hide();
+    ui->lbl_supermunchkin->hide();
+    ui->btn_Master->hide();
+
+    //setup the "card"-race and "card"-class size
+    ui->btn_race_1->setMaximumWidth(_race_class_btn_size_width*HW_Screen_Size_Width);
+    ui->btn_race_1->setMaximumHeight(_race_class_btn_size_height*HW_Screen_Size_Height);
+    ui->btn_race_1->setMinimumWidth(_race_class_btn_size_width*HW_Screen_Size_Width);
+    ui->btn_race_1->setMinimumHeight(_race_class_btn_size_height*HW_Screen_Size_Height);
+
+    ui->btn_class_1->setMaximumWidth(_race_class_btn_size_width*HW_Screen_Size_Width);
+    ui->btn_class_1->setMaximumHeight(_race_class_btn_size_height*HW_Screen_Size_Height);
+    ui->btn_class_1->setMinimumWidth(_race_class_btn_size_width*HW_Screen_Size_Width);
+    ui->btn_class_1->setMinimumHeight(_race_class_btn_size_height*HW_Screen_Size_Height);
+
+    //http://www.prog.org.ru/topic_7215_0.html
+
+#ifndef USE_RESOURCES
+    QPixmap pxmp_icon_race_1("Pictures/No_Race_dbg.png");
+#else
+    QPixmap pxmp_icon_race_1(":/Pictures/No_Race_dbg.png");
+#endif
+
+    QPalette plte_icon_race_1;
+    plte_icon_race_1.setBrush(ui->btn_race_1->backgroundRole(),
+    QBrush(pxmp_icon_race_1.scaled(_race_class_btn_size_width*HW_Screen_Size_Width,
+                                                             _race_class_btn_size_height*HW_Screen_Size_Height,
+                                                             Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
+#ifndef USE_RESOURCES
+    QPixmap pxmp_icon_class_1("Pictures/No_Class_dbg.png");
+#else
+    QPixmap pxmp_icon_class_1(":/Pictures/No_Class_dbg.png");
+#endif
+
+    QPalette plte_icon_class_1;
+    plte_icon_class_1.setBrush(ui->btn_class_1->backgroundRole(),
+    QBrush(pxmp_icon_class_1.scaled(_race_class_btn_size_width*HW_Screen_Size_Width,
+                                                             _race_class_btn_size_height*HW_Screen_Size_Height,
+                                                             Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
+
+    ui->btn_race_1->setFlat(true);
+    ui->btn_race_1->setAutoFillBackground(true);
+    ui->btn_race_1->setPalette(plte_icon_race_1);
+    ui->btn_race_1->setText("");
+    ui->btn_race_1->installEventFilter(this);
+
+    ui->btn_class_1->setFlat(true);
+    ui->btn_class_1->setAutoFillBackground(true);
+    ui->btn_class_1->setPalette(plte_icon_class_1);
+    ui->btn_class_1->setText("");
+    ui->btn_class_1->installEventFilter(this);
+
+    ui->btn_diplomacy->installEventFilter(this);
+
+    //fill the classes-races vector with 0,0 card - this means "NoClass (0,1777)" and "NoRace (0, 0)" card.
+    _cardsRacesClassesGamerWidgetProperty.push_back({0,0}); //put there NoRace
+    _cardsRacesClassesGamerWidgetProperty.push_back({0,1777}); //put there NoClass
+
+    //forming the vector of pictures;
+    //set the initial levelel's pictures.
+
+    QPixmap levelImage(_levelsPictures[_gamerLevel-1]);
+    ui->lbl_Level->setPixmap(levelImage.scaled(_race_class_btn_size_width*HW_Screen_Size_Width,
+                                               _race_class_btn_size_height*HW_Screen_Size_Height,
+                                               Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+
+    //set The BattlePower Picture and Digit Lables;
+    QPixmap battlePowerImage(_battlePowerPictures[0]);
+    ui->lbl_BattlePowerPicture->setPixmap(battlePowerImage.scaled(_race_class_btn_size_width*HW_Screen_Size_Width,
+                                                            _race_class_btn_size_height*HW_Screen_Size_Height / 2,
+                                                            Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+
+    ui->lbl_BattlePowerDigit->setStyleSheet("QLabel {color: #FAAB21; }");
+    ui->lbl_BattlePowerDigit->setText(QString::number(_battlePower));
+    ui->lbl_BattlePowerDigit->setStyleSheet("font: 28pt;");
+
+
+    _cardsInGameObserver = new CardsInGameObserver(QSize(HW_Screen_Size.width(),
+                                                         HW_Screen_Size.height()), QString("Player1"));
+
+
 }
 
 

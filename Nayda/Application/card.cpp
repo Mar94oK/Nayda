@@ -1115,6 +1115,38 @@ void gameCardTreasureArmor::setIsCombined(bool isCombined)
     _isCombined = isCombined;
 }
 
+gameCardTreasureArmor::gameCardTreasureArmor(const gameCardTreasureArmor *ptr)
+{
+    _cardID = ptr->GetCardID();
+    _pictureAddress = ptr->pictureAddress();
+    _cardName = ptr->cardName();
+    _addOn = ptr->addOn();
+    _type = ptr->type();
+
+    _part = ptr->GetBodyPart();
+    _size = ptr->size();
+
+    _bonus = ptr->GetBonus();
+    _additionalBonusforElf = ptr->GetAdditionalBonusforElf();
+    _additionalBonusforOrk = ptr->GetAdditionalBonusforOrk();
+
+    _isOnlyForHuman = ptr->isOnlyForHuman();
+    _isOnlyForWizard = ptr->isOnlyForWizard();
+    _isOnlyForDwarf = ptr->isOnlyForDwarf();
+    _isOnlyForGnome = ptr->isOnlyForGnome();
+
+    _isRestrictedToWizard = ptr->isRestrictedToWizard();
+    _isRestrictedToGnome = ptr->isRestrictedToGnome();
+
+    _hasSpecialMechanic = ptr->hasSpecialMechanic();
+
+    _price = ptr->price();
+
+    _bonusToFleeing = ptr->bonusToFleeing();
+
+    _isCombined = ptr->isCombined();
+}
+
 int gameCardTreasureArmor::GetCardID() const
 {
     return _cardID;
