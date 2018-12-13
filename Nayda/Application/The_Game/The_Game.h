@@ -392,7 +392,7 @@ public slots:
 
 private:
 
-    void CardImplementer(const CardPlayAllowanceBase& allowance, const GameCardBasis &basisCard);
+    void TreasureArmorCardImplementer(const TreasureArmorAllowance &allowance, const gameCardTreasureArmor &card);
     void ShowCardIsForbiddenToPlayMessage(const QString& message);
 
     void ApplyNewArmor(const gameCardTreasureArmor& card);

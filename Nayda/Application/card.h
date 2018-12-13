@@ -744,7 +744,8 @@ public:
 public:
 
     gameCardTreasureArmor(const gameCardTreasureArmor* ptr);
-    gameCardTreasureArmor();
+    gameCardTreasureArmor()
+    { }
 
 };
 

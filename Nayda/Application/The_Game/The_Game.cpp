@@ -1996,16 +1996,22 @@ void The_Game::SlotCheckCardIsAbleToBePlayed(PositionedCard card, bool fromHand)
     //Но данный парсер оценивает только возможность разыгрывать карты в текущем бою.
 
 
+
+
+    //14.12.2018
+    //Начать отсюда.
     SimpleCard givenCard = card.GetCard();
     GameCardBasis basisCard = GetRealCard(givenCard);
-    CardType currentType = realCard.GetCardType();
+    CardType currentType = basisCard.GetCardType();
 
-    if (realCard.GetCardType() == CardType::TreasureArmor)
+    if (currentType == CardType::TreasureArmor)
     {
         //Получить (сделать) здесь карту из текущей (привести указатель к требуемому виду, т.к. известно,
         //какой объект вернулся)
         const gameCardTreasureArmor* cardPointer = static_cast<const gameCardTreasureArmor*>(&basisCard);
         gameCardTreasureArmor realCard(cardPointer);
+        TreasureArmorCardImplementer(CardISAbleToPlayChecker_TreasureArmor(realCard, fromHand),
+                        realCard);
 
     }
 
@@ -2025,8 +2031,7 @@ void The_Game::SlotCheckCardIsAbleToBePlayed(PositionedCard card, bool fromHand)
         {
 
         }
-            CardImplementer(CardISAbleToPlayChecker_TreasureArmor(castedCard, fromHand),
-                            card.GetCard());
+
             break;
 
         default:
@@ -2084,7 +2089,7 @@ void The_Game::SlotCheckCardIsAbleToBePlayed(PositionedCard card, bool fromHand)
     }
 }
 
-void The_Game::CardImplementer(const CardPlayAllowanceBase &allowance, const GameCardBasis &basisCard)
+void The_Game::TreasureArmorCardImplementer(const TreasureArmorAllowance &allowance, const gameCardTreasureArmor &card)
 {
     if (!allowance.GetAllowance())
     {
@@ -2092,26 +2097,18 @@ void The_Game::CardImplementer(const CardPlayAllowanceBase &allowance, const Gam
         return;
     }
 
-    switch (card.GetCardType())
+    //проверить активна/неактивна и выложить
+    if (allowance.GetIsActive())
     {
-    case CardType::TreasureArmor :
-    {
-        TreasureArmorAllowance allowance(static_cast<const TreasureArmorAllowance*>(allowance));
-        //проверить активна/неактивна и выложить
-
-
-        const gameCardTreasureArmor* cardPointer = static_cast<const gameCardTreasureArmor*>(basisCard);
-        gameCardTreasureArmor realCard(cardPointer);
         //если аткивна, применить
-        ApplyNewArmor(realCard);
+        ApplyNewArmor(card);
     }
-
-        break;
-
-    default:
-        qDebug() << "NAY-002: The_Game::CardImplementer() Card is not implemented yet!";
-        break;
+    else
+    {
+        //не применять, отобразить неактивной
     }
+    // запустить анимацию - возможно в сером цвете? Для карты.
+
 }
 
 void The_Game::ShowCardIsForbiddenToPlayMessage(const QString &message)
@@ -2189,11 +2186,11 @@ void The_Game::ApplyNewArmor(const gameCardTreasureArmor &card)
     _mainPlayer->SetFleeChance(_mainPlayer->GetFleeChance() + card.bonusToFleeing());
     _mainPlayer->SetWarPower(_mainPlayer->GetWarPower() + card.GetBonus());
 
-    if (card->GetAdditionalBonusforElf() &&
+    if (card.GetAdditionalBonusforElf() &&
             (_mainPlayer->GetRace() == Race::Elf || _mainPlayer->GetSecondRace() == Race::Elf))
         _mainPlayer->SetWarPower(_mainPlayer->GetWarPower() + card.GetAdditionalBonusforElf());
 
-    if (card->GetAdditionalBonusforOrk() &&
+    if (card.GetAdditionalBonusforOrk() &&
             (_mainPlayer->GetRace() == Race::Ork || _mainPlayer->GetSecondRace() == Race::Ork))
         _mainPlayer->SetWarPower(_mainPlayer->GetWarPower() + card.GetAdditionalBonusforOrk());
 
