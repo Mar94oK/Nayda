@@ -90,24 +90,24 @@ void Player::SetFleeChance(int fleeChance)
     _fleeChance = fleeChance;
 }
 
-bool Player::GetIsProtectedFromCursesFromDoors() const
+bool Player::GetIsProtectedFromCursesFromPlayers() const
 {
-    return _protectedFromCursesFromDoors;
+    return _protectedFromCursesFromPlayers;
 }
 
-void Player::SetIsProtectedFromCursesFromDoors(bool protectedFromCursesFromDoors)
+void Player::SetIsProtectedFromCursesFromPlayers(bool protectedFromCursesFromPlayers)
 {
-    _protectedFromCursesFromDoors = protectedFromCursesFromDoors;
+    _protectedFromCursesFromPlayers = protectedFromCursesFromPlayers;
 }
 
 bool Player::GetProtecetdFromCursesFromDoors() const
 {
-    return _protecetdFromCursesFromDoors;
+    return _protecetedFromCursesFromDoors;
 }
 
-void Player::SetProtecetdFromCursesFromDoors(bool protecetdFromCursesFromDoors)
+void Player::SetIsProtecetedFromCursesFromDoors(bool protecetdFromCursesFromDoors)
 {
-    _protecetdFromCursesFromDoors = protecetdFromCursesFromDoors;
+    _protecetedFromCursesFromDoors = protecetdFromCursesFromDoors;
 }
 
 bool Player::GetCursesMirroring() const
@@ -115,7 +115,7 @@ bool Player::GetCursesMirroring() const
     return _cursesMirroring;
 }
 
-void Player::SetCursesMirroring(bool cursesMirroring)
+void Player::SetHasCursesMirroring(bool cursesMirroring)
 {
     _cursesMirroring = cursesMirroring;
 }
@@ -165,9 +165,50 @@ bool Player::GetAbleToChangeSexOnline() const
     return _ableToChangeSexOnline;
 }
 
-void Player::SetAbleToChangeSexOnline(bool ableToChangeSexOnline)
+void Player::SetIsAbleToChangeSexOnline(bool ableToChangeSexOnline)
 {
     _ableToChangeSexOnline = ableToChangeSexOnline;
+}
+
+bool Player::GetProtectedFromTheft() const
+{
+    return _protectedFromTheft;
+}
+
+void Player::SetIsProtectedFromTheft(bool protectedFromTheft)
+{
+    _protectedFromTheft = protectedFromTheft;
+}
+
+
+uint32_t Player::GetCombinedFeet() const
+{
+    return _combinedFeet;
+}
+
+void Player::SetCombinedFeet(const uint32_t &combinedFeet)
+{
+    _combinedFeet = combinedFeet;
+}
+
+uint32_t Player::GetCombinedArmor() const
+{
+    return _combinedArmor;
+}
+
+void Player::SetCombinedArmor(const uint32_t &combinedArmor)
+{
+    _combinedArmor = combinedArmor;
+}
+
+uint32_t Player::GetCombinedHead() const
+{
+    return _combinedHead;
+}
+
+void Player::SetCombinedHead(const uint32_t &combinedHead)
+{
+    _combinedHead = combinedHead;
 }
 
 Player::Player(const QString& name) : _name(name)

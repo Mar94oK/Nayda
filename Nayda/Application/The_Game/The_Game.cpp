@@ -582,11 +582,11 @@ gameCardTreasureArmor The_Game::armorsStringParser(const QString &armor_string)
     lst.removeFirst();
 
     //some cheat here! Needed to be reworked to work with everyone
-    theArmor.setAdditionalBonusforElf(0);
-    theArmor.setAdditionalBonusforOrk(0);
+    theArmor.SetAdditionalBonusforElf(0);
+    theArmor.SetAdditionalBonusforOrk(0);
     QStringList newLst = lst.first().split("_");
-    if (newLst.first() == "Elf_2") theArmor.setAdditionalBonusforElf(2);
-    else if (newLst.first() == "Ork_2") theArmor.setAdditionalBonusforOrk(2);
+    if (newLst.first() == "Elf_2") theArmor.SetAdditionalBonusforElf(2);
+    else if (newLst.first() == "Ork_2") theArmor.SetAdditionalBonusforOrk(2);
     lst.removeFirst();
 
     //parsing "is..for"
@@ -2077,7 +2077,7 @@ void The_Game::CardImplementer(const CardPlayAllowanceBase *allowance, const Gam
     {
     case CardType::TreasureArmor :
     {
-        ApplyNewAror(static_cast<const gameCardTreasureArmor*> (card));
+        ApplyNewArmor(static_cast<const gameCardTreasureArmor*> (card));
     }
 
         break;
@@ -2093,17 +2093,17 @@ void The_Game::ShowCardIsForbiddenToPlayMessage(const QString &message)
     qDebug() << "NAY-002: Show Card is forbiden to play message: " << message;
 }
 
-void The_Game::ApplyNewAror(const gameCardTreasureArmor *card)
+void The_Game::ApplyNewArmor(const gameCardTreasureArmor *card)
 {
-    uint32_t totalBonus = static_cast<uint32_t>(card->bonus());
+    uint32_t totalBonus = static_cast<uint32_t>(card->GetBonus());
 
-    if (card->additionalBonusforElf() &&
+    if (card->GetAdditionalBonusforElf() &&
         ((_mainPlayer->GetRace() == Race::Elf) || (_mainPlayer->GetSecondRace() == Race::Elf)))
-        totalBonus += static_cast<uint32_t>(card->additionalBonusforElf());
+        totalBonus += static_cast<uint32_t>(card->GetAdditionalBonusforElf());
 
-    if (card->additionalBonusforOrk() &&
+    if (card->GetAdditionalBonusforOrk() &&
         ((_mainPlayer->GetRace() == Race::Ork) || (_mainPlayer->GetSecondRace() == Race::Ork)))
-        totalBonus += static_cast<uint32_t>(card->additionalBonusforOrk());
+        totalBonus += static_cast<uint32_t>(card->GetAdditionalBonusforOrk());
 
     //кажется, нет смысла проверять, есть ли такой бонус.
     //Парсер написан так, что должен вписывать в эти поля нули.
@@ -2112,11 +2112,90 @@ void The_Game::ApplyNewAror(const gameCardTreasureArmor *card)
     //NAY-002: EXPECTED_IMPROVEMENT
     //NAY-002: EXPECTED_ERROR
 //    if (card->bonusToFleeing())
-        _mainPlayer->SetFleeChance(_mainPlayer->GetFleeChance() + card->bonusToFleeing());
+
 
 //12.12.2018 продолжить здесь
 
+    //Проверка на наличие специальных фич
+    if (card->hasSpecialMechanic()) //FlamingArmor
+    {
+        qDebug() << "NAY-002: cardID: " << card->GetCardID();
 
+        switch (card->GetCardID())
+        {
+            case static_cast<uint32_t>(CardsWithPassiveSpecialFunctions_TreasureArmor::AwfulSocks):
+                _mainPlayer->SetNotAbleToHelp(true);
+                break;
+
+            case static_cast<uint32_t>(CardsWithPassiveSpecialFunctions_TreasureArmor::FlamingArmor):
+                _mainPlayer->SetHasFireArmor(true);
+                break;
+
+            case static_cast<uint32_t>(CardsWithPassiveSpecialFunctions_TreasureArmor::FreudianSlippers):
+                _mainPlayer->SetIsAbleToChangeSexOnline(true);
+                break;
+
+            case static_cast<uint32_t>(CardsWithPassiveSpecialFunctions_TreasureArmor::HelmOfPeripherialVision):
+                _mainPlayer->SetIsProtectedFromTheft(true);
+                break;
+
+            case static_cast<uint32_t>(CardsWithPassiveSpecialFunctions_TreasureArmor::MagnificentHat):
+                _mainPlayer->SetHasCursesMirroring(true);
+                break;
+
+            case static_cast<uint32_t>(CardsWithPassiveSpecialFunctions_TreasureArmor::SandalsOfProtection):
+                _mainPlayer->SetIsProtecetedFromCursesFromDoors(true);
+                break;
+
+            case static_cast<uint32_t>(CardsWithPassiveSpecialFunctions_TreasureArmor::TinfoilHat):
+                _mainPlayer->SetIsProtectedFromCursesFromPlayers(true);
+                break;
+
+            default:
+                qDebug() << "NAY-002: ERROR While void The_Game::ApplyNewArmor(const gameCardTreasureArmor *card)"
+                            "if (card->hasSpecialMechanic()) : No special mechanic assigned!";
+                break;
+        }
+    }
+
+    //Добавление обычных бонусов:
+
+    _mainPlayer->SetFleeChance(_mainPlayer->GetFleeChance() + card->bonusToFleeing());
+    _mainPlayer->SetWarPower(_mainPlayer->GetWarPower() + card->GetBonus());
+
+    if (card->GetAdditionalBonusforElf() &&
+            (_mainPlayer->GetRace() == Race::Elf || _mainPlayer->GetSecondRace() == Race::Elf))
+        _mainPlayer->SetWarPower(_mainPlayer->GetWarPower() + card->GetAdditionalBonusforElf());
+
+    if (card->GetAdditionalBonusforOrk() &&
+            (_mainPlayer->GetRace() == Race::Ork || _mainPlayer->GetSecondRace() == Race::Ork))
+        _mainPlayer->SetWarPower(_mainPlayer->GetWarPower() + card->GetAdditionalBonusforOrk());
+
+    //Установка карты в слот
+    //слоты такой картой не занимаются
+    if (card->GetBodyPart() == Body_Part::Armor)
+    {
+        if (card->isCombined())
+            _mainPlayer->SetCombinedArmor(_mainPlayer->GetCombinedArmor() + 1);
+        else
+            _mainPlayer->SetArmorSlotFull(true);
+    }
+    if (card->GetBodyPart() == Body_Part::Feet)
+    {
+        if (card->isCombined())
+            _mainPlayer->SetCombinedArmor(_mainPlayer->GetCombinedFeet() + 1);
+        else
+            _mainPlayer->SetLegsSlotIsFull(true);
+    }
+    if (card->GetBodyPart() == Body_Part::Head)
+    {
+        if (card->isCombined())
+            _mainPlayer->SetCombinedHead(_mainPlayer->GetCombinedHead() + 1);
+        else
+            _mainPlayer->SetHeadSlotIsFull(true);
+    }
+
+    //Теперь  можно передать крту анимац
 
 }
 
@@ -2182,18 +2261,28 @@ TreasureArmorAllowance The_Game::CardISAbleToPlayChecker_TreasureArmor(const gam
     {
         return TreasureArmorAllowance(true, "Увы, карта активна только для человека./n Теперь вы другой.", false);
     }
+    
+    if (card->isRestrictedToGnome() && 
+            ((_mainPlayer->GetRace() == Race::Gnome) || (_mainPlayer->GetSecondRace() == Race::Gnome))
+            && !_mainPlayer->GetIsHalfBloodWithoutSecondRace())
+        return TreasureArmorAllowance(true, "Увы, этот доспех /n не могут носить гномы.", false);
+    
+    if (card->isRestrictedToWizard() && 
+            ((_mainPlayer->GetProfession() == Profession::Wizard) || (_mainPlayer->GetSecondProfession() == Profession::Wizard))
+            && !_mainPlayer->GetIsSuperMunchkinWithoutSecondProfession())
+        return TreasureArmorAllowance(true, "Увы, этот доспех /n слишком тяжёл для магов.", false);
 
     //NAY-002: EXPECTED_ERROR
     //NAY-002: EXPECTED_IMPROVEMENT
     //На будущее надо бы сделать защиту от возможности надеть сразу два "комбинируемых" доспеха.
     //С другой стороны, может юыть, их можно надевать по несколько - капусточка. =)))
-    if (_mainPlayer->GetLegsSlotIsFull() && (card->part()  == Body_Part::Feet) && (!card->isCombined()))
+    if (_mainPlayer->GetLegsSlotIsFull() && (card->GetBodyPart()  == Body_Part::Feet) && (!card->isCombined()))
         return TreasureArmorAllowance(true, "Вторые штаны не натянуть на уже надетые./n Но при большом желании...", false);
 
-    if (_mainPlayer->GetArmorSlotFull() && (card->part()  == Body_Part::Armor) && (!card->isCombined()))
+    if (_mainPlayer->GetArmorSlotFull() && (card->GetBodyPart()  == Body_Part::Armor) && (!card->isCombined()))
         return TreasureArmorAllowance(true, "Доспех надевали поверх кольчуги./n Но игра такое, увы, запрещает.", false);
 
-    if (_mainPlayer->GetLegsSlotIsFull() && (card->part()  == Body_Part::Feet) && (!card->isCombined()))
+    if (_mainPlayer->GetLegsSlotIsFull() && (card->GetBodyPart()  == Body_Part::Feet) && (!card->isCombined()))
         return TreasureArmorAllowance(true, "Вторые ботинки поверх существующих/n никак не надеть.", false);
 
 

@@ -965,7 +965,7 @@ void gameCardTreasureArmor::setType(const treasureType &type)
     _type = type;
 }
 
-Body_Part gameCardTreasureArmor::part() const
+Body_Part gameCardTreasureArmor::GetBodyPart() const
 {
     return _part;
 }
@@ -985,7 +985,7 @@ void gameCardTreasureArmor::setSize(const Size &size)
     _size = size;
 }
 
-int gameCardTreasureArmor::bonus() const
+int gameCardTreasureArmor::GetBonus() const
 {
     return _bonus;
 }
@@ -995,22 +995,22 @@ void gameCardTreasureArmor::setBonus(int bonus)
     _bonus = bonus;
 }
 
-int gameCardTreasureArmor::additionalBonusforElf() const
+int gameCardTreasureArmor::GetAdditionalBonusforElf() const
 {
     return _additionalBonusforElf;
 }
 
-void gameCardTreasureArmor::setAdditionalBonusforElf(int additionalBonusforElf)
+void gameCardTreasureArmor::SetAdditionalBonusforElf(int additionalBonusforElf)
 {
     _additionalBonusforElf = additionalBonusforElf;
 }
 
-int gameCardTreasureArmor::additionalBonusforOrk() const
+int gameCardTreasureArmor::GetAdditionalBonusforOrk() const
 {
     return _additionalBonusforOrk;
 }
 
-void gameCardTreasureArmor::setAdditionalBonusforOrk(int additionalBonusforOrk)
+void gameCardTreasureArmor::SetAdditionalBonusforOrk(int additionalBonusforOrk)
 {
     _additionalBonusforOrk = additionalBonusforOrk;
 }
@@ -1115,7 +1115,7 @@ void gameCardTreasureArmor::setIsCombined(bool isCombined)
     _isCombined = isCombined;
 }
 
-int gameCardTreasureArmor::cardID() const
+int gameCardTreasureArmor::GetCardID() const
 {
     return _cardID;
 }

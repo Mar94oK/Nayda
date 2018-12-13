@@ -64,13 +64,26 @@ class Player
 
 
     //Enabling additional passive mechanics:
-    bool _protectedFromCursesFromDoors = false; // Шапочка из фольги
-    bool _protecetdFromCursesFromDoors = false; // Саналеты-Протекторы
+    bool _protectedFromCursesFromPlayers = false; // Шапочка из фольги
+    bool _protecetedFromCursesFromDoors = false; // Сандалеты-Протекторы
     bool _cursesMirroring = false; // Сиятельная шляпа
     bool _notAbleToHelp = false; // Вонючие потники
     bool _protectedFromOthersPotions = false; //Дождевик
 
     bool _bonusFromNoseActive = false; //вонючие носки дадут плюс 5;
+    
+    bool _hasFireArmor = false; //Пламенный доспех
+    
+    bool _ableToChangeSexOnline = false; //Опорки по Фрейду
+
+    bool _protectedFromTheft = false; // Шлем заднего вида
+
+
+    //Для более лёгкого определения, какую карту стоит сбросить в процессе удаления основной
+    uint32_t _combinedFeet = 0;
+    uint32_t _combinedArmor = 0;
+    uint32_t _combinedHead = 0;
+
 
 public:
 
@@ -151,14 +164,14 @@ public:
     bool GetHasFreeHireling() const;
     void SetHasFreeHireling(bool GetHasFreeHireling);
 
-    bool GetIsProtectedFromCursesFromDoors() const;
-    void SetIsProtectedFromCursesFromDoors(bool GetIsProtectedFromCursesFromDoors);
+    bool GetIsProtectedFromCursesFromPlayers() const;
+    void SetIsProtectedFromCursesFromPlayers(bool GetIsProtectedFromCursesFromPlayers);
 
     bool GetProtecetdFromCursesFromDoors() const;
-    void SetProtecetdFromCursesFromDoors(bool GetProtecetdFromCursesFromDoors);
+    void SetIsProtecetedFromCursesFromDoors(bool GetProtecetdFromCursesFromDoors);
 
     bool GetCursesMirroring() const;
-    void SetCursesMirroring(bool GetCursesMirroring);
+    void SetHasCursesMirroring(bool GetCursesMirroring);
 
     bool GetNotAbleToHelp() const;
     void SetNotAbleToHelp(bool GetNotAbleToHelp);
@@ -169,8 +182,28 @@ public:
     bool GetBonusFromNoseActive() const;
     void SetBonusFromNoseActive(bool GetBonusFromNoseActive);
 
-private:
+    bool GetHasFireArmor() const;
+    void SetHasFireArmor(bool GetHasFireArmor);
+    
+    bool GetAbleToChangeSexOnline() const;
+    void SetIsAbleToChangeSexOnline(bool GetAbleToChangeSexOnline);
+    
+    bool GetProtectedFromTheft() const;
+    void SetIsProtectedFromTheft(bool protectedFromTheft);
 
+
+
+    uint32_t GetCombinedFeet() const;
+    void SetCombinedFeet(const uint32_t &GetCombinedFeet);
+
+    uint32_t GetCombinedArmor() const;
+    void SetCombinedArmor(const uint32_t &GetCombinedArmor);
+
+    uint32_t GetCombinedHead() const;
+    void SetCombinedHead(const uint32_t &GetCombinedHead);
+
+private:
+    
     //it is necessary to save the property in the player class of the card responsible for the
     //class review
     //SimpleCard

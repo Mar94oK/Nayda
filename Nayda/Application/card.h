@@ -93,6 +93,32 @@ enum class Additional_Request {noCompanion, failedToFlee,
                               succeededToFlee, win, onceReceived,
                               haveCompanion, thereIsDwarf, noRequest};
 
+//Their values should be equal to their cardIDs
+//If card has Special Function, Implementer should run trough whole the 
+//Cards below  
+enum class CardsWithPassiveSpecialFunctions_TreasureArmor
+{
+    FlamingArmor = 7,
+    AwfulSocks = 122,
+    FreudianSlippers = 121,
+    HelmOfPeripherialVision = 76,
+    MagnificentHat = 120,
+    SandalsOfProtection = 12,
+    TinfoilHat = 75,
+};
+
+//продолжить здесь
+
+
+//class CardsPassiveAbilitiesTreasures
+//{
+//    static const std::map<CardsWithPassiveSpecialFunctions, uint32_t> treasureCardsWithPassiveFunctions; 
+    
+//public:
+
+//    static CardsWithPassiveSpecialFunctions TreasureCardHasSpecialFunction    
+//}
+
 
 
 #endif
@@ -666,8 +692,8 @@ class gameCardTreasureArmor : public GameCardBasis
 
 public:
 
-    int cardID() const;
-    void setCardID(int cardID);
+    int GetCardID() const;
+    void setCardID(int GetCardID);
     QString pictureAddress() const;
     void setPictureAddress(const QString &pictureAddress);
     QString cardName() const;
@@ -676,16 +702,16 @@ public:
     void setAddOn(const cardAddon &addOn);
     treasureType type() const;
     void setType(const treasureType &type);
-    Body_Part part() const;
-    void setPart(const Body_Part &part);
+    Body_Part GetBodyPart() const;
+    void setPart(const Body_Part &GetBodyPart);
     Size size() const;
     void setSize(const Size &size);
-    int bonus() const;
-    void setBonus(int bonus);
-    int additionalBonusforElf() const;
-    void setAdditionalBonusforElf(int additionalBonusforElf);
-    int additionalBonusforOrk() const;
-    void setAdditionalBonusforOrk(int additionalBonusforOrk);
+    int GetBonus() const;
+    void setBonus(int GetBonus);
+    int GetAdditionalBonusforElf() const;
+    void SetAdditionalBonusforElf(int GetAdditionalBonusforElf);
+    int GetAdditionalBonusforOrk() const;
+    void SetAdditionalBonusforOrk(int GetAdditionalBonusforOrk);
     bool isOnlyForHuman() const;
     void setIsOnlyForHuman(bool isOnlyForHuman);
     bool isOnlyForWizard() const;

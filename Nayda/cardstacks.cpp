@@ -507,7 +507,7 @@ void CardStacks::testTheFoldProcess()
                                                    + _specialMechanicsDeck->size()
                                                    + _armorDeck->size())){
         currentCard.first = true;
-        currentCard.second = _armorIterator->second.cardID();
+        currentCard.second = _armorIterator->second.GetCardID();
         _armorIterator++;
         _currCardsArrayRepresentationStep++;
     }
