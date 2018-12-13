@@ -2195,7 +2195,7 @@ void The_Game::ApplyNewArmor(const gameCardTreasureArmor *card)
             _mainPlayer->SetHeadSlotIsFull(true);
     }
 
-    //Теперь  можно передать крту анимац
+    //Теперь  можно передать карту анимации
 
 }
 
