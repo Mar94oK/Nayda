@@ -281,7 +281,7 @@ enum class CardType
     TreasureThingAmplifier, TreasureWeapon,
     NotSupported
 };
-
+QDebug operator<<(QDebug debug, const CardType& dt);
 
 
 

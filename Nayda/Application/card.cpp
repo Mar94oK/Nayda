@@ -2030,3 +2030,55 @@ QDebug operator<<(QDebug debug, const SelectableCardMode& dt) {
 
     return debug;
 }
+
+QDebug operator<<(QDebug debug, const CardType& dt)
+{
+    switch (dt) {
+    case CardType::DoorAmplifier:
+        debug << "CardType::DoorAmplifier";
+        break;
+    case CardType::DoorCurse:
+        debug << "CardType::DoorCurse";
+        break;
+    case CardType::DoorMonster:
+        debug << "CardType::DoorMonster";
+        break;
+    case CardType::DoorProfession:
+        debug << "CardType::DoorProfession";
+        break;
+    case CardType::DoorRace:
+        debug << "CardType::DoorRace";
+        break;
+    case CardType::DoorSpecialMechanic:
+        debug << "CardType::DoorSpecialMechanic";
+        break;
+    case CardType::TreasureArmor:
+        debug << "CardType::TreasureArmor";
+        break;
+    case CardType::TreasureArmorAmplifier:
+        debug << "CardType::TreasureArmorAmplifier";
+        break;
+    case CardType::TreasureBattleAmplifier:
+        debug << "CardType::TreasureBattleAmplifier";
+        break;
+    case CardType::TreasureLevelUp:
+        debug << "CardType::TreasureLevelUp";
+        break;
+    case CardType::TreasureSpecialMechanic:
+        debug << "CardType::TreasureSpecialMechanic";
+        break;
+    case CardType::TreasureThingAmplifier:
+        debug << "CardType::TreasureThingAmplifier";
+        break;
+    case CardType::TreasureWeapon:
+        debug << "CardType::TreasureWeapon";
+        break;
+    case CardType::NotSupported:
+        debug << "CardType::NotSupported";
+        break;
+
+    }
+
+    return debug;
+}
+

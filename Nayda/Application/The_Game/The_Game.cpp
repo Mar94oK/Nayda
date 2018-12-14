@@ -2024,40 +2024,48 @@ void The_Game::SlotCheckCardIsAbleToBePlayed(PositionedCard card, bool fromHand)
         gameCardTreasureArmor realCard(cardPointer);
         TreasureArmorCardImplementer(CardISAbleToPlayChecker_TreasureArmor(realCard, fromHand),
                         realCard);
+        emit SignalCardIsRejectedToBePlayed(false);
+        DEBUGPassTheCardToTheBattleField(card);
 
     }
-
-
-
-    if (_globalGamePhase == GlobalGamePhase::OtherPlayerMove)
+    else
     {
-        qDebug() << "NAY-002: DEBUG:::: The Game is in the GlobalGamePhase::OtherPlayerMove when it is not possible to use cards!";
+        qDebug() << "NAY-002: This type is not implemented yet!";
         emit SignalCardIsRejectedToBePlayed(true);
         return;
     }
 
 
 
-    if ((_currentGamePhase == GamePhase::GameInitialization)
-            || (_currentGamePhase == GamePhase::WaitingForAnOpponentToMove)
-            || (_currentGamePhase == GamePhase::Theft)
-            || (_currentGamePhase == GamePhase::HandAlignment)
-            || (_currentGamePhase == GamePhase::AfterOpenDoorNoMonster)
-            || (_currentGamePhase == GamePhase::Diplomacy))
-    {
-        qDebug() << "The Game is in Phase when it is not possible to use cards!";
+//    if (_globalGamePhase == GlobalGamePhase::OtherPlayerMove)
+//    {
+//        qDebug() << "NAY-002: DEBUG:::: The Game is in the GlobalGamePhase::OtherPlayerMove when it is not possible to use cards!";
+//        emit SignalCardIsRejectedToBePlayed(true);
+//        return;
+//    }
 
-        emit SignalCardIsRejectedToBePlayed(true);
 
-        //show the Rejection Message for the Card
-        SlotShowTheRejectedCardMessage(card);
-    }
-    else
-    {
-        //testing
-        DEBUGPassTheCardToTheBattleField(card);
-        emit SignalCardIsRejectedToBePlayed(false);
-    }
+
+//    if ((_currentGamePhase == GamePhase::GameInitialization)
+//            || (_currentGamePhase == GamePhase::WaitingForAnOpponentToMove)
+//            || (_currentGamePhase == GamePhase::Theft)
+//            || (_currentGamePhase == GamePhase::HandAlignment)
+//            || (_currentGamePhase == GamePhase::AfterOpenDoorNoMonster)
+//            || (_currentGamePhase == GamePhase::Diplomacy))
+//    {
+//        qDebug() << "The Game is in Phase when it is not possible to use cards!";
+
+//        emit SignalCardIsRejectedToBePlayed(true);
+
+//        //show the Rejection Message for the Card
+//        SlotShowTheRejectedCardMessage(card);
+//    }
+//    else
+//    {
+//        //testing
+//        DEBUGPassTheCardToTheBattleField(card);
+//        emit SignalCardIsRejectedToBePlayed(false);
+//    }
 }
 
 void The_Game::TreasureArmorCardImplementer(const TreasureArmorAllowance &allowance, const gameCardTreasureArmor &card)

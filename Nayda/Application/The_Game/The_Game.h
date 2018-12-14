@@ -466,6 +466,7 @@ private:
     //moving to treasures fold
     void Animation_StartPassSoldCardsFromHandToTreasureFold_Phase3(std::vector<QPushButton *> movedCards, const std::vector<PositionedCard> &cards);
 
+    //moving played card
 
 public:
 
