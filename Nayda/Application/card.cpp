@@ -1147,6 +1147,40 @@ gameCardTreasureArmor::gameCardTreasureArmor(const gameCardTreasureArmor *ptr)
     _isCombined = ptr->isCombined();
 }
 
+gameCardTreasureArmor::gameCardTreasureArmor(const gameCardTreasureArmor& other)
+{
+    SetCardType(other.GetCardType());
+
+    _cardID = other.GetCardID();
+    _pictureAddress = other.pictureAddress();
+    _cardName = other.cardName();
+    _addOn = other.addOn();
+    _type = other.type();
+
+    _part = other.GetBodyPart();
+    _size = other.size();
+
+    _bonus = other.GetBonus();
+    _additionalBonusforElf = other.GetAdditionalBonusforElf();
+    _additionalBonusforOrk = other.GetAdditionalBonusforOrk();
+
+    _isOnlyForHuman = other.isOnlyForHuman();
+    _isOnlyForWizard = other.isOnlyForWizard();
+    _isOnlyForDwarf = other.isOnlyForDwarf();
+    _isOnlyForGnome = other.isOnlyForGnome();
+
+    _isRestrictedToWizard = other.isRestrictedToWizard();
+    _isRestrictedToGnome = other.isRestrictedToGnome();
+
+    _hasSpecialMechanic = other.hasSpecialMechanic();
+
+    _price = other.price();
+
+    _bonusToFleeing = other.bonusToFleeing();
+
+    _isCombined = other.isCombined();
+}
+
 int gameCardTreasureArmor::GetCardID() const
 {
     return _cardID;

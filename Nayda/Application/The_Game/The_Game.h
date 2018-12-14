@@ -361,7 +361,8 @@ private:
     std::map <int, gameCardTreasureThingsAmplifiers> _thingsAmplifiersDeck;
     std::map <int, gameCardTreasureWeapon> _weaponsDeck;
 
-    GameCardBasis GetRealCard(SimpleCard card);
+
+   const GameCardBasis *GetRealCard(SimpleCard card);
 
 private:
 

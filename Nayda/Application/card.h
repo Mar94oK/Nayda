@@ -10,6 +10,8 @@
 #include <QSize>
 #include <iostream>
 #include <QDebug>
+#include <qsharedpointer.h>
+#include <memory>
 
 
 namespace GlobalCardDefinitions
@@ -746,6 +748,7 @@ public:
     gameCardTreasureArmor(const gameCardTreasureArmor* ptr);
     gameCardTreasureArmor()
     { }
+    gameCardTreasureArmor(const gameCardTreasureArmor &other);
 
 };
 

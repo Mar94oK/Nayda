@@ -142,6 +142,8 @@ private:
 public slots:
 
     void SlotChangeTheGamerLevel(int levelDelta);
+    void SlotChangeTheGamerBattlePower(int battlePowerDelta);
+    //void SlotChangeWarPower(int warPowerDelta);
 
 private:
 
@@ -181,10 +183,6 @@ private:
                                                  {":/Pictures/battlePowers/BattlePower_6.png"},
                                                  {":/Pictures/battlePowers/BattlePower_7.png"}};
 #endif
-
-public slots:
-
-    void SlotChangeTheGamerBattlePower(int battlePowerDelta);
 
 private slots:
 

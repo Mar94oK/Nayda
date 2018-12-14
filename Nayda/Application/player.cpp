@@ -216,7 +216,7 @@ Player::Player(const QString& name) : _name(name)
     _isMainPlayer = false;
     
     _playerLevel = 1;
-    _warPower = 1;
+    _battlePower = 1;
     _totalCardsOnHands = 0;
     _cardsOnHandsLimit = 5;
     _totalCardsInGame = 0;
@@ -491,15 +491,15 @@ uint32_t Player::GetCardsOnHands() const
 
 
 
-int Player::GetWarPower() const
+int Player::GetBattlePower() const
 {
-    return _warPower;
+    return _battlePower;
 }
 
 
-void Player::SetWarPower(int warPower)
+void Player::SetBattlePower(int battlePower)
 {
-    _warPower = warPower;
+    _battlePower = battlePower;
 }
 
 

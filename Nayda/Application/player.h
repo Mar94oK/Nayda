@@ -15,7 +15,7 @@ class Player
     bool _isMainPlayer = false;
 
     uint32_t _playerLevel = 1;
-    int _warPower = 1;
+    int _battlePower = 1;
 
     int _fleeChance = 5; //less than - loose
 
@@ -96,8 +96,8 @@ public:
 
     uint32_t GetPlayerLevel() const;
     void SetPlayerLevel(uint32_t GetPlayerLevel);
-    int GetWarPower() const;
-    void SetWarPower(int GetWarPower);
+    int GetBattlePower() const;
+    void SetBattlePower(int battlePower);
     int GetFleeChance() const;
     void SetFleeChance(int GetFleeChance);
 

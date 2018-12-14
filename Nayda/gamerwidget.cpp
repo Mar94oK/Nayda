@@ -214,6 +214,7 @@ void GamerWidget::SlotChangeTheGamerLevel(int levelDelta)
                                                Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 }
 
+
 void GamerWidget::DEBUGSlotTestGamerLevels()
 {
     SlotChangeTheGamerLevel(1);

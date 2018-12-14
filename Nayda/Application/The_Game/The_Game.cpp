@@ -1817,7 +1817,7 @@ void The_Game::SetIsRoomMaster(bool master)
         ui->MainGamer->SetIsRoomMaster();
 }
 
-GameCardBasis The_Game::GetRealCard(SimpleCard card)
+const GameCardBasis* The_Game::GetRealCard(SimpleCard card)
 {
     std::map<int, gameCardDoorMonster> :: const_iterator  _monstersIterator;
     std::map<int, gameCardDoorAmplifier> :: const_iterator _amplifiersIterator;
@@ -1839,62 +1839,71 @@ GameCardBasis The_Game::GetRealCard(SimpleCard card)
     { //door
         _monstersIterator = _monstersDeck.find(static_cast <int> (card.second));
         if (_monstersIterator != _monstersDeck.end())
-            return (*_monstersIterator).second;
+            return &(*_monstersIterator).second;
 
         _amplifiersIterator = _amplifiersDeck.find(static_cast <int> (card.second));
         if (_amplifiersIterator != _amplifiersDeck.end())
-            return (*_amplifiersIterator).second;
+            return &(*_amplifiersIterator).second;
 
         _cursesIterator = _cursesDeck.find(static_cast <int> (card.second));
         if (_cursesIterator != _cursesDeck.end())
-            return (*_cursesIterator).second;
+            return &(*_cursesIterator).second;
 
         _professionsIterator = _professionsDeck.find(static_cast <int> (card.second));
         if (_professionsIterator != _professionsDeck.end())
-            return (*_professionsIterator).second;
+            return &(*_professionsIterator).second;
 
         _racesIterator = _racesDeck.find(static_cast <int> (card.second));
         if (_racesIterator != _racesDeck.end())
-            return (*_racesIterator).second;
+            return &(*_racesIterator).second;
 
         _specialMechanicsIterator = _specialMechanicsDeck.find(static_cast <int> (card.second));
         if (_specialMechanicsIterator != _specialMechanicsDeck.end())
-            return (*_specialMechanicsIterator).second;
+            return &(*_specialMechanicsIterator).second;
     }
     else
     { //treasure
         _armorIterator = _armorDeck.find(static_cast <int> (card.second));
         if (_armorIterator != _armorDeck.end())
-            return (*_armorIterator).second;
+        {
+            qDebug() << "NAY-002: Returning terasure armor: ";
+            //const GameCardBasis* checker = &(*_armorIterator).second;
+            const gameCardTreasureArmor* checker = &(_armorIterator->second);
+            //checker->SetCardType(CardType::TreasureArmor);
+            //_armorIterator->second
+            return checker;
+        }
+
 
         _armorAmplifiersIterator = _armorAmplifiersDeck.find(static_cast <int> (card.second));
         if (_armorAmplifiersIterator != _armorAmplifiersDeck.end())
-            return (*_armorAmplifiersIterator).second;
+            return &(*_armorAmplifiersIterator).second;
 
         _battleAmplifiersIterator = _battleAmplifiersDeck.find(static_cast <int> (card.second));
         if (_battleAmplifiersIterator != _battleAmplifiersDeck.end())
-            return (*_battleAmplifiersIterator).second;
+            return &(*_battleAmplifiersIterator).second;
 
         _levelUpIterator = _levelUpDeck.find(static_cast <int> (card.second));
         if (_levelUpIterator != _levelUpDeck.end())
-            return (*_levelUpIterator).second;
+            return &(*_levelUpIterator).second;
 
         _specialMechanicsTreasureIterator = _specialMechanicsTreasureDeck.find(static_cast <int> (card.second));
         if (_specialMechanicsTreasureIterator != _specialMechanicsTreasureDeck.end())
-            return (*_specialMechanicsTreasureIterator).second;
+            return &(*_specialMechanicsTreasureIterator).second;
 
         _thingsAmplifiersIterator = _thingsAmplifiersDeck.find(static_cast <int> (card.second));
         if (_thingsAmplifiersIterator != _thingsAmplifiersDeck.end())
-            return (*_thingsAmplifiersIterator).second;
+            return &(*_thingsAmplifiersIterator).second;
 
         _weaponsIterator = _weaponsDeck.find(static_cast <int> (card.second));
         if (_weaponsIterator != _weaponsDeck.end())
-            return (*_weaponsIterator).second;
+            return &(*_weaponsIterator).second;
 
     }
     qDebug() << "NAY-002: Error while GameCardBasis The_Game::GetRealCard(SimpleCard card)"
              << "Card Not found! May be unsupported yet?";
-    return GameCardBasis();
+    //GameCardBasis emptyCard = GameCardBasis();
+    return nullptr;
 }
 
 
@@ -2000,61 +2009,23 @@ void The_Game::SlotCheckCardIsAbleToBePlayed(PositionedCard card, bool fromHand)
 
     //14.12.2018
     //Начать отсюда.
-    SimpleCard givenCard = card.GetCard();
-    GameCardBasis basisCard = GetRealCard(givenCard);
-    CardType currentType = basisCard.GetCardType();
+    const GameCardBasis* basisCard(GetRealCard(card.GetCard()));
+    if (basisCard == nullptr)
+    {
+        qDebug() << "ERROR WHILE SlotCheckCardIsAbleToBePlayed(): Card not found!";
+    }
+    //CardType currentType = GetRealCard(givenCard)->GetCardType();
 
-    if (currentType == CardType::TreasureArmor)
+    if (basisCard->GetCardType() == CardType::TreasureArmor)
     {
         //Получить (сделать) здесь карту из текущей (привести указатель к требуемому виду, т.к. известно,
         //какой объект вернулся)
-        const gameCardTreasureArmor* cardPointer = static_cast<const gameCardTreasureArmor*>(&basisCard);
+        const gameCardTreasureArmor* cardPointer = static_cast<const gameCardTreasureArmor* >(basisCard);
         gameCardTreasureArmor realCard(cardPointer);
         TreasureArmorCardImplementer(CardISAbleToPlayChecker_TreasureArmor(realCard, fromHand),
                         realCard);
 
     }
-
-    //Treasures Switch
-    //Преобразовать к правильному типу
-
-
-
-
-    if (givenCard.first)
-    {
-        qDebug() << "NAY-002: SlotCheckCardIsAbleToBePlayed(): Card is terasure! ";
-        switch (currentType)
-        {
-
-        case CardType::TreasureArmor:
-        {
-
-        }
-
-            break;
-
-        default:
-            qDebug() << "NAY-002: SlotCheckCardIsAbleToBePlayed(): Unsupported yet! ";
-            break;
-        }
-
-    }
-    //Door Switch
-    else
-    {
-        qDebug() << "NAY-002: SlotCheckCardIsAbleToBePlayed(): Card is door! ";
-//        switch (realCard.GetCardType())
-//        {
-//        case value:
-
-//            break;
-
-//        default:
-//            break;
-//        }
-    }
-
 
 
 
@@ -2106,6 +2077,8 @@ void The_Game::TreasureArmorCardImplementer(const TreasureArmorAllowance &allowa
     else
     {
         //не применять, отобразить неактивной
+        ShowCardIsForbiddenToPlayMessage(allowance.GetReasonOfRestriction());
+
     }
     // запустить анимацию - возможно в сером цвете? Для карты.
 
@@ -2184,15 +2157,15 @@ void The_Game::ApplyNewArmor(const gameCardTreasureArmor &card)
     //Добавление обычных бонусов:
 
     _mainPlayer->SetFleeChance(_mainPlayer->GetFleeChance() + card.bonusToFleeing());
-    _mainPlayer->SetWarPower(_mainPlayer->GetWarPower() + card.GetBonus());
+    _mainPlayer->SetBattlePower(_mainPlayer->GetBattlePower() + card.GetBonus());
 
     if (card.GetAdditionalBonusforElf() &&
             (_mainPlayer->GetRace() == Race::Elf || _mainPlayer->GetSecondRace() == Race::Elf))
-        _mainPlayer->SetWarPower(_mainPlayer->GetWarPower() + card.GetAdditionalBonusforElf());
+        _mainPlayer->SetBattlePower(_mainPlayer->GetBattlePower() + card.GetAdditionalBonusforElf());
 
     if (card.GetAdditionalBonusforOrk() &&
             (_mainPlayer->GetRace() == Race::Ork || _mainPlayer->GetSecondRace() == Race::Ork))
-        _mainPlayer->SetWarPower(_mainPlayer->GetWarPower() + card.GetAdditionalBonusforOrk());
+        _mainPlayer->SetBattlePower(_mainPlayer->GetBattlePower() + card.GetAdditionalBonusforOrk());
 
     //Установка карты в слот
     //слоты такой картой не занимаются
@@ -2224,7 +2197,7 @@ void The_Game::ApplyNewArmor(const gameCardTreasureArmor &card)
     //Анимация должна отдать карту в cardsInGameObserver
 
     ui->MainGamer->SlotAddCardToCardsInGame(std::make_pair(true, SimpleCard(true, card.GetCardID())));
-
+    ui->MainGamer->SlotChangeTheGamerBattlePower(_mainPlayer->GetBattlePower());
 }
 
 TreasureArmorAllowance The_Game::CardISAbleToPlayChecker_TreasureArmor(gameCardTreasureArmor card, bool fromHand)
@@ -3240,7 +3213,7 @@ void The_Game::SlotProcessCardsSelectedToBeSold(const std::vector<SimpleCard> ca
     _lastFold = cards;
     qDebug() << "NAY-002: Total Money Spent: " << totalMoneySpent;
     _mainPlayer->SetPlayerLevel(_mainPlayer->GetPlayerLevel() + GetLevelPurchased(totalMoneySpent));
-    _mainPlayer->SetWarPower(_mainPlayer->GetWarPower() + GetLevelPurchased(totalMoneySpent));
+    _mainPlayer->SetBattlePower(_mainPlayer->GetBattlePower() + GetLevelPurchased(totalMoneySpent));
 
     qDebug() << "NAY-002: Emitting Signal MainGamer Has Sold Cards: "
              << " For Room with id: " << _roomID;
@@ -3431,7 +3404,7 @@ void The_Game::SlotProcessOpponentHasSoldCards(TheGameMainGamerHasSoldCards data
 
     //Т.к. карты известны, можно установить новый уровень/юоевую силу и начать продажу
     currentPlayer->SetPlayerLevel(currentPlayer->GetPlayerLevel() + data.levelDelta);
-    currentPlayer->SetWarPower(currentPlayer->GetWarPower() + data.levelDelta);
+    currentPlayer->SetBattlePower(currentPlayer->GetBattlePower() + data.levelDelta);
 
     currentWidget->SlotChangeTheGamerLevel(data.levelDelta);
     currentWidget->SlotChangeTheGamerBattlePower(data.levelDelta);
