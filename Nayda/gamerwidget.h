@@ -253,6 +253,8 @@ public:
    QPoint ProvideHandPosition();
    void SetGamerName(const QString& gamerName);
 
+   QPoint ProvideAvatarPosition() const;
+
 public slots:
 
    void SlotShowCardsInGame();

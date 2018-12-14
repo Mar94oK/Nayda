@@ -467,6 +467,7 @@ private:
     void Animation_StartPassSoldCardsFromHandToTreasureFold_Phase3(std::vector<QPushButton *> movedCards, const std::vector<PositionedCard> &cards);
 
     //moving played card
+    void Animation_PassPlayedCardToCardsInGame_Phase1(GamerWidget* wt, const PositionedCard& card);
 
 public:
 
@@ -689,6 +690,8 @@ private:
     QPoint GetDoorsFoldPosition();
     QPoint GetTreasuresStackPosition();
     QPoint GetDoorsStackPosition();
+
+    QPoint GetAvatarPositon(const GamerWidget* const wt);
 
     QPoint GetCenterPosition();
 

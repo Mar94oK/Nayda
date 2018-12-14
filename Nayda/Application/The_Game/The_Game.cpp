@@ -5,6 +5,8 @@
 #include <ui_the_game.h>
 #include "popupcard.h"
 #include "munchkinglobaldefines.h"
+#include <QSharedPointer>
+
 
 The_Game::The_Game(QWidget *parent) :
     QMainWindow(parent),
@@ -1953,6 +1955,11 @@ QPoint The_Game::GetDoorsStackPosition()
     return ui->CardStacksWidget->ProvideDoorsStackPosition();
 }
 
+QPoint The_Game::GetAvatarPositon(const GamerWidget * const wt)
+{
+    return wt->ProvideAvatarPosition();
+}
+
 QPoint The_Game::GetCenterPosition()
 {
     return QPoint(static_cast<uint32_t> (size().width() / 2),
@@ -2030,7 +2037,7 @@ void The_Game::SlotCheckCardIsAbleToBePlayed(PositionedCard card, bool fromHand)
     }
     else
     {
-        qDebug() << "NAY-002: This type is not implemented yet!";
+        qDebug() << "NAY-002: This type is not implemented yet!" << basisCard->GetCardType();
         emit SignalCardIsRejectedToBePlayed(true);
         return;
     }
@@ -2560,6 +2567,65 @@ void The_Game::Animation_StartPassSoldCardsFromHandToTreasureFold_Phase3(std::ve
         }
     }    
 
+}
+
+void The_Game::Animation_PassPlayedCardToCardsInGame_Phase1(GamerWidget *wt, const PositionedCard &card)
+{
+    QSharedPointer<QPushButton> _movingCard = QSharedPointer<QPushButton>(new QPushButton("Animated Button", this), &QObject::deleteLater);
+
+    //продолжить здесь завтра (15.12.2018)
+    //т.е. уже сегодня
+
+
+    QPoint handPosition = wt->ProvideHandPosition();
+    QPoint gamerWidgetPosition = wt->ProvideSelfPosition();
+
+
+    QPoint relativeCardPostionTopLeft = card.GetPositionTopLeft() + gamerWidgetPosition + handPosition;
+    QPoint relativeCardPostionBottomRight = card.GetPositionBottomRight() + gamerWidgetPosition + handPosition;
+
+    _movingCard->move(relativeCardPostionTopLeft.x(), relativeCardPostionTopLeft.y());
+    int sizeX = relativeCardPostionBottomRight.x() - relativeCardPostionTopLeft.x() ;
+    int sizeY = relativeCardPostionBottomRight.y() - relativeCardPostionTopLeft.y();
+
+    qDebug() << "Size of the Card during moving: X: " << sizeX;
+    qDebug() << "Size of the Card during moving: Y: " << sizeY;
+
+    QString picture = findTheCardPicture(card.GetCard());
+
+    QPixmap pxmp_movingCard(picture);
+    QPalette plte_movingCard;
+    plte_movingCard.setBrush(_movingCard->backgroundRole(),
+    QBrush(pxmp_movingCard.scaled(sizeX*2, sizeY*2, Qt::KeepAspectRatio, Qt::SmoothTransformation)));
+
+    _movingCard->setMaximumWidth(sizeX*2);
+    _movingCard->setMaximumHeight(sizeY*2);
+    _movingCard->setMinimumWidth(sizeX);
+    _movingCard->setMinimumHeight(sizeY);
+
+    //http://www.prog.org.ru/topic_7215_0.html
+    _movingCard->setFlat(true);
+    _movingCard->setAutoFillBackground(true);
+    _movingCard->setPalette(plte_movingCard);
+    _movingCard->setText("");
+    //_movingCard->installEventFilter(this);
+    _movingCard->show();
+
+    QPropertyAnimation *animation = new QPropertyAnimation(_movingCard.get(), "geometry");
+    animation->setDuration(static_cast<uint32_t>(_msTimeForTradeAnimationPhase1));
+    animation->setStartValue(QRect(relativeCardPostionTopLeft.x(), relativeCardPostionTopLeft.y(), sizeX, sizeY));
+    animation->setEndValue(QRect(width()/2 - sizeX, height()/2 - sizeY, sizeX*2, sizeY*2));
+    animation->setEasingCurve(QEasingCurve::OutCubic);
+
+    //setWindowFlags(Qt::CustomizeWindowHint);
+
+    animation->start(QAbstractAnimation::DeleteWhenStopped);
+
+//        connect(animation, &QPropertyAnimation::finished,
+//                _movingCard, &QPushButton::deleteLater);
+
+    //Соединить этот сигнал со слотом, который отображает анимацию второй фазы сброса
+    //проданных карт.
 }
 
 QString The_Game::findTheCardPicture(SimpleCard card)

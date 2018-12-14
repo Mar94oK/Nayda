@@ -361,6 +361,11 @@ void GamerWidget::SetGamerName(const QString &gamerName)
     _cardsInGameObserver->SetPlayerName(gamerName);
 }
 
+QPoint GamerWidget::ProvideAvatarPosition() const
+{
+    return ui->btn_Avatar->pos();
+}
+
 void GamerWidget::SlotShowCardsInGame()
 {
     _cardsInGameObserver->show();
