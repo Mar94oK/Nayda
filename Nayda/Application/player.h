@@ -156,6 +156,8 @@ public:
     void SetPlayersName(const QString &GetPlayersName);
 
     void RemoveGivenCardsFromHand(const std::vector<SimpleCard>& cards);
+    void RemoveGivenCardsFromCardsInGame(const std::vector<SimpleCard>& cards);
+
     void RemoveGivenCardFromHand(SimpleCard card);
 
     Players_Sex playersSex() const;

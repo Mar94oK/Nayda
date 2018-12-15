@@ -18,12 +18,29 @@ void Player::RemoveGivenCardsFromHand(const std::vector<SimpleCard> &cards)
         {
             if (_cardsOnHands[var] == cards[y])
             {
-               _cardsOnHands.erase(_cardsOnHands.begin() + var);
+               _cardsOnHands.erase(_cardsOnHands.begin() + static_cast<int32_t>(var));
             }
         }
     }
     _cardsOnHands.shrink_to_fit();
     qDebug() << "NAY-002: New size of the CardsOnHands Vector: " << _cardsOnHands.size();
+}
+
+void Player::RemoveGivenCardsFromCardsInGame(const std::vector<SimpleCard> &cards)
+{
+    for (uint32_t var = 0; var < _cardsInGame.size(); ++var)
+    {
+        for (uint32_t y = 0; y < cards.size(); ++y)
+        {
+            if (_cardsInGame[var] == cards[y])
+            {
+               _cardsInGame.erase(_cardsInGame.begin() + static_cast<int32_t>(var));
+            }
+        }
+    }
+    _cardsInGame.shrink_to_fit();
+    qDebug() << "NAY-002: New size of the CardsInGame Vector: " << _cardsInGame.size();
+
 }
 
 void Player::RemoveGivenCardFromHand(SimpleCard card)
