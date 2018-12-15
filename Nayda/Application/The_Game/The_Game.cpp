@@ -2205,11 +2205,18 @@ void The_Game::ApplyNewArmor(const gameCardTreasureArmor &card)
 
     if (card.GetAdditionalBonusforElf() &&
             (_mainPlayer->GetRace() == Race::Elf || _mainPlayer->GetSecondRace() == Race::Elf))
+    {
         _mainPlayer->SetBattlePower(_mainPlayer->GetBattlePower() + card.GetAdditionalBonusforElf());
+        totalBonus += static_cast<uint32_t>(card.GetAdditionalBonusforElf());
+    }
+
 
     if (card.GetAdditionalBonusforOrk() &&
             (_mainPlayer->GetRace() == Race::Ork || _mainPlayer->GetSecondRace() == Race::Ork))
+    {
         _mainPlayer->SetBattlePower(_mainPlayer->GetBattlePower() + card.GetAdditionalBonusforOrk());
+        totalBonus += static_cast<uint32_t>(card.GetAdditionalBonusforOrk());
+    }
 
     //Установка карты в слот
     //слоты такой картой не занимаются
@@ -2236,12 +2243,11 @@ void The_Game::ApplyNewArmor(const gameCardTreasureArmor &card)
     }
 
     //Теперь  можно передать карту анимации
-
-
     //Анимация должна отдать карту в cardsInGameObserver
+    //Анимацией занимается другая функция
 
     ui->MainGamer->SlotAddCardToCardsInGame(std::make_pair(true, SimpleCard(true, card.GetCardID())));
-    ui->MainGamer->SlotChangeTheGamerBattlePower(_mainPlayer->GetBattlePower());
+    ui->MainGamer->SlotChangeTheGamerBattlePower(static_cast<int32_t>(totalBonus));
 }
 
 TreasureArmorAllowance The_Game::CardISAbleToPlayChecker_TreasureArmor(gameCardTreasureArmor card, bool fromHand)
