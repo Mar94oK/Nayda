@@ -254,6 +254,8 @@ public:
    void SetGamerName(const QString& gamerName);
 
    QPoint ProvideAvatarPosition() const;
+   QSize ProvideAvatarSize() const;
+
 
 public slots:
 

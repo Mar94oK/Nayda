@@ -366,6 +366,11 @@ QPoint GamerWidget::ProvideAvatarPosition() const
     return ui->btn_Avatar->pos();
 }
 
+QSize GamerWidget::ProvideAvatarSize() const
+{
+    return ui->btn_Avatar->size();
+}
+
 void GamerWidget::SlotShowCardsInGame()
 {
     _cardsInGameObserver->show();

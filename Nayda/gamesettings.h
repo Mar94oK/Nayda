@@ -30,6 +30,9 @@ private:
     bool _HardCodedSettings_SilentActivatingNotActiveCardIfThePlayerHasFreeHireling = false;
     bool _HardCodedSettings_WarningMessagesForPlayedNonActiveTreasuresEnabled = true;
 
+    //Animation and perfomance
+    bool _HardCodedSettings_ShowNotActiveCardAsGreyScale = true;
+
 public:
     GameSettings();
     GameSettings(unsigned int maxNumberOfPlayers, unsigned int totaltimeToMove,
@@ -76,6 +79,7 @@ public:
     { return _HardCodedSettings_SilentActivatingNotActiveCardIfThePlayerHasFreeHireling; }
     bool GetHardCodedSettingsWarningMessagesForPlayedNonActiveTreasuresEnabled() const
     { return _HardCodedSettings_WarningMessagesForPlayedNonActiveTreasuresEnabled; }
+    bool GetHardCodedSettings_ShowNotActiveCardAsGreyScale() const;
 };
 
 #endif // GAMESETTINGS_H

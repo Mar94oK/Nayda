@@ -393,7 +393,7 @@ public slots:
 
 private:
 
-    void TreasureArmorCardImplementer(const TreasureArmorAllowance &allowance, const gameCardTreasureArmor &card);
+    bool TreasureArmorCardImplementer(const TreasureArmorAllowance &allowance, const gameCardTreasureArmor &card);
     void ShowCardIsForbiddenToPlayMessage(const QString& message);
 
     void ApplyNewArmor(const gameCardTreasureArmor& card);
@@ -467,7 +467,9 @@ private:
     void Animation_StartPassSoldCardsFromHandToTreasureFold_Phase3(std::vector<QPushButton *> movedCards, const std::vector<PositionedCard> &cards);
 
     //moving played card
-    void Animation_PassPlayedCardToCardsInGame_Phase1(GamerWidget* wt, const PositionedCard& card);
+    void Animation_PassPlayedCardToCardsInGame_Phase1(GamerWidget* wt, const PositionedCard& card, bool active);
+
+    void Animation_PassPlayedCardToCardsInGame_Phase2(GamerWidget *wt, QSharedPointer<QPushButton> ptr, const PositionedCard& card, bool active);
 
 public:
 
@@ -692,11 +694,14 @@ private:
     QPoint GetDoorsStackPosition();
 
     QPoint GetAvatarPositon(const GamerWidget* const wt);
+    QPoint GetPlayerWidgetSelfPosition(const GamerWidget* const wt);
 
     QPoint GetCenterPosition();
 
     QSize GetTreasuresFoldSize();
     QSize GetDoorsFoldSize();
+
+    QSize GetAvatarSize(const GamerWidget* const wt);
 
 
 //Settings not given in the settings Selection menu:
