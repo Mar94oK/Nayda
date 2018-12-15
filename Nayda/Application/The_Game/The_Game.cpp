@@ -2661,7 +2661,7 @@ void The_Game::Animation_PassPlayedCardToCardsInGame_Phase1(GamerWidget *wt, con
     //_movingCard->installEventFilter(this);
     _movingCard->show();
 
-    QPropertyAnimation *animation = new QPropertyAnimation(_movingCard, "geometry");
+    QPropertyAnimation *animation = new QPropertyAnimation(_movingCard, "geometry", this);
     animation->setDuration(static_cast<int32_t>(_msTimeForApplyCardToCardsInGamePhase1));
     animation->setStartValue(QRect(relativeCardPostionTopLeft.x(), relativeCardPostionTopLeft.y(), sizeX, sizeY)); //initial card position
     animation->setEndValue(QRect(width()/2 - sizeX, height()/2 - sizeY, sizeX*2, sizeY*2)); //centre
@@ -2682,7 +2682,7 @@ void The_Game::Animation_PassPlayedCardToCardsInGame_Phase2(GamerWidget *wt, QPu
     QSize EndSize = GetAvatarSize(wt);
 
     //SEGFAULT ON SECOND ATTEMPT
-    QPropertyAnimation *animation = new QPropertyAnimation(ptr, "geometry");
+    QPropertyAnimation *animation = new QPropertyAnimation(ptr, "geometry", this);
     animation->setDuration(static_cast<int32_t>(_msTimeForApplyCardToCardsInGamePhase2));
     animation->setStartValue(QRect(ptr->pos().x(), ptr->pos().y(),
                                    ptr->size().width(), ptr->size().height()));
