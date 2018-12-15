@@ -111,6 +111,11 @@ void GameSettings::setRoomName(const QString &roomName)
     _roomName = roomName;
 }
 
+bool GameSettings::GetHardCodedSettings_ShowNotActiveCardAsGreyScale() const
+{
+    return _HardCodedSettings_ShowNotActiveCardAsGreyScale;
+}
+
 GameSettings::GameSettings()
 {
     //to Debug set this value to 2!

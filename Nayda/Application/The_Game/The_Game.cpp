@@ -1960,6 +1960,11 @@ QPoint The_Game::GetAvatarPositon(const GamerWidget * const wt)
     return wt->ProvideAvatarPosition();
 }
 
+QPoint The_Game::GetPlayerWidgetSelfPosition(const GamerWidget * const wt)
+{
+    return wt->pos();
+}
+
 QPoint The_Game::GetCenterPosition()
 {
     return QPoint(static_cast<uint32_t> (size().width() / 2),
@@ -1974,6 +1979,11 @@ QSize The_Game::GetTreasuresFoldSize()
 QSize The_Game::GetDoorsFoldSize()
 {
     return ui->CardStacksWidget->ProvideDoorsFoldSize();
+}
+
+QSize The_Game::GetAvatarSize(const GamerWidget * const wt)
+{
+    return wt->ProvideAvatarSize();
 }
 
 void The_Game::SlotAdjustSizeOfTheGamerWidgetToMakeCardsToBeInPlace()
@@ -2029,10 +2039,18 @@ void The_Game::SlotCheckCardIsAbleToBePlayed(PositionedCard card, bool fromHand)
         //какой объект вернулся)
         const gameCardTreasureArmor* cardPointer = static_cast<const gameCardTreasureArmor* >(basisCard);
         gameCardTreasureArmor realCard(cardPointer);
-        TreasureArmorCardImplementer(CardISAbleToPlayChecker_TreasureArmor(realCard, fromHand),
-                        realCard);
-        emit SignalCardIsRejectedToBePlayed(false);
-        DEBUGPassTheCardToTheBattleField(card);
+        TreasureArmorAllowance allowance = CardISAbleToPlayChecker_TreasureArmor(realCard, fromHand);
+        if (TreasureArmorCardImplementer(allowance, realCard))
+        {
+            emit SignalCardIsRejectedToBePlayed(false);
+            Animation_PassPlayedCardToCardsInGame_Phase1(ui->MainGamer, card, allowance.GetIsActive());
+        }
+        else
+        {
+            emit SignalCardIsRejectedToBePlayed(true);
+        }
+
+        //DEBUGPassTheCardToTheBattleField(card);
 
     }
     else
@@ -2075,12 +2093,12 @@ void The_Game::SlotCheckCardIsAbleToBePlayed(PositionedCard card, bool fromHand)
 //    }
 }
 
-void The_Game::TreasureArmorCardImplementer(const TreasureArmorAllowance &allowance, const gameCardTreasureArmor &card)
+bool The_Game::TreasureArmorCardImplementer(const TreasureArmorAllowance &allowance, const gameCardTreasureArmor &card)
 {
     if (!allowance.GetAllowance())
     {
         ShowCardIsForbiddenToPlayMessage(allowance.GetReasonOfRestriction());
-        return;
+        return false;
     }
 
     //проверить активна/неактивна и выложить
@@ -2088,12 +2106,13 @@ void The_Game::TreasureArmorCardImplementer(const TreasureArmorAllowance &allowa
     {
         //если аткивна, применить
         ApplyNewArmor(card);
+        return true;
     }
     else
     {
         //не применять, отобразить неактивной
         ShowCardIsForbiddenToPlayMessage(allowance.GetReasonOfRestriction());
-
+        return true;
     }
     // запустить анимацию - возможно в сером цвете? Для карты.
 
@@ -2569,7 +2588,7 @@ void The_Game::Animation_StartPassSoldCardsFromHandToTreasureFold_Phase3(std::ve
 
 }
 
-void The_Game::Animation_PassPlayedCardToCardsInGame_Phase1(GamerWidget *wt, const PositionedCard &card)
+void The_Game::Animation_PassPlayedCardToCardsInGame_Phase1(GamerWidget *wt, const PositionedCard &card, bool active)
 {
     QSharedPointer<QPushButton> _movingCard = QSharedPointer<QPushButton>(new QPushButton("Animated Button", this), &QObject::deleteLater);
 
@@ -2611,10 +2630,10 @@ void The_Game::Animation_PassPlayedCardToCardsInGame_Phase1(GamerWidget *wt, con
     //_movingCard->installEventFilter(this);
     _movingCard->show();
 
-    QPropertyAnimation *animation = new QPropertyAnimation(_movingCard.get(), "geometry");
+    QPropertyAnimation *animation = new QPropertyAnimation(_movingCard.data(), "geometry");
     animation->setDuration(static_cast<uint32_t>(_msTimeForTradeAnimationPhase1));
-    animation->setStartValue(QRect(relativeCardPostionTopLeft.x(), relativeCardPostionTopLeft.y(), sizeX, sizeY));
-    animation->setEndValue(QRect(width()/2 - sizeX, height()/2 - sizeY, sizeX*2, sizeY*2));
+    animation->setStartValue(QRect(relativeCardPostionTopLeft.x(), relativeCardPostionTopLeft.y(), sizeX, sizeY)); //initial card position
+    animation->setEndValue(QRect(width()/2 - sizeX, height()/2 - sizeY, sizeX*2, sizeY*2)); //centre
     animation->setEasingCurve(QEasingCurve::OutCubic);
 
     //setWindowFlags(Qt::CustomizeWindowHint);
@@ -2626,6 +2645,32 @@ void The_Game::Animation_PassPlayedCardToCardsInGame_Phase1(GamerWidget *wt, con
 
     //Соединить этот сигнал со слотом, который отображает анимацию второй фазы сброса
     //проданных карт.
+    connect(animation, &QPropertyAnimation::finished,
+            [this, _movingCard, card, active, wt] {Animation_PassPlayedCardToCardsInGame_Phase2(wt, _movingCard, card, active);});
+}
+
+void The_Game::Animation_PassPlayedCardToCardsInGame_Phase2(GamerWidget *wt, QSharedPointer<QPushButton> ptr, const PositionedCard &card, bool active)
+{
+    QPoint EndPosition = GetPlayerWidgetSelfPosition(wt) + GetAvatarPositon(wt);
+    QSize EndSize = GetAvatarSize(wt);
+
+    //продолжить здесь.
+    if (_gameSettings.GetHardCodedSettings_ShowNotActiveCardAsGreyScale() && !active)
+    {
+        QPropertyAnimation *animation = new QPropertyAnimation(ptr->data(), "geometry");
+        animation->setDuration(static_cast<uint32_t>(_msTimeForTradeAnimationPhase3));
+        animation->setStartValue(QRect(movedCards[var]->pos().x(), movedCards[var]->pos().y(),
+                                       movedCards[var]->size().width(), movedCards[var]->size().height()));
+        animation->setEndValue(QRect(EndPosition.x(), EndPosition.y(),
+                                     EndSize.width(), EndSize.height()));
+        animation->setEasingCurve(QEasingCurve::OutCubic);
+
+        animation->start(QAbstractAnimation::DeleteWhenStopped);
+    }
+    else
+    {
+
+    }
 }
 
 QString The_Game::findTheCardPicture(SimpleCard card)
