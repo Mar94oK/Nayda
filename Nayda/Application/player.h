@@ -84,6 +84,10 @@ class Player
     uint32_t _combinedArmor = 0;
     uint32_t _combinedHead = 0;
 
+public:
+
+    bool CheckCardIsFromCardsInGame(SimpleCard card);
+    bool CheckCardIsFromCardsOnHand(SimpleCard card);
 
 public:
 
@@ -142,6 +146,9 @@ public:
 
     void AddCardToHands(SimpleCard);
     void RemoveCardFromHands(SimpleCard);
+
+    void AddCardToCardsInGame(SimpleCard);
+    void RemoveCardFromCardsInGame(SimpleCard);
 
     std::vector<SimpleCard>* cardsOnHandsVector();
     std::vector<SimpleCard>* cardsInGameVector();

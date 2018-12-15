@@ -592,6 +592,8 @@ private:
 
     CardsFromHandAndInGame CardsSeparator(GamerWidget *wt, const std::vector<SimpleCard>& cards);
 
+    //Этой функцией можно пользоваться, когда известен игрок
+    void MoveCardFromCardInHandToCardInGame(Player* player, SimpleCard card);
 
     void SoldProcess(const std::vector<PositionedCard>& soldCards);
 

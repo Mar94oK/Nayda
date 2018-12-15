@@ -2111,6 +2111,8 @@ bool The_Game::TreasureArmorCardImplementer(const TreasureArmorAllowance &allowa
         return false;
     }
 
+    MoveCardFromCardInHandToCardInGame(_mainPlayer, SimpleCard(true, card.GetCardID()));
+
     //проверить активна/неактивна и выложить
     if (allowance.GetIsActive())
     {
@@ -2125,6 +2127,9 @@ bool The_Game::TreasureArmorCardImplementer(const TreasureArmorAllowance &allowa
         return true;
     }
     // запустить анимацию - возможно в сером цвете? Для карты.
+
+    //теперь эту карту требуется удалить из вектора карт на руке,
+    //и добавить к вектору карт "в игре"
 
 }
 
@@ -2676,6 +2681,7 @@ void The_Game::Animation_PassPlayedCardToCardsInGame_Phase2(GamerWidget *wt, QPu
     QPoint EndPosition = GetPlayerWidgetSelfPosition(wt) + GetAvatarPositon(wt);
     QSize EndSize = GetAvatarSize(wt);
 
+    //SEGFAULT ON SECOND ATTEMPT
     QPropertyAnimation *animation = new QPropertyAnimation(ptr, "geometry");
     animation->setDuration(static_cast<int32_t>(_msTimeForApplyCardToCardsInGamePhase2));
     animation->setStartValue(QRect(ptr->pos().x(), ptr->pos().y(),
@@ -3435,37 +3441,25 @@ std::vector<PositionedCard> The_Game::GetPositionedCardsFromCardsInGame(GamerWid
 CardsFromHandAndInGame The_Game::CardsSeparator(GamerWidget *wt, const std::vector<SimpleCard> &cards)
 {
     Player* playerPtr = wt->GetPointerToPlayer();
-    std::vector<SimpleCard> cardsInGame =  playerPtr->GetCardsInGame();
-    std::vector<SimpleCard> cardsOnHands =  playerPtr->GetCardsOnHands();
+    std::vector<SimpleCard> cardsInGame;
+    std::vector<SimpleCard> cardsOnHands;
 
-    bool presence = false;
-    for (uint32_t var = 0; var < cardsInGame.size(); ++var)
+    for (uint32_t var = 0; var < cards.size(); ++var)
     {
-        presence = false;
-        for (uint32_t y = 0; y < cards.size(); ++y)
-        {
-            if (cardsInGame[var] == cards[y])
-                presence = true;
-        }
-        if (!presence)
-            cardsInGame.erase(cardsInGame.begin() + static_cast<int32_t>(var));
+        if (playerPtr->CheckCardIsFromCardsInGame(cards[var]))
+            cardsInGame.push_back(cards[var]);
+        if (playerPtr->CheckCardIsFromCardsOnHand(cards[var]))
+            cardsOnHands.push_back(cards[var]);
     }
     cardsInGame.shrink_to_fit();
 
-    for (uint32_t var = 0; var < cardsOnHands.size(); ++var)
-    {
-        presence = false;
-        for (uint32_t y = 0; y < cards.size(); ++y)
-        {
-            if (cardsOnHands[var] == cards[y])
-                presence = true;
-        }
-        if (!presence)
-            cardsOnHands.erase(cardsOnHands.begin() + static_cast<int32_t>(var));
-    }
-    cardsOnHands.shrink_to_fit();
-
     return CardsFromHandAndInGame(cardsOnHands, cardsInGame);
+}
+
+void The_Game::MoveCardFromCardInHandToCardInGame(Player *player, SimpleCard card)
+{
+    player->RemoveCardFromHands(card);
+    player->AddCardToCardsInGame(card);
 }
 
 void The_Game::SlotAddPlayedCardToTheBattleField(SimpleCard card)

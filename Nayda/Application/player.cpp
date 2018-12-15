@@ -228,6 +228,26 @@ void Player::SetCombinedHead(const uint32_t &combinedHead)
     _combinedHead = combinedHead;
 }
 
+bool Player::CheckCardIsFromCardsInGame(SimpleCard card)
+{
+    for (uint32_t var = 0; var < _cardsInGame.size(); ++var)
+    {
+        if (_cardsInGame[var] == card)
+            return true;
+    }
+    return false;
+}
+
+bool Player::CheckCardIsFromCardsOnHand(SimpleCard card)
+{
+    for (uint32_t var = 0; var < _cardsOnHands.size(); ++var)
+    {
+        if (_cardsOnHands[var] == card)
+            return true;
+    }
+    return false;
+}
+
 Player::Player(const QString& name) : _name(name)
 {
     _isMainPlayer = false;
@@ -329,6 +349,26 @@ void Player::RemoveCardFromHands(SimpleCard cardToBeRemoved)
     }
     else {
         qDebug() << "ERROR During deleting a card from _cardsOnHandsVector!" ;
+    }
+}
+
+void Player::AddCardToCardsInGame(SimpleCard card)
+{
+    _cardsInGame.push_back(card);
+}
+
+void Player::RemoveCardFromCardsInGame(SimpleCard card)
+{
+    std::vector<SimpleCard>::iterator it;
+    it = std::find(_cardsInGame.begin(), _cardsOnHands.end(), card);
+    if (it != _cardsInGame.end()) {
+
+
+        qDebug() << "Card"<< ((*it).first == 0 ? "Door" : "Treasure") << "with cardID = " << (*it).second << "was successfully removed from _cardsOnHands!";
+        _cardsInGame.erase(it);
+    }
+    else {
+        qDebug() << "ERROR During deleting a card from _cardsInGameVector!" ;
     }
 }
 
