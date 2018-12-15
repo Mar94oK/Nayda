@@ -426,6 +426,7 @@ PositionedCard Hand::GetCardPosition(SimpleCard card)
 std::vector<PositionedCard> Hand::GetPositionedCards(const std::vector<SimpleCard> &cards)
 {
     std::vector<PositionedCard> posCards;
+
     for (uint32_t var = 0; var < cards.size(); ++var)
     {
         posCards.push_back(GetCardPosition(cards[var]));

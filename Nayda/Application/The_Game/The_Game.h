@@ -160,6 +160,20 @@ struct isOnlyFor_Weapon
 };
 
 
+//To Separate
+struct CardsFromHandAndInGame
+{
+    std::vector<SimpleCard> cardsOnHands;
+    std::vector<SimpleCard> cardsInGame;
+
+    explicit CardsFromHandAndInGame(const std::vector<SimpleCard>& onHands,
+                                    std::vector<SimpleCard>& inGame) :
+        cardsOnHands(onHands), cardsInGame(inGame)
+    { }
+};
+
+
+
 class The_Game :  public QMainWindow
 {
     Q_OBJECT
@@ -571,7 +585,12 @@ public slots:
 private:
 
     std::vector<PositionedCard> _soldCards;
-    std::vector<PositionedCard> GetPositionedCards(GamerWidget *wt, const std::vector<SimpleCard>& cards);
+    std::vector<PositionedCard> GetPositionedCardsFromHand(GamerWidget *wt, const std::vector<SimpleCard>& cards);
+    std::vector<PositionedCard> GetPositionedCardsFromCardsInGame(GamerWidget *wt, const std::vector<SimpleCard>& cards);
+
+    CardsFromHandAndInGame CardsSeparator(GamerWidget *wt, const std::vector<SimpleCard>& cards);
+
+
     void SoldProcess(const std::vector<PositionedCard>& soldCards);
 
 

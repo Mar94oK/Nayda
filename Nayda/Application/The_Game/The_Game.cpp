@@ -2958,6 +2958,7 @@ void The_Game::SetUpPlayersAndWidgets(uint32_t windowHeight, uint32_t windowWidt
     //С другой стороны было очень удобно при создании и отладке.
     //Так что сохраню эту концепцию.
     ui->MainGamer->SetGamerName(_gameSettings.clientName());
+    ui->MainGamer->SetPointerToPlayer(_mainPlayer);
     _roomMasterName = _playersOrder[0];
     SetIsRoomMaster(CheckIsMainPlayerTheRoomMaster(_playersOrder[0]));
     qDebug() << "NAY-001: Master's name: " << playersOrder[0];
@@ -3021,6 +3022,13 @@ void The_Game::SetUpPlayersAndWidgets(uint32_t windowHeight, uint32_t windowWidt
            _widgets4Opponents.back()->RedrawAsASecondaryPlayer();
            _widgets4Opponents.back()->setIs_MainPlayer(false);
            _widgets4Opponents.back()->SetGamerName(playersOrder[var]);
+           //NAY-002" EXPECTED ERROR
+           //Проверить, что указатели точно устанавливаются.
+           for (uint32_t y = 0; y < _playersOpponents.size(); ++y)
+           {
+                if (_playersOpponents[y]->GetPlayersName() == playersOrder[var])
+                    _widgets4Opponents.back()->SetPointerToPlayer(_playersOpponents[y]);
+           }
 
            if (playersOrder[var] == _roomMasterName)
                _widgets4Opponents.back()->SetIsRoomMaster();
@@ -3369,10 +3377,16 @@ void The_Game::SlotProcessCardsSelectedToBeSold(const std::vector<SimpleCard> ca
     ui->MainGamer->SlotChangeTheGamerLevel(static_cast<int32_t>(GetLevelPurchased(totalMoneySpent)));
 
     //1.1. Для этого сначала получить их позиции
-    std::vector<PositionedCard> posCards = GetPositionedCards(ui->MainGamer, cards);
+    CardsFromHandAndInGame separatedCards = CardsSeparator(ui->MainGamer, cards);
+
+    std::vector<PositionedCard> posCardsOnHands = GetPositionedCardsFromHand(ui->MainGamer, separatedCards.cardsOnHands);
+    std::vector<PositionedCard> posCardsInGame = GetPositionedCardsFromCardsInGame(ui->MainGamer, separatedCards.cardsInGame);
+
+    //продолжить здесь
+
     qDebug() << "NAY-002: posCards size " << posCards.size();
 
-    //Убрать проданные карты с руки. (Карты хранятся во временном векторе posCards)
+    //Убрать проданные карты с руки и/или из игры. (Карты хранятся во временном векторе posCards)
     //Была либо фаза торговли, либо фаза "ход другого игрока"
     SaveGamePhase();
     SetGamePhase(GamePhase::CardProcessing);
@@ -3389,9 +3403,45 @@ void The_Game::SlotProcessCardsSelectedToBeSold(const std::vector<SimpleCard> ca
     Animation_StartPassSoldCardsFromHandToTreasureFold_Phase1(ui->MainGamer, posCards);
 }
 
-std::vector<PositionedCard> The_Game::GetPositionedCards(GamerWidget* wt, const std::vector<SimpleCard> &cards)
+std::vector<PositionedCard> The_Game::GetPositionedCardsFromHand(GamerWidget* wt, const std::vector<SimpleCard> &cards)
 {
     return wt->GetPositionedCards(cards);
+}
+
+CardsFromHandAndInGame The_Game::CardsSeparator(GamerWidget *wt, const std::vector<SimpleCard> &cards)
+{
+    Player* playerPtr = wt->GetPointerToPlayer();
+    std::vector<SimpleCard> cardsInGame =  playerPtr->GetCardsInGame();
+    std::vector<SimpleCard> cardsOnHands =  playerPtr->GetCardsOnHands();
+
+    bool presence = false;
+    for (uint32_t var = 0; var < cardsInGame.size(); ++var)
+    {
+        presence = false;
+        for (uint32_t y = 0; y < cards.size(); ++y)
+        {
+            if (cardsInGame[var] == cards[y])
+                presence = true;
+        }
+        if (!presence)
+            cardsInGame.erase(cardsInGame.begin() + static_cast<int32_t>(var));
+    }
+    cardsInGame.shrink_to_fit();
+
+    for (uint32_t var = 0; var < cardsOnHands.size(); ++var)
+    {
+        presence = false;
+        for (uint32_t y = 0; y < cards.size(); ++y)
+        {
+            if (cardsOnHands[var] == cards[y])
+                presence = true;
+        }
+        if (!presence)
+            cardsOnHands.erase(cardsOnHands.begin() + static_cast<int32_t>(var));
+    }
+    cardsOnHands.shrink_to_fit();
+
+    return CardsFromHandAndInGame(cardsOnHands, cardsInGame);
 }
 
 void The_Game::SlotAddPlayedCardToTheBattleField(SimpleCard card)
@@ -3549,8 +3599,8 @@ void The_Game::SlotProcessOpponentHasSoldCards(TheGameMainGamerHasSoldCards data
     currentWidget->SlotChangeTheGamerLevel(data.levelDelta);
     currentWidget->SlotChangeTheGamerBattlePower(data.levelDelta);
 
-    //1.1. Для этого сначала получить их позиции
-    std::vector<PositionedCard> posCards = GetPositionedCards(currentWidget, data.soldCards);
+    //1.1. Для этого сначала получить их позиции с руки и/или из игры.
+    std::vector<PositionedCard> posCards = GetPositionedCardsFromHand(currentWidget, data.soldCards);
     qDebug() << "NAY-002: posCards size " << posCards.size();
 
     //Убрать проданные карты с руки. (Карты хранятся во временном векторе posCards)

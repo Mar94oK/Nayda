@@ -12,6 +12,7 @@
 #include "cardsingameobserver.h"
 
 #include "Application/card.h"
+#include "Application/player.h"
 
 #define DEBUG_GAMER_WIDGET
 
@@ -24,7 +25,7 @@ class GamerWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit GamerWidget( QWidget *parent = 0);
+    explicit GamerWidget(Player* GetPointerToPlayer = nullptr, QWidget *parent = nullptr);
     ~GamerWidget();
 
     bool is_MainPlayer() const;
@@ -42,6 +43,8 @@ private:
     QString _playerName;
 
     CardsInGameObserver* _cardsInGameObserver = nullptr;
+
+    Player* _player;
 
 public:
 
@@ -256,6 +259,10 @@ public:
    QPoint ProvideAvatarPosition() const;
    QSize ProvideAvatarSize() const;
 
+
+   void SetPointerToPlayer(Player *GetPointerToPlayer);
+
+   Player *GetPointerToPlayer() const;
 
 public slots:
 

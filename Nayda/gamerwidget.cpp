@@ -2,8 +2,8 @@
 #include "ui_gamerwidget.h"
 #include "munchkinglobaldefines.h"
 
-GamerWidget::GamerWidget(QWidget *parent) :
-    QWidget(parent),
+GamerWidget::GamerWidget(Player *player, QWidget *parent) :
+    _player(player), QWidget(parent),
     ui(new Ui::GamerWidget)
 {
     ui->setupUi(this);
@@ -16,8 +16,6 @@ GamerWidget::GamerWidget(QWidget *parent) :
     SetUpTestTimer();
     SetUpShowTimer();
     SetUpSignalsSlotsConnections();
-
-
 }
 
 GamerWidget::~GamerWidget()
@@ -66,6 +64,16 @@ void GamerWidget::SetDecks(const AllDecksToBePassed& data)
     _weaponsDeck = data._weaponsDeck;
 
 
+}
+
+Player *GamerWidget::GetPointerToPlayer() const
+{
+    return _player;
+}
+
+void GamerWidget::SetPointerToPlayer(Player *player)
+{
+    _player = player;
 }
 
 void GamerWidget::SetIsRoomMaster()
