@@ -567,6 +567,8 @@ private:
 private:
 
     void RemoveTheCardFromHand(GamerWidget* wt, SimpleCard card);
+    void RemoveTheCardFromCardsInGame(GamerWidget* wt, SimpleCard card);
+
 
 signals:
 

@@ -3288,11 +3288,11 @@ void The_Game::PassCardsToWidgets()
 
 void The_Game::RemoveCardFromCardsAreAbleToBeSold(SimpleCard card)
 {
-    for (int var = 0; var < _cardsAreReadyToBeSoldHolder.size(); ++var)
+    for (uint32_t var = 0; var < _cardsAreReadyToBeSoldHolder.size(); ++var)
     {
         if (_cardsAreReadyToBeSoldHolder[var] == card)
         {
-            _cardsAreReadyToBeSoldHolder.erase(_cardsAreReadyToBeSoldHolder.begin() + var);
+            _cardsAreReadyToBeSoldHolder.erase(_cardsAreReadyToBeSoldHolder.begin() + static_cast<int32_t>(var));
             return;
         }
     }
@@ -3303,6 +3303,11 @@ void The_Game::RemoveCardFromCardsAreAbleToBeSold(SimpleCard card)
 void The_Game::RemoveTheCardFromHand(GamerWidget *wt, SimpleCard card)
 {
     wt->RemoveCardFromHand(card);
+}
+
+void The_Game::RemoveTheCardFromCardsInGame(GamerWidget *wt, SimpleCard card)
+{
+    wt->RemoveCardFromCardsInGame(card);
 }
 
 void The_Game::SlotShowTradeMenu()
@@ -3399,25 +3404,32 @@ void The_Game::SlotProcessCardsSelectedToBeSold(const std::vector<SimpleCard> ca
         RemoveCardFromCardsAreAbleToBeSold(posCardsOnHands[var].GetCard());
         RemoveTheCardFromHand(ui->MainGamer, posCardsOnHands[var].GetCard());
     }
-    _mainPlayer->RemoveGivenCardsFromHand(cards);
+    _mainPlayer->RemoveGivenCardsFromHand(PositionedCard::RevertToSimpleCardsVector(posCardsOnHands));
 
     //Проданные карты из Игры
     for (uint32_t var = 0; var < posCardsInGame.size(); ++var)
     {
         RemoveCardFromCardsAreAbleToBeSold(posCardsInGame[var].GetCard());
         //продолжить здесь
-        RemoveTheCardFromHand(ui->MainGamer, posCardsInGame[var].GetCard());
+        RemoveTheCardFromCardsInGame(ui->MainGamer, posCardsInGame[var].GetCard());
     }
-    _mainPlayer->RemoveGivenCardsFromCardsInGame(cards);
-
+    _mainPlayer->RemoveGivenCardsFromCardsInGame(PositionedCard::RevertToSimpleCardsVector(posCardsInGame));
 
     //start animation here
-    Animation_StartPassSoldCardsFromHandToTreasureFold_Phase1(ui->MainGamer, posCards);
+    if (!posCardsOnHands.empty())
+        Animation_StartPassSoldCardsFromHandToTreasureFold_Phase1(ui->MainGamer, posCardsOnHands);
+    if (!posCardsInGame.empty())
+        Animation_StartPassSoldCardsFromHandToTreasureFold_Phase1(ui->MainGamer, posCardsInGame);
 }
 
 std::vector<PositionedCard> The_Game::GetPositionedCardsFromHand(GamerWidget* wt, const std::vector<SimpleCard> &cards)
 {
-    return wt->GetPositionedCards(cards);
+    return wt->GetPositionedCardsFromCardsOnHand(cards);
+}
+
+std::vector<PositionedCard> The_Game::GetPositionedCardsFromCardsInGame(GamerWidget *wt, const std::vector<SimpleCard> &cards)
+{
+    return  wt->GetPositionedCardsFromCardsInGame(cards);
 }
 
 CardsFromHandAndInGame The_Game::CardsSeparator(GamerWidget *wt, const std::vector<SimpleCard> &cards)
@@ -3611,26 +3623,45 @@ void The_Game::SlotProcessOpponentHasSoldCards(TheGameMainGamerHasSoldCards data
     currentWidget->SlotChangeTheGamerLevel(data.levelDelta);
     currentWidget->SlotChangeTheGamerBattlePower(data.levelDelta);
 
-    //1.1. Для этого сначала получить их позиции с руки и/или из игры.
-    std::vector<PositionedCard> posCards = GetPositionedCardsFromHand(currentWidget, data.soldCards);
-    qDebug() << "NAY-002: posCards size " << posCards.size();
+    //1.1. Для этого сначала получить их позиции
+    CardsFromHandAndInGame separatedCards = CardsSeparator(currentWidget, data.soldCards);
 
-    //Убрать проданные карты с руки. (Карты хранятся во временном векторе posCards)
+    std::vector<PositionedCard> posCardsOnHands = GetPositionedCardsFromHand(currentWidget, separatedCards.cardsOnHands);
+    std::vector<PositionedCard> posCardsInGame = GetPositionedCardsFromCardsInGame(currentWidget, separatedCards.cardsInGame);
+
+    qDebug() << "NAY-002: posCardsOnHands size " << posCardsOnHands.size();
+    qDebug() << "NAY-002: posCardsInGame size " << posCardsInGame.size();
+
+
+    //Убрать проданные карты с руки и/или из игры. (Карты хранятся во временном векторе posCards)
     //Была либо фаза торговли, либо фаза "ход другого игрока"
     SaveGamePhase();
     SetGamePhase(GamePhase::CardProcessing);
+
     emit SignalHideTradeButton();
-    for (uint32_t var = 0; var < posCards.size(); ++var)
+
+    //Проданные карты с руки
+    for (uint32_t var = 0; var < posCardsOnHands.size(); ++var)
     {
-        RemoveCardFromCardsAreAbleToBeSold(posCards[var].GetCard());
-        RemoveTheCardFromHand(currentWidget, posCards[var].GetCard());
+        RemoveCardFromCardsAreAbleToBeSold(posCardsOnHands[var].GetCard());
+        RemoveTheCardFromHand(currentWidget, posCardsOnHands[var].GetCard());
     }
-    currentPlayer->RemoveGivenCardsFromHand(data.soldCards);
+    currentPlayer->RemoveGivenCardsFromHand(PositionedCard::RevertToSimpleCardsVector(posCardsOnHands));
+
+    //Проданные карты из Игры
+    for (uint32_t var = 0; var < posCardsInGame.size(); ++var)
+    {
+        RemoveCardFromCardsAreAbleToBeSold(posCardsInGame[var].GetCard());
+        //продолжить здесь
+        RemoveTheCardFromCardsInGame(currentWidget, posCardsInGame[var].GetCard());
+    }
+    currentPlayer->RemoveGivenCardsFromCardsInGame(PositionedCard::RevertToSimpleCardsVector(posCardsInGame));
 
     //start animation here
-    Animation_StartPassSoldCardsFromHandToTreasureFold_Phase1(currentWidget, posCards);
-
-    //RestoreGamePhase();
+    if (!posCardsOnHands.empty())
+        Animation_StartPassSoldCardsFromHandToTreasureFold_Phase1(currentWidget, posCardsOnHands);
+    if (!posCardsInGame.empty())
+        Animation_StartPassSoldCardsFromHandToTreasureFold_Phase1(currentWidget, posCardsInGame);
 
 
 }

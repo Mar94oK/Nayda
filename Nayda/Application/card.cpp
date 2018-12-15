@@ -2082,3 +2082,13 @@ QDebug operator<<(QDebug debug, const CardType& dt)
     return debug;
 }
 
+
+std::vector<SimpleCard> PositionedCard::RevertToSimpleCardsVector(const std::vector<PositionedCard> &cards)
+{
+    std::vector<SimpleCard> simpleCards;
+    for (uint32_t var = 0; var < cards.size(); ++var)
+    {
+        simpleCards.push_back(cards[var].GetCard());
+    }
+    return simpleCards;
+}

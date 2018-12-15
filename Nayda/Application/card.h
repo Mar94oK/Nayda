@@ -244,7 +244,15 @@ public:
     {
         return positionBottomRight;
     }
+
+public:
+
+    static std::vector<SimpleCard> RevertToSimpleCardsVector(const std::vector<PositionedCard>& cards);
+
 };
+
+
+
 
 class GameCard
 {

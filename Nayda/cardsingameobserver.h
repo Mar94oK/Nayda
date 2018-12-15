@@ -37,6 +37,12 @@ private:
 
     std::vector <QPushButton* > _cardsAsButtonsRepresenter;
 
+private:
+
+    void RemoveCardFromDisabledCards(SimpleCard card);
+    void RemoveCardFromActiveCards(SimpleCard card);
+
+
 public:
 
     void AddCard(CardInGame card);

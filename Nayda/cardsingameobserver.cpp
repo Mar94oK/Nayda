@@ -34,6 +34,32 @@ CardsInGameObserver::~CardsInGameObserver()
     delete ui;
 }
 
+void CardsInGameObserver::RemoveCardFromDisabledCards(SimpleCard card)
+{
+    for (uint32_t var = 0; var < _disabledCards.size(); ++var)
+    {
+        if (_disabledCards[var] == card)
+        {
+            _disabledCards.erase(_disabledCards.begin() + static_cast<int32_t>(var));
+            return;
+        }
+    }
+    qDebug() << "NAY-002: ERROR WHILE RemoveCardFromDisabledCards(): Card not found!";
+}
+
+void CardsInGameObserver::RemoveCardFromActiveCards(SimpleCard card)
+{
+    for (uint32_t var = 0; var < _activeCards.size(); ++var)
+    {
+        if (_activeCards[var] == card)
+        {
+            _activeCards.erase(_activeCards.begin() + static_cast<int32_t>(var));
+            return;
+        }
+    }
+    qDebug() << "NAY-002: ERROR WHILE RemoveCardFromActiveCards(): Card not found!";
+}
+
 void CardsInGameObserver::AddCard(CardInGame card)
 {
     QSize cardSize(static_cast<int32_t>(_widnowSizeWidth*handCardSizeWidht),
@@ -73,7 +99,20 @@ void CardsInGameObserver::AddCard(CardInGame card)
 
 void CardsInGameObserver::RemoveCard(SimpleCard card)
 {
+    for (uint32_t var = 0; var < _cardsInGameHolder.size(); ++var)
+    {
+        if (_cardsInGameHolder[var].second == card)
+        {
+            //удалить её из соответствующего вектора
+            if (_cardsInGameHolder[var].first)
+                RemoveCardFromActiveCards(card);
+            else
+                RemoveCardFromDisabledCards(card);
 
+            _cardsInGameHolder.erase(_cardsInGameHolder.begin() + static_cast<int32_t>(var));
+        }
+    }
+    qDebug() << "NAY-002: ERROR while void CardsInGameObserver::RemoveCard(SimpleCard card). Card not found!";
 }
 
 void CardsInGameObserver::SetDecks(const AllDecksToBePassed &data)

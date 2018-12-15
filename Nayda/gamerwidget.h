@@ -25,7 +25,7 @@ class GamerWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit GamerWidget(Player* GetPointerToPlayer = nullptr, QWidget *parent = nullptr);
+    explicit GamerWidget(QWidget *parent = nullptr, Player* GetPointerToPlayer = nullptr);
     ~GamerWidget();
 
     bool is_MainPlayer() const;
@@ -247,8 +247,10 @@ public slots:
 
 public:
 
-   std::vector<PositionedCard> GetPositionedCards(const std::vector<SimpleCard> cards);
-    void RemoveCardFromHand(SimpleCard card);
+   std::vector<PositionedCard> GetPositionedCardsFromCardsOnHand(const std::vector<SimpleCard> cards);
+   std::vector<PositionedCard> GetPositionedCardsFromCardsInGame(const std::vector<SimpleCard> cards);
+   void RemoveCardFromHand(SimpleCard card);
+   void RemoveCardFromCardsInGame(SimpleCard card);
 
 public:
 

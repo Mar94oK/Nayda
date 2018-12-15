@@ -2,9 +2,9 @@
 #include "ui_gamerwidget.h"
 #include "munchkinglobaldefines.h"
 
-GamerWidget::GamerWidget(Player *player, QWidget *parent) :
-    _player(player), QWidget(parent),
-    ui(new Ui::GamerWidget)
+GamerWidget::GamerWidget(QWidget *parent, Player *player) :
+    QWidget(parent), ui(new Ui::GamerWidget),
+    _player(player)
 {
     ui->setupUi(this);
 
@@ -339,9 +339,25 @@ void GamerWidget::SlotShowTradeButton()
     ui->btn_Trade->show();
 }
 
-std::vector<PositionedCard> GamerWidget::GetPositionedCards(const std::vector<SimpleCard> cards)
+std::vector<PositionedCard> GamerWidget::GetPositionedCardsFromCardsOnHand(const std::vector<SimpleCard> cards)
 {
     return ui->widget->GetPositionedCards(cards);
+}
+
+std::vector<PositionedCard> GamerWidget::GetPositionedCardsFromCardsInGame(const std::vector<SimpleCard> cards)
+{
+    QPoint avatarPosition = ui->btn_Avatar->pos();
+    std::vector<PositionedCard> posCards;
+    for (uint32_t var = 0; var < cards.size(); ++var)
+    {
+        PositionedCard card;
+        card.SetSimpleCard(cards[var]);
+        card.SetPositionTopLeft(avatarPosition);
+        card.SetPositionTopLeft(avatarPosition + QPoint(avatarPosition.x() + ui->btn_Avatar->size().width(),
+                                                  avatarPosition.y() + ui->btn_Avatar->size().height()));
+        posCards.push_back(card);
+    }
+    return posCards;
 }
 
 void GamerWidget::RemoveCardFromHand(SimpleCard card)
@@ -350,6 +366,12 @@ void GamerWidget::RemoveCardFromHand(SimpleCard card)
     if (!card.first) ui->wt_CardsOnHandsSecondary->SlotUpdateCardsOnHandsDoors(--_totalDoorsOnHands);
     else ui->wt_CardsOnHandsSecondary->SlotUpdateCardsOnHandsTreasures(--_totalTreasuresOnHands);
 
+}
+
+void GamerWidget::RemoveCardFromCardsInGame(SimpleCard card)
+{
+    if (_cardsInGameObserver != nullptr)
+        _cardsInGameObserver->RemoveCard(card);
 }
 
 QPoint GamerWidget::ProvideSelfPosition()
