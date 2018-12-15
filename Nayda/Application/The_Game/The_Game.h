@@ -469,7 +469,7 @@ private:
     //moving played card
     void Animation_PassPlayedCardToCardsInGame_Phase1(GamerWidget* wt, const PositionedCard& card, bool active);
 
-    void Animation_PassPlayedCardToCardsInGame_Phase2(GamerWidget *wt, QSharedPointer<QPushButton> ptr, const PositionedCard& card, bool active);
+    void Animation_PassPlayedCardToCardsInGame_Phase2(GamerWidget *wt, QPushButton *ptr, const PositionedCard& card, bool active);
 
 public:
 
@@ -711,6 +711,13 @@ private:
     uint32_t _msTimeForTradeAnimationPhase2 = 1500; //Standing at the centre
     uint32_t _msTimeForTradeAnimationPhase3 = 500;  //Moving to Treasure Fold
 
+
+    QTimer* _animationApplyCardToCardsInGameTimer;
+    void InitializeApplyCardToCardsInGameTimer(uint32_t msTime);
+
+    uint32_t _msTimeForApplyCardToCardsInGamePhase1 = 1000;
+    uint32_t _msHoldBetweenApplyCardToCardsInGameAnimations = 1500;
+    uint32_t _msTimeForApplyCardToCardsInGamePhase2 = 1000;
 
 
 };
