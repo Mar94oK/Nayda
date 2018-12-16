@@ -509,9 +509,9 @@ private:
     void Animation_StartPassSoldCardsFromHandToTreasureFold_Phase3(std::vector<QPushButton *> movedCards, const std::vector<PositionedCard> &cards);
 
     //moving played card
+    QPushButton* CreateButtonForAnimation(SimpleCard card, QPoint cardPostionTopLeft, QPoint cardPostionBottomRight, bool active);
     void Animation_PassPlayedCardToCardsInGame_Phase1(GamerWidget* wt, const PositionedCard& card, bool active);
-
-    void Animation_PassPlayedCardToCardsInGame_Phase2(GamerWidget *wt, QPushButton *ptr, const PositionedCard& card, bool active);
+    void Animation_PassPlayedCardToCardsInGame_Phase2(GamerWidget *wt, QRect previousPosition, const PositionedCard& card, bool active);
 
 public:
 

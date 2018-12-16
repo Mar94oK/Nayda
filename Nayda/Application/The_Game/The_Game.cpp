@@ -2082,6 +2082,7 @@ void The_Game::SlotCheckCardIsAbleToBePlayed(PositionedCard card, bool fromHand)
             emit SignalCardIsRejectedToBePlayed(false);
             SaveGamePhase();
             SetGamePhase(GamePhase::CardProcessing);
+            qDebug() << "NAY-002: Animation_Phase1 played!";
             Animation_PassPlayedCardToCardsInGame_Phase1(ui->MainGamer, card, allowance.GetIsActive());
         }
         else
@@ -2645,29 +2646,17 @@ void The_Game::Animation_StartPassSoldCardsFromHandToTreasureFold_Phase3(std::ve
 
 }
 
-void The_Game::Animation_PassPlayedCardToCardsInGame_Phase1(GamerWidget *wt, const PositionedCard &card, bool active)
+QPushButton *The_Game::CreateButtonForAnimation(SimpleCard card, QPoint cardPostionTopLeft, QPoint cardPostionBottomRight, bool active)
 {
-    QPushButton* _movingCard = new QPushButton("Animated Button", this);
-
-    //продолжить здесь завтра (15.12.2018)
-    //т.е. уже сегодня
-
-
-    QPoint handPosition = wt->ProvideHandPosition();
-    QPoint gamerWidgetPosition = wt->ProvideSelfPosition();
-
-
-    QPoint relativeCardPostionTopLeft = card.GetPositionTopLeft() + gamerWidgetPosition + handPosition;
-    QPoint relativeCardPostionBottomRight = card.GetPositionBottomRight() + gamerWidgetPosition + handPosition;
-
-    _movingCard->move(relativeCardPostionTopLeft.x(), relativeCardPostionTopLeft.y());
-    int sizeX = relativeCardPostionBottomRight.x() - relativeCardPostionTopLeft.x() ;
-    int sizeY = relativeCardPostionBottomRight.y() - relativeCardPostionTopLeft.y();
+    QPushButton* movingCard = new QPushButton("Animated Button", this);
+    movingCard->move(cardPostionTopLeft.x(), cardPostionTopLeft.y());
+    int sizeX = cardPostionBottomRight.x() - cardPostionTopLeft.x() ;
+    int sizeY = cardPostionBottomRight.y() - cardPostionTopLeft.y();
 
     qDebug() << "Size of the Card during moving: X: " << sizeX;
     qDebug() << "Size of the Card during moving: Y: " << sizeY;
 
-    QString picture = findTheCardPicture(card.GetCard());
+    QString picture = findTheCardPicture(card);
 
     QImage image(picture);
 
@@ -2679,112 +2668,87 @@ void The_Game::Animation_PassPlayedCardToCardsInGame_Phase1(GamerWidget *wt, con
     else
         pxmp_movingCard = QPixmap::fromImage(image);
 
-    //QPixmap pxmp_movingCard(picture);
     QPalette plte_movingCard;
-    plte_movingCard.setBrush(_movingCard->backgroundRole(),
+    plte_movingCard.setBrush(movingCard->backgroundRole(),
     QBrush(pxmp_movingCard.scaled(sizeX*2, sizeY*2, Qt::KeepAspectRatio, Qt::SmoothTransformation)));
 
-    _movingCard->setMaximumWidth(sizeX*2);
-    _movingCard->setMaximumHeight(sizeY*2);
-    _movingCard->setMinimumWidth(sizeX);
-    _movingCard->setMinimumHeight(sizeY);
+    movingCard->setMaximumWidth(sizeX*2);
+    movingCard->setMaximumHeight(sizeY*2);
+    movingCard->setMinimumWidth(sizeX);
+    movingCard->setMinimumHeight(sizeY);
 
     //http://www.prog.org.ru/topic_7215_0.html
-    _movingCard->setFlat(true);
-    _movingCard->setAutoFillBackground(true);
-    _movingCard->setPalette(plte_movingCard);
-    _movingCard->setText("");
-    //_movingCard->installEventFilter(this);
-    _movingCard->show();
+    movingCard->setFlat(true);
+    movingCard->setAutoFillBackground(true);
+    movingCard->setPalette(plte_movingCard);
+    movingCard->setText("");
 
-    QPropertyAnimation *animation = new QPropertyAnimation(_movingCard, "geometry");
+    return movingCard;
+}
+
+void The_Game::Animation_PassPlayedCardToCardsInGame_Phase1(GamerWidget *wt, const PositionedCard &card, bool active)
+{
+    QPoint handPosition = wt->ProvideHandPosition();
+    QPoint gamerWidgetPosition = wt->ProvideSelfPosition();
+
+    QPoint relativeCardPostionTopLeft = card.GetPositionTopLeft() + gamerWidgetPosition + handPosition;
+    QPoint relativeCardPostionBottomRight = card.GetPositionBottomRight() + gamerWidgetPosition + handPosition;
+
+    int sizeX = relativeCardPostionBottomRight.x() - relativeCardPostionTopLeft.x() ;
+    int sizeY = relativeCardPostionBottomRight.y() - relativeCardPostionTopLeft.y();
+
+    QPushButton* movingCard = CreateButtonForAnimation(card.GetCard(),
+                                                       relativeCardPostionTopLeft,
+                                                       relativeCardPostionBottomRight,
+                                                       active);
+    //_movingCard->installEventFilter(this);
+    movingCard->show();
+
+    QPropertyAnimation *animation = new QPropertyAnimation(movingCard, "geometry");
     animation->setDuration(static_cast<int32_t>(_msTimeForApplyCardToCardsInGamePhase1));
     animation->setStartValue(QRect(relativeCardPostionTopLeft.x(), relativeCardPostionTopLeft.y(), sizeX, sizeY)); //initial card position
+    QRect finalPosition(width()/2 - sizeX, height()/2 - sizeY, sizeX*2, sizeY*2);
     animation->setEndValue(QRect(width()/2 - sizeX, height()/2 - sizeY, sizeX*2, sizeY*2)); //centre
     animation->setEasingCurve(QEasingCurve::OutCubic);
-
-    animation->start(QAbstractAnimation::DeleteWhenStopped);
 
     connect(animation, &QPropertyAnimation::destroyed,
             []{qDebug() << "NAY-002: Animation_PassPlayedCardToCardsInGame_Phase1 destroyed";});
 
     connect(_animationApplyCardToCardsInGameTimer, &QTimer::timeout,
-            [this, _movingCard, card, active, wt] {Animation_PassPlayedCardToCardsInGame_Phase2(wt, _movingCard, card, active);});
+            [this, finalPosition, card, active, wt] {Animation_PassPlayedCardToCardsInGame_Phase2(wt, finalPosition, card, active);});
 
     connect(animation, &QPropertyAnimation::finished,
             [this] {_animationApplyCardToCardsInGameTimer->start();});
 
-    connect(animation, &QPropertyAnimation::finished,
-            [_movingCard] {_movingCard->deleteLater();});
+//    connect(_animationApplyCardToCardsInGameTimer, &QTimer::timeout,
+//            [movingCard] {movingCard->deleteLater();});
 
-    connect(_movingCard, &QPushButton::destroyed,
+    connect(movingCard, &QPushButton::destroyed,
             [] {qDebug() << "NAY-002: _movingCard->Destroyed";});
+
+
+    animation->start(QAbstractAnimation::DeleteWhenStopped);
 }
 
-void The_Game::Animation_PassPlayedCardToCardsInGame_Phase2(GamerWidget *wt, QPushButton* ptr, const PositionedCard &card, bool active)
+void The_Game::Animation_PassPlayedCardToCardsInGame_Phase2(GamerWidget *wt, QRect previousPosition, const PositionedCard &card, bool active)
 {
     QPoint EndPosition = GetPlayerWidgetSelfPosition(wt) + GetAvatarPositon(wt);
     QSize EndSize = GetAvatarSize(wt);
 
+    QPushButton* movingCard = CreateButtonForAnimation(card.GetCard(),
+                                                       previousPosition.topLeft(),
+                                                       previousPosition.bottomRight(),
+                                                       active);
 
-    QPushButton* _movingCard = new QPushButton("Animated Button", this);
-
-    //продолжить здесь завтра (15.12.2018)
-    //т.е. уже сегодня
-
-    QPoint handPosition = wt->ProvideHandPosition();
-    QPoint gamerWidgetPosition = wt->ProvideSelfPosition();
-
-    QPoint relativeCardPostionTopLeft = card.GetPositionTopLeft() + gamerWidgetPosition + handPosition;
-    QPoint relativeCardPostionBottomRight = card.GetPositionBottomRight() + gamerWidgetPosition + handPosition;
-
-    _movingCard->move(relativeCardPostionTopLeft.x(), relativeCardPostionTopLeft.y());
-    int sizeX = relativeCardPostionBottomRight.x() - relativeCardPostionTopLeft.x() ;
-    int sizeY = relativeCardPostionBottomRight.y() - relativeCardPostionTopLeft.y();
-
-    qDebug() << "Size of the Card during moving: X: " << sizeX;
-    qDebug() << "Size of the Card during moving: Y: " << sizeY;
-
-    QString picture = findTheCardPicture(card.GetCard());
-
-    QImage image(picture);
-
-    QPixmap pxmp_movingCard;
-    if (!active && _gameSettings.GetHardCodedSettings_ShowNotActiveCardAsGreyScale())
-    {
-        pxmp_movingCard = QPixmap::fromImage(image.convertToFormat(QImage::Format_Grayscale8));
-    }
-    else
-        pxmp_movingCard = QPixmap::fromImage(image);
-
-    //QPixmap pxmp_movingCard(picture);
-    QPalette plte_movingCard;
-    plte_movingCard.setBrush(_movingCard->backgroundRole(),
-    QBrush(pxmp_movingCard.scaled(sizeX*2, sizeY*2, Qt::KeepAspectRatio, Qt::SmoothTransformation)));
-
-    _movingCard->setMaximumWidth(sizeX*2);
-    _movingCard->setMaximumHeight(sizeY*2);
-    _movingCard->setMinimumWidth(sizeX);
-    _movingCard->setMinimumHeight(sizeY);
-
-    //http://www.prog.org.ru/topic_7215_0.html
-    _movingCard->setFlat(true);
-    _movingCard->setAutoFillBackground(true);
-    _movingCard->setPalette(plte_movingCard);
-    _movingCard->setText("");
-    //_movingCard->installEventFilter(this);
-    _movingCard->show();
+    movingCard->show();
 
     //SEGFAULT ON SECOND ATTEMPT
-    QPropertyAnimation *animation = new QPropertyAnimation(_movingCard, "geometry");
+    QPropertyAnimation *animation = new QPropertyAnimation(movingCard, "geometry");
     animation->setDuration(static_cast<int32_t>(_msTimeForApplyCardToCardsInGamePhase2));
-    animation->setStartValue(QRect(_movingCard->pos().x(), _movingCard->pos().y(),
-                                   _movingCard->size().width(), _movingCard->size().height()));
+    animation->setStartValue(previousPosition);
     animation->setEndValue(QRect(EndPosition.x(), EndPosition.y(),
                                  EndSize.width(), EndSize.height()));
     animation->setEasingCurve(QEasingCurve::OutCubic);
-
-    animation->start(QAbstractAnimation::DeleteWhenStopped);
 
     connect(animation, &QPropertyAnimation::destroyed,
             []{qDebug() << "NAY-002: Animation_PassPlayedCardToCardsInGame_Phase2 destroyed";});
@@ -2793,8 +2757,9 @@ void The_Game::Animation_PassPlayedCardToCardsInGame_Phase2(GamerWidget *wt, QPu
             [this]{RestoreGamePhase();});
 
     connect(animation, &QPropertyAnimation::finished,
-            [_movingCard] {_movingCard->deleteLater();});
+            [movingCard] {movingCard->deleteLater();});
 
+    animation->start(QAbstractAnimation::DeleteWhenStopped);
 }
 
 QString The_Game::findTheCardPicture(SimpleCard card)
