@@ -511,7 +511,7 @@ private:
     //moving played card
     QPushButton* CreateButtonForAnimation(SimpleCard card, QPoint cardPostionTopLeft, QPoint cardPostionBottomRight, bool active);
     void Animation_PassPlayedCardToCardsInGame_Phase1(GamerWidget* wt, const PositionedCard& card, bool active);
-    void Animation_PassPlayedCardToCardsInGame_Phase2(GamerWidget *wt, QRect previousPosition, const PositionedCard& card, bool active);
+    void Animation_PassPlayedCardToCardsInGame_Phase2(GamerWidget *wt, QPropertyAnimation *animation, QPushButton *card);
 
 public:
 

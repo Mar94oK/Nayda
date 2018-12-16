@@ -2715,7 +2715,7 @@ void The_Game::Animation_PassPlayedCardToCardsInGame_Phase1(GamerWidget *wt, con
             []{qDebug() << "NAY-002: Animation_PassPlayedCardToCardsInGame_Phase1 destroyed";});
 
     connect(_animationApplyCardToCardsInGameTimer, &QTimer::timeout,
-            [this, finalPosition, card, active, wt] {Animation_PassPlayedCardToCardsInGame_Phase2(wt, finalPosition, card, active);});
+            [this, wt, animation, movingCard] {Animation_PassPlayedCardToCardsInGame_Phase2(wt, animation, movingCard);});
 
     connect(animation, &QPropertyAnimation::finished,
             [this] {_animationApplyCardToCardsInGameTimer->start();});
@@ -2727,25 +2727,26 @@ void The_Game::Animation_PassPlayedCardToCardsInGame_Phase1(GamerWidget *wt, con
             [] {qDebug() << "NAY-002: _movingCard->Destroyed";});
 
 
-    animation->start(QAbstractAnimation::DeleteWhenStopped);
+    animation->start(QAbstractAnimation::KeepWhenStopped);
 }
 
-void The_Game::Animation_PassPlayedCardToCardsInGame_Phase2(GamerWidget *wt, QRect previousPosition, const PositionedCard &card, bool active)
+void The_Game::Animation_PassPlayedCardToCardsInGame_Phase2(GamerWidget *wt, QPropertyAnimation *animation, QPushButton* card)
 {
+    qDebug() << "NAY-002: Entering application Phase 2: ";
     QPoint EndPosition = GetPlayerWidgetSelfPosition(wt) + GetAvatarPositon(wt);
     QSize EndSize = GetAvatarSize(wt);
 
-    QPushButton* movingCard = CreateButtonForAnimation(card.GetCard(),
-                                                       previousPosition.topLeft(),
-                                                       previousPosition.bottomRight(),
-                                                       active);
+//    QPushButton* movingCard = CreateButtonForAnimation(card.GetCard(),
+//                                                       animation.topLeft(),
+//                                                       animation.bottomRight(),
+//                                                       active);
 
-    movingCard->show();
+//    movingCard->show();
 
-    //SEGFAULT ON SECOND ATTEMPT
-    QPropertyAnimation *animation = new QPropertyAnimation(movingCard, "geometry");
+//    //SEGFAULT ON SECOND ATTEMPT
+//    QPropertyAnimation *animation = new QPropertyAnimation(movingCard, "geometry");
     animation->setDuration(static_cast<int32_t>(_msTimeForApplyCardToCardsInGamePhase2));
-    animation->setStartValue(previousPosition);
+//    animation->setStartValue(animation);
     animation->setEndValue(QRect(EndPosition.x(), EndPosition.y(),
                                  EndSize.width(), EndSize.height()));
     animation->setEasingCurve(QEasingCurve::OutCubic);
@@ -2756,8 +2757,11 @@ void The_Game::Animation_PassPlayedCardToCardsInGame_Phase2(GamerWidget *wt, QRe
     connect(animation, &QPropertyAnimation::finished,
             [this]{RestoreGamePhase();});
 
-    connect(animation, &QPropertyAnimation::finished,
-            [movingCard] {movingCard->deleteLater();});
+//    connect(animation, &QPropertyAnimation::finished,
+//            [card] {card->deleteLater();});
+
+//    connect(card, &QPushButton::destroyed,
+//            [] {qDebug() << "NAY-002: _movingCard->Destroyed";});
 
     animation->start(QAbstractAnimation::DeleteWhenStopped);
 }
