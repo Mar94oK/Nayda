@@ -549,7 +549,8 @@ void battleField::InitializeStartUpProcedureVisualization()
 
     //Initialize the Timer:
     _startUpTimer = new QTimer(this);
-    _startUpTimer->setInterval(1000);
+    //NAY-002 Shorten time for debug
+    _startUpTimer->setInterval(300);
     _startUpTimer->setSingleShot(true);
     connect(_startUpTimer, &QTimer::timeout, this, &battleField::SlotStartUpTimerHandler);
     _startUpTimer->start();

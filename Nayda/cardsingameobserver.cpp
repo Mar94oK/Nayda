@@ -110,6 +110,8 @@ void CardsInGameObserver::RemoveCard(SimpleCard card)
                 RemoveCardFromDisabledCards(card);
 
             _cardsInGameHolder.erase(_cardsInGameHolder.begin() + static_cast<int32_t>(var));
+            _cardsAsButtonsRepresenter[var]->deleteLater();
+            _cardsAsButtonsRepresenter.erase(_cardsAsButtonsRepresenter.begin() + static_cast<int32_t>(var));
         }
     }
     qDebug() << "NAY-002: ERROR while void CardsInGameObserver::RemoveCard(SimpleCard card). Card not found!";
