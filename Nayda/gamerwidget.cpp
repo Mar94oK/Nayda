@@ -108,7 +108,7 @@ bool GamerWidget::eventFilter(QObject *o, QEvent *e)
 
     if (o == ui->btn_class_1)  {
         if (e->type() == QEvent::Enter) {
-            qDebug() << "Mouse Enters Area!";
+            //qDebug() << "Mouse Enters Area!";
             _currentCardToShowInCentre = {0,1777}; //no Class
             _showCardsTimer->start(static_cast<int>(_timeToShowTheCard));
             _currentCardToShowNearItsPosition.SetSimpleCard({0,1777});
@@ -120,7 +120,7 @@ bool GamerWidget::eventFilter(QObject *o, QEvent *e)
             return true;
         }
         else if (e->type() == QEvent::Leave) {
-            qDebug() << "Mouse Leaves Area!";
+            //qDebug() << "Mouse Leaves Area!";
             if (_showCardsTimer->isActive()) _showCardsTimer->stop();
             emit SignalHideTheCardInCentre(true); //close the card!
             return true;
@@ -132,7 +132,7 @@ bool GamerWidget::eventFilter(QObject *o, QEvent *e)
     }
     if (o == ui->btn_race_1)  {
         if (e->type() == QEvent::Enter) {
-            qDebug() << "Mouse Enters Area!";
+            //qDebug() << "Mouse Enters Area!";
             _currentCardToShowInCentre = {0,0}; //no Race
             _showCardsTimer->start(static_cast<int>(_timeToShowTheCard));
             _currentCardToShowNearItsPosition.SetSimpleCard({0,0});
@@ -143,7 +143,7 @@ bool GamerWidget::eventFilter(QObject *o, QEvent *e)
             return true;
         }
         else if (e->type() == QEvent::Leave) {
-            qDebug() << "Mouse Leaves Area!";
+            //qDebug() << "Mouse Leaves Area!";
             if (_showCardsTimer->isActive()) _showCardsTimer->stop();
             emit SignalHideTheCardInCentre(true); //close the card!
             return true;

@@ -2471,7 +2471,8 @@ void The_Game::DEBUGPassTheCardToTheBattleField(PositionedCard card)
 
     //Соединить этот сигнал со слотом, который добавляет карту на поле боя.
     connect(animation, &QPropertyAnimation::finished, [this, card] {SlotAddPlayedCardToTheBattleField(card.GetCard());});
-
+    connect(animation, &QPropertyAnimation::destroyed,
+            []{qDebug() << "NAY-002: DEBUGPassTheCardToTheBattleField() destroyed";});
     //_movingCard->deleteLater();
 }
 
@@ -2537,15 +2538,14 @@ void The_Game::Animation_StartPassSoldCardsFromHandToTreasureFold_Phase1(GamerWi
 
         animation->start(QAbstractAnimation::DeleteWhenStopped);
 
-//        connect(animation, &QPropertyAnimation::finished,
-//                _movingCard, &QPushButton::deleteLater);
-
-        //Соединить этот сигнал со слотом, который отображает анимацию второй фазы сброса
-        //проданных карт.
+        connect(animation, &QPropertyAnimation::destroyed,
+                [animations]{qDebug() << "NAY-002: Animation_StartPassSoldCardsFromHandToTreasureFold_Phase1() destroyed. ID: " << animations.size();});
     }
     connect(animations[0], &QPropertyAnimation::finished,
             [this, cardsAsButtons, cards]
             {Animation_StartPassSoldCardsFromHandToTreasureFold_Phase2(cardsAsButtons, cards);});
+
+
 }
 
 void The_Game::Animation_StartPassSoldCardsFromHandToTreasureFold_Phase2(std::vector<QPushButton*> movedCards, const std::vector<PositionedCard>& cards)
@@ -2578,6 +2578,10 @@ void The_Game::Animation_StartPassSoldCardsFromHandToTreasureFold_Phase2(std::ve
         animation->setEasingCurve(QEasingCurve::OutCubic);
 
         animation->start(QAbstractAnimation::DeleteWhenStopped);
+
+        connect(animation, &QPropertyAnimation::destroyed,
+                [animations]{qDebug() << "NAY-002: Animation_StartPassSoldCardsFromHandToTreasureFold_Phase2() destroyed. ID: " << animations.size();});
+
     }
 
     //Соединить этот сигнал со слотом, который отображает анимацию третьей фазы сброса
@@ -2591,7 +2595,7 @@ void The_Game::Animation_StartPassSoldCardsFromHandToTreasureFold_Phase3(std::ve
 {
     if (!movedCards.size())
     {
-        qDebug() << "NAY-002: ERROR WHILE Animation_StartPassSoldCardsFromHandToTreasureFold_Phase2()."
+        qDebug() << "NAY-002: ERROR WHILE Animation_StartPassSoldCardsFromHandToTreasureFold_Phase3()."
                     "Empty Vector!";
         return;
     }
@@ -2618,6 +2622,9 @@ void The_Game::Animation_StartPassSoldCardsFromHandToTreasureFold_Phase3(std::ve
         animation->setEasingCurve(QEasingCurve::OutCubic);
 
         animation->start(QAbstractAnimation::DeleteWhenStopped);
+
+        connect(animation, &QPropertyAnimation::destroyed,
+                [animations]{qDebug() << "NAY-002: Animation_StartPassSoldCardsFromHandToTreasureFold_Phase3() destroyed. ID: " << animations.size();});
 
         //Соединить этот сигнал со слотом, который добавляет и отображает последнюю сброшенную карту в TreasuresFold.
         //До этого момента игра находится в фазе CardProcessing.
@@ -2690,7 +2697,7 @@ void The_Game::Animation_PassPlayedCardToCardsInGame_Phase1(GamerWidget *wt, con
     //_movingCard->installEventFilter(this);
     _movingCard->show();
 
-    QPropertyAnimation *animation = new QPropertyAnimation(_movingCard, "geometry", this);
+    QPropertyAnimation *animation = new QPropertyAnimation(_movingCard, "geometry");
     animation->setDuration(static_cast<int32_t>(_msTimeForApplyCardToCardsInGamePhase1));
     animation->setStartValue(QRect(relativeCardPostionTopLeft.x(), relativeCardPostionTopLeft.y(), sizeX, sizeY)); //initial card position
     animation->setEndValue(QRect(width()/2 - sizeX, height()/2 - sizeY, sizeX*2, sizeY*2)); //centre
@@ -2698,11 +2705,20 @@ void The_Game::Animation_PassPlayedCardToCardsInGame_Phase1(GamerWidget *wt, con
 
     animation->start(QAbstractAnimation::DeleteWhenStopped);
 
+    connect(animation, &QPropertyAnimation::destroyed,
+            []{qDebug() << "NAY-002: Animation_PassPlayedCardToCardsInGame_Phase1 destroyed";});
+
     connect(_animationApplyCardToCardsInGameTimer, &QTimer::timeout,
             [this, _movingCard, card, active, wt] {Animation_PassPlayedCardToCardsInGame_Phase2(wt, _movingCard, card, active);});
 
     connect(animation, &QPropertyAnimation::finished,
             [this] {_animationApplyCardToCardsInGameTimer->start();});
+
+    connect(animation, &QPropertyAnimation::finished,
+            [_movingCard] {_movingCard->deleteLater();});
+
+    connect(_movingCard, &QPushButton::destroyed,
+            [] {qDebug() << "NAY-002: _movingCard->Destroyed";});
 }
 
 void The_Game::Animation_PassPlayedCardToCardsInGame_Phase2(GamerWidget *wt, QPushButton* ptr, const PositionedCard &card, bool active)
@@ -2710,22 +2726,74 @@ void The_Game::Animation_PassPlayedCardToCardsInGame_Phase2(GamerWidget *wt, QPu
     QPoint EndPosition = GetPlayerWidgetSelfPosition(wt) + GetAvatarPositon(wt);
     QSize EndSize = GetAvatarSize(wt);
 
+
+    QPushButton* _movingCard = new QPushButton("Animated Button", this);
+
+    //продолжить здесь завтра (15.12.2018)
+    //т.е. уже сегодня
+
+    QPoint handPosition = wt->ProvideHandPosition();
+    QPoint gamerWidgetPosition = wt->ProvideSelfPosition();
+
+    QPoint relativeCardPostionTopLeft = card.GetPositionTopLeft() + gamerWidgetPosition + handPosition;
+    QPoint relativeCardPostionBottomRight = card.GetPositionBottomRight() + gamerWidgetPosition + handPosition;
+
+    _movingCard->move(relativeCardPostionTopLeft.x(), relativeCardPostionTopLeft.y());
+    int sizeX = relativeCardPostionBottomRight.x() - relativeCardPostionTopLeft.x() ;
+    int sizeY = relativeCardPostionBottomRight.y() - relativeCardPostionTopLeft.y();
+
+    qDebug() << "Size of the Card during moving: X: " << sizeX;
+    qDebug() << "Size of the Card during moving: Y: " << sizeY;
+
+    QString picture = findTheCardPicture(card.GetCard());
+
+    QImage image(picture);
+
+    QPixmap pxmp_movingCard;
+    if (!active && _gameSettings.GetHardCodedSettings_ShowNotActiveCardAsGreyScale())
+    {
+        pxmp_movingCard = QPixmap::fromImage(image.convertToFormat(QImage::Format_Grayscale8));
+    }
+    else
+        pxmp_movingCard = QPixmap::fromImage(image);
+
+    //QPixmap pxmp_movingCard(picture);
+    QPalette plte_movingCard;
+    plte_movingCard.setBrush(_movingCard->backgroundRole(),
+    QBrush(pxmp_movingCard.scaled(sizeX*2, sizeY*2, Qt::KeepAspectRatio, Qt::SmoothTransformation)));
+
+    _movingCard->setMaximumWidth(sizeX*2);
+    _movingCard->setMaximumHeight(sizeY*2);
+    _movingCard->setMinimumWidth(sizeX);
+    _movingCard->setMinimumHeight(sizeY);
+
+    //http://www.prog.org.ru/topic_7215_0.html
+    _movingCard->setFlat(true);
+    _movingCard->setAutoFillBackground(true);
+    _movingCard->setPalette(plte_movingCard);
+    _movingCard->setText("");
+    //_movingCard->installEventFilter(this);
+    _movingCard->show();
+
     //SEGFAULT ON SECOND ATTEMPT
-    QPropertyAnimation *animation = new QPropertyAnimation(ptr, "geometry", this);
+    QPropertyAnimation *animation = new QPropertyAnimation(_movingCard, "geometry");
     animation->setDuration(static_cast<int32_t>(_msTimeForApplyCardToCardsInGamePhase2));
-    animation->setStartValue(QRect(ptr->pos().x(), ptr->pos().y(),
-                                   ptr->size().width(), ptr->size().height()));
+    animation->setStartValue(QRect(_movingCard->pos().x(), _movingCard->pos().y(),
+                                   _movingCard->size().width(), _movingCard->size().height()));
     animation->setEndValue(QRect(EndPosition.x(), EndPosition.y(),
                                  EndSize.width(), EndSize.height()));
     animation->setEasingCurve(QEasingCurve::OutCubic);
 
     animation->start(QAbstractAnimation::DeleteWhenStopped);
 
+    connect(animation, &QPropertyAnimation::destroyed,
+            []{qDebug() << "NAY-002: Animation_PassPlayedCardToCardsInGame_Phase2 destroyed";});
+
     connect(animation, &QPropertyAnimation::finished,
             [this]{RestoreGamePhase();});
 
     connect(animation, &QPropertyAnimation::finished,
-            ptr, &QPushButton::deleteLater);
+            [_movingCard] {_movingCard->deleteLater();});
 
 }
 
