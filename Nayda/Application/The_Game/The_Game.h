@@ -44,6 +44,11 @@
 #define SecondaryGamerWidgetWidthExpansion 0.05
 
 
+#define DEBUG_CARDS_TO_BE_GIVEN_TO_MASTER
+//#undef DEBUG_CARDS_TO_BE_GIVEN_TO_MASTER
+
+
+
 //For the Diplomacy there should be another timer.
 enum class GamePhase {
                         GameInitialization,
@@ -295,6 +300,29 @@ private:
     //SERVREW
     //this method also sets the cards values (how many left in the deck)
     void GivingCardsToPlayers();
+
+private:
+//Т.к. переиодически нужно отлаживать специальные карточные сетапы,
+//придётся набивать стек карт у основоного игрока специальными картами
+//Для этого вводится дополнительный вектор, в котором будут отражаться карты, которые нужно обязательно выдать.
+//Процесс выдачи должен проконтролировать, что карты, покинувшие колоду стека карт
+//не нарушают игровой процесс - т.е. не дублируются, не разрушают стек карт, откуда были взяты.
+//Этот процесс на сервере не дублируется.
+//Т.к. "подмешанные" карты выдаются мастеру комнаты, а при отладке это ВСЕГДА! первый игрок.
+//Т.е эта система не должна (я надеюсь) разрушать игровую логику.
+
+#ifdef DEBUG_CARDS_TO_BE_GIVEN_TO_MASTER
+    std::vector<SimpleCard> _debugCardsToBeGivenToMainPlayer = {{1,75}, {1,120},
+                                                                {1,38}, {1, 47}};
+
+#endif
+
+    //TinfoilHat  - 75
+    //Magnificent Hat - 120
+
+    //Pollymorph Potion - 38
+    //Wand of Dowsing - 47
+
 
     void ShowInitialCardsOnHands();
 

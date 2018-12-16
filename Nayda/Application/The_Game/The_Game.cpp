@@ -1616,8 +1616,37 @@ void The_Game::GivingCardsToPlayers()
     {
         for (uint32_t y = 0; y < cardsToGive; ++y)
         {
+#ifndef DEBUG_CARDS_TO_BE_GIVEN_TO_MASTER
             _orderOfMove[var]->AddCardToHands(_treasuresDeck.front());
             _treasuresDeck.erase(_treasuresDeck.begin());
+#else
+            if (var == 0)
+            {
+                //в отладочном векторе не должно быть меньше карт, чем в cardsToGive;
+                try
+                {
+                    if (_debugCardsToBeGivenToMainPlayer.size() < cardsToGive)
+                        throw "Error!";
+                }
+                catch (...)
+                {
+                    qDebug() << "NAY-002: _debugCardsToBeGivenToMainPlayer.size() < cardsToGive!!!!";
+                }
+
+                _orderOfMove[var]->AddCardToHands(_debugCardsToBeGivenToMainPlayer[y]);
+                for (uint32_t x = 0; x < _treasuresDeck.size(); ++x)
+                {
+                    if (_treasuresDeck[x] == _debugCardsToBeGivenToMainPlayer[y])
+                        _treasuresDeck.erase(_treasuresDeck.begin() + static_cast<int32_t>(x));
+                }
+                _treasuresDeck.shrink_to_fit();
+            }
+            else
+            {
+                _orderOfMove[var]->AddCardToHands(_treasuresDeck.front());
+                _treasuresDeck.erase(_treasuresDeck.begin());
+            }
+#endif
         }
     }
 
