@@ -3319,7 +3319,7 @@ void The_Game::RemoveTheCardFromCardsInGame(GamerWidget *wt, SimpleCard card)
 void The_Game::SlotShowTradeMenu()
 {
     QRect HW_Screen_Size = QApplication::desktop()->screenGeometry();
-    emit SignalHideTradeButton();
+    //emit SignalHideTradeButton();
     _sellMenu = new SellMenu(AllDecksToBePassed(
                                  _monstersDeck,
                                  _amplifiersDeck,
@@ -3421,11 +3421,11 @@ void The_Game::SlotProcessCardsSelectedToBeSold(const std::vector<SimpleCard> ca
     }
     _mainPlayer->RemoveGivenCardsFromCardsInGame(PositionedCard::RevertToSimpleCardsVector(posCardsInGame));
 
+    std::vector<PositionedCard> allCardsToBeDisplayed = posCardsInGame + posCardsOnHands;
+
     //start animation here
-    if (!posCardsOnHands.empty())
-        Animation_StartPassSoldCardsFromHandToTreasureFold_Phase1(ui->MainGamer, posCardsOnHands);
-    if (!posCardsInGame.empty())
-        Animation_StartPassSoldCardsFromHandToTreasureFold_Phase1(ui->MainGamer, posCardsInGame);
+    if (!allCardsToBeDisplayed.empty())
+        Animation_StartPassSoldCardsFromHandToTreasureFold_Phase1(ui->MainGamer, allCardsToBeDisplayed);
 }
 
 std::vector<PositionedCard> The_Game::GetPositionedCardsFromHand(GamerWidget* wt, const std::vector<SimpleCard> &cards)
@@ -3478,6 +3478,10 @@ void The_Game::SlotShowAllSoldCardsInCentre(const std::vector<SimpleCard> cards,
 bool The_Game::CheckThePlayerIsAbleToSell(Player* player)
 {
     qDebug() <<"NAY-002: Entering AbleToSell Checker";
+
+    //Fisrt of all, clear the vector!
+    ClearCardsAreReadyToBeSoldHolder();
+
     if (_globalGamePhase == GlobalGamePhase::OtherPlayerMove)
         return false;
 
@@ -3651,12 +3655,11 @@ void The_Game::SlotProcessOpponentHasSoldCards(TheGameMainGamerHasSoldCards data
     }
     currentPlayer->RemoveGivenCardsFromCardsInGame(PositionedCard::RevertToSimpleCardsVector(posCardsInGame));
 
-    //start animation here
-    if (!posCardsOnHands.empty())
-        Animation_StartPassSoldCardsFromHandToTreasureFold_Phase1(currentWidget, posCardsOnHands);
-    if (!posCardsInGame.empty())
-        Animation_StartPassSoldCardsFromHandToTreasureFold_Phase1(currentWidget, posCardsInGame);
+    std::vector<PositionedCard> allCardsToBeDisplayed = posCardsInGame + posCardsOnHands;
 
+    //start animation here
+    if (!allCardsToBeDisplayed.empty())
+        Animation_StartPassSoldCardsFromHandToTreasureFold_Phase1(ui->MainGamer, allCardsToBeDisplayed);
 
 }
 

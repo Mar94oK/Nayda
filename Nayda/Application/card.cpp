@@ -2092,3 +2092,13 @@ std::vector<SimpleCard> PositionedCard::RevertToSimpleCardsVector(const std::vec
     }
     return simpleCards;
 }
+
+std::vector<PositionedCard> operator+(const std::vector<PositionedCard> &left, const std::vector<PositionedCard> &right)
+{
+    std::vector<PositionedCard> result = left;
+    for (uint32_t var = 0; var < right.size(); ++var)
+    {
+        result.push_back(right[var]);
+    }
+    return result;
+}

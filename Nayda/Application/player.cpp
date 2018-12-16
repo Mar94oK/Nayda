@@ -12,13 +12,15 @@ void Player::SetPlayersName(const QString &name)
 
 void Player::RemoveGivenCardsFromHand(const std::vector<SimpleCard> &cards)
 {
+    qDebug() << "Delete correction checker: Player::RemoveGivenCardsFromHand: cards Size: " << cards.size();
     for (uint32_t var = 0; var < _cardsOnHands.size(); ++var)
     {
         for (uint32_t y = 0; y < cards.size(); ++y)
         {
             if (_cardsOnHands[var] == cards[y])
             {
-               _cardsOnHands.erase(_cardsOnHands.begin() + static_cast<int32_t>(var));
+               qDebug() << "Delete correction checker: Player::RemoveGivenCardsFromHand: ID: " << _cardsOnHands[var].second;
+                _cardsOnHands.erase(_cardsOnHands.begin() + static_cast<int32_t>(var));
             }
         }
     }

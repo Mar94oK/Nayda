@@ -563,6 +563,7 @@ private:
     SellMenu* _sellMenu = nullptr;
     std::vector<SimpleCard> _cardsAreReadyToBeSoldHolder;
     void RemoveCardFromCardsAreAbleToBeSold(SimpleCard card);
+    void ClearCardsAreReadyToBeSoldHolder() { _cardsAreReadyToBeSoldHolder.clear(); }
 
 private:
 
@@ -594,9 +595,6 @@ private:
 
     //Этой функцией можно пользоваться, когда известен игрок
     void MoveCardFromCardInHandToCardInGame(Player* player, SimpleCard card);
-
-    void SoldProcess(const std::vector<PositionedCard>& soldCards);
-
 
 public:
 
