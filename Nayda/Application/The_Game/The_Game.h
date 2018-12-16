@@ -771,7 +771,11 @@ private:
 
 private slots:
 
-    void SlotStartApplyCardToCardsInGameTimer();
+    void DEBUG_SlotPhase_1() {emit DebugSignalPhase1(); }
+
+signals:
+
+    void DebugSignalPhase1();
 
 private:
 

@@ -2023,19 +2023,19 @@ void The_Game::InitializeApplyCardToCardsInGameTimer(uint32_t msTime)
     _animationApplyCardToCardsInGameTimer->setInterval(msTime);
 }
 
-void The_Game::SlotStartApplyCardToCardsInGameTimer()
-{
-    if (!_phase1Completed)
-    {
-        _animationApplyCardToCardsInGameTimer->start();
-        _phase1Completed = true;
-    }
-    else
-    {
-        _phase1Completed = false;
-    }
+//void The_Game::SlotStartApplyCardToCardsInGameTimer()
+//{
+//    if (!_phase1Completed)
+//    {
+//        _animationApplyCardToCardsInGameTimer->start();
+//        _phase1Completed = true;
+//    }
+//    else
+//    {
+//        _phase1Completed = false;
+//    }
 
-}
+//}
 
 void The_Game::SlotAdjustSizeOfTheGamerWidgetToMakeCardsToBeInPlace()
 {
@@ -2751,8 +2751,17 @@ void The_Game::Animation_PassPlayedCardToCardsInGame_Phase1(GamerWidget *wt, con
 //            [] {qDebug() << "NAY-002: _movingCard->Destroyed";});
 
 
+//    connect(animation, &QPropertyAnimation::finished,
+//            [this, wt, animation, movingCard] {Animation_PassPlayedCardToCardsInGame_Phase2(wt, animation, movingCard);});
+
+//    connect(animation, &QPropertyAnimation::finished, this, &The_Game::DEBUG_SlotPhase_1);
+//    connect(this, &The_Game::DebugSignalPhase1,
+//            [this, wt, animation, movingCard] {Animation_PassPlayedCardToCardsInGame_Phase2(wt, animation, movingCard);});
+
     connect(animation, &QPropertyAnimation::finished,
-            [this, wt, animation, movingCard] {Animation_PassPlayedCardToCardsInGame_Phase2(wt, animation, movingCard);});
+            [this, wt, animation, movingCard]
+    {(QTimer::singleShot(1000, animation, [this, wt, animation, movingCard]{Animation_PassPlayedCardToCardsInGame_Phase2(wt, animation, movingCard);}));});
+
 
     animation->start(QAbstractAnimation::KeepWhenStopped);
 }
@@ -2763,6 +2772,9 @@ void The_Game::Animation_PassPlayedCardToCardsInGame_Phase2(GamerWidget *wt, QPr
 
 //    disconnect(animation, &QPropertyAnimation::finished,
 //               _animationApplyCardToCardsInGameTimer, static_cast<void (QTimer::*)(void)>(&QTimer::start));
+
+    disconnect(animation, &QPropertyAnimation::finished, this, &The_Game::DEBUG_SlotPhase_1);
+
 
     QPoint EndPosition = GetPlayerWidgetSelfPosition(wt) + GetAvatarPositon(wt);
     QSize EndSize = GetAvatarSize(wt);
@@ -2803,7 +2815,12 @@ void The_Game::Animation_PassPlayedCardToCardsInGame_Phase2(GamerWidget *wt, QPr
     connect(card, &QPushButton::destroyed,
             [] {qDebug() << "NAY-002: _movingCard->Destroyed";});
 
-    animation->start(QAbstractAnimation::DeleteWhenStopped);
+//    connect(_animationApplyCardToCardsInGameTimer, &QTimer::timeout,
+//            [animation] {animation->start(QAbstractAnimation::DeleteWhenStopped);});
+
+    QTimer::singleShot(1000, animation, [animation]{animation->start(QAbstractAnimation::DeleteWhenStopped);});
+//    animation->start(QAbstractAnimation::DeleteWhenStopped);
+//    _animationApplyCardToCardsInGameTimer->start();
 }
 
 void The_Game::DEBUG_SlotAnimation_PassPlayedCardToCardsInGame_Phase2(GamerWidget *wt, QPropertyAnimation *animation, QPushButton *card)
