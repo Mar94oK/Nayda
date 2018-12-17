@@ -8,7 +8,11 @@
 
 
 
-
+enum class FoldObsreverState
+{
+    Enabled,
+    Disabled
+};
 
 namespace Ui {
 class LastFoldObserver;
@@ -36,6 +40,20 @@ private:
 
     std::vector<QPushButton* > _cardsLastFoldedRepresenter;
     std::vector<SimpleCard>    _cardsLastFolded;
+
+public:
+
+    void ClearFoldObserver();
+    void SetNewCards(std::vector<SimpleCard> cards);
+
+private:
+
+    FoldObsreverState _state = FoldObsreverState::Disabled;
+
+public:
+
+    void SetState(FoldObsreverState state) { _state = state; }
+    FoldObsreverState GetState() { return _state; }
 
 private:
 

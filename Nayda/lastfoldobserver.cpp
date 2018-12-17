@@ -38,6 +38,25 @@ LastFoldObserver::~LastFoldObserver()
     delete ui;
 }
 
+void LastFoldObserver::ClearFoldObserver()
+{
+    for (uint32_t var = 0; var < _cardsLastFoldedRepresenter.size(); ++var)
+    {
+        _cardsLastFoldedRepresenter[var]->deleteLater();
+    }
+    _cardsLastFolded.clear();
+    _cardsLastFoldedRepresenter.clear();
+}
+
+void LastFoldObserver::SetNewCards(std::vector<SimpleCard> cards)
+{
+    for (uint32_t var = 0; var < cards.size(); ++var)
+    {
+        AddCard(cards[var]);
+        _cardsLastFolded.push_back(cards[var]);
+    }
+}
+
 void LastFoldObserver::SetDecks(const AllDecksToBePassed &data)
 {
     _monstersDeck = data._monstersDeck;

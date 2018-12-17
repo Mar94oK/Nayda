@@ -284,6 +284,8 @@ private:
     void AddCardToFoldStack(SimpleCard card);
 
     LastFoldObserver* _foldObserver = nullptr;
+    //will be initialized with empty cards vector.
+    void InitializeFoldObserver();
     void ProcessFoldObserver(const std::vector<SimpleCard> foldedCards);
 
     std::vector<SimpleCard> _lastFold;
@@ -504,9 +506,9 @@ private:
     //moving to centre
     void Animation_StartPassSoldCardsFromHandToTreasureFold_Phase1(GamerWidget* wt, std::vector<PositionedCard> cards);
     //leaving at centre
-    void Animation_StartPassSoldCardsFromHandToTreasureFold_Phase2(std::vector<QPushButton *> movedCards, const std::vector<PositionedCard> &cards);
+    void Animation_StartPassSoldCardsFromHandToTreasureFold_Phase2(std::vector<QPropertyAnimation *> animations, std::vector<QPushButton *> movedCards, const std::vector<PositionedCard> &cards);
     //moving to treasures fold
-    void Animation_StartPassSoldCardsFromHandToTreasureFold_Phase3(std::vector<QPushButton *> movedCards, const std::vector<PositionedCard> &cards);
+    void Animation_StartPassSoldCardsFromHandToTreasureFold_Phase3(std::vector<QPropertyAnimation *> animations, std::vector<QPushButton *> movedCards, const std::vector<PositionedCard> &cards);
 
     //moving played card
     QPushButton* CreateButtonForAnimation(SimpleCard card, QPoint cardPostionTopLeft, QPoint cardPostionBottomRight, bool active);

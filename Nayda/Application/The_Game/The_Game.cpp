@@ -84,6 +84,9 @@ The_Game::The_Game(QWidget *parent) :
     InitializePhaseTimer();
     InitializeTicksTimers();
     InitializeApplyCardToCardsInGameTimer(_msHoldBetweenApplyCardToCardsInGameAnimations);
+
+    InitializeFoldObserver();
+
 }
 
 The_Game::~The_Game()
@@ -1501,75 +1504,61 @@ void The_Game::AddCardToFoldStack(SimpleCard card)
         _doorsFold.push_back(card);
 }
 
+void The_Game::InitializeFoldObserver()
+{
+    QRect HW_Screen_Size = geometry();
+    std::vector<SimpleCard> foldedCards;
+    _foldObserver = new LastFoldObserver(AllDecksToBePassed(
+                                             _monstersDeck,
+                                             _amplifiersDeck,
+                                             _cursesDeck,
+                                             _professionsDeck,
+                                             _racesDeck,
+                                             _specialMechanicsDeck,
+
+                                             _armorDeck,
+                                             _armorAmplifiersDeck,
+                                             _battleAmplifiersDeck,
+                                             _levelUpDeck,
+                                             _specialMechanicsTreasureDeck,
+                                             _thingsAmplifiersDeck,
+                                             _weaponsDeck),
+                                          QSize(HW_Screen_Size.width(),
+                                                HW_Screen_Size.height()),
+                                          foldedCards);
+
+    _foldObserver->SetState(FoldObsreverState::Disabled);
+    emit SignalDisableFoldProcessButton();
+
+    connect(ui->CardStacksWidget, &CardStacks::SignalFoldObserverButtonPressed,
+            _foldObserver, &LastFoldObserver::show);
+}
+
 void The_Game::ProcessFoldObserver(const std::vector<SimpleCard> foldedCards)
 {
     QRect HW_Screen_Size = geometry();
 
-    if (_foldObserver == nullptr)
+    if (_foldObserver->GetState() == FoldObsreverState::Disabled)
     {
-        _foldObserver = new LastFoldObserver(AllDecksToBePassed(
-                                                 _monstersDeck,
-                                                 _amplifiersDeck,
-                                                 _cursesDeck,
-                                                 _professionsDeck,
-                                                 _racesDeck,
-                                                 _specialMechanicsDeck,
-
-                                                 _armorDeck,
-                                                 _armorAmplifiersDeck,
-                                                 _battleAmplifiersDeck,
-                                                 _levelUpDeck,
-                                                 _specialMechanicsTreasureDeck,
-                                                 _thingsAmplifiersDeck,
-                                                 _weaponsDeck),
-                                              QSize(HW_Screen_Size.width(),
-                                                    HW_Screen_Size.height()),
-                                              foldedCards);
+        //кнопка блокирована
+        //удалить старые карты
+        //добавить новые карты
+        _foldObserver->ClearFoldObserver();
+        _foldObserver->SetNewCards(foldedCards);
+        _foldObserver->SetState(FoldObsreverState::Enabled);
         emit SignalEnableFoldProcessButton();
-
-        connect(ui->CardStacksWidget, &CardStacks::SignalFoldObserverButtonPressed,
-                _foldObserver, &LastFoldObserver::show);
-
-        connect(_foldObserver, &LastFoldObserver::SignalUserIsClosingLastFoldObserver,
-                [this]{ _foldObserver->deleteLater();});
     }
     else
     {
+        //NAY-002: EXPECTED_IMPROVEMENT
+        //Потом не прятать кнопку, а только отключать
+        //на время процессинга
         emit SignalDisableFoldProcessButton();
-
-        _foldObserver->blockSignals(true);
-        _foldObserver->close();
-        _foldObserver->deleteLater();
-
-        _foldObserver = new LastFoldObserver(AllDecksToBePassed(
-                                                 _monstersDeck,
-                                                 _amplifiersDeck,
-                                                 _cursesDeck,
-                                                 _professionsDeck,
-                                                 _racesDeck,
-                                                 _specialMechanicsDeck,
-
-                                                 _armorDeck,
-                                                 _armorAmplifiersDeck,
-                                                 _battleAmplifiersDeck,
-                                                 _levelUpDeck,
-                                                 _specialMechanicsTreasureDeck,
-                                                 _thingsAmplifiersDeck,
-                                                 _weaponsDeck),
-                                              QSize(HW_Screen_Size.width(),
-                                                    HW_Screen_Size.height()),
-                                              foldedCards);
-
-
-        connect(ui->CardStacksWidget, &CardStacks::SignalFoldObserverButtonPressed,
-                _foldObserver, &LastFoldObserver::show);
-
-        connect(_foldObserver, &LastFoldObserver::SignalUserIsClosingLastFoldObserver,
-                [this]{ _foldObserver->deleteLater();});
-
+        _foldObserver->ClearFoldObserver();
+        _foldObserver->SetNewCards(foldedCards);
+        _foldObserver->SetState(FoldObsreverState::Enabled);
         emit SignalEnableFoldProcessButton();
     }
-
     _lastFold.clear();
 }
 
@@ -2551,19 +2540,26 @@ void The_Game::Animation_StartPassSoldCardsFromHandToTreasureFold_Phase1(GamerWi
 
         //setWindowFlags(Qt::CustomizeWindowHint);
 
-        animation->start(QAbstractAnimation::DeleteWhenStopped);
+
 
         connect(animation, &QPropertyAnimation::destroyed,
                 [animations]{qDebug() << "NAY-002: Animation_StartPassSoldCardsFromHandToTreasureFold_Phase1() destroyed. ID: " << animations.size();});
+
+
+
     }
+
     connect(animations[0], &QPropertyAnimation::finished,
-            [this, cardsAsButtons, cards]
-            {Animation_StartPassSoldCardsFromHandToTreasureFold_Phase2(cardsAsButtons, cards);});
+            [this, animations, cardsAsButtons, cards]
+            {Animation_StartPassSoldCardsFromHandToTreasureFold_Phase2(animations, cardsAsButtons, cards);});
 
-
+    for (uint32_t var = 0; var < animations.size(); ++var)
+    {
+        animations[var]->start(QAbstractAnimation::KeepWhenStopped);
+    }
 }
 
-void The_Game::Animation_StartPassSoldCardsFromHandToTreasureFold_Phase2(std::vector<QPushButton*> movedCards, const std::vector<PositionedCard>& cards)
+void The_Game::Animation_StartPassSoldCardsFromHandToTreasureFold_Phase2(std::vector<QPropertyAnimation*>animations, std::vector<QPushButton*> movedCards, const std::vector<PositionedCard>& cards)
 {
     //Разместить по позициям.
     //финальная позиция, где они были в прошлый раз.
@@ -2574,27 +2570,28 @@ void The_Game::Animation_StartPassSoldCardsFromHandToTreasureFold_Phase2(std::ve
                     "Empty Vector!";
         return;
     }
+    if (animations.size() != movedCards.size())
+    {
+        qDebug() << "NAY-002: ERROR WHILE Animation_StartPassSoldCardsFromHandToTreasureFold_Phase2()."
+                    "animations.size() != movedCards.size()";
+        return;
+    }
 
     uint32_t sizeHeight = static_cast<uint32_t>(movedCards[0]->height());
     uint32_t totalWidthNecessary =static_cast<uint32_t>(movedCards.size() * movedCards[0]->width());
     QPoint CardMostToTheLeftPosition = GetCenterPosition()
             - QPoint(static_cast<uint32_t>(totalWidthNecessary/2), movedCards[0]->pos().y());
 
-    std::vector<QPropertyAnimation*> animations;
     for (uint32_t var = 0; var < movedCards.size(); ++var)
     {  
-        QPropertyAnimation *animation = new QPropertyAnimation(movedCards[var], "geometry");
-        animations.push_back(animation);
-        animation->setDuration(static_cast<uint32_t>(_msTimeForTradeAnimationPhase2));
-        animation->setStartValue(QRect(movedCards[var]->pos().x(), movedCards[var]->pos().y(),
+        animations[var]->setDuration(static_cast<uint32_t>(_msTimeForTradeAnimationPhase2));
+        animations[var]->setStartValue(QRect(movedCards[var]->pos().x(), movedCards[var]->pos().y(),
                                        movedCards[var]->size().width(), movedCards[var]->size().height()));
-        animation->setEndValue(QRect(CardMostToTheLeftPosition.x() +var*movedCards[var]->size().width(), movedCards[var]->pos().y(),
+        animations[var]->setEndValue(QRect(CardMostToTheLeftPosition.x() +var*movedCards[var]->size().width(), movedCards[var]->pos().y(),
                                      movedCards[var]->size().width(), movedCards[var]->size().height()));
-        animation->setEasingCurve(QEasingCurve::OutCubic);
+        animations[var]->setEasingCurve(QEasingCurve::OutCubic);
 
-        animation->start(QAbstractAnimation::DeleteWhenStopped);
-
-        connect(animation, &QPropertyAnimation::destroyed,
+        connect(animations[var], &QPropertyAnimation::destroyed,
                 [animations]{qDebug() << "NAY-002: Animation_StartPassSoldCardsFromHandToTreasureFold_Phase2() destroyed. ID: " << animations.size();});
 
     }
@@ -2602,11 +2599,16 @@ void The_Game::Animation_StartPassSoldCardsFromHandToTreasureFold_Phase2(std::ve
     //Соединить этот сигнал со слотом, который отображает анимацию третьей фазы сброса
     //проданных карт.
     connect(animations[0], &QPropertyAnimation::finished,
-            [this, movedCards, cards] {Animation_StartPassSoldCardsFromHandToTreasureFold_Phase3(movedCards, cards);});
+            [this,animations, movedCards, cards] {Animation_StartPassSoldCardsFromHandToTreasureFold_Phase3(animations,movedCards, cards);});
+
+    for (uint32_t var = 0; var < animations.size(); ++var)
+    {
+        animations[var]->start(QAbstractAnimation::KeepWhenStopped);
+    }
 
 }
 
-void The_Game::Animation_StartPassSoldCardsFromHandToTreasureFold_Phase3(std::vector<QPushButton *> movedCards, const std::vector<PositionedCard> &cards)
+void The_Game::Animation_StartPassSoldCardsFromHandToTreasureFold_Phase3(std::vector<QPropertyAnimation*>animations, std::vector<QPushButton *> movedCards, const std::vector<PositionedCard> &cards)
 {
     if (!movedCards.size())
     {
@@ -2614,6 +2616,14 @@ void The_Game::Animation_StartPassSoldCardsFromHandToTreasureFold_Phase3(std::ve
                     "Empty Vector!";
         return;
     }
+
+    if (animations.size() != movedCards.size())
+    {
+        qDebug() << "NAY-002: ERROR WHILE Animation_StartPassSoldCardsFromHandToTreasureFold_Phase3()."
+                    "animations.size() != movedCards.size()";
+        return;
+    }
+
 
     std::vector<SimpleCard> cardsToBeProcessed;
     for (uint32_t var = 0; var < cards.size(); ++var)
@@ -2623,40 +2633,44 @@ void The_Game::Animation_StartPassSoldCardsFromHandToTreasureFold_Phase3(std::ve
 
     QPoint EndPosition = GetTreasuresFoldPosition() + GetCardsStackPosition();
     QSize EndSize = GetTreasuresFoldSize();
-    std::vector<QPropertyAnimation*> animations;
 
     for (uint32_t var = 0; var < movedCards.size(); ++var)
     {
-        QPropertyAnimation *animation = new QPropertyAnimation(movedCards[var], "geometry");
-        animations.push_back(animation);
-        animation->setDuration(static_cast<uint32_t>(_msTimeForTradeAnimationPhase3));
-        animation->setStartValue(QRect(movedCards[var]->pos().x(), movedCards[var]->pos().y(),
+        animations[var]->setDuration(static_cast<uint32_t>(_msTimeForTradeAnimationPhase3));
+        animations[var]->setStartValue(QRect(movedCards[var]->pos().x(), movedCards[var]->pos().y(),
                                        movedCards[var]->size().width(), movedCards[var]->size().height()));
-        animation->setEndValue(QRect(EndPosition.x(), EndPosition.y(),
+        animations[var]->setEndValue(QRect(EndPosition.x(), EndPosition.y(),
                                      EndSize.width(), EndSize.height()));
-        animation->setEasingCurve(QEasingCurve::OutCubic);
+        animations[var]->setEasingCurve(QEasingCurve::OutCubic);
 
-        animation->start(QAbstractAnimation::DeleteWhenStopped);
-
-        connect(animation, &QPropertyAnimation::destroyed,
+        connect(animations[var], &QPropertyAnimation::destroyed,
                 [animations]{qDebug() << "NAY-002: Animation_StartPassSoldCardsFromHandToTreasureFold_Phase3() destroyed. ID: " << animations.size();});
 
         //Соединить этот сигнал со слотом, который добавляет и отображает последнюю сброшенную карту в TreasuresFold.
         //До этого момента игра находится в фазе CardProcessing.
-        connect(animation, &QPropertyAnimation::finished,
+        connect(animations[var], &QPropertyAnimation::finished,
                 movedCards[var], &QPushButton::deleteLater);
-        connect(animation, &QPropertyAnimation::finished,
+        connect(animations[var], &QPropertyAnimation::finished,
                 [this, var, cards]{ emit SignalPassTheCardToTheFoldStack(cards[var].GetCard());});
         if (var == (movedCards.size() - 1))
         {
-            connect(animation, &QPropertyAnimation::finished,
+            connect(animations[var], &QPropertyAnimation::finished,
                     [this, cardsToBeProcessed]{ProcessFoldObserver(cardsToBeProcessed);});
-            connect(animation, &QPropertyAnimation::finished,
+            connect(animations[var], &QPropertyAnimation::finished,
                     [this]{CheckThePlayerIsAbleToSell(_mainPlayer);});
-            connect(animation, &QPropertyAnimation::finished,
+            connect(animations[var], &QPropertyAnimation::finished,
                     [this]{RestoreGamePhase();});
         }
-    }    
+
+
+    }
+
+    qDebug() << "NAY-002: Animations of Trade before starting: ";
+
+    for (uint32_t var = 0; var < animations.size(); ++var)
+    {
+        animations[var]->start(QAbstractAnimation::DeleteWhenStopped);
+    }
 
 }
 
