@@ -2012,19 +2012,6 @@ void The_Game::InitializeApplyCardToCardsInGameTimer(uint32_t msTime)
     _animationApplyCardToCardsInGameTimer->setInterval(msTime);
 }
 
-//void The_Game::SlotStartApplyCardToCardsInGameTimer()
-//{
-//    if (!_phase1Completed)
-//    {
-//        _animationApplyCardToCardsInGameTimer->start();
-//        _phase1Completed = true;
-//    }
-//    else
-//    {
-//        _phase1Completed = false;
-//    }
-
-//}
 
 void The_Game::SlotAdjustSizeOfTheGamerWidgetToMakeCardsToBeInPlace()
 {
@@ -2102,38 +2089,6 @@ void The_Game::SlotCheckCardIsAbleToBePlayed(PositionedCard card, bool fromHand)
         emit SignalCardIsRejectedToBePlayed(true);
         return;
     }
-
-
-
-//    if (_globalGamePhase == GlobalGamePhase::OtherPlayerMove)
-//    {
-//        qDebug() << "NAY-002: DEBUG:::: The Game is in the GlobalGamePhase::OtherPlayerMove when it is not possible to use cards!";
-//        emit SignalCardIsRejectedToBePlayed(true);
-//        return;
-//    }
-
-
-
-//    if ((_currentGamePhase == GamePhase::GameInitialization)
-//            || (_currentGamePhase == GamePhase::WaitingForAnOpponentToMove)
-//            || (_currentGamePhase == GamePhase::Theft)
-//            || (_currentGamePhase == GamePhase::HandAlignment)
-//            || (_currentGamePhase == GamePhase::AfterOpenDoorNoMonster)
-//            || (_currentGamePhase == GamePhase::Diplomacy))
-//    {
-//        qDebug() << "The Game is in Phase when it is not possible to use cards!";
-
-//        emit SignalCardIsRejectedToBePlayed(true);
-
-//        //show the Rejection Message for the Card
-//        SlotShowTheRejectedCardMessage(card);
-//    }
-//    else
-//    {
-//        //testing
-//        DEBUGPassTheCardToTheBattleField(card);
-//        emit SignalCardIsRejectedToBePlayed(false);
-//    }
 }
 
 bool The_Game::TreasureArmorCardImplementer(const TreasureArmorAllowance &allowance, const gameCardTreasureArmor &card)
@@ -2681,22 +2636,23 @@ void The_Game::Animation_StartPassSoldCardsFromHandToTreasureFold_Phase3(std::ve
         //До этого момента игра находится в фазе CardProcessing.
         connect(animations[var], &QPropertyAnimation::finished,
                 movedCards[var], &QPushButton::deleteLater);
-        connect(animations[var], &QPropertyAnimation::finished,
-                [this, var, cards]{ emit SignalPassTheCardToTheFoldStack(cards[var].GetCard());});
-        if (var == (movedCards.size() - 1))
-        {
-            connect(animations[var], &QPropertyAnimation::finished,
-                    [this, cardsToBeProcessed]{ProcessFoldObserver(cardsToBeProcessed);});
-            connect(animations[var], &QPropertyAnimation::finished,
-                    [this]{CheckThePlayerIsAbleToSell(_mainPlayer);});
-            connect(animations[var], &QPropertyAnimation::finished,
-                    [this]{RestoreGamePhase();});
-        }
-
-
+//        connect(animations[var], &QPropertyAnimation::finished,
+//                [this, var, cards]{ emit SignalPassTheCardToTheFoldStack(cards[var].GetCard());});
     }
 
     qDebug() << "NAY-002: Animations of Trade before starting: ";
+
+
+    connect(animations[0], &QPropertyAnimation::finished,
+            [this, cardsToBeProcessed]{ProcessFoldObserver(cardsToBeProcessed);});
+    connect(animations[0], &QPropertyAnimation::finished,
+            [this]{CheckThePlayerIsAbleToSell(_mainPlayer);});
+    connect(animations[0], &QPropertyAnimation::finished,
+            [this]{RestoreGamePhase();});
+    std::vector<SimpleCard> castedToSimpleCards = PositionedCard::RevertToSimpleCardsVector(cards);
+    connect(animations[0], &QPropertyAnimation::finished,
+            [this, castedToSimpleCards]{ui->CardStacksWidget->SlotPassTheCardsToFoldStack(castedToSimpleCards);});
+
 
     for (uint32_t var = 0; var < animations.size(); ++var)
     {
@@ -2773,36 +2729,6 @@ void The_Game::Animation_PassPlayedCardToCardsInGame_Phase1(GamerWidget *wt, con
     connect(animation, &QPropertyAnimation::destroyed,
             []{qDebug() << "NAY-002: Animation_PassPlayedCardToCardsInGame_Phase1 destroyed";});
 
-
-//    connect(animation, &QPropertyAnimation::finished,
-//            _animationApplyCardToCardsInGameTimer, static_cast<void (QTimer::*)(void)>(&QTimer::start));
-
-//    connect(animation, &QPropertyAnimation::finished,
-//            this, &The_Game::SlotStartApplyCardToCardsInGameTimer);
-
-//    connect(_animationApplyCardToCardsInGameTimer, &QTimer::timeout,
-//            [this, wt, animation, movingCard] {Animation_PassPlayedCardToCardsInGame_Phase2(wt, animation, movingCard);});
-
-
-    //DEBUG_SlotAnimation_PassPlayedCardToCardsInGame_Phase2(wt, animation, movingCard);
-
-//    connect(_animationApplyCardToCardsInGameTimer, &QTimer::timeout,
-//            [this, wt, animation, movingCard] {DEBUG_SlotAnimation_PassPlayedCardToCardsInGame_Phase2(wt, animation, movingCard);});
-
-//    connect(_animationApplyCardToCardsInGameTimer, &QTimer::timeout,
-//            [movingCard] {movingCard->deleteLater();});
-
-//    connect(movingCard, &QPushButton::destroyed,
-//            [] {qDebug() << "NAY-002: _movingCard->Destroyed";});
-
-
-//    connect(animation, &QPropertyAnimation::finished,
-//            [this, wt, animation, movingCard] {Animation_PassPlayedCardToCardsInGame_Phase2(wt, animation, movingCard);});
-
-//    connect(animation, &QPropertyAnimation::finished, this, &The_Game::DEBUG_SlotPhase_1);
-//    connect(this, &The_Game::DebugSignalPhase1,
-//            [this, wt, animation, movingCard] {Animation_PassPlayedCardToCardsInGame_Phase2(wt, animation, movingCard);});
-
     connect(animation, &QPropertyAnimation::finished,
             [this, wt, animation, movingCard]
     {(QTimer::singleShot(1000, animation, [this, wt, animation, movingCard]{Animation_PassPlayedCardToCardsInGame_Phase2(wt, animation, movingCard);}));});
@@ -2831,18 +2757,8 @@ void The_Game::Animation_PassPlayedCardToCardsInGame_Phase2(GamerWidget *wt, QPr
         return;
     }
 
-
-//    QPushButton* movingCard = CreateButtonForAnimation(card.GetCard(),
-//                                                       animation.topLeft(),
-//                                                       animation.bottomRight(),
-//                                                       active);
-
-//    movingCard->show();
-
-//    //SEGFAULT ON SECOND ATTEMPT
-//    QPropertyAnimation *animation = new QPropertyAnimation(movingCard, "geometry");
     animation->setDuration(static_cast<int32_t>(_msTimeForApplyCardToCardsInGamePhase2));
-//    animation->setStartValue(animation);
+
     animation->setEndValue(QRect(EndPosition.x(), EndPosition.y(),
                                  EndSize.width(), EndSize.height()));
     animation->setEasingCurve(QEasingCurve::OutCubic);
@@ -3417,8 +3333,8 @@ void The_Game::SetUpSignalSlotsConnections()
     connect(this, &The_Game::SignalShowTradeButton, ui->MainGamer, &GamerWidget::SlotShowTradeButton);
     connect(this, &The_Game::SignalHideTradeButton, ui->MainGamer, &GamerWidget::SlotHideTradeButton);
 
-    connect(this, &The_Game::SignalPassTheCardToTheFoldStack,
-            ui->CardStacksWidget, &CardStacks::SlotPassTheCardToFoldStack);
+//    connect(this, &The_Game::SignalPassTheCardToTheFoldStack,
+//            ui->CardStacksWidget, &CardStacks::SlotPassTheCardToFoldStack);
 
     connect(this, &The_Game::SignalEnableFoldProcessButton,
             ui->CardStacksWidget, &CardStacks::SlotShowFoldObserver);

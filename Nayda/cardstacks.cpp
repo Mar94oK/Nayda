@@ -380,6 +380,14 @@ void CardStacks::SlotPassTheCardToFoldStack(SimpleCard card)
     }
 }
 
+void CardStacks::SlotPassTheCardsToFoldStack(const std::vector<SimpleCard>& cards)
+{
+    for (uint32_t var = 0; var < cards.size(); ++var)
+    {
+        SlotPassTheCardToFoldStack(cards[var]);
+    }
+}
+
 unsigned int CardStacks::treasuresLeft() const
 {
     return _treasuresLeft;

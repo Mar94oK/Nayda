@@ -91,6 +91,7 @@ private:
 public slots:
 
     void SlotPassTheCardToFoldStack(SimpleCard card);
+    void SlotPassTheCardsToFoldStack(const std::vector<SimpleCard> &cards);
 
 private:
 
