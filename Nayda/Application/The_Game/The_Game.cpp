@@ -2321,12 +2321,12 @@ TreasureArmorAllowance The_Game::CardISAbleToPlayChecker_TreasureArmor(gameCardT
     //На будущее надо бы сделать защиту от возможности надеть сразу два "комбинируемых" доспеха.
     //С другой стороны, может юыть, их можно надевать по несколько - капусточка. =)))
     if (_mainPlayer->GetLegsSlotIsFull() && (card.GetBodyPart()  == Body_Part::Feet) && (!card.isCombined()))
-        return TreasureArmorAllowance(true, "Вторые штаны не натянуть на уже надетые./n Но при большом желании...", false);
+        return TreasureArmorAllowance(true, "Вторые ботинки поверх существующих/n никак не надеть./n Но при большом желании...", false);
 
     if (_mainPlayer->GetArmorSlotFull() && (card.GetBodyPart()  == Body_Part::Armor) && (!card.isCombined()))
         return TreasureArmorAllowance(true, "Доспех надевали поверх кольчуги./n Но игра такое, увы, запрещает.", false);
 
-    if (_mainPlayer->GetLegsSlotIsFull() && (card.GetBodyPart()  == Body_Part::Feet) && (!card.isCombined()))
+    if (_mainPlayer->GetHeadSlotIsFull() && (card.GetBodyPart()  == Body_Part::Head) && (!card.isCombined()))
         return TreasureArmorAllowance(true, "Вторые ботинки поверх существующих/n никак не надеть.", false);
 
 
