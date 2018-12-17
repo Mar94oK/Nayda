@@ -2532,7 +2532,7 @@ void The_Game::Animation_StartPassSoldCardsFromHandOrInGameToTreasureFold_Phase1
 //            qDebug() << "NAY-002: Card Position Bottom Right: y" << card.GetPositionBottomRight().y();
 //            qDebug() << "NAY-002: Card Position Top Left: x" << card.GetPositionTopLeft().x();
 //            qDebug() << "NAY-002: Card Position Top Left: y" << card.GetPositionTopLeft().y();
-            QSize size= wt->ProvideExpectedCardsInGameSize();
+            QSize size= wt->ProvideCardOnHandSize();
             sizeX = size.width();
             sizeY = size.height();
 

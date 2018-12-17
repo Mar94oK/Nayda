@@ -435,6 +435,11 @@ QSize GamerWidget::ProvideAvatarSize() const
     return ui->btn_Avatar->size();
 }
 
+QSize GamerWidget::ProvideCardOnHandSize() const
+{
+    return ui->widget->ProvideCardSize();
+}
+
 void GamerWidget::SlotShowCardsInGame()
 {
     _cardsInGameObserver->show();

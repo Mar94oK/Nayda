@@ -207,7 +207,8 @@ void Hand::addNewCardToHands(SimpleCard card)
     const float handCardSizeWidht = 0.019f;
     const float handCardSizeHeight = handCardSize_width_to_height_ratio*handCardSizeWidht;
 
-
+    _cardSize.setWidth(handCardSizeWidht*HW_Screen_Size_Width*2);
+    _cardSize.setHeight(handCardSizeHeight*HW_Screen_Size_Height*2);
 
     newCard->setMaximumWidth(handCardSizeWidht*HW_Screen_Size_Width*2);
     newCard->setMaximumHeight(handCardSizeHeight*HW_Screen_Size_Height*2);
@@ -433,4 +434,9 @@ std::vector<PositionedCard> Hand::GetPositionedCards(const std::vector<SimpleCar
     }
 
     return posCards;
+}
+
+QSize Hand::ProvideCardSize()
+{
+    return _cardSize;
 }

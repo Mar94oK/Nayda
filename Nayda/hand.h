@@ -162,6 +162,14 @@ signals:
 
     void SignalReportCardPosition(PositionedCard card);
 
+public:
+
+    QSize ProvideCardSize();
+
+private:
+
+    QSize _cardSize;
+
 };
 
 #endif // HAND_H

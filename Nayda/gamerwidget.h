@@ -261,6 +261,7 @@ public:
    QPoint ProvideCardsInGamePosition() const;
    QSize ProvideExpectedCardsInGameSize() const;
    QSize ProvideAvatarSize() const;
+   QSize ProvideCardOnHandSize() const;
 
 
    void SetPointerToPlayer(Player *GetPointerToPlayer);
