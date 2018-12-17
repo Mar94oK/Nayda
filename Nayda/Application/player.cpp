@@ -13,14 +13,14 @@ void Player::SetPlayersName(const QString &name)
 void Player::RemoveGivenCardsFromHand(const std::vector<SimpleCard> &cards)
 {
     qDebug() << "Delete correction checker: Player::RemoveGivenCardsFromHand: cards Size: " << cards.size();
-    for (uint32_t var = 0; var < _cardsOnHands.size(); ++var)
+    for (uint32_t var = 0; var < cards.size(); ++var)
     {
-        for (uint32_t y = 0; y < cards.size(); ++y)
+        for (uint32_t y = 0; y < _cardsOnHands.size(); ++y)
         {
-            if (_cardsOnHands[var] == cards[y])
+            if (_cardsOnHands[y] == cards[var])
             {
                qDebug() << "Delete correction checker: Player::RemoveGivenCardsFromHand: ID: " << _cardsOnHands[var].second;
-                _cardsOnHands.erase(_cardsOnHands.begin() + static_cast<int32_t>(var));
+                _cardsOnHands.erase(_cardsOnHands.begin() + static_cast<int32_t>(y));
             }
         }
     }
@@ -30,13 +30,13 @@ void Player::RemoveGivenCardsFromHand(const std::vector<SimpleCard> &cards)
 
 void Player::RemoveGivenCardsFromCardsInGame(const std::vector<SimpleCard> &cards)
 {
-    for (uint32_t var = 0; var < _cardsInGame.size(); ++var)
+    for (uint32_t var = 0; var < cards.size(); ++var)
     {
-        for (uint32_t y = 0; y < cards.size(); ++y)
+        for (uint32_t y = 0; y < _cardsInGame.size(); ++y)
         {
-            if (_cardsInGame[var] == cards[y])
+            if (_cardsInGame[y] == cards[var])
             {
-               _cardsInGame.erase(_cardsInGame.begin() + static_cast<int32_t>(var));
+               _cardsInGame.erase(_cardsInGame.begin() + static_cast<int32_t>(y));
             }
         }
     }
