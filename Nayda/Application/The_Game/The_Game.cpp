@@ -2480,19 +2480,24 @@ void The_Game::Animation_StartPassSoldCardsFromHandOrInGameToTreasureFold_Phase1
             //Для других игроков - BottomRight - тот же аватар
             //TopLeft Верхний уровень - позииция LblName
 
-
-
             QPoint cardsInGamePosition = wt->ProvideCardsInGamePosition();
             relativeCardPostionTopLeft = gamerWidgetPosition + cardsInGamePosition;
             relativeCardPostionBottomRight = gamerWidgetPosition + cardsInGamePosition;
-//            qDebug() << "NAY-002: Card Position Bottom Right: x" << card.GetPositionBottomRight().x();
-//            qDebug() << "NAY-002: Card Position Bottom Right: y" << card.GetPositionBottomRight().y();
-//            qDebug() << "NAY-002: Card Position Top Left: x" << card.GetPositionTopLeft().x();
-//            qDebug() << "NAY-002: Card Position Top Left: y" << card.GetPositionTopLeft().y();
+
             QSize size= wt->ProvideCardOnHandSize();
+            if (var % 2)
+            {
+                relativeCardPostionTopLeft.setX(relativeCardPostionTopLeft.x() + var*size.width());
+                relativeCardPostionBottomRight.setX(relativeCardPostionBottomRight.x() + var*size.width());
+            }
+            else
+            {
+                relativeCardPostionTopLeft.setX(relativeCardPostionTopLeft.x() - var*size.width());
+                relativeCardPostionBottomRight.setX(relativeCardPostionBottomRight.x() - var*size.width());
+            }
+
             sizeX = size.width();
             sizeY = size.height();
-
         }
 
         _movingCard->move(relativeCardPostionTopLeft.x(), relativeCardPostionTopLeft.y());
