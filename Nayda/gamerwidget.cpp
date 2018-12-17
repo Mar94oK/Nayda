@@ -78,6 +78,7 @@ void GamerWidget::SetPointerToPlayer(Player *player)
 
 void GamerWidget::SetIsRoomMaster()
 {
+    _isRoomMaster = true;
     ui->btn_Master->show();
 }
 
@@ -391,9 +392,42 @@ void GamerWidget::SetGamerName(const QString &gamerName)
     _cardsInGameObserver->SetPlayerName(gamerName);
 }
 
-QPoint GamerWidget::ProvideAvatarPosition() const
+QPoint GamerWidget::ProvideCardsInGamePosition() const
 {
-    return ui->btn_Avatar->pos();
+    if (ui->btn_Master->pos().y() < ui->lbl_Avatar->pos().y())
+        return ui->btn_Master->pos();
+    else
+        return ui->lbl_Avatar->pos();
+
+    //return ui->btn_Avatar->pos();
+}
+
+QSize GamerWidget::ProvideExpectedCardsInGameSize() const
+{
+    if (_isRoomMaster)
+    {
+        if (_isMainPlayer)
+        {
+            return QSize(ui->btn_Master->size().width(),ui->btn_Avatar->pos().y() - ui->btn_Master->pos().y() );
+        }
+        else
+        {
+            return QSize(ui->btn_Master->size().width(),ui->lbl_Avatar->pos().y() - ui->btn_Master->pos().y() );
+        }
+    }
+    else
+    {
+        if (_isMainPlayer)
+        {
+            return QSize(ui->btn_Avatar->size().width(),ui->btn_Avatar->pos().y() - ui->lbl_Avatar->pos().y() );
+        }
+        else
+        {
+            return QSize(ui->btn_Avatar->size().width(),ui->btn_Avatar->pos().y() - ui->lbl_Avatar->pos().y() );
+        }
+    }
+
+
 }
 
 QSize GamerWidget::ProvideAvatarSize() const

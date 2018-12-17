@@ -1976,7 +1976,7 @@ QPoint The_Game::GetDoorsStackPosition()
 
 QPoint The_Game::GetAvatarPositon(const GamerWidget * const wt)
 {
-    return wt->ProvideAvatarPosition();
+    return wt->ProvideCardsInGamePosition();
 }
 
 QPoint The_Game::GetPlayerWidgetSelfPosition(const GamerWidget * const wt)
@@ -2480,7 +2480,7 @@ void The_Game::DEBUGPassTheCardToTheBattleField(PositionedCard card)
     //_movingCard->deleteLater();
 }
 
-void The_Game::Animation_StartPassSoldCardsFromHandToTreasureFold_Phase1(GamerWidget *wt, std::vector <PositionedCard> cards)
+void The_Game::Animation_StartPassSoldCardsFromHandOrInGameToTreasureFold_Phase1(GamerWidget *wt, std::vector<std::pair<PositionedCard, bool> > cards)
 {
     if (!cards.size())
     {
@@ -2493,20 +2493,52 @@ void The_Game::Animation_StartPassSoldCardsFromHandToTreasureFold_Phase1(GamerWi
     std::vector<QPropertyAnimation*> animations;
     for (uint32_t var = 0; var < cards.size(); ++var)
     {
-        PositionedCard card = cards[var];
+        PositionedCard card = cards[var].first;
 
         QPushButton* _movingCard = new QPushButton("Animated Button", this);
         cardsAsButtons.push_back(_movingCard);
-        QPoint handPosition = wt->ProvideHandPosition();
+
+
+        QPoint relativeCardPostionTopLeft;
+        QPoint relativeCardPostionBottomRight;
         QPoint gamerWidgetPosition = wt->ProvideSelfPosition();
+        int sizeX;
+        int sizeY;
+        if (cards[var].second)
+        {
+            QPoint handPosition = wt->ProvideHandPosition();
+            relativeCardPostionTopLeft = card.GetPositionTopLeft() + gamerWidgetPosition + handPosition;
+            relativeCardPostionBottomRight = card.GetPositionBottomRight() + gamerWidgetPosition + handPosition;
+            sizeX = relativeCardPostionBottomRight.x() - relativeCardPostionTopLeft.x() ;
+            sizeY = relativeCardPostionBottomRight.y() - relativeCardPostionTopLeft.y();
+        }
+        else
+        {
+            //Здесь будет костыль.
+            //Снизу передаются неправильные значения, но я и так знаю,
+            //что здесь должны быть:
+            //Для главного игрока:
+            //TopLeft = позиция кнопки Мастер либо позиция Label-имени
+            //Bottom Right = btnAvatar.BottomRight;
+            //Для других игроков - BottomRight - тот же аватар
+            //TopLeft Верхний уровень - позииция LblName
 
 
-        QPoint relativeCardPostionTopLeft = card.GetPositionTopLeft() + gamerWidgetPosition + handPosition;
-        QPoint relativeCardPostionBottomRight = card.GetPositionBottomRight() + gamerWidgetPosition + handPosition;
+
+            QPoint cardsInGamePosition = wt->ProvideCardsInGamePosition();
+            relativeCardPostionTopLeft = gamerWidgetPosition + cardsInGamePosition;
+            relativeCardPostionBottomRight = gamerWidgetPosition + cardsInGamePosition;
+//            qDebug() << "NAY-002: Card Position Bottom Right: x" << card.GetPositionBottomRight().x();
+//            qDebug() << "NAY-002: Card Position Bottom Right: y" << card.GetPositionBottomRight().y();
+//            qDebug() << "NAY-002: Card Position Top Left: x" << card.GetPositionTopLeft().x();
+//            qDebug() << "NAY-002: Card Position Top Left: y" << card.GetPositionTopLeft().y();
+            QSize size= wt->ProvideExpectedCardsInGameSize();
+            sizeX = size.width();
+            sizeY = size.height();
+
+        }
 
         _movingCard->move(relativeCardPostionTopLeft.x(), relativeCardPostionTopLeft.y());
-        int sizeX = relativeCardPostionBottomRight.x() - relativeCardPostionTopLeft.x() ;
-        int sizeY = relativeCardPostionBottomRight.y() - relativeCardPostionTopLeft.y();
 
         qDebug() << "Size of the Card during moving: X: " << sizeX;
         qDebug() << "Size of the Card during moving: Y: " << sizeY;
@@ -2538,20 +2570,19 @@ void The_Game::Animation_StartPassSoldCardsFromHandToTreasureFold_Phase1(GamerWi
         animation->setEndValue(QRect(width()/2 - sizeX, height()/2 - sizeY, sizeX*2, sizeY*2));
         animation->setEasingCurve(QEasingCurve::OutCubic);
 
-        //setWindowFlags(Qt::CustomizeWindowHint);
-
-
-
         connect(animation, &QPropertyAnimation::destroyed,
                 [animations]{qDebug() << "NAY-002: Animation_StartPassSoldCardsFromHandToTreasureFold_Phase1() destroyed. ID: " << animations.size();});
+    }
 
-
-
+    std::vector<PositionedCard> castedBackCards;
+    for (uint32_t var = 0; var < cards.size(); ++var)
+    {
+        castedBackCards.push_back(cards[var].first);
     }
 
     connect(animations[0], &QPropertyAnimation::finished,
-            [this, animations, cardsAsButtons, cards]
-            {Animation_StartPassSoldCardsFromHandToTreasureFold_Phase2(animations, cardsAsButtons, cards);});
+            [this, animations, cardsAsButtons, castedBackCards]
+            {Animation_StartPassSoldCardsFromHandToTreasureFold_Phase2(animations, cardsAsButtons, castedBackCards);});
 
     for (uint32_t var = 0; var < animations.size(); ++var)
     {
@@ -3564,11 +3595,20 @@ void The_Game::SlotProcessCardsSelectedToBeSold(const std::vector<SimpleCard> ca
     }
     _mainPlayer->RemoveGivenCardsFromCardsInGame(PositionedCard::RevertToSimpleCardsVector(posCardsInGame));
 
-    std::vector<PositionedCard> allCardsToBeDisplayed = posCardsInGame + posCardsOnHands;
+    std::vector<std::pair<PositionedCard, bool> > allCardsToBeDisplayed;
+    for (uint32_t var = 0; var < posCardsInGame.size(); ++var)
+    {
+        allCardsToBeDisplayed.push_back(std::make_pair(posCardsInGame[var], false));
+    }
+    for (uint32_t var = 0; var < posCardsOnHands.size(); ++var)
+    {
+        allCardsToBeDisplayed.push_back(std::make_pair(posCardsOnHands[var], true));
+    }
+     //= posCardsInGame + posCardsOnHands
 
     //start animation here
     if (!allCardsToBeDisplayed.empty())
-        Animation_StartPassSoldCardsFromHandToTreasureFold_Phase1(ui->MainGamer, allCardsToBeDisplayed);
+        Animation_StartPassSoldCardsFromHandOrInGameToTreasureFold_Phase1(ui->MainGamer, allCardsToBeDisplayed);
 }
 
 std::vector<PositionedCard> The_Game::GetPositionedCardsFromHand(GamerWidget* wt, const std::vector<SimpleCard> &cards)
@@ -3798,11 +3838,19 @@ void The_Game::SlotProcessOpponentHasSoldCards(TheGameMainGamerHasSoldCards data
     }
     currentPlayer->RemoveGivenCardsFromCardsInGame(PositionedCard::RevertToSimpleCardsVector(posCardsInGame));
 
-    std::vector<PositionedCard> allCardsToBeDisplayed = posCardsInGame + posCardsOnHands;
-
+    std::vector<std::pair<PositionedCard, bool> > allCardsToBeDisplayed;
+    for (uint32_t var = 0; var < posCardsInGame.size(); ++var)
+    {
+        allCardsToBeDisplayed.push_back(std::make_pair(posCardsInGame[var], false));
+    }
+    for (uint32_t var = 0; var < posCardsOnHands.size(); ++var)
+    {
+        allCardsToBeDisplayed.push_back(std::make_pair(posCardsOnHands[var], true));
+    }
+     //= posCardsInGame + posCardsOnHands
     //start animation here
     if (!allCardsToBeDisplayed.empty())
-        Animation_StartPassSoldCardsFromHandToTreasureFold_Phase1(ui->MainGamer, allCardsToBeDisplayed);
+        Animation_StartPassSoldCardsFromHandOrInGameToTreasureFold_Phase1(ui->MainGamer, allCardsToBeDisplayed);
 
 }
 

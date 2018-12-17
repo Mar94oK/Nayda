@@ -258,7 +258,8 @@ public:
    QPoint ProvideHandPosition();
    void SetGamerName(const QString& gamerName);
 
-   QPoint ProvideAvatarPosition() const;
+   QPoint ProvideCardsInGamePosition() const;
+   QSize ProvideExpectedCardsInGameSize() const;
    QSize ProvideAvatarSize() const;
 
 
