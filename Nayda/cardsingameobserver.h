@@ -42,7 +42,6 @@ private:
     void RemoveCardFromDisabledCards(SimpleCard card);
     void RemoveCardFromActiveCards(SimpleCard card);
 
-
 public:
 
     void AddCard(CardInGame card);

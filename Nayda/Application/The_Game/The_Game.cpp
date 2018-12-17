@@ -2070,6 +2070,8 @@ void The_Game::SlotCheckCardIsAbleToBePlayed(PositionedCard card, bool fromHand)
         if (TreasureArmorCardImplementer(allowance, realCard))
         {
             emit SignalCardIsRejectedToBePlayed(false);
+            //Отсюда отправить сообщение на сервер о применении карты
+
             SaveGamePhase();
             SetGamePhase(GamePhase::CardProcessing);
             qDebug() << "NAY-002: Animation_Phase1 played!";
@@ -2106,12 +2108,14 @@ bool The_Game::TreasureArmorCardImplementer(const TreasureArmorAllowance &allowa
     {
         //если аткивна, применить
         ApplyNewArmor(card);
+        ui->MainGamer->SlotAddCardToCardsInGame(std::make_pair(true, SimpleCard(true, card.GetCardID())));
         return true;
     }
     else
     {
         //не применять, отобразить неактивной
         ShowCardIsForbiddenToPlayMessage(allowance.GetReasonOfRestriction());
+        ui->MainGamer->SlotAddCardToCardsInGame(std::make_pair(false, SimpleCard(true, card.GetCardID())));
         return true;
     }
     // запустить анимацию - возможно в сером цвете? Для карты.
@@ -2238,8 +2242,6 @@ void The_Game::ApplyNewArmor(const gameCardTreasureArmor &card)
     //Теперь  можно передать карту анимации
     //Анимация должна отдать карту в cardsInGameObserver
     //Анимацией занимается другая функция
-
-    ui->MainGamer->SlotAddCardToCardsInGame(std::make_pair(true, SimpleCard(true, card.GetCardID())));
     ui->MainGamer->SlotChangeTheGamerBattlePower(static_cast<int32_t>(totalBonus));
 }
 
