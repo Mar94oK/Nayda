@@ -2184,8 +2184,14 @@ void The_Game::ShowCardIsForbiddenToPlayMessage(const QString &message)
     qDebug() << "NAY-002: Show Card is forbiden to play message: " << message;
 }
 
-void The_Game::ApplyNewArmor(const gameCardTreasureArmor &card)
-{
+void The_Game::ApplyNewArmor(const gameCardTreasureArmor &card, CardApplyMode apply)
+{    
+    bool addEffect = true;
+
+    if (apply == CardApplyMode::Remove)
+       addEffect = false;
+
+
     uint32_t totalBonus = static_cast<uint32_t>(card.GetBonus());
 
     if (card.GetAdditionalBonusforElf() &&
@@ -2202,10 +2208,6 @@ void The_Game::ApplyNewArmor(const gameCardTreasureArmor &card)
     //Может возникнуть ошибка при установке бонусов.
     //NAY-002: EXPECTED_IMPROVEMENT
     //NAY-002: EXPECTED_ERROR
-//    if (card->bonusToFleeing())
-
-
-//12.12.2018 продолжить здесь
 
     //Проверка на наличие специальных фич
     if (card.hasSpecialMechanic()) //FlamingArmor
@@ -2215,31 +2217,31 @@ void The_Game::ApplyNewArmor(const gameCardTreasureArmor &card)
         switch (card.GetCardID())
         {
             case static_cast<uint32_t>(CardsWithPassiveSpecialFunctions_TreasureArmor::AwfulSocks):
-                _mainPlayer->SetNotAbleToHelp(true);
+                _mainPlayer->SetNotAbleToHelp(true && addEffect);
                 break;
 
             case static_cast<uint32_t>(CardsWithPassiveSpecialFunctions_TreasureArmor::FlamingArmor):
-                _mainPlayer->SetHasFireArmor(true);
+                _mainPlayer->SetHasFireArmor(true && addEffect);
                 break;
 
             case static_cast<uint32_t>(CardsWithPassiveSpecialFunctions_TreasureArmor::FreudianSlippers):
-                _mainPlayer->SetIsAbleToChangeSexOnline(true);
+                _mainPlayer->SetIsAbleToChangeSexOnline(true && addEffect);
                 break;
 
             case static_cast<uint32_t>(CardsWithPassiveSpecialFunctions_TreasureArmor::HelmOfPeripherialVision):
-                _mainPlayer->SetIsProtectedFromTheft(true);
+                _mainPlayer->SetIsProtectedFromTheft(true && addEffect);
                 break;
 
             case static_cast<uint32_t>(CardsWithPassiveSpecialFunctions_TreasureArmor::MagnificentHat):
-                _mainPlayer->SetHasCursesMirroring(true);
+                _mainPlayer->SetHasCursesMirroring(true && addEffect);
                 break;
 
             case static_cast<uint32_t>(CardsWithPassiveSpecialFunctions_TreasureArmor::SandalsOfProtection):
-                _mainPlayer->SetIsProtecetedFromCursesFromDoors(true);
+                _mainPlayer->SetIsProtecetedFromCursesFromDoors(true && addEffect);
                 break;
 
             case static_cast<uint32_t>(CardsWithPassiveSpecialFunctions_TreasureArmor::TinfoilHat):
-                _mainPlayer->SetIsProtectedFromCursesFromPlayers(true);
+                _mainPlayer->SetIsProtectedFromCursesFromPlayers(true && addEffect);
                 break;
 
             default:
@@ -2251,53 +2253,48 @@ void The_Game::ApplyNewArmor(const gameCardTreasureArmor &card)
 
     //Добавление обычных бонусов:
 
-    _mainPlayer->SetFleeChance(_mainPlayer->GetFleeChance() + card.bonusToFleeing());
-    _mainPlayer->SetBattlePower(_mainPlayer->GetBattlePower() + card.GetBonus());
-
-    if (card.GetAdditionalBonusforElf() &&
-            (_mainPlayer->GetRace() == Race::Elf || _mainPlayer->GetSecondRace() == Race::Elf))
+    if (addEffect)
     {
-        _mainPlayer->SetBattlePower(_mainPlayer->GetBattlePower() + card.GetAdditionalBonusforElf());
-        totalBonus += static_cast<uint32_t>(card.GetAdditionalBonusforElf());
+        _mainPlayer->SetFleeChance(_mainPlayer->GetFleeChance() + card.bonusToFleeing());
+        _mainPlayer->SetBattlePower(_mainPlayer->GetBattlePower() + totalBonus);
+    }
+    else
+    {
+        _mainPlayer->SetFleeChance(_mainPlayer->GetFleeChance() - card.bonusToFleeing());
+        _mainPlayer->SetBattlePower(_mainPlayer->GetBattlePower() - totalBonus);
     }
 
-
-    if (card.GetAdditionalBonusforOrk() &&
-            (_mainPlayer->GetRace() == Race::Ork || _mainPlayer->GetSecondRace() == Race::Ork))
-    {
-        _mainPlayer->SetBattlePower(_mainPlayer->GetBattlePower() + card.GetAdditionalBonusforOrk());
-        totalBonus += static_cast<uint32_t>(card.GetAdditionalBonusforOrk());
-    }
 
     //Установка карты в слот
     //слоты такой картой не занимаются
     if (card.GetBodyPart() == Body_Part::Armor)
     {
         if (card.isCombined())
-            _mainPlayer->SetCombinedArmor(_mainPlayer->GetCombinedArmor() + 1);
+            _mainPlayer->SetCombinedArmor(_mainPlayer->GetCombinedArmor() + (addEffect ? 1 : -1));
         else
-            _mainPlayer->SetArmorSlotFull(true);
+            _mainPlayer->SetArmorSlotFull(true && addEffect);
     }
     if (card.GetBodyPart() == Body_Part::Feet)
     {
         if (card.isCombined())
-            _mainPlayer->SetCombinedArmor(_mainPlayer->GetCombinedFeet() + 1);
+            _mainPlayer->SetCombinedArmor(_mainPlayer->GetCombinedFeet() + (addEffect ? 1 : -1));
         else
-            _mainPlayer->SetLegsSlotIsFull(true);
+            _mainPlayer->SetLegsSlotIsFull(true && addEffect);
     }
     if (card.GetBodyPart() == Body_Part::Head)
     {
         if (card.isCombined())
-            _mainPlayer->SetCombinedHead(_mainPlayer->GetCombinedHead() + 1);
+            _mainPlayer->SetCombinedHead(_mainPlayer->GetCombinedHead() + (addEffect ? 1 : -1));
         else
-            _mainPlayer->SetHeadSlotIsFull(true);
+            _mainPlayer->SetHeadSlotIsFull(true && addEffect);
     }
 
     //Теперь  можно передать карту анимации
     //Анимация должна отдать карту в cardsInGameObserver
     //Анимацией занимается другая функция
-    ui->MainGamer->SlotChangeTheGamerBattlePower(static_cast<int32_t>(totalBonus));
+    ui->MainGamer->SlotChangeTheGamerBattlePower(static_cast<int32_t>(addEffect ? totalBonus : -totalBonus));
 }
+
 
 TreasureArmorAllowance The_Game::CardISAbleToPlayChecker_TreasureArmor(gameCardTreasureArmor card, bool fromHand)
 {

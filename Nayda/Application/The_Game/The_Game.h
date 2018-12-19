@@ -71,6 +71,12 @@ enum class GlobalGamePhase
     OtherPlayerMove
 };
 
+enum class CardApplyMode
+{
+    Apply, //apply effect
+    Remove //remove effect that was given by this card.
+};
+
 //Фазы:
 //Инициализация:
 // В этой фазе игра запускается. Она длится до тех пор, пока не отрисуется анимация.
@@ -440,7 +446,10 @@ private:
     bool TreasureArmorCardImplementer(const TreasureArmorAllowance &allowance, const gameCardTreasureArmor &card);
     void ShowCardIsForbiddenToPlayMessage(const QString& message);
 
-    void ApplyNewArmor(const gameCardTreasureArmor& card);
+
+    //Все подобные функции должны уметь и применять, и отменять действие карты
+    //Вызванная с флагом false, она должна отменить действие карты.
+    void ApplyNewArmor(const gameCardTreasureArmor& card, CardApplyMode apply = CardApplyMode::Apply);
 
     TreasureArmorAllowance CardISAbleToPlayChecker_TreasureArmor(gameCardTreasureArmor card, bool fromHand);
 

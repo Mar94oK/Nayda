@@ -385,6 +385,11 @@ void GameFunctionFightWithMonsterFromHand(SimpleCard monster);
 
 19.12.2018
 Сделать всплывающую подсказку о применении неактивной карты
+Ок, сделал.
+
+Сделать удаление карты.
+
+
 
 
 
