@@ -2014,6 +2014,11 @@ void The_Game::InitializeApplyCardToCardsInGameTimer(uint32_t msTime)
 
 void The_Game::ApplyCardImplementerMessage(const QString &message, bool cardWillBePlayed)
 {
+
+    //NAY-002: EXPECTED_IMPROVEMENT
+    //Требуется переработать отображение этого сообщения в момент боя и тп., чтобы оно красиво
+    //и корректно выводилось, будучи при этом информативным.
+
     QLabel* cardImplementerMessage = new QLabel(this);
 
     QFont        cardImplementerMessageLabelFont ("times", 27);
