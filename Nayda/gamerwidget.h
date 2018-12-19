@@ -283,6 +283,10 @@ private:
    void SetUpShowTimer();
    void SetUpWidgetsPerfomance();
 
+public:
+
+   QSize GetCardOnHandSize();
+
 
 };
 

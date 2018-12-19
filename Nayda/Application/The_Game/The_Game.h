@@ -782,9 +782,20 @@ signals:
 private:
 
 
-    uint32_t _msTimeForApplyCardToCardsInGamePhase1 = 1000;
-    uint32_t _msHoldBetweenApplyCardToCardsInGameAnimations = 1500;
-    uint32_t _msTimeForApplyCardToCardsInGamePhase2 = 1000;
+    constexpr static uint32_t _msTimeForApplyCardToCardsInGamePhase1 = 1000;
+    constexpr static uint32_t _msHoldBetweenApplyCardToCardsInGameAnimations = 1500;
+    constexpr static uint32_t _msTimeForApplyCardToCardsInGamePhase2 = 1000;
+
+private:
+
+//    QLabel* _cardImplementerMessage;
+//    QTimer* _cardImplementerMessageTimer;
+    constexpr static uint32_t _msTimeForCardImplementerMessage =
+            _msTimeForApplyCardToCardsInGamePhase1 + _msHoldBetweenApplyCardToCardsInGameAnimations
+            + _msHoldBetweenApplyCardToCardsInGameAnimations;
+
+    void ApplyCardImplementerMessage(const QString& message, bool cardWillBePlayed);
+    QSize GetCardSize();
 
 
 };

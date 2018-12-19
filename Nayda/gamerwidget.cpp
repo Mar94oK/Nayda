@@ -601,5 +601,10 @@ void GamerWidget::SetUpWidgetsPerfomance()
 
 }
 
+QSize GamerWidget::GetCardOnHandSize()
+{
+    return ui->widget->ProvideCardSize();
+}
+
 
 

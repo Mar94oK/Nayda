@@ -2012,6 +2012,52 @@ void The_Game::InitializeApplyCardToCardsInGameTimer(uint32_t msTime)
     _animationApplyCardToCardsInGameTimer->setInterval(msTime);
 }
 
+void The_Game::ApplyCardImplementerMessage(const QString &message, bool cardWillBePlayed)
+{
+    QLabel* cardImplementerMessage = new QLabel(this);
+
+    QFont        cardImplementerMessageLabelFont ("times", 27);
+    QFontMetrics cardImplementerMessageLabelFontInterval (cardImplementerMessageLabelFont);
+    cardImplementerMessage->setFont(cardImplementerMessageLabelFont);
+    cardImplementerMessage->setAlignment(Qt::AlignHCenter);
+    cardImplementerMessage->setText(message);
+    cardImplementerMessage->adjustSize();
+
+    const uint32_t aboveInterval = 15;
+
+    uint32_t verticalDelta = cardImplementerMessageLabelFontInterval.height();
+    uint32_t horizontalDelta = cardImplementerMessage->size().width() / 2;
+//            + cardSize.height() / 2 + aboveInterval;
+
+    QPoint center = GetCenterPosition();
+    //сообщение должно находиться выше карты, которую разыгрывает игрок,
+    //в том случае, если карта разыгрывается.
+    //в противном случае расположить сообщение можно и в центре
+    if (cardWillBePlayed)
+    {
+        QSize cardSize = GetCardSize();
+        verticalDelta += cardSize.height();
+        cardImplementerMessage->move(center.x() - horizontalDelta, center.y() - verticalDelta - aboveInterval);
+    }
+    else
+    {
+        cardImplementerMessage->move(center.x() - horizontalDelta, center.y() - verticalDelta - aboveInterval);
+    }
+
+    cardImplementerMessage->show();
+
+    QTimer::singleShot(_msTimeForCardImplementerMessage,
+                       Qt::TimerType::CoarseTimer,
+                       cardImplementerMessage,
+                       [this, cardImplementerMessage]{cardImplementerMessage->deleteLater();});
+
+}
+
+QSize The_Game::GetCardSize()
+{
+    return ui->MainGamer->GetCardOnHandSize();
+}
+
 
 void The_Game::SlotAdjustSizeOfTheGamerWidgetToMakeCardsToBeInPlace()
 {
@@ -2076,10 +2122,13 @@ void The_Game::SlotCheckCardIsAbleToBePlayed(PositionedCard card, bool fromHand)
             SetGamePhase(GamePhase::CardProcessing);
             qDebug() << "NAY-002: Animation_Phase1 played!";
             Animation_PassPlayedCardToCardsInGame_Phase1(ui->MainGamer, card, allowance.GetIsActive());
+            if (!allowance.GetIsActive())
+                ApplyCardImplementerMessage(allowance.GetReasonOfRestriction(), true);
         }
         else
         {
             emit SignalCardIsRejectedToBePlayed(true);
+            ApplyCardImplementerMessage(allowance.GetReasonOfRestriction(), false);
         }
 
         //DEBUGPassTheCardToTheBattleField(card);
@@ -2283,23 +2332,23 @@ TreasureArmorAllowance The_Game::CardISAbleToPlayChecker_TreasureArmor(gameCardT
             && _mainPlayer->GetRace() != Race::Dwarf
             && _mainPlayer->GetSecondRace() != Race::Dwarf)
     {
-        return TreasureArmorAllowance(true, "Увы, карта активна только для дворфа!/n Разве вы дфорф?", false);
+        return TreasureArmorAllowance(true, "Увы, карта активна только для дворфа!\n Разве вы дфорф?", false);
     }
 
     if (card.isOnlyForGnome()
             && _mainPlayer->GetRace() != Race::Gnome
             && _mainPlayer->GetSecondRace() != Race::Gnome)
     {
-        return TreasureArmorAllowance(true, "Увы, карта активна только для гнома!/n Разве вы гном?", false);
+        return TreasureArmorAllowance(true, "Увы, карта активна только для гнома!\n Разве вы гном?", false);
     }
 
     if (card.isOnlyForWizard()
             && _mainPlayer->GetProfession() != Profession::Wizard
             && _mainPlayer->GetSecondProfession() != Profession::Wizard)
     {
-        return TreasureArmorAllowance(true, "Увы, карта активна только для волшебника!/n"
-                                            "Разве к вам в детстве прилетала сова с письмом?/n"
-                                            "...Но ведь вы её ждали?/n", false);
+        return TreasureArmorAllowance(true, "Увы, карта активна только для волшебника!\n"
+                                            "Разве к вам в детстве прилетала сова с письмом?\n"
+                                            "...Но ведь вы её ждали?\n", false);
     }
 
     if (card.isOnlyForHuman()
@@ -2311,25 +2360,25 @@ TreasureArmorAllowance The_Game::CardISAbleToPlayChecker_TreasureArmor(gameCardT
     if (card.isRestrictedToGnome() &&
             ((_mainPlayer->GetRace() == Race::Gnome) || (_mainPlayer->GetSecondRace() == Race::Gnome))
             && !_mainPlayer->GetIsHalfBloodWithoutSecondRace())
-        return TreasureArmorAllowance(true, "Увы, этот доспех /n не могут носить гномы.", false);
+        return TreasureArmorAllowance(true, "Увы, этот доспех \n не могут носить гномы.", false);
     
     if (card.isRestrictedToWizard() &&
             ((_mainPlayer->GetProfession() == Profession::Wizard) || (_mainPlayer->GetSecondProfession() == Profession::Wizard))
             && !_mainPlayer->GetIsSuperMunchkinWithoutSecondProfession())
-        return TreasureArmorAllowance(true, "Увы, этот доспех /n слишком тяжёл для магов.", false);
+        return TreasureArmorAllowance(true, "Увы, этот доспех \n слишком тяжёл для магов.", false);
 
     //NAY-002: EXPECTED_ERROR
     //NAY-002: EXPECTED_IMPROVEMENT
     //На будущее надо бы сделать защиту от возможности надеть сразу два "комбинируемых" доспеха.
     //С другой стороны, может юыть, их можно надевать по несколько - капусточка. =)))
     if (_mainPlayer->GetLegsSlotIsFull() && (card.GetBodyPart()  == Body_Part::Feet) && (!card.isCombined()))
-        return TreasureArmorAllowance(true, "Вторые ботинки поверх существующих/n никак не надеть./n Но при большом желании...", false);
+        return TreasureArmorAllowance(true, "Вторые ботинки поверх существующих\n никак не надеть.\n Но при большом желании...", false);
 
     if (_mainPlayer->GetArmorSlotFull() && (card.GetBodyPart()  == Body_Part::Armor) && (!card.isCombined()))
-        return TreasureArmorAllowance(true, "Доспех надевали поверх кольчуги./n Но игра такое, увы, запрещает.", false);
+        return TreasureArmorAllowance(true, "Доспех надевали поверх кольчуги.\n Но игра такое, увы, запрещает.", false);
 
     if (_mainPlayer->GetHeadSlotIsFull() && (card.GetBodyPart()  == Body_Part::Head) && (!card.isCombined()))
-        return TreasureArmorAllowance(true, "Вторые ботинки поверх существующих/n никак не надеть.", false);
+        return TreasureArmorAllowance(true, "Две головы лучше, чем \n две шапки на одной.", false);
 
 
     //Запретов больше нет
