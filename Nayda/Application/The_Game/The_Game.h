@@ -451,7 +451,7 @@ private:
     //Вызванная с флагом false, она должна отменить действие карты.
     void ApplyNewArmor(GamerWidget* wt, const gameCardTreasureArmor& card, CardApplyMode apply = CardApplyMode::Apply);
 
-    TreasureArmorAllowance CardISAbleToPlayChecker_TreasureArmor(gameCardTreasureArmor card, bool fromHand);
+    TreasureArmorAllowance CardIsAbleToPlayChecker_TreasureArmor(gameCardTreasureArmor card, bool fromHand);
 
 signals:
 
@@ -805,6 +805,11 @@ private:
 
     void ApplyCardImplementerMessage(const QString& message, bool cardWillBePlayed);
     QSize GetCardSize();
+
+private:
+
+    std::map<CardType, void (*)(GamerWidget* , GameCardBasis* , CardApplyMode )> _Applyers;
+    void SetApplyers();
 
 
 };

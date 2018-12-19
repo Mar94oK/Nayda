@@ -2054,13 +2054,18 @@ void The_Game::ApplyCardImplementerMessage(const QString &message, bool cardWill
     QTimer::singleShot(_msTimeForCardImplementerMessage,
                        Qt::TimerType::CoarseTimer,
                        cardImplementerMessage,
-                       [this, cardImplementerMessage]{cardImplementerMessage->deleteLater();});
+                       [cardImplementerMessage]{cardImplementerMessage->deleteLater();});
 
 }
 
 QSize The_Game::GetCardSize()
 {
     return ui->MainGamer->GetCardOnHandSize();
+}
+
+void The_Game::SetApplyers()
+{
+    _Applyers.insert(std::make_pair<CardType::TreasureArmor, &The_Game::ApplyNewArmor >);
 }
 
 
@@ -2115,7 +2120,7 @@ void The_Game::SlotCheckCardIsAbleToBePlayed(PositionedCard card, bool fromHand)
         //какой объект вернулся)
         const gameCardTreasureArmor* cardPointer = static_cast<const gameCardTreasureArmor* >(basisCard);
         gameCardTreasureArmor realCard(cardPointer);
-        TreasureArmorAllowance allowance = CardISAbleToPlayChecker_TreasureArmor(realCard, fromHand);
+        TreasureArmorAllowance allowance = CardIsAbleToPlayChecker_TreasureArmor(realCard, fromHand);
         if (TreasureArmorCardImplementer(allowance, realCard))
         {
             emit SignalCardIsRejectedToBePlayed(false);
@@ -2152,8 +2157,6 @@ bool The_Game::TreasureArmorCardImplementer(const TreasureArmorAllowance &allowa
         ShowCardIsForbiddenToPlayMessage(allowance.GetReasonOfRestriction());
         return false;
     }
-
-
 
     //проверить активна/неактивна и выложить
     if (allowance.GetIsActive())
@@ -2303,7 +2306,7 @@ void The_Game::ApplyNewArmor(GamerWidget* wt, const gameCardTreasureArmor &card,
 }
 
 
-TreasureArmorAllowance The_Game::CardISAbleToPlayChecker_TreasureArmor(gameCardTreasureArmor card, bool fromHand)
+TreasureArmorAllowance The_Game::CardIsAbleToPlayChecker_TreasureArmor(gameCardTreasureArmor card, bool fromHand)
 {
     //Все подобные парсеры предполагают, что проверка на глобальные запреты уже пройдена.
     //На 11.12.2018 это только процесс анимирования карт (карт-процессинг CardProcessing)
