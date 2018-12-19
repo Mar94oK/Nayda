@@ -32,17 +32,8 @@ void Player::RemoveGivenCardsFromCardsInGame(const std::vector<SimpleCard> &card
 {
     for (uint32_t var = 0; var < cards.size(); ++var)
     {
-        for (uint32_t y = 0; y < _cardsInGame.size(); ++y)
-        {
-            if (_cardsInGame[y] == cards[var])
-            {
-               _cardsInGame.erase(_cardsInGame.begin() + static_cast<int32_t>(y));
-            }
-        }
+        RemoveCardFromCardsInGame(cards[var]);
     }
-    _cardsInGame.shrink_to_fit();
-    qDebug() << "NAY-002: New size of the CardsInGame Vector: " << _cardsInGame.size();
-
 }
 
 void Player::RemoveGivenCardFromHand(SimpleCard card)
@@ -232,9 +223,14 @@ void Player::SetCombinedHead(const uint32_t &combinedHead)
 
 bool Player::CheckCardIsFromCardsInGame(SimpleCard card)
 {
-    for (uint32_t var = 0; var < _cardsInGame.size(); ++var)
+    for (uint32_t var = 0; var < _activeCardsInGame.size(); ++var)
     {
-        if (_cardsInGame[var] == card)
+        if (_activeCardsInGame[var] == card)
+            return true;
+    }
+    for (uint32_t var = 0; var < _disabledCardsInGame.size(); ++var)
+    {
+        if (_disabledCardsInGame[var] == card)
             return true;
     }
     return false;
@@ -354,36 +350,48 @@ void Player::RemoveCardFromHands(SimpleCard cardToBeRemoved)
     }
 }
 
-void Player::AddCardToCardsInGame(SimpleCard card)
+void Player::AddCardToCardsInGame(CardInGame card)
 {
-    _cardsInGame.push_back(card);
+    if (card.first)
+        _activeCardsInGame.push_back(card.second);
+    else
+        _disabledCardsInGame.push_back(card.second);
+
 }
 
 void Player::RemoveCardFromCardsInGame(SimpleCard card)
 {
-    std::vector<SimpleCard>::iterator it;
-    it = std::find(_cardsInGame.begin(), _cardsOnHands.end(), card);
-    if (it != _cardsInGame.end()) {
+    std::vector<SimpleCard>::iterator itActive;
+    itActive = std::find(_activeCardsInGame.begin(), _activeCardsInGame.end(), card);
+    if (itActive != _activeCardsInGame.end()) {
 
-
-        qDebug() << "Card"<< ((*it).first == 0 ? "Door" : "Treasure") << "with cardID = " << (*it).second << "was successfully removed from _cardsOnHands!";
-        _cardsInGame.erase(it);
+        qDebug() << "Card"<< ((*itActive).first == 0 ? "Door" : "Treasure") << "with cardID = " << (*itActive).second << "was successfully removed from _activeCardsInGame!";
+        _activeCardsInGame.erase(itActive);
+        return;
     }
     else {
-        qDebug() << "ERROR During deleting a card from _cardsInGameVector!" ;
+        qDebug() << "WARNING: During deleting a card from _activeCardsInGame. May be card is not active?" ;
     }
-}
+    _activeCardsInGame.shrink_to_fit();
 
+    std::vector<SimpleCard>::iterator itDisabled;
+    itDisabled = std::find(_disabledCardsInGame.begin(), _disabledCardsInGame.end(), card);
+    if (itDisabled != _activeCardsInGame.end()) {
+
+        qDebug() << "Card"<< ((*itDisabled).first == 0 ? "Door" : "Treasure") << "with cardID = " << (*itDisabled).second << "was successfully removed from _disabledCardsInGame!";
+        _disabledCardsInGame.erase(itDisabled);
+        return;
+    }
+    else {
+        qDebug() << "ERROR: During deleting a card from _disabledCardsInGame. CARD NOT FOUND." ;
+    }
+    _disabledCardsInGame.shrink_to_fit();
+
+}
 
 std::vector<SimpleCard> *Player::cardsOnHandsVector()
 {
     return &_cardsOnHands;
-}
-
-
-std::vector<SimpleCard> *Player::cardsInGameVector()
-{
-    return &_cardsInGame;
 }
 
 
@@ -521,7 +529,7 @@ void Player::SetHeadSlotIsFull(bool headSlotFull)
 
 uint32_t Player::GetTotalCardsInGame() const
 {
-    return _cardsInGame.size();
+    return _disabledCardsInGame.size() + _activeCardsInGame.size();
 }
 
 
@@ -571,4 +579,24 @@ uint32_t Player::GetPlayerLevel() const
 void Player::SetPlayerLevel(uint32_t playerLevel)
 {
     _playerLevel = playerLevel;
+}
+
+bool Player::CardIsActive(SimpleCard card)
+{
+    for (uint32_t var = 0; var < _activeCardsInGame.size(); ++var)
+    {
+        if (card == _activeCardsInGame[var])
+        {
+            return true;
+        }
+    }
+    for (uint32_t var = 0; var < _disabledCardsInGame.size(); ++var)
+    {
+        if (card == _activeCardsInGame[var])
+        {
+            return false;
+        }
+    }
+    qDebug() << "ERROR! bool Player::CardIsActive(SimpleCard card) Card NOT FOUND!";
+    return false;
 }

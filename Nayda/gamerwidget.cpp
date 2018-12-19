@@ -369,10 +369,13 @@ void GamerWidget::RemoveCardFromHand(SimpleCard card)
 
 }
 
-void GamerWidget::RemoveCardFromCardsInGame(SimpleCard card)
-{
-    if (_cardsInGameObserver != nullptr)
-        _cardsInGameObserver->RemoveCard(card);
+void GamerWidget::RemoveCardsFromCardsInGame(std::vector<SimpleCard> cards)
+{    
+    for (uint32_t var = 0; var < cards.size(); ++var)
+    {
+        if (_cardsInGameObserver != nullptr)
+            _cardsInGameObserver->RemoveCard(cards[var]);
+    }
 }
 
 QPoint GamerWidget::ProvideSelfPosition()

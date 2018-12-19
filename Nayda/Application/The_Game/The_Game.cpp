@@ -2100,8 +2100,6 @@ void The_Game::SlotCheckCardIsAbleToBePlayed(PositionedCard card, bool fromHand)
     //Но данный парсер оценивает только возможность разыгрывать карты в текущем бою.
 
 
-
-
     //14.12.2018
     //Начать отсюда.
     const GameCardBasis* basisCard(GetRealCard(card.GetCard()));
@@ -2155,14 +2153,15 @@ bool The_Game::TreasureArmorCardImplementer(const TreasureArmorAllowance &allowa
         return false;
     }
 
-    MoveCardFromCardInHandToCardInGame(_mainPlayer, SimpleCard(true, card.GetCardID()));
+
 
     //проверить активна/неактивна и выложить
     if (allowance.GetIsActive())
     {
-        //если аткивна, применить
-        ApplyNewArmor(card);
+        //если активна, применить
+        ApplyNewArmor(ui->MainGamer, card);
         ui->MainGamer->SlotAddCardToCardsInGame(std::make_pair(true, SimpleCard(true, card.GetCardID())));
+        MoveCardFromCardInHandToCardInGame(_mainPlayer, std::make_pair(true, SimpleCard(true, card.GetCardID())));
         return true;
     }
     else
@@ -2170,6 +2169,7 @@ bool The_Game::TreasureArmorCardImplementer(const TreasureArmorAllowance &allowa
         //не применять, отобразить неактивной
         ShowCardIsForbiddenToPlayMessage(allowance.GetReasonOfRestriction());
         ui->MainGamer->SlotAddCardToCardsInGame(std::make_pair(false, SimpleCard(true, card.GetCardID())));
+        MoveCardFromCardInHandToCardInGame(_mainPlayer, std::make_pair(false, SimpleCard(true, card.GetCardID())));
         return true;
     }
     // запустить анимацию - возможно в сером цвете? Для карты.
@@ -2184,8 +2184,15 @@ void The_Game::ShowCardIsForbiddenToPlayMessage(const QString &message)
     qDebug() << "NAY-002: Show Card is forbiden to play message: " << message;
 }
 
-void The_Game::ApplyNewArmor(const gameCardTreasureArmor &card, CardApplyMode apply)
+void The_Game::ApplyNewArmor(GamerWidget* wt, const gameCardTreasureArmor &card, CardApplyMode apply)
 {    
+    //Получить указатель на игрока
+    //Т.к. эти функции в т.ч. должны менять и глобальные отображения
+    //они должны иметь доступ к указателю в т.ч. и на виджет, чтобы
+    //ничего из себя наружу не возвращать, т.к. по своей сути они
+    //выполняют законченное действие
+    Player* player = wt->GetPointerToPlayer();
+
     bool addEffect = true;
 
     if (apply == CardApplyMode::Remove)
@@ -2195,11 +2202,11 @@ void The_Game::ApplyNewArmor(const gameCardTreasureArmor &card, CardApplyMode ap
     uint32_t totalBonus = static_cast<uint32_t>(card.GetBonus());
 
     if (card.GetAdditionalBonusforElf() &&
-        ((_mainPlayer->GetRace() == Race::Elf) || (_mainPlayer->GetSecondRace() == Race::Elf)))
+        ((player->GetRace() == Race::Elf) || (player->GetSecondRace() == Race::Elf)))
         totalBonus += static_cast<uint32_t>(card.GetAdditionalBonusforElf());
 
     if (card.GetAdditionalBonusforOrk() &&
-        ((_mainPlayer->GetRace() == Race::Ork) || (_mainPlayer->GetSecondRace() == Race::Ork)))
+        ((player->GetRace() == Race::Ork) || (player->GetSecondRace() == Race::Ork)))
         totalBonus += static_cast<uint32_t>(card.GetAdditionalBonusforOrk());
 
     //кажется, нет смысла проверять, есть ли такой бонус.
@@ -2209,7 +2216,6 @@ void The_Game::ApplyNewArmor(const gameCardTreasureArmor &card, CardApplyMode ap
     //NAY-002: EXPECTED_IMPROVEMENT
     //NAY-002: EXPECTED_ERROR
 
-    //Проверка на наличие специальных фич
     if (card.hasSpecialMechanic()) //FlamingArmor
     {
         qDebug() << "NAY-002: cardID: " << card.GetCardID();
@@ -2217,31 +2223,31 @@ void The_Game::ApplyNewArmor(const gameCardTreasureArmor &card, CardApplyMode ap
         switch (card.GetCardID())
         {
             case static_cast<uint32_t>(CardsWithPassiveSpecialFunctions_TreasureArmor::AwfulSocks):
-                _mainPlayer->SetNotAbleToHelp(true && addEffect);
+                player->SetNotAbleToHelp(true && addEffect);
                 break;
 
             case static_cast<uint32_t>(CardsWithPassiveSpecialFunctions_TreasureArmor::FlamingArmor):
-                _mainPlayer->SetHasFireArmor(true && addEffect);
+                player->SetHasFireArmor(true && addEffect);
                 break;
 
             case static_cast<uint32_t>(CardsWithPassiveSpecialFunctions_TreasureArmor::FreudianSlippers):
-                _mainPlayer->SetIsAbleToChangeSexOnline(true && addEffect);
+                player->SetIsAbleToChangeSexOnline(true && addEffect);
                 break;
 
             case static_cast<uint32_t>(CardsWithPassiveSpecialFunctions_TreasureArmor::HelmOfPeripherialVision):
-                _mainPlayer->SetIsProtectedFromTheft(true && addEffect);
+                player->SetIsProtectedFromTheft(true && addEffect);
                 break;
 
             case static_cast<uint32_t>(CardsWithPassiveSpecialFunctions_TreasureArmor::MagnificentHat):
-                _mainPlayer->SetHasCursesMirroring(true && addEffect);
+                player->SetHasCursesMirroring(true && addEffect);
                 break;
 
             case static_cast<uint32_t>(CardsWithPassiveSpecialFunctions_TreasureArmor::SandalsOfProtection):
-                _mainPlayer->SetIsProtecetedFromCursesFromDoors(true && addEffect);
+                player->SetIsProtecetedFromCursesFromDoors(true && addEffect);
                 break;
 
             case static_cast<uint32_t>(CardsWithPassiveSpecialFunctions_TreasureArmor::TinfoilHat):
-                _mainPlayer->SetIsProtectedFromCursesFromPlayers(true && addEffect);
+                player->SetIsProtectedFromCursesFromPlayers(true && addEffect);
                 break;
 
             default:
@@ -2255,13 +2261,13 @@ void The_Game::ApplyNewArmor(const gameCardTreasureArmor &card, CardApplyMode ap
 
     if (addEffect)
     {
-        _mainPlayer->SetFleeChance(_mainPlayer->GetFleeChance() + card.bonusToFleeing());
-        _mainPlayer->SetBattlePower(_mainPlayer->GetBattlePower() + totalBonus);
+        player->SetFleeChance(_mainPlayer->GetFleeChance() + card.bonusToFleeing());
+        player->SetBattlePower(_mainPlayer->GetBattlePower() + totalBonus);
     }
     else
     {
-        _mainPlayer->SetFleeChance(_mainPlayer->GetFleeChance() - card.bonusToFleeing());
-        _mainPlayer->SetBattlePower(_mainPlayer->GetBattlePower() - totalBonus);
+        player->SetFleeChance(_mainPlayer->GetFleeChance() - card.bonusToFleeing());
+        player->SetBattlePower(_mainPlayer->GetBattlePower() - totalBonus);
     }
 
 
@@ -2270,29 +2276,30 @@ void The_Game::ApplyNewArmor(const gameCardTreasureArmor &card, CardApplyMode ap
     if (card.GetBodyPart() == Body_Part::Armor)
     {
         if (card.isCombined())
-            _mainPlayer->SetCombinedArmor(_mainPlayer->GetCombinedArmor() + (addEffect ? 1 : -1));
+            player->SetCombinedArmor(_mainPlayer->GetCombinedArmor() + (addEffect ? 1 : -1));
         else
-            _mainPlayer->SetArmorSlotFull(true && addEffect);
+            player->SetArmorSlotFull(true && addEffect);
     }
     if (card.GetBodyPart() == Body_Part::Feet)
     {
         if (card.isCombined())
-            _mainPlayer->SetCombinedArmor(_mainPlayer->GetCombinedFeet() + (addEffect ? 1 : -1));
+            player->SetCombinedArmor(_mainPlayer->GetCombinedFeet() + (addEffect ? 1 : -1));
         else
-            _mainPlayer->SetLegsSlotIsFull(true && addEffect);
+            player->SetLegsSlotIsFull(true && addEffect);
     }
     if (card.GetBodyPart() == Body_Part::Head)
     {
         if (card.isCombined())
-            _mainPlayer->SetCombinedHead(_mainPlayer->GetCombinedHead() + (addEffect ? 1 : -1));
+            player->SetCombinedHead(_mainPlayer->GetCombinedHead() + (addEffect ? 1 : -1));
         else
-            _mainPlayer->SetHeadSlotIsFull(true && addEffect);
+            player->SetHeadSlotIsFull(true && addEffect);
     }
 
     //Теперь  можно передать карту анимации
     //Анимация должна отдать карту в cardsInGameObserver
     //Анимацией занимается другая функция
-    ui->MainGamer->SlotChangeTheGamerBattlePower(static_cast<int32_t>(addEffect ? totalBonus : -totalBonus));
+
+    wt->SlotChangeTheGamerBattlePower(static_cast<int32_t>(addEffect ? totalBonus : -totalBonus));
 }
 
 
@@ -3445,9 +3452,22 @@ void The_Game::RemoveTheCardFromHand(GamerWidget *wt, SimpleCard card)
     wt->RemoveCardFromHand(card);
 }
 
-void The_Game::RemoveTheCardFromCardsInGame(GamerWidget *wt, SimpleCard card)
-{
-    wt->RemoveCardFromCardsInGame(card);
+void The_Game::RemoveCardsFromCardsInGame(GamerWidget *wt, std::vector<SimpleCard> cards)
+{   
+    //перед тем, как карта будет удалена из вектора-хранилища, проверить, имела ли она эффект.
+    //Если да, восстановить её тип и для него вызвать "удалитель" (применитель с соответствующим флагом)
+    //Чтобы не писать в каждом месте огромный свич, можно передать массив указателей на однотипные
+    //функции void func();
+    //пусть это будет мап, которому ключём служит тип карты
+    for (uint32_t var = 0; var < cards.size(); ++var)
+    {
+        if (wt->GetPointerToPlayer()->CardIsActive(cards[var]))
+            qDebug() << "Card Is Active! Up to delete!";
+        else
+            qDebug() << "Card Is not Active. It has had no effect.";
+    }
+    wt->RemoveCardsFromCardsInGame(cards);
+    wt->GetPointerToPlayer()->RemoveGivenCardsFromCardsInGame(cards);
 }
 
 void The_Game::SlotShowTradeMenu()
@@ -3550,10 +3570,9 @@ void The_Game::SlotProcessCardsSelectedToBeSold(const std::vector<SimpleCard> ca
     for (uint32_t var = 0; var < posCardsInGame.size(); ++var)
     {
         RemoveCardFromCardsAreAbleToBeSold(posCardsInGame[var].GetCard());
-        //продолжить здесь
-        RemoveTheCardFromCardsInGame(ui->MainGamer, posCardsInGame[var].GetCard());
+        //продолжить здесь     
     }
-    _mainPlayer->RemoveGivenCardsFromCardsInGame(PositionedCard::RevertToSimpleCardsVector(posCardsInGame));
+    RemoveCardsFromCardsInGame(ui->MainGamer, PositionedCard::RevertToSimpleCardsVector(posCardsInGame));
 
     std::vector<std::pair<PositionedCard, bool> > allCardsToBeDisplayed;
     for (uint32_t var = 0; var < posCardsInGame.size(); ++var)
@@ -3564,7 +3583,6 @@ void The_Game::SlotProcessCardsSelectedToBeSold(const std::vector<SimpleCard> ca
     {
         allCardsToBeDisplayed.push_back(std::make_pair(posCardsOnHands[var], true));
     }
-     //= posCardsInGame + posCardsOnHands
 
     //start animation here
     if (!allCardsToBeDisplayed.empty())
@@ -3599,9 +3617,9 @@ CardsFromHandAndInGame The_Game::CardsSeparator(GamerWidget *wt, const std::vect
     return CardsFromHandAndInGame(cardsOnHands, cardsInGame);
 }
 
-void The_Game::MoveCardFromCardInHandToCardInGame(Player *player, SimpleCard card)
+void The_Game::MoveCardFromCardInHandToCardInGame(Player *player, CardInGame card)
 {
-    player->RemoveCardFromHands(card);
+    player->RemoveCardFromHands(card.second);
     player->AddCardToCardsInGame(card);
 }
 
@@ -3793,10 +3811,8 @@ void The_Game::SlotProcessOpponentHasSoldCards(TheGameMainGamerHasSoldCards data
     for (uint32_t var = 0; var < posCardsInGame.size(); ++var)
     {
         RemoveCardFromCardsAreAbleToBeSold(posCardsInGame[var].GetCard());
-        //продолжить здесь
-        RemoveTheCardFromCardsInGame(currentWidget, posCardsInGame[var].GetCard());
     }
-    currentPlayer->RemoveGivenCardsFromCardsInGame(PositionedCard::RevertToSimpleCardsVector(posCardsInGame));
+    RemoveCardsFromCardsInGame(currentWidget, PositionedCard::RevertToSimpleCardsVector(posCardsInGame));
 
     std::vector<std::pair<PositionedCard, bool> > allCardsToBeDisplayed;
     for (uint32_t var = 0; var < posCardsInGame.size(); ++var)
@@ -3810,7 +3826,7 @@ void The_Game::SlotProcessOpponentHasSoldCards(TheGameMainGamerHasSoldCards data
      //= posCardsInGame + posCardsOnHands
     //start animation here
     if (!allCardsToBeDisplayed.empty())
-        Animation_StartPassSoldCardsFromHandOrInGameToTreasureFold_Phase1(ui->MainGamer, allCardsToBeDisplayed);
+        Animation_StartPassSoldCardsFromHandOrInGameToTreasureFold_Phase1(currentWidget, allCardsToBeDisplayed);
 
 }
 

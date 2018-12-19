@@ -449,7 +449,7 @@ private:
 
     //Все подобные функции должны уметь и применять, и отменять действие карты
     //Вызванная с флагом false, она должна отменить действие карты.
-    void ApplyNewArmor(const gameCardTreasureArmor& card, CardApplyMode apply = CardApplyMode::Apply);
+    void ApplyNewArmor(GamerWidget* wt, const gameCardTreasureArmor& card, CardApplyMode apply = CardApplyMode::Apply);
 
     TreasureArmorAllowance CardISAbleToPlayChecker_TreasureArmor(gameCardTreasureArmor card, bool fromHand);
 
@@ -611,7 +611,7 @@ private:
 private:
 
     void RemoveTheCardFromHand(GamerWidget* wt, SimpleCard card);
-    void RemoveTheCardFromCardsInGame(GamerWidget* wt, SimpleCard card);
+    void RemoveCardsFromCardsInGame(GamerWidget* wt, std::vector<SimpleCard> cards);
 
 
 signals:
@@ -637,7 +637,7 @@ private:
     CardsFromHandAndInGame CardsSeparator(GamerWidget *wt, const std::vector<SimpleCard>& cards);
 
     //Этой функцией можно пользоваться, когда известен игрок
-    void MoveCardFromCardInHandToCardInGame(Player* player, SimpleCard card);
+    void MoveCardFromCardInHandToCardInGame(Player* player, CardInGame card);
 
 public:
 

@@ -54,7 +54,9 @@ class Player
     std::map <Profession_Passive_Abilities, Abilities_Keys_Professions> _professionPassiveAbilites;
 
     std::vector<SimpleCard> _cardsOnHands;
-    std::vector<SimpleCard> _cardsInGame;
+
+    std::vector<SimpleCard> _activeCardsInGame;
+    std::vector<SimpleCard> _disabledCardsInGame;
 
     //Cards responsible for the Races and Classes
     SimpleCard _race1Card;
@@ -110,7 +112,7 @@ public:
     uint32_t GetCardsOnHandsLimit() const;
     void SetCardsOnHandsLimit(int GetCardsOnHandsLimit);
     uint32_t GetTotalCardsInGame() const;
-    void SetTotalCardsInGame(int GetTotalCardsInGame);
+    void SetTotalCardsInGame(int cards_in_game);
 
 
     bool GetHeadSlotIsFull() const;
@@ -147,17 +149,19 @@ public:
     void AddCardToHands(SimpleCard);
     void RemoveCardFromHands(SimpleCard);
 
-    void AddCardToCardsInGame(SimpleCard);
+    void AddCardToCardsInGame(CardInGame);
     void RemoveCardFromCardsInGame(SimpleCard);
 
+    bool CardIsActive(SimpleCard card);
+
     std::vector<SimpleCard>* cardsOnHandsVector();
-    std::vector<SimpleCard>* cardsInGameVector();
+
 
     const std::vector<SimpleCard>& GetCardsOnHands()
     { return _cardsOnHands; }
 
-    const std::vector<SimpleCard>& GetCardsInGame()
-    { return _cardsInGame; }
+    std::vector<SimpleCard> GetCardsInGame()
+    { return (_activeCardsInGame + _disabledCardsInGame); }
 
     QString GetPlayersName() const;
     void SetPlayersName(const QString &GetPlayersName);
@@ -216,6 +220,10 @@ private:
     //it is necessary to save the property in the player class of the card responsible for the
     //class review
     //SimpleCard
+
+public:
+
+
 
 };
 

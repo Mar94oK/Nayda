@@ -2102,3 +2102,13 @@ std::vector<PositionedCard> operator+(const std::vector<PositionedCard> &left, c
     }
     return result;
 }
+
+std::vector<SimpleCard> operator+(const std::vector<SimpleCard> &left, const std::vector<SimpleCard> &right)
+{
+    std::vector<SimpleCard> result = left;
+    for (uint32_t var = 0; var < right.size(); ++var)
+    {
+        result.push_back(right[var]);
+    }
+    return result;
+}

@@ -251,9 +251,12 @@ public:
 
 };
 
-//унарный +
+
 std::vector<PositionedCard> operator+(const std::vector<PositionedCard>& left,
                                       const std::vector<PositionedCard>& right);
+
+std::vector<SimpleCard> operator+(const std::vector<SimpleCard>& left,
+                                      const std::vector<SimpleCard>& right);
 
 
 

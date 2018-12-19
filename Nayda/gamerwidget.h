@@ -250,7 +250,7 @@ public:
    std::vector<PositionedCard> GetPositionedCardsFromCardsOnHand(const std::vector<SimpleCard> cards);
    std::vector<PositionedCard> GetPositionedCardsFromCardsInGame(const std::vector<SimpleCard> cards);
    void RemoveCardFromHand(SimpleCard card);
-   void RemoveCardFromCardsInGame(SimpleCard card);
+   void RemoveCardsFromCardsInGame(std::vector<SimpleCard> cards);
 
 public:
 
