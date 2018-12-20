@@ -2112,3 +2112,21 @@ std::vector<SimpleCard> operator+(const std::vector<SimpleCard> &left, const std
     }
     return result;
 }
+
+QDebug operator<<(QDebug debug, const CardImplementationDirection &dt)
+{
+    switch (dt)
+    {
+        case CardImplementationDirection::CardsInGameToBattlefield:
+            debug << "CardImplementationDirection::CardsInGameToBattlefield";
+            break;
+        case CardImplementationDirection::HandToBattleField:
+            debug << "CardImplementationDirection::HandToBattleField";
+            break;
+        case CardImplementationDirection::HandToCardsInGame:
+            debug << "CardType::DoorMonster";
+            break;
+    }
+
+    return debug;
+}

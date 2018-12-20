@@ -1887,7 +1887,7 @@ const GameCardBasis* The_Game::GetRealCard(SimpleCard card)
         _armorIterator = _armorDeck.find(static_cast <int> (card.second));
         if (_armorIterator != _armorDeck.end())
         {
-            qDebug() << "NAY-002: Returning terasure armor: ";
+            qDebug() << "NAY-002: Returning treasure armor: ";
             //const GameCardBasis* checker = &(*_armorIterator).second;
             const gameCardTreasureArmor* checker = &(_armorIterator->second);
             //checker->SetCardType(CardType::TreasureArmor);
@@ -2082,12 +2082,7 @@ void The_Game::SlotCheckCardIsAbleToBePlayed(PositionedCard card, bool fromHand)
     //Перед запуском парсеров с указателями причин невозможности разыграть карту
     //сначала проверить, что не идёт процесс анимации карт.
 
-    if (_currentGamePhase == GamePhase::CardProcessing)
-    {
-        qDebug() << "NAY-002: DEBUG:::: The Game is in the GamePhase::CardProcessing when it is not possible to use cards!";
-        emit SignalCardIsRejectedToBePlayed(true);
-        return;
-    }
+
 
 
 
@@ -2108,49 +2103,49 @@ void The_Game::SlotCheckCardIsAbleToBePlayed(PositionedCard card, bool fromHand)
     MainCardImplementer(ui->MainGamer, card, CardImplementationDirection::HandToCardsInGame);
 
 
-    //14.12.2018
-    //Начать отсюда.
-    const GameCardBasis* basisCard(GetRealCard(card.GetCard()));
-    if (basisCard == nullptr)
-    {
-        qDebug() << "ERROR WHILE SlotCheckCardIsAbleToBePlayed(): Card not found!";
-    }
-    //CardType currentType = GetRealCard(givenCard)->GetCardType();
+//    //14.12.2018
+//    //Начать отсюда.
+//    const GameCardBasis* basisCard(GetRealCard(card.GetCard()));
+//    if (basisCard == nullptr)
+//    {
+//        qDebug() << "ERROR WHILE SlotCheckCardIsAbleToBePlayed(): Card not found!";
+//    }
+//    //CardType currentType = GetRealCard(givenCard)->GetCardType();
 
-    if (basisCard->GetCardType() == CardType::TreasureArmor)
-    {
-        //Получить (сделать) здесь карту из текущей (привести указатель к требуемому виду, т.к. известно,
-        //какой объект вернулся)
-        const gameCardTreasureArmor* cardPointer = static_cast<const gameCardTreasureArmor* >(basisCard);
-        gameCardTreasureArmor realCard(cardPointer);
-        TreasureArmorAllowance allowance = CardIsAbleToPlayChecker_TreasureArmor(realCard, fromHand);
-        if (TreasureArmorCardImplementer(allowance, realCard))
-        {
-            emit SignalCardIsRejectedToBePlayed(false);
-            //Отсюда отправить сообщение на сервер о применении карты
+//    if (basisCard->GetCardType() == CardType::TreasureArmor)
+//    {
+//        //Получить (сделать) здесь карту из текущей (привести указатель к требуемому виду, т.к. известно,
+//        //какой объект вернулся)
+//        const gameCardTreasureArmor* cardPointer = static_cast<const gameCardTreasureArmor* >(basisCard);
+//        gameCardTreasureArmor realCard(cardPointer);
+//        TreasureArmorAllowance allowance = CardIsAbleToPlayChecker_TreasureArmor(realCard, fromHand);
+//        if (TreasureArmorCardImplementer(allowance, realCard))
+//        {
+//            emit SignalCardIsRejectedToBePlayed(false);
+//            //Отсюда отправить сообщение на сервер о применении карты
 
-            SaveGamePhase();
-            SetGamePhase(GamePhase::CardProcessing);
-            qDebug() << "NAY-002: Animation_Phase1 played!";
-            Animation_PassPlayedCardToCardsInGame_Phase1(ui->MainGamer, card, allowance.GetIsActive());
-            if (!allowance.GetIsActive())
-                ApplyCardImplementerMessage(allowance.GetReasonOfRestriction(), true);
-        }
-        else
-        {
-            emit SignalCardIsRejectedToBePlayed(true);
-            ApplyCardImplementerMessage(allowance.GetReasonOfRestriction(), false);
-        }
+//            SaveGamePhase();
+//            SetGamePhase(GamePhase::CardProcessing);
+//            qDebug() << "NAY-002: Animation_Phase1 played!";
+//            Animation_PassPlayedCardToCardsInGame_Phase1(ui->MainGamer, card, allowance.GetIsActive());
+//            if (!allowance.GetIsActive())
+//                ApplyCardImplementerMessage(allowance.GetReasonOfRestriction(), true);
+//        }
+//        else
+//        {
+//            emit SignalCardIsRejectedToBePlayed(true);
+//            ApplyCardImplementerMessage(allowance.GetReasonOfRestriction(), false);
+//        }
 
-        //DEBUGPassTheCardToTheBattleField(card);
+//        //DEBUGPassTheCardToTheBattleField(card);
 
-    }
-    else
-    {
-        qDebug() << "NAY-002: This type is not implemented yet!" << basisCard->GetCardType();
-        emit SignalCardIsRejectedToBePlayed(true);
-        return;
-    }
+//    }
+//    else
+//    {
+//        qDebug() << "NAY-002: This type is not implemented yet!" << basisCard->GetCardType();
+//        emit SignalCardIsRejectedToBePlayed(true);
+//        return;
+//    }
 }
 
 void The_Game::MainCardImplementer(GamerWidget *wt, PositionedCard card, CardImplementationDirection direction, CardCheckerPolicy checkerPolicy)
@@ -2160,12 +2155,51 @@ void The_Game::MainCardImplementer(GamerWidget *wt, PositionedCard card, CardImp
     const GameCardBasis* basisCard(GetRealCard(card.GetCard()));
     if (checkerPolicy == CardCheckerPolicy::CheckBeforeImplementation)
     {
-        std::shared_ptr<CardPlayAllowanceBase> allowance = GetAllowance(basisCard, wt->GetPointerToPlayer(), direction);
-        if (basisCard->GetCardType() == CardType::TreasureArmor)
+        //Перед всеми остальными действиями сначала проверить глобальные запреты.
+        if (_currentGamePhase == GamePhase::CardProcessing)
         {
-            std::shared_ptr<TreasureArmorAllowance> armorAllowance = std::static_pointer_cast<TreasureArmorAllowance>(allowance);
-            qDebug() << "NAY-002: New ARCHITECTURE Starting: armorAllowance" << armorAllowance->GetReasonOfRestriction();
+            qDebug() << "NAY-002: DEBUG:: The Game is in the GamePhase::CardProcessing when it is not possible to use cards!";
+            emit SignalCardIsRejectedToBePlayed(true);
+            return;
         }
+
+
+        std::shared_ptr<CardPlayAllowanceBase> allowance = GetAllowance(basisCard, wt->GetPointerToPlayer(), direction);
+        //Проверить, разрешено ли применить карту
+        //Если да - применить её (причём, в зависимости от направления могут быть разные типы применения!)
+        //В будущем - т.е. "Дипломатия" будет проверять, выполнены ли условия по передаче карты и т.п.
+        //В настоящий момент (21.12.2018) выполняет только применение карты в игру
+        //Вывести причину, если нельзя
+        if (!allowance->GetAllowance())
+        {
+            ProcessCardMightNotBeImplemented(allowance);
+        }
+        else
+        {
+            switch (basisCard->GetCardType())
+            {
+                case CardType::TreasureArmor:
+                {
+                    std::shared_ptr<TreasureArmorAllowance> armorAllowance = std::static_pointer_cast<TreasureArmorAllowance>(allowance);
+                    qDebug() << "NAY-002: New ARCHITECTURE Starting: armorAllowance" << armorAllowance->GetReasonOfRestriction();
+                    ProcessCardAllowedToBeImplemented(allowance, basisCard, wt, card, direction);
+                    emit SignalCardIsRejectedToBePlayed(false);
+                    //Отсюда отправить сообщение на сервер о применении карты
+                }
+                    break;
+                default:
+                {
+                    qDebug() << "NAY-002: New ARCHITECTURE Starting: CardType: " << basisCard->GetCardType() << " not handled yet!";
+                    emit SignalCardIsRejectedToBePlayed(true);
+                    return;
+                }
+            }
+        }
+
+    }
+    else
+    {
+
     }
 
 }
@@ -2175,7 +2209,55 @@ std::shared_ptr<CardPlayAllowanceBase> The_Game::GetAllowance(const GameCardBasi
     //if (card->GetCardType() == CardType::TreasureArmor)
         const gameCardTreasureArmor* cardPtr = static_cast<const gameCardTreasureArmor* >(card);
 
-    return GetAllowanceTreasureArmor(cardPtr, player, true);
+        return GetAllowanceTreasureArmor(cardPtr, player, true);
+}
+
+void The_Game::ProcessCardMightNotBeImplemented(std::shared_ptr<CardPlayAllowanceBase> allowance)
+{
+    emit SignalCardIsRejectedToBePlayed(true);
+    ApplyCardImplementerMessage(allowance->GetReasonOfRestriction(), false);
+}
+
+void The_Game::ProcessCardAllowedToBeImplemented(std::shared_ptr<CardPlayAllowanceBase> allowance, const GameCardBasis *card, GamerWidget *wt, PositionedCard posCard, CardImplementationDirection direction)
+{
+    qDebug() << "NAY-002: ProcessCardAllowedToBeImplemented() ImplementationDirection: " << direction;
+
+    switch (direction)
+    {
+        case CardImplementationDirection::HandToCardsInGame:
+        {
+            ImplementCardFromHandsToCardsInGame(allowance, card, wt, posCard);
+        }
+            break;
+        default:
+        {
+            qDebug() << "NAY-002: ProcessCardAllowedToBeImplemented ImplementationDirection: " << direction << "Is not supported yet!";
+            emit SignalCardIsRejectedToBePlayed(true);
+            ApplyCardImplementerMessage(QString("This direction is not supported yet!"), false);
+        }
+            break;
+    }
+}
+
+void The_Game::ImplementCardFromHandsToCardsInGame(std::shared_ptr<CardPlayAllowanceBase> allowance, const GameCardBasis *card, GamerWidget *wt, PositionedCard posCard)
+{
+    qDebug() << "NAY-002: ImplementCardFromHandsToCardsInGame() starting";
+
+    switch (card->GetCardType())
+    {
+        case CardType::TreasureArmor:
+        {
+            ImplementTreasureArmorToCardsInGame(allowance, card, wt, posCard);
+        }
+            break;
+        default:
+        {
+            qDebug() << "NAY-002: ERROR WHILE ImplementCardFromHandsToCardsInGame(). Card is not supported yet!";
+        }
+           break;
+    }
+
+
 }
 
 std::shared_ptr<CardPlayAllowanceBase> The_Game::GetAllowanceTreasureArmor(const gameCardTreasureArmor *card, Player *player, bool fromHand)
@@ -2266,7 +2348,27 @@ std::shared_ptr<CardPlayAllowanceBase> The_Game::GetAllowanceTreasureArmor(const
 
 
     //Запретов больше нет
-    return std::make_shared<CardPlayAllowanceBase>(TreasureArmorAllowance(true, "", true));
+    return std::make_shared<TreasureArmorAllowance>(TreasureArmorAllowance(true, "", true));
+}
+
+void The_Game::ImplementTreasureArmorToCardsInGame(std::shared_ptr<CardPlayAllowanceBase> allowance, const GameCardBasis *card, GamerWidget *wt, PositionedCard posCard)
+{
+    std::shared_ptr<TreasureArmorAllowance> armorAllowance = std::static_pointer_cast<TreasureArmorAllowance>(allowance);
+    SaveGamePhase();
+    SetGamePhase(GamePhase::CardProcessing);
+    qDebug() << "NAY-002: Animation_Phase1 played!";
+    Animation_PassPlayedCardToCardsInGame_Phase1(ui->MainGamer, posCard, armorAllowance->GetIsActive());
+
+    const gameCardTreasureArmor* cardPointer = static_cast<const gameCardTreasureArmor* >(card);
+    gameCardTreasureArmor realCard(cardPointer);
+
+    ui->MainGamer->SlotAddCardToCardsInGame(std::make_pair(armorAllowance->GetIsActive(), SimpleCard(true, realCard.GetCardID())));
+    MoveCardFromCardInHandToCardInGame(_mainPlayer, std::make_pair(armorAllowance->GetIsActive(), SimpleCard(true, realCard.GetCardID())));
+
+    if (!armorAllowance->GetIsActive())
+        ApplyCardImplementerMessage(armorAllowance->GetReasonOfRestriction(), true);
+    else
+        ApplyNewArmor(wt, realCard);
 }
 
 bool The_Game::TreasureArmorCardImplementer(const TreasureArmorAllowance &allowance, const gameCardTreasureArmor &card)

@@ -451,8 +451,20 @@ public:
 private:
 
     std::shared_ptr<CardPlayAllowanceBase> GetAllowance(const GameCardBasis* card, Player* player, CardImplementationDirection direction);
+    void ProcessCardMightNotBeImplemented(std::shared_ptr<CardPlayAllowanceBase> allowance);
+    void ProcessCardAllowedToBeImplemented(std::shared_ptr<CardPlayAllowanceBase> allowance,
+                                           const GameCardBasis* card,
+                                           GamerWidget* wt,
+                                           PositionedCard posCard,
+                                           CardImplementationDirection direction);
+    void ImplementCardFromHandsToCardsInGame(std::shared_ptr<CardPlayAllowanceBase> allowance,
+                                             const GameCardBasis* card,
+                                             GamerWidget* wt,
+                                             PositionedCard posCard);
+
 
     std::shared_ptr<CardPlayAllowanceBase> GetAllowanceTreasureArmor(const gameCardTreasureArmor* card, Player* player, bool fromHand);
+    void ImplementTreasureArmorToCardsInGame(std::shared_ptr<CardPlayAllowanceBase> allowance, const GameCardBasis *card, GamerWidget *wt, PositionedCard posCard);
 
 private:
 

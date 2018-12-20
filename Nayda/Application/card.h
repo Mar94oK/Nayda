@@ -116,6 +116,7 @@ enum class CardImplementationDirection
     HandToBattleField,
     CardsInGameToBattlefield
 };
+QDebug operator<<(QDebug debug, const CardImplementationDirection& dt);
 
 enum class CardCheckerPolicy
 {
