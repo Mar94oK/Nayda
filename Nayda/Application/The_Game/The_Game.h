@@ -441,6 +441,19 @@ public slots:
     void SlotAdjustSizeOfTheGamerWidgetToMakeCardsToBeInPlace();
     void SlotCheckCardIsAbleToBePlayed(PositionedCard card, bool fromHand);
 
+public:
+
+    void MainCardImplementer(GamerWidget* wt,
+                             PositionedCard card,
+                             CardImplementationDirection direction,
+                             CardCheckerPolicy checkerPolicy = CardCheckerPolicy::CheckBeforeImplementation
+                             );
+private:
+
+    std::shared_ptr<CardPlayAllowanceBase> GetAllowance(const GameCardBasis* card, Player* player, CardImplementationDirection direction);
+
+    std::shared_ptr<CardPlayAllowanceBase> GetAllowanceTreasureArmor(const gameCardTreasureArmor* card, Player* player, bool fromHand);
+
 private:
 
     bool TreasureArmorCardImplementer(const TreasureArmorAllowance &allowance, const gameCardTreasureArmor &card);

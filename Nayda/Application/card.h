@@ -95,6 +95,7 @@ enum class Additional_Request {noCompanion, failedToFlee,
                               succeededToFlee, win, onceReceived,
                               haveCompanion, thereIsDwarf, noRequest};
 
+
 //Their values should be equal to their cardIDs
 //If card has Special Function, Implementer should run trough whole the 
 //Cards below  
@@ -109,17 +110,19 @@ enum class CardsWithPassiveSpecialFunctions_TreasureArmor
     TinfoilHat = 75,
 };
 
-//продолжить здесь
+enum class CardImplementationDirection
+{
+    HandToCardsInGame,
+    HandToBattleField,
+    CardsInGameToBattlefield
+};
 
+enum class CardCheckerPolicy
+{
+  ImplementWithoutCheck,
+  CheckBeforeImplementation
+};
 
-//class CardsPassiveAbilitiesTreasures
-//{
-//    static const std::map<CardsWithPassiveSpecialFunctions, uint32_t> treasureCardsWithPassiveFunctions; 
-    
-//public:
-
-//    static CardsWithPassiveSpecialFunctions TreasureCardHasSpecialFunction    
-//}
 
 
 
