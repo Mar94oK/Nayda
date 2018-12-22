@@ -175,8 +175,20 @@ QString CardsInGame::GetCardPictureAddress(SimpleCard card)
 
 void CardsInGame::SetUpButtonPicture(QPushButton * const btn, const QString &picturePath, QSize size, bool active)
 {
-    QPixmap pxmpBtnMainRepresenter(picturePath);
+
+    QImage image(picturePath);
+    QPixmap pxmpBtnMainRepresenter;
     QPalette plteBtnMainRepresenter(btn->palette());
+
+    //NAY-002: EXPECTED_IMPROVEMENT
+    //Передавать в этот виджет настройку, отвечающую за отображение или неотображение
+    //Карт серым цветом в том случае, если они неактивны.
+    if (active)
+    {
+        pxmpBtnMainRepresenter = QPixmap::fromImage(image.convertToFormat(QImage::Format_Grayscale8));
+    }
+    else
+        pxmpBtnMainRepresenter = QPixmap::fromImage(image);
 
     plteBtnMainRepresenter.setBrush(QPalette::Button,
                                     QBrush(pxmpBtnMainRepresenter.scaled(size.width(),

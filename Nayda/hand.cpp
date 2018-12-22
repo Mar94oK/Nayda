@@ -202,26 +202,20 @@ void Hand::addNewCardToHands(SimpleCard card)
     int HW_Screen_Size_Width = HW_Screen_Size.width();
     int HW_Screen_Size_Height = HW_Screen_Size.height();
 
-    //setup the koefficients;
-    const float handCardSize_width_to_height_ratio = 2.71f;
-    const float handCardSizeWidht = 0.019f;
-    const float handCardSizeHeight = handCardSize_width_to_height_ratio*handCardSizeWidht;
+    _cardSize.setWidth(static_cast<int32_t>(GeometricLimitations::handCardSizeWidht*HW_Screen_Size_Width*2));
+    _cardSize.setHeight(static_cast<int32_t>(GeometricLimitations::handCardSizeHeight*HW_Screen_Size_Height*2));
 
-    _cardSize.setWidth(handCardSizeWidht*HW_Screen_Size_Width*2);
-    _cardSize.setHeight(handCardSizeHeight*HW_Screen_Size_Height*2);
+    newCard->setMaximumWidth(static_cast<int32_t>(GeometricLimitations::handCardSizeWidht*HW_Screen_Size_Width*2));
+    newCard->setMaximumHeight(static_cast<int32_t>(GeometricLimitations::handCardSizeHeight*HW_Screen_Size_Height*2));
+    newCard->setMinimumWidth(static_cast<int32_t>(GeometricLimitations::handCardSizeWidht*HW_Screen_Size_Width*2));
+    newCard->setMinimumHeight(static_cast<int32_t>(GeometricLimitations::handCardSizeHeight*HW_Screen_Size_Height*2));
 
-    newCard->setMaximumWidth(handCardSizeWidht*HW_Screen_Size_Width*2);
-    newCard->setMaximumHeight(handCardSizeHeight*HW_Screen_Size_Height*2);
-    newCard->setMinimumWidth(handCardSizeWidht*HW_Screen_Size_Width*2);
-    newCard->setMinimumHeight(handCardSizeHeight*HW_Screen_Size_Height*2);
-
-    //qDebug() << "Current Picture Address: " << currentPictureAddress;
     QPixmap pxmpBtnMainRepresenter(currentPictureAddress);
     QPalette plteBtnMainRepresenter;
     plteBtnMainRepresenter.setBrush(newCard->backgroundRole(),
-    QBrush(pxmpBtnMainRepresenter.scaled(handCardSizeWidht*HW_Screen_Size_Width*2,
-                                                             handCardSizeHeight*HW_Screen_Size_Height*2,
-                                                             Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
+    QBrush(pxmpBtnMainRepresenter.scaled(static_cast<int32_t>(GeometricLimitations::handCardSizeWidht*HW_Screen_Size_Width*2),
+                                         static_cast<int32_t>(GeometricLimitations::handCardSizeHeight*HW_Screen_Size_Height*2),
+                                         Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
     this->layout()->addWidget(newCard);
     //ui->verticalLayout->addWidget(_theBtnMainRepresenter);
     //ui->verticalLayout->setAlignment(Qt::AlignHCenter);
