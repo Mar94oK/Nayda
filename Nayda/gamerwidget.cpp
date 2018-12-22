@@ -13,6 +13,7 @@ GamerWidget::GamerWidget(QWidget *parent, Player *player) :
     SetUpWidgetsPerfomance();
     ui->btn_Trade->hide();
 
+
     SetUpTestTimer();
     SetUpShowTimer();
     SetUpSignalsSlotsConnections();
@@ -41,7 +42,9 @@ void GamerWidget::RedrawAsASecondaryPlayer()
     ui->btn_Test->hide();
     //hide if secondary!
     ui->widget->hide();
-
+    ui->wt_CardsInGameMainPlayer->hide();
+    ui->btn_HideCardsInGame->hide();
+    ui->wt_CardsInGameSecondaryPlayer->show();
 }
 
 
@@ -164,7 +167,6 @@ void GamerWidget::SlotRepresentTheCardInCentre()
     qDebug() << "POS X: " << ui->widget->pos().x();
     qDebug() << "POS Y: " << ui->widget->pos().y();
 
-//    _currentCardToShowNearItsPosition.AddBase(ui->wt_CardsInGame->pos());
     _currentCardToShowNearItsPosition.AddBase(pos());
     emit SignalRepresentTheCardInCentre(_currentCardToShowNearItsPosition);
 }
@@ -524,6 +526,7 @@ void GamerWidget::SetUpWidgetsPerfomance()
     ui->btn_class_2->hide();
     ui->lbl_supermunchkin->hide();
     ui->btn_Master->hide();
+    ui->wt_CardsInGameSecondaryPlayer->hide();
 
     //setup the "card"-race and "card"-class size
     ui->btn_race_1->setMaximumWidth(_race_class_btn_size_width*HW_Screen_Size_Width);

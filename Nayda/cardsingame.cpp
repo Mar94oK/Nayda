@@ -33,8 +33,12 @@ void CardsInGame::SetDecks(const AllDecksToBePassed &data)
 
 void CardsInGame::AddCardToCardsInGame(CardInGame card)
 {
-    QSize cardSize(static_cast<int32_t>(_widnowSizeWidth*handCardSizeWidht),
-                   static_cast<int32_t>(_windowSizeHeight*handCardSizeHeight));
+    QSize cardSize(static_cast<int32_t>(_widnowSizeWidth
+                                        *GeometricLimitations::handCardSizeWidht
+                                        *GeometricLimitations::cardInGametoCardOnHandSizeRatio),
+                   static_cast<int32_t>(_windowSizeHeight
+                                        *GeometricLimitations::handCardSizeHeight
+                                        *GeometricLimitations::cardInGametoCardOnHandSizeRatio));
 
     _cardsInGameHolder.push_back(card);
     qDebug() << "NAY-002: AddCard in Cards In Game Observer: "

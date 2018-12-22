@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <Application/card.h>
 #include <QPushButton>
+#include "munchkinglobaldefines.h"
 
 
 

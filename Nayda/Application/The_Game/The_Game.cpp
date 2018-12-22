@@ -3478,7 +3478,8 @@ void The_Game::SetUpWidgetsProperties(uint32_t windowHeight, uint32_t windowWidt
     //with respect to the MainGamer, the height size won't be larger then allowed,
     //but may take all the availible space if the width is concerned; Why not?
     ui->MainGamer->setMinimumWidth(koeff_GamerWidget_size_Width*windowWidth);
-    ui->MainGamer->setMaximumWidth((koeff_GamerWidget_size_Width+MainGamerWidgetWidthExpansion)*windowWidth);
+
+    //ui->MainGamer->setMaximumWidth((koeff_GamerWidget_size_Width+MainGamerWidgetWidthExpansion)*windowWidth);
 
     ui->TimersWidget->setMinimumHeight(koeff_GameTimers_size_Height*windowHeight);
     ui->TimersWidget->setMaximumHeight(koeff_GameTimers_size_Height*windowHeight);
