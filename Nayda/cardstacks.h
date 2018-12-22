@@ -15,8 +15,8 @@
 
 //#defin_showTheNumberOfCardsLeftft true
 
-#define increasingStacksSizeDeltaWidth 0.015
-#define increasingStacksSizeDeltaHeight 0.015*2.71
+#define increasingStacksSizeDeltaWidth 0
+#define increasingStacksSizeDeltaHeight 0
 
 namespace Ui {
 class CardStacks;
@@ -75,9 +75,9 @@ public slots:
 private:
 
     //setup the koefficients;
-    const float _race_class_btn_size_geometric_width_to_height_ratio = 2.71f;
-    const float _race_class_btn_size_width = 0.035f;
-    const float _race_class_btn_size_height = _race_class_btn_size_geometric_width_to_height_ratio*_race_class_btn_size_width;
+    constexpr static float _raceClassBtnSizeGeometricWidthToHeightRatio = GeometricLimitations::handcardsizeWidthToHeightRatio;
+    constexpr static float _raceClassBtnSizeWidth = GeometricLimitations::handCardSizeWidht*3;
+    constexpr static float _raceClassBtnSizeHeight = _raceClassBtnSizeGeometricWidthToHeightRatio*_raceClassBtnSizeWidth;
 
 private:
 

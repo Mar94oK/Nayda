@@ -220,8 +220,8 @@ void GamerWidget::SlotChangeTheGamerLevel(int levelDelta)
     int HW_Screen_Size_Height = HW_Screen_Size.height();
 
     QPixmap levelImage(_levelsPictures[_gamerLevel-1]);
-    ui->lbl_Level->setPixmap(levelImage.scaled(_race_class_btn_size_width*HW_Screen_Size_Width,
-                                               _race_class_btn_size_height*HW_Screen_Size_Height,
+    ui->lbl_Level->setPixmap(levelImage.scaled(_raceClassBtnSizeWidth*HW_Screen_Size_Width,
+                                               _raceClassBtnSizeHeight*HW_Screen_Size_Height,
                                                Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 }
 
@@ -291,8 +291,8 @@ void GamerWidget::SlotChangeTheGamerBattlePower(int battlePowerDelta)
     int HW_Screen_Size_Height = HW_Screen_Size.height();
 
     QPixmap battlePowerImage(_battlePowerPictures[pictureToShow]);
-    ui->lbl_BattlePowerPicture->setPixmap(battlePowerImage.scaled(_race_class_btn_size_width*HW_Screen_Size_Width,
-                                                            _race_class_btn_size_height*HW_Screen_Size_Height / 2,
+    ui->lbl_BattlePowerPicture->setPixmap(battlePowerImage.scaled(_raceClassBtnSizeWidth*HW_Screen_Size_Width,
+                                                            _raceClassBtnSizeHeight*HW_Screen_Size_Height / 2,
                                                             Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 }
 
@@ -529,15 +529,15 @@ void GamerWidget::SetUpWidgetsPerfomance()
     ui->wt_CardsInGameSecondaryPlayer->hide();
 
     //setup the "card"-race and "card"-class size
-    ui->btn_race_1->setMaximumWidth(_race_class_btn_size_width*HW_Screen_Size_Width);
-    ui->btn_race_1->setMaximumHeight(_race_class_btn_size_height*HW_Screen_Size_Height);
-    ui->btn_race_1->setMinimumWidth(_race_class_btn_size_width*HW_Screen_Size_Width);
-    ui->btn_race_1->setMinimumHeight(_race_class_btn_size_height*HW_Screen_Size_Height);
+    ui->btn_race_1->setMaximumWidth(_raceClassBtnSizeWidth*HW_Screen_Size_Width);
+    ui->btn_race_1->setMaximumHeight(_raceClassBtnSizeHeight*HW_Screen_Size_Height);
+    ui->btn_race_1->setMinimumWidth(_raceClassBtnSizeWidth*HW_Screen_Size_Width);
+    ui->btn_race_1->setMinimumHeight(_raceClassBtnSizeHeight*HW_Screen_Size_Height);
 
-    ui->btn_class_1->setMaximumWidth(_race_class_btn_size_width*HW_Screen_Size_Width);
-    ui->btn_class_1->setMaximumHeight(_race_class_btn_size_height*HW_Screen_Size_Height);
-    ui->btn_class_1->setMinimumWidth(_race_class_btn_size_width*HW_Screen_Size_Width);
-    ui->btn_class_1->setMinimumHeight(_race_class_btn_size_height*HW_Screen_Size_Height);
+    ui->btn_class_1->setMaximumWidth(_raceClassBtnSizeWidth*HW_Screen_Size_Width);
+    ui->btn_class_1->setMaximumHeight(_raceClassBtnSizeHeight*HW_Screen_Size_Height);
+    ui->btn_class_1->setMinimumWidth(_raceClassBtnSizeWidth*HW_Screen_Size_Width);
+    ui->btn_class_1->setMinimumHeight(_raceClassBtnSizeHeight*HW_Screen_Size_Height);
 
     //http://www.prog.org.ru/topic_7215_0.html
 
@@ -549,8 +549,8 @@ void GamerWidget::SetUpWidgetsPerfomance()
 
     QPalette plte_icon_race_1;
     plte_icon_race_1.setBrush(ui->btn_race_1->backgroundRole(),
-    QBrush(pxmp_icon_race_1.scaled(_race_class_btn_size_width*HW_Screen_Size_Width,
-                                                             _race_class_btn_size_height*HW_Screen_Size_Height,
+    QBrush(pxmp_icon_race_1.scaled(_raceClassBtnSizeWidth*HW_Screen_Size_Width,
+                                                             _raceClassBtnSizeHeight*HW_Screen_Size_Height,
                                                              Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
 #ifndef USE_RESOURCES
     QPixmap pxmp_icon_class_1("Pictures/No_Class_dbg.png");
@@ -560,8 +560,8 @@ void GamerWidget::SetUpWidgetsPerfomance()
 
     QPalette plte_icon_class_1;
     plte_icon_class_1.setBrush(ui->btn_class_1->backgroundRole(),
-    QBrush(pxmp_icon_class_1.scaled(_race_class_btn_size_width*HW_Screen_Size_Width,
-                                                             _race_class_btn_size_height*HW_Screen_Size_Height,
+    QBrush(pxmp_icon_class_1.scaled(_raceClassBtnSizeWidth*HW_Screen_Size_Width,
+                                                             _raceClassBtnSizeHeight*HW_Screen_Size_Height,
                                                              Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
 
     ui->btn_race_1->setFlat(true);
@@ -586,14 +586,14 @@ void GamerWidget::SetUpWidgetsPerfomance()
     //set the initial levelel's pictures.
 
     QPixmap levelImage(_levelsPictures[_gamerLevel-1]);
-    ui->lbl_Level->setPixmap(levelImage.scaled(_race_class_btn_size_width*HW_Screen_Size_Width,
-                                               _race_class_btn_size_height*HW_Screen_Size_Height,
+    ui->lbl_Level->setPixmap(levelImage.scaled(_raceClassBtnSizeWidth*HW_Screen_Size_Width,
+                                               _raceClassBtnSizeHeight*HW_Screen_Size_Height,
                                                Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 
     //set The BattlePower Picture and Digit Lables;
     QPixmap battlePowerImage(_battlePowerPictures[0]);
-    ui->lbl_BattlePowerPicture->setPixmap(battlePowerImage.scaled(_race_class_btn_size_width*HW_Screen_Size_Width,
-                                                            _race_class_btn_size_height*HW_Screen_Size_Height / 2,
+    ui->lbl_BattlePowerPicture->setPixmap(battlePowerImage.scaled(_raceClassBtnSizeWidth*HW_Screen_Size_Width,
+                                                            _raceClassBtnSizeHeight*HW_Screen_Size_Height / 2,
                                                             Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 
     ui->lbl_BattlePowerDigit->setStyleSheet("QLabel {color: #FAAB21; }");

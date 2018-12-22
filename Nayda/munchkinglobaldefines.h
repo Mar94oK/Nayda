@@ -17,14 +17,20 @@ public:
 
 //Related to CardsOnHand (Hand) widget;
 
-    static constexpr float handCardSize_width_to_height_ratio = 2.71f;
+    static constexpr float handcardsizeWidthToHeightRatio = 2.71f;
     static constexpr float handCardSizeWidht = 0.019f;
-    static constexpr float handCardSizeHeight = handCardSize_width_to_height_ratio*handCardSizeWidht;
+    static constexpr float handCardSizeHeight = handcardsizeWidthToHeightRatio*handCardSizeWidht;
 
 //Related to CardsInGame widget;
 
     static constexpr float cardInGametoCardOnHandSizeRatio = 0.3333333f;
 
+    //Related to GamerWidget commons (level picture, battlePower picture, etc...)
+    static constexpr float cardGamerWidgetSizeRatio = 1.65f;
+
+//Related to CardStacksWidget;
+
+    static constexpr float cardCardStacksWidgetSizeRatio = 2;
 };
 
 class HardCodedSettingsLimitations
