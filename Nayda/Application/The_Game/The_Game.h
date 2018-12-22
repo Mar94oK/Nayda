@@ -320,8 +320,10 @@ private:
 //Т.е эта система не должна (я надеюсь) разрушать игровую логику.
 
 #ifdef DEBUG_CARDS_TO_BE_GIVEN_TO_MASTER
+//    std::vector<SimpleCard> _debugCardsToBeGivenToMainPlayer = {{1,75}, {1,120},
+//                                                                {1,38}, {1, 47}};
     std::vector<SimpleCard> _debugCardsToBeGivenToMainPlayer = {{1,75}, {1,120},
-                                                                {1,38}, {1, 47}};
+                                                                {1,3}, {1, 10}};
 
 #endif
 
