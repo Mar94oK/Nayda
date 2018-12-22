@@ -69,7 +69,8 @@ SOURCES += main.cpp\
     sellmenu.cpp \
     selectablecardwidget.cpp \
     lastfoldobserver.cpp \
-    cardsingameobserver.cpp
+    cardsingameobserver.cpp \
+    cardsingame.cpp
 
 HEADERS  += main_application.h \
     Application/Before_The_Game/Before_The_Game.h \
@@ -111,7 +112,8 @@ HEADERS  += main_application.h \
     sellmenu.h \
     selectablecardwidget.h \
     lastfoldobserver.h \
-    cardsingameobserver.h
+    cardsingameobserver.h \
+    cardsingame.h
 
 FORMS    += main_application.ui \
     Application/Before_The_Game/Before_The_Game.ui \
@@ -144,7 +146,8 @@ FORMS    += main_application.ui \
     sellmenu.ui \
     selectablecardwidget.ui \
     lastfoldobserver.ui \
-    cardsingameobserver.ui
+    cardsingameobserver.ui \
+    cardsingame.ui
 
 RESOURCES += \
     tables.qrc \
