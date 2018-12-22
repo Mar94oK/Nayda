@@ -61,11 +61,12 @@ void CardsInGame::AddCardToCardsInGame(CardInGame card)
     qDebug() << "CardsInGame::AddCardToCardsInGame(CardInGame card): " << GetCardPictureAddress(card.second);
     SetUpButtonPicture(cardToShow,
                        GetCardPictureAddress(card.second),
-                       cardSize);
+                       cardSize, card.first);
 
+    bool active = card.first;
     if (_mode == CardsInGameWidgetMode::MainPlayer)
     {
-        if (card.first)
+        if (active)
         {
             if (_cardsInGameHolder.size() < _maximumActiveCardsInLine)
             {
@@ -90,7 +91,7 @@ void CardsInGame::AddCardToCardsInGame(CardInGame card)
     }
     else
     {
-        if (card.first)
+        if (active)
             ui->lyt_Top->addWidget(cardToShow);
         else
             ui->lyt_TopSecondary->addWidget(cardToShow);
@@ -190,7 +191,7 @@ void CardsInGame::SetUpButtonPicture(QPushButton * const btn, const QString &pic
     //NAY-002: EXPECTED_IMPROVEMENT
     //Передавать в этот виджет настройку, отвечающую за отображение или неотображение
     //Карт серым цветом в том случае, если они неактивны.
-    if (active)
+    if (!active)
     {
         pxmpBtnMainRepresenter = QPixmap::fromImage(image.convertToFormat(QImage::Format_Grayscale8));
     }

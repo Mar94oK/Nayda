@@ -2260,7 +2260,7 @@ void The_Game::ImplementCardFromHandsToCardsInGame(std::shared_ptr<CardPlayAllow
 
 }
 
-std::shared_ptr<CardPlayAllowanceBase> The_Game::GetAllowanceTreasureArmor(const gameCardTreasureArmor *card, Player *player, bool fromHand)
+std::shared_ptr<TreasureArmorAllowance> The_Game::GetAllowanceTreasureArmor(const gameCardTreasureArmor *card, Player *player, bool fromHand)
 {
     //Все подобные парсеры предполагают, что проверка на глобальные запреты уже пройдена.
     //На 11.12.2018 это только процесс анимирования карт (карт-процессинг CardProcessing)
@@ -2274,10 +2274,10 @@ std::shared_ptr<CardPlayAllowanceBase> The_Game::GetAllowanceTreasureArmor(const
 
     //Проверка, что нет боя:
     if (GetCurrentGamePhase() == GamePhase::Battle)
-        return std::make_shared<CardPlayAllowanceBase>(TreasureArmorAllowance(false, "Нельзя надевать броню в бою!", false));
+        return std::make_shared<TreasureArmorAllowance>(TreasureArmorAllowance(false, "Нельзя надевать броню в бою!", false));
 
     if (GetCurrentGamePhase() == GamePhase::OtherPlayerMove)
-        return std::make_shared<CardPlayAllowanceBase>(TreasureArmorAllowance(false, "Сейчас чужой ход. Броню можно вводить в игру только в свой ход.", false));
+        return std::make_shared<TreasureArmorAllowance>(TreasureArmorAllowance(false, "Сейчас чужой ход. Броню можно вводить в игру только в свой ход.", false));
 
     //NAY-002: HARDCODED_BEHAVIOUR
     //К сожалению, таблица сокровищ-доспехов не предусматривала поле "большой"
@@ -2288,7 +2288,7 @@ std::shared_ptr<CardPlayAllowanceBase> The_Game::GetAllowanceTreasureArmor(const
     //Ан-нет, я сделал это ещё тогда. =))))
     if (player->GetThereIsLimitOnBigThings() && player->GetThereIsOneBigThing()
             && (card->size() == Size::Big))
-        return std::make_shared<CardPlayAllowanceBase>(TreasureArmorAllowance(false, "К сожалению, у Вас уже есть большие шмотки в игре!", false));
+        return std::make_shared<TreasureArmorAllowance>(TreasureArmorAllowance(false, "К сожалению, у Вас уже есть большие шмотки в игре!", false));
 
     //Запреты кончились, теперь принятие решения о том, какой параметр ставить для активна/неактивна
 
@@ -2298,21 +2298,21 @@ std::shared_ptr<CardPlayAllowanceBase> The_Game::GetAllowanceTreasureArmor(const
             && player->GetRace() != Race::Dwarf
             && player->GetSecondRace() != Race::Dwarf)
     {
-        return std::make_shared<CardPlayAllowanceBase>(TreasureArmorAllowance(true, "Увы, карта активна только для дворфа!\n Разве вы дфорф?", false));
+        return std::make_shared<TreasureArmorAllowance>(TreasureArmorAllowance(true, "Увы, карта активна только для дворфа!\n Разве вы дфорф?", false));
     }
 
     if (card->isOnlyForGnome()
             && player->GetRace() != Race::Gnome
             && player->GetSecondRace() != Race::Gnome)
     {
-        return std::make_shared<CardPlayAllowanceBase>(TreasureArmorAllowance(true, "Увы, карта активна только для гнома!\n Разве вы гном?", false));
+        return std::make_shared<TreasureArmorAllowance>(TreasureArmorAllowance(true, "Увы, карта активна только для гнома!\n Разве вы гном?", false));
     }
 
     if (card->isOnlyForWizard()
             && player->GetProfession() != Profession::Wizard
             && player->GetSecondProfession() != Profession::Wizard)
     {
-        return std::make_shared<CardPlayAllowanceBase>(TreasureArmorAllowance(true, "Увы, карта активна только для волшебника!\n"
+        return std::make_shared<TreasureArmorAllowance>(TreasureArmorAllowance(true, "Увы, карта активна только для волшебника!\n"
                                             "Разве к вам в детстве прилетала сова с письмом?\n"
                                             "...Но ведь вы её ждали?\n", false));
     }
@@ -2320,31 +2320,31 @@ std::shared_ptr<CardPlayAllowanceBase> The_Game::GetAllowanceTreasureArmor(const
     if (card->isOnlyForHuman()
             && player->GetRace() != Race::Human)
     {
-        return std::make_shared<CardPlayAllowanceBase>(TreasureArmorAllowance(true, "Увы, карта активна только для человека./n Теперь вы другой.", false));
+        return std::make_shared<TreasureArmorAllowance>(TreasureArmorAllowance(true, "Увы, карта активна только для человека./n Теперь вы другой.", false));
     }
 
     if (card->isRestrictedToGnome() &&
             ((player->GetRace() == Race::Gnome) || (player->GetSecondRace() == Race::Gnome))
             && !player->GetIsHalfBloodWithoutSecondRace())
-        return std::make_shared<CardPlayAllowanceBase>(TreasureArmorAllowance(true, "Увы, этот доспех \n не могут носить гномы.", false));
+        return std::make_shared<TreasureArmorAllowance>(TreasureArmorAllowance(true, "Увы, этот доспех \n не могут носить гномы.", false));
 
     if (card->isRestrictedToWizard() &&
             ((player->GetProfession() == Profession::Wizard) || (player->GetSecondProfession() == Profession::Wizard))
             && !player->GetIsSuperMunchkinWithoutSecondProfession())
-        return std::make_shared<CardPlayAllowanceBase>(TreasureArmorAllowance(true, "Увы, этот доспех \n слишком тяжёл для магов.", false));
+        return std::make_shared<TreasureArmorAllowance>(TreasureArmorAllowance(true, "Увы, этот доспех \n слишком тяжёл для магов.", false));
 
     //NAY-002: EXPECTED_ERROR
     //NAY-002: EXPECTED_IMPROVEMENT
     //На будущее надо бы сделать защиту от возможности надеть сразу два "комбинируемых" доспеха.
     //С другой стороны, может юыть, их можно надевать по несколько - капусточка. =)))
     if (player->GetLegsSlotIsFull() && (card->GetBodyPart()  == Body_Part::Feet) && (!card->isCombined()))
-        return std::make_shared<CardPlayAllowanceBase>(TreasureArmorAllowance(true, "Вторые ботинки поверх существующих\n никак не надеть.\n Но при большом желании...", false));
+        return std::make_shared<TreasureArmorAllowance>(TreasureArmorAllowance(true, "Вторые ботинки поверх существующих\n никак не надеть.\n Но при большом желании...", false));
 
     if (player->GetArmorSlotFull() && (card->GetBodyPart()  == Body_Part::Armor) && (!card->isCombined()))
-        return std::make_shared<CardPlayAllowanceBase>(TreasureArmorAllowance(true, "Доспех надевали поверх кольчуги.\n Но игра такое, увы, запрещает.", false));
+        return std::make_shared<TreasureArmorAllowance>(TreasureArmorAllowance(true, "Доспех надевали поверх кольчуги.\n Но игра такое, увы, запрещает.", false));
 
     if (player->GetHeadSlotIsFull() && (card->GetBodyPart()  == Body_Part::Head) && (!card->isCombined()))
-        return std::make_shared<CardPlayAllowanceBase>(TreasureArmorAllowance(true, "Две головы лучше, чем \n две шапки на одной.", false));
+        return std::make_shared<TreasureArmorAllowance>(TreasureArmorAllowance(true, "Две головы лучше, чем \n две шапки на одной.", false));
 
 
     //Запретов больше нет
@@ -2362,6 +2362,7 @@ void The_Game::ImplementTreasureArmorToCardsInGame(std::shared_ptr<CardPlayAllow
     const gameCardTreasureArmor* cardPointer = static_cast<const gameCardTreasureArmor* >(card);
     gameCardTreasureArmor realCard(cardPointer);
 
+    bool isActive = armorAllowance->GetIsActive();
     ui->MainGamer->SlotAddCardToCardsInGame(std::make_pair(armorAllowance->GetIsActive(), SimpleCard(true, realCard.GetCardID())));
 
     MoveCardFromCardInHandToCardInGame(_mainPlayer, std::make_pair(armorAllowance->GetIsActive(), SimpleCard(true, realCard.GetCardID())));

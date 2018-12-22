@@ -463,7 +463,7 @@ private:
                                              PositionedCard posCard);
 
 
-    std::shared_ptr<CardPlayAllowanceBase> GetAllowanceTreasureArmor(const gameCardTreasureArmor* card, Player* player, bool fromHand);
+    std::shared_ptr<TreasureArmorAllowance> GetAllowanceTreasureArmor(const gameCardTreasureArmor* card, Player* player, bool fromHand);
     void ImplementTreasureArmorToCardsInGame(std::shared_ptr<CardPlayAllowanceBase> allowance, const GameCardBasis *card, GamerWidget *wt, PositionedCard posCard);
 
 private:
