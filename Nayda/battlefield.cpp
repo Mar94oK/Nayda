@@ -609,46 +609,46 @@ void battleField::SlotStartUpTimerHandler()
 
 }
 
-void battleField::paintEvent(QPaintEvent *)
-{
-#ifndef USE_RESOURCES
+//void battleField::paintEvent(QPaintEvent *)
+//{
+//#ifndef USE_RESOURCES
 
-    //    qDebug() <<"NAY-0001: Application location: "<< QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory);
-    QString homeDirectory = QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory);
+//    //    qDebug() <<"NAY-0001: Application location: "<< QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory);
+//    QString homeDirectory = QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory);
 
-#ifdef Q_OS_WIN
-//NAY-001: MARK_EXPECTED_ERROR
-     QString uiBattleFieldFilesLocation = "Munchkin/Nayda/Pictures/battleField/";
-     homeDirectory = "D:/";
-#elif defined Q_OS_UNIX
-     QString uiBattleFieldFilesLocation = "Munchkin/Nayda/Nayda/Pictures/battleField/";
-#endif
+//#ifdef Q_OS_WIN
+////NAY-001: MARK_EXPECTED_ERROR
+//     QString uiBattleFieldFilesLocation = "Munchkin/Nayda/Pictures/battleField/";
+//     homeDirectory = "D:/";
+//#elif defined Q_OS_UNIX
+//     QString uiBattleFieldFilesLocation = "Munchkin/Nayda/Nayda/Pictures/battleField/";
+//#endif
 
-     QString path = homeDirectory + uiBattleFieldFilesLocation;
+//     QString path = homeDirectory + uiBattleFieldFilesLocation;
 
-     qDebug() << "NAY-001: SetUp Cover Picture for BattleField.";
-     QPixmap pxmpBattleField(path + QString("BattleFieldCover.png"));
+//     qDebug() << "NAY-001: SetUp Cover Picture for BattleField.";
+//     QPixmap pxmpBattleField(path + QString("BattleFieldCover.png"));
 
-#else
-    QPixmap pxmpBattleField(":/Pictures/battleField/BattleFieldCover.png");
-#endif
+//#else
+//    QPixmap pxmpBattleField(":/Pictures/battleField/BattleFieldCover.png");
+//#endif
 
-     //find the HW size of the window
-     QRect HW_Screen_Size = QApplication::desktop()->screenGeometry();
+//     //find the HW size of the window
+//     QRect HW_Screen_Size = QApplication::desktop()->screenGeometry();
 
-     QPixmap resultOpaque = pxmpBattleField.scaled(HW_Screen_Size.width() * The_Game::koeff_GameField_size,
-                                                    HW_Screen_Size.height() * The_Game::koeff_GameField_size,
-                                                    Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-     setAutoFillBackground(true);
+//     QPixmap resultOpaque = pxmpBattleField.scaled(HW_Screen_Size.width() * The_Game::koeff_GameField_size,
+//                                                    HW_Screen_Size.height() * The_Game::koeff_GameField_size,
+//                                                    Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+//     setAutoFillBackground(true);
 
-     QPainter painter(this);
-     if (!painter.isActive())
-        painter.begin(&resultOpaque);
-     painter.setOpacity(0.15);
-     painter.drawPixmap(0,0, resultOpaque);
-     painter.end();
+//     QPainter painter(this);
+//     if (!painter.isActive())
+//        painter.begin(&resultOpaque);
+//     painter.setOpacity(0.15);
+//     painter.drawPixmap(0,0, resultOpaque);
+//     painter.end();
 
-}
+//}
 
 void battleField::SetUpPictureAddresses()
 {
