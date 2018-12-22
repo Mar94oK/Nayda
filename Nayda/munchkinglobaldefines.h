@@ -23,7 +23,7 @@ public:
 
 //Related to CardsInGame widget;
 
-    static constexpr float cardInGametoCardOnHandSizeRatio = 0.3333333f;
+    static constexpr float cardInGametoCardOnHandSizeRatio = 1.0f;
 
     //Related to GamerWidget commons (level picture, battlePower picture, etc...)
     static constexpr float cardGamerWidgetSizeRatio = 1.65f;

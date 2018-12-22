@@ -2363,6 +2363,7 @@ void The_Game::ImplementTreasureArmorToCardsInGame(std::shared_ptr<CardPlayAllow
     gameCardTreasureArmor realCard(cardPointer);
 
     ui->MainGamer->SlotAddCardToCardsInGame(std::make_pair(armorAllowance->GetIsActive(), SimpleCard(true, realCard.GetCardID())));
+
     MoveCardFromCardInHandToCardInGame(_mainPlayer, std::make_pair(armorAllowance->GetIsActive(), SimpleCard(true, realCard.GetCardID())));
 
     if (!armorAllowance->GetIsActive())

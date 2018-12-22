@@ -34,14 +34,21 @@ void CardsInGame::SetDecks(const AllDecksToBePassed &data)
 void CardsInGame::AddCardToCardsInGame(CardInGame card)
 {
     QSize cardSize(static_cast<int32_t>(_widnowSizeWidth
-                                        *GeometricLimitations::handCardSizeWidht
+                                        *GeometricLimitations::handCardSizeWidht * 2
                                         *GeometricLimitations::cardInGametoCardOnHandSizeRatio),
                    static_cast<int32_t>(_windowSizeHeight
-                                        *GeometricLimitations::handCardSizeHeight
-                                        *GeometricLimitations::cardInGametoCardOnHandSizeRatio));
+                                        * GeometricLimitations::handCardSizeHeight * 2
+                                        * GeometricLimitations::cardInGametoCardOnHandSizeRatio));
+
+    qDebug() << "CardSize CardsInGame: _widnowSizeWidth: " << _widnowSizeWidth;
+    qDebug() << "CardSize CardsInGame: _windowSizeHeight: " << _windowSizeHeight;
+
+
+    qDebug() << "CardSize CardsInGame: width: " << cardSize.width();
+    qDebug() << "CardSize CardsInGame: height: " << cardSize.height();
 
     _cardsInGameHolder.push_back(card);
-    qDebug() << "NAY-002: AddCard in Cards In Game Observer: "
+    qDebug() << "NAY-002: CardsInGame::AddCardToCardsInGame(CardInGame card): "
              << " cards is " << (card.first ? "Enabled!" : "Disabled!");
 
     if (card.first)
@@ -49,11 +56,9 @@ void CardsInGame::AddCardToCardsInGame(CardInGame card)
     else
         _disabledCards.push_back(card.second);
 
-
     QPushButton* cardToShow = new QPushButton();
 
-
-    qDebug() << "CardsInGameObserver::AddCard(SimpleCard card): " << GetCardPictureAddress(card.second);
+    qDebug() << "CardsInGame::AddCardToCardsInGame(CardInGame card): " << GetCardPictureAddress(card.second);
     SetUpButtonPicture(cardToShow,
                        GetCardPictureAddress(card.second),
                        cardSize);
@@ -90,8 +95,6 @@ void CardsInGame::AddCardToCardsInGame(CardInGame card)
         else
             ui->lyt_TopSecondary->addWidget(cardToShow);
     }
-
-
 
     _cardsAsButtonsRepresenter.push_back(cardToShow);
     cardToShow->show();
@@ -204,4 +207,8 @@ void CardsInGame::SetUpButtonPicture(QPushButton * const btn, const QString &pic
     btn->setFlat(true);
     btn->setAutoFillBackground(true);
     btn->setPalette(plteBtnMainRepresenter);
+
+    qDebug() << "NAY-002: CardsInGameSetCardPicture Function Checker()";
 }
+
+

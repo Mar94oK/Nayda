@@ -87,15 +87,22 @@ private:
     const float handCardSizeWidht = 0.12f;
     const float handCardSizeHeight = handCardSize_width_to_height_ratio*handCardSizeWidht;
 
-    uint32_t _windowSizeHeight;
-    uint32_t _widnowSizeWidth;
+    int32_t _windowSizeHeight;
+    int32_t _widnowSizeWidth;
     QSize    _mainWindowSize;
 
     void SetUpButtonPicture(QPushButton* const btn, const QString& picturePath, QSize size, bool active = true);
 
 public:
 
-    void SetUpMainWindowSize(QSize size) { _mainWindowSize = size;}
+    void SetUpMainWindowSize(QSize size)
+    {
+        _mainWindowSize = size;
+        _windowSizeHeight = size.height();
+        _widnowSizeWidth = size.width();
+        qDebug() << "NAY-002: width: " << size.width();
+        qDebug() << "NAY-002: height: " << size.height();
+    }
 
 private:
 

@@ -17,6 +17,9 @@ GamerWidget::GamerWidget(QWidget *parent, Player *player) :
     SetUpTestTimer();
     SetUpShowTimer();
     SetUpSignalsSlotsConnections();
+
+    ui->wt_CardsInGameMainPlayer->show();
+    ui->btn_HideCardsInGame->hide();
 }
 
 GamerWidget::~GamerWidget()
@@ -66,7 +69,8 @@ void GamerWidget::SetDecks(const AllDecksToBePassed& data)
     _thingsAmplifiersDeck = data._thingsAmplifiersDeck;
     _weaponsDeck = data._weaponsDeck;
 
-
+    ui->wt_CardsInGameMainPlayer->SetDecks(data);
+    ui->wt_CardsInGameSecondaryPlayer->SetDecks(data);
 }
 
 Player *GamerWidget::GetPointerToPlayer() const
@@ -458,6 +462,7 @@ void GamerWidget::SlotHideCardsInGame()
 void GamerWidget::SlotAddCardToCardsInGame(CardInGame card)
 {
     _cardsInGameObserver->AddCard(card);
+    ui->wt_CardsInGameMainPlayer->AddCardToCardsInGame(card);
 }
 
 void GamerWidget::SlotDeleteCardFromCardsInGame(SimpleCard card)
@@ -519,6 +524,10 @@ void GamerWidget::SetUpWidgetsPerfomance()
     QRect HW_Screen_Size = QApplication::desktop()->screenGeometry();
     int HW_Screen_Size_Width = HW_Screen_Size.width();
     int HW_Screen_Size_Height = HW_Screen_Size.height();
+
+    qDebug() << "NAY-002: void GamerWidget::SetUpWidgetsPerfomance()";
+    ui->wt_CardsInGameMainPlayer->SetUpMainWindowSize(QSize(HW_Screen_Size_Width,HW_Screen_Size_Height));
+    ui->wt_CardsInGameSecondaryPlayer->SetUpMainWindowSize(QSize(HW_Screen_Size_Width,HW_Screen_Size_Height));
 
     //Hide odds
     ui->btn_race_2->hide();
