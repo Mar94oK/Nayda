@@ -68,7 +68,7 @@ public:
 
     static constexpr uint32_t maximumCardsInARowInTheCardsInActiveGameLayout = 5;
 
-    static constexpr bool threeLayoutForCardsAreEnabled = true;
+    static constexpr bool threeLayoutForCardsAreEnabled = false;
 };
 
 #endif // MUNCHKINGLOBALDEFINES_H
