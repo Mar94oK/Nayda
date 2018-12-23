@@ -3017,7 +3017,9 @@ void The_Game::Animation_PassPlayedCardToCardsInGame_Phase1(GamerWidget *wt, con
 
     connect(animation, &QPropertyAnimation::finished,
             [this, wt, animation, movingCard]
-    {(QTimer::singleShot(1000, animation, [this, wt, animation, movingCard]{Animation_PassPlayedCardToCardsInGame_Phase2(wt, animation, movingCard);}));});
+    {(QTimer::singleShot(AnimationPhasesLimitations::msTimeToHoldCardWhileAddingCardToCardsInGame,
+                         animation,
+                         [this, wt, animation, movingCard]{Animation_PassPlayedCardToCardsInGame_Phase2(wt, animation, movingCard);}));});
 
 
     animation->start(QAbstractAnimation::KeepWhenStopped);

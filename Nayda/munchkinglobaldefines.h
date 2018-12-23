@@ -42,7 +42,7 @@ public:
 
 };
 
-class AnimationPhasesLimitation
+class AnimationPhasesLimitations
 {
 
 public:
