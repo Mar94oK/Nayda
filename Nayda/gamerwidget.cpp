@@ -44,7 +44,7 @@ void GamerWidget::RedrawAsASecondaryPlayer()
     ui->btn_fast_action->hide();
     ui->btn_Test->hide();
     //hide if secondary!
-    ui->widget->hide();
+    ui->wt_Hand->hide();
     ui->wt_CardsInGameMainPlayer->hide();
     ui->btn_HideCardsInGame->hide();
     ui->wt_CardsInGameSecondaryPlayer->show();
@@ -92,7 +92,7 @@ void GamerWidget::SetIsRoomMaster()
 void GamerWidget::PassCardsDecksToHandsAndCardsInGameWidgets(const AllDecksToBePassed& data)
 {
 
-    ui->widget->SetDecks(data);
+    ui->wt_Hand->SetDecks(data);
     _cardsInGameObserver->SetDecks(data);
 }
 
@@ -102,7 +102,7 @@ void GamerWidget::AddTheCardToHandsWidget(SimpleCard card)
     qDebug() << "NAY-002: IsMainPlayer: " << is_MainPlayer();
     qDebug() << "";
 
-    ui->widget->addNewCardToHands(card);
+    ui->wt_Hand->addNewCardToHands(card);
     _cardsOnHandsGamerWidgetProperty.push_back(card);
 
     //changing the values for Secondary players:
@@ -168,8 +168,8 @@ bool GamerWidget::eventFilter(QObject *o, QEvent *e)
 void GamerWidget::SlotRepresentTheCardInCentre()
 {
     qDebug() << "SlotRepresentTheCardInCentre(): ";
-    qDebug() << "POS X: " << ui->widget->pos().x();
-    qDebug() << "POS Y: " << ui->widget->pos().y();
+    qDebug() << "POS X: " << ui->wt_Hand->pos().x();
+    qDebug() << "POS Y: " << ui->wt_Hand->pos().y();
 
     _currentCardToShowNearItsPosition.AddBase(pos());
     emit SignalRepresentTheCardInCentre(_currentCardToShowNearItsPosition);
@@ -178,7 +178,7 @@ void GamerWidget::SlotRepresentTheCardInCentre()
 void GamerWidget::SlotRepresentTheCardFromHandsInCentre(PositionedCard card)
 {
 //    qDebug() << "NAY-001: SlotRepresentTheCardFromHandsInCentre():";
-    card.AddBase(ui->widget->pos());
+    card.AddBase(ui->wt_Hand->pos());
     card.AddBase(pos());
 //    qDebug() << "Related position of Given Card in GamerWidget: ";
 //    qDebug() << "NAY-001: SlotRepresentTheCardFromHandsInCentre Geometry POS TOP LEFT X: " << card.GetPositionTopLeft().x();
@@ -348,7 +348,7 @@ void GamerWidget::SlotShowTradeButton()
 
 std::vector<PositionedCard> GamerWidget::GetPositionedCardsFromCardsOnHand(const std::vector<SimpleCard> cards)
 {
-    return ui->widget->GetPositionedCards(cards);
+    return ui->wt_Hand->GetPositionedCards(cards);
 }
 
 std::vector<PositionedCard> GamerWidget::GetPositionedCardsFromCardsInGame(const std::vector<SimpleCard> cards)
@@ -369,7 +369,7 @@ std::vector<PositionedCard> GamerWidget::GetPositionedCardsFromCardsInGame(const
 
 void GamerWidget::RemoveCardFromHand(SimpleCard card)
 {
-    ui->widget->SlotRemoveCardFromHand(card);
+    ui->wt_Hand->SlotRemoveCardFromHand(card);
     if (!card.first) ui->wt_CardsOnHandsSecondary->SlotUpdateCardsOnHandsDoors(--_totalDoorsOnHands);
     else ui->wt_CardsOnHandsSecondary->SlotUpdateCardsOnHandsTreasures(--_totalTreasuresOnHands);
 
@@ -391,7 +391,7 @@ QPoint GamerWidget::ProvideSelfPosition()
 
 QPoint GamerWidget::ProvideHandPosition()
 {
-    return ui->widget->pos(); //Relative to Gamer Widget.
+    return ui->wt_Hand->pos(); //Relative to Gamer Widget.
 }
 
 void GamerWidget::SetGamerName(const QString &gamerName)
@@ -446,7 +446,7 @@ QSize GamerWidget::ProvideAvatarSize() const
 
 QSize GamerWidget::ProvideCardOnHandSize() const
 {
-    return ui->widget->ProvideCardSize();
+    return ui->wt_Hand->ProvideCardSize();
 }
 
 void GamerWidget::SlotShowCardsInGame()
@@ -473,20 +473,20 @@ void GamerWidget::SlotDeleteCardFromCardsInGame(SimpleCard card)
 void GamerWidget::SetUpSignalsSlotsConnections()
 {
 
-    connect(ui->widget, &Hand::adjustSize, this, &GamerWidget::_adjustSizeSlot);
+    connect(ui->wt_Hand, &Hand::adjustSize, this, &GamerWidget::_adjustSizeSlot);
 
     //connect the Hand with the Game... (checking the possibility for the Card to be played)
-    connect(ui->widget, &Hand::SignalCardIsSendedToTheGameCheck,
+    connect(ui->wt_Hand, &Hand::SignalCardIsSendedToTheGameCheck,
             [this](PositionedCard card) {SlotSendTheCardToTheGameCheck(card, true);});
 
     //connect the Hand with the answer from The_Game Card check slot;
     connect(this, &GamerWidget::SignalCardIsRejectedToBePlayed,
-            ui->widget, &Hand::SlotCardIsRejectedToBePlayed);
+            ui->wt_Hand, &Hand::SlotCardIsRejectedToBePlayed);
 
     connect(ui->btn_Trade, &QPushButton::pressed, [this]{emit SignalTradeButtonWasPressed();});
-    connect(ui->widget, &Hand::SignalReportCardPosition,
+    connect(ui->wt_Hand, &Hand::SignalReportCardPosition,
             [this](PositionedCard card){emit SignalReportPostionedCard(card);});
-    connect(this, &GamerWidget::SignalGetPositionedCard, ui->widget, &Hand::SlotGetCardPostion);
+    connect(this, &GamerWidget::SignalGetPositionedCard, ui->wt_Hand, &Hand::SlotGetCardPostion);
 
     connect(ui->btn_Avatar, &QPushButton::pressed, this, &GamerWidget::SlotShowCardsInGame);
 
@@ -514,8 +514,8 @@ void GamerWidget::SetUpShowTimer()
     _showCardsTimer->setSingleShot(true);
     //connect timeout issue
     connect(_showCardsTimer, &QTimer::timeout, this, &GamerWidget::SlotRepresentTheCardInCentre);
-    connect(ui->widget, &Hand::SignalShowTheCard, this, &GamerWidget::SlotRepresentTheCardFromHandsInCentre);
-    connect(ui->widget, &Hand::SignalHideTheCard, this, &GamerWidget::SlotHideTheCardInCentre);
+    connect(ui->wt_Hand, &Hand::SignalShowTheCard, this, &GamerWidget::SlotRepresentTheCardFromHandsInCentre);
+    connect(ui->wt_Hand, &Hand::SignalHideTheCard, this, &GamerWidget::SlotHideTheCardInCentre);
 }
 
 void GamerWidget::SetUpWidgetsPerfomance()
@@ -618,7 +618,7 @@ void GamerWidget::SetUpWidgetsPerfomance()
 
 QSize GamerWidget::GetCardOnHandSize()
 {
-    return ui->widget->ProvideCardSize();
+    return ui->wt_Hand->ProvideCardSize();
 }
 
 void GamerWidget::SlotShowLastCardInGameAdded()
