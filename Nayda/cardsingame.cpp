@@ -68,11 +68,15 @@ void CardsInGame::AddCardToCardsInGame(CardInGame card)
     {
         if (active)
         {
-            if (_cardsInGameHolder.size() < _maximumActiveCardsInLine)
+            if (_cardsInGameHolder.size()
+                    < CardsInGameWidgetPerfomanceValues::maximumCardsInARowInTheCardsInActiveGameLayout)
             {
                 ui->lyt_Top->addWidget(cardToShow);
             }
-            else if (_cardsInGameHolder.size() > 5 && _cardsInGameHolder.size() < 10)
+            else if (_cardsInGameHolder.size()
+                     > CardsInGameWidgetPerfomanceValues::maximumCardsInARowInTheCardsInActiveGameLayout
+                     && _cardsInGameHolder.size()
+                     < 2 * CardsInGameWidgetPerfomanceValues::maximumCardsInARowInTheCardsInActiveGameLayout)
             {
                 ui->lyt_Middle->addWidget(cardToShow);
             }

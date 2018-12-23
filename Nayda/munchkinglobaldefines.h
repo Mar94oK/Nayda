@@ -58,4 +58,12 @@ public:
     static constexpr uint32_t totalOpponentsAtTopLayout = 2;
 };
 
+class CardsInGameWidgetPerfomanceValues
+{
+
+public:
+
+    static constexpr uint32_t maximumCardsInARowInTheCardsInActiveGameLayout = 5;
+};
+
 #endif // MUNCHKINGLOBALDEFINES_H
