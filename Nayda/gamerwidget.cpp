@@ -37,17 +37,28 @@ void GamerWidget::setIs_MainPlayer(bool is_MainPlayer)
     _isMainPlayer = is_MainPlayer;
 }
 
-void GamerWidget::RedrawAsASecondaryPlayer()
+void GamerWidget::RedrawAsASecondaryPlayer(uint32_t opponentOrder)
 {
     ui->btn_auto_advice->hide();
     ui->btn_diplomacy->hide();
     ui->btn_fast_action->hide();
     ui->btn_Test->hide();
+
     //hide if secondary!
-    ui->wt_Hand->hide();
+    //ui->wt_Hand->hide();
     ui->wt_CardsInGameMainPlayer->hide();
     ui->btn_HideCardsInGame->hide();
     ui->wt_CardsInGameSecondaryPlayer->show();
+
+    //mirror Hand and Cards in Game
+    if (opponentOrder <= GamerWidgetPerfomanceValues::totalOpponentsAtTopLayout)
+    {
+        ui->lyt_Hand->removeWidget(ui->wt_Hand);
+        ui->lyt_CardsOnHandsSecondary_Mirror->addWidget(ui->wt_Hand);
+        ui->lyt_CardsInGameSecondaryPlayer->removeWidget(ui->wt_CardsInGameSecondaryPlayer);
+        ui->lyt_CardsInGameSecondary_Mirror->addWidget(ui->wt_CardsInGameSecondaryPlayer);
+    }
+
 }
 
 
@@ -102,13 +113,22 @@ void GamerWidget::AddTheCardToHandsWidget(SimpleCard card)
     qDebug() << "NAY-002: IsMainPlayer: " << is_MainPlayer();
     qDebug() << "";
 
-    ui->wt_Hand->addNewCardToHands(card);
-    _cardsOnHandsGamerWidgetProperty.push_back(card);
+    if (_isMainPlayer)
+    {
+        ui->wt_Hand->addNewCardToHands(card);
+        _cardsOnHandsGamerWidgetProperty.push_back(card);
+    }
+    else
+    {
+        //Пока сохранить эти значения
+        //changing the values for Secondary players:
+        if (!card.first) ui->wt_CardsOnHandsSecondary->SlotUpdateCardsOnHandsDoors(++_totalDoorsOnHands);
+        else ui->wt_CardsOnHandsSecondary->SlotUpdateCardsOnHandsTreasures(++_totalTreasuresOnHands);
 
-    //changing the values for Secondary players:
-    if (!card.first) ui->wt_CardsOnHandsSecondary->SlotUpdateCardsOnHandsDoors(++_totalDoorsOnHands);
-    else ui->wt_CardsOnHandsSecondary->SlotUpdateCardsOnHandsTreasures(++_totalTreasuresOnHands);
-
+        //добавить карты в руку и для них
+        ui->wt_Hand->addNewCardToHands(card);
+        _cardsOnHandsGamerWidgetProperty.push_back(card);
+    }
 }
 
 bool GamerWidget::eventFilter(QObject *o, QEvent *e)

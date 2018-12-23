@@ -14,62 +14,6 @@
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="4" rowspan="4">
-    <layout class="QVBoxLayout" name="lyt_Controls">
-     <item>
-      <widget class="QPushButton" name="btn_diplomacy">
-       <property name="text">
-        <string>Дипломатия</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="btn_Trade">
-       <property name="layoutDirection">
-        <enum>Qt::LeftToRight</enum>
-       </property>
-       <property name="text">
-        <string>Торговля</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="btn_fast_action">
-       <property name="text">
-        <string>Быстрое действие</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="btn_auto_advice">
-       <property name="text">
-        <string>Автосовет</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="btn_Test">
-       <property name="text">
-        <string>Тест</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="0" column="1" rowspan="4" colspan="2">
-    <layout class="QVBoxLayout" name="lyt_CardsInGame_MP">
-     <item>
-      <widget class="QPushButton" name="btn_HideCardsInGame">
-       <property name="text">
-        <string>PushButton</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="CardsInGame" name="wt_CardsInGameMainPlayer" native="true"/>
-     </item>
-    </layout>
-   </item>
    <item row="3" column="3">
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
@@ -321,13 +265,6 @@
      </property>
     </spacer>
    </item>
-   <item row="2" column="3">
-    <layout class="QHBoxLayout" name="lyt_CardsInGameSecondaryPlayer">
-     <item>
-      <widget class="CardsInGame" name="wt_CardsInGameSecondaryPlayer" native="true"/>
-     </item>
-    </layout>
-   </item>
    <item row="0" column="3" rowspan="2">
     <layout class="QHBoxLayout" name="lyt_Hand">
      <item>
@@ -345,6 +282,75 @@
      </item>
      <item>
       <widget class="Hand" name="wt_Hand" native="true"/>
+     </item>
+    </layout>
+   </item>
+   <item row="2" column="3">
+    <layout class="QHBoxLayout" name="lyt_CardsInGameSecondaryPlayer">
+     <item>
+      <widget class="CardsInGame" name="wt_CardsInGameSecondaryPlayer" native="true"/>
+     </item>
+    </layout>
+   </item>
+   <item row="4" column="3">
+    <layout class="QHBoxLayout" name="lyt_CardsInGameSecondary_Mirror"/>
+   </item>
+   <item row="5" column="3">
+    <layout class="QHBoxLayout" name="lyt_CardsOnHandsSecondary_Mirror"/>
+   </item>
+   <item row="0" column="1" rowspan="6" colspan="2">
+    <layout class="QVBoxLayout" name="lyt_CardsInGame_MP">
+     <item>
+      <widget class="QPushButton" name="btn_HideCardsInGame">
+       <property name="text">
+        <string>PushButton</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="CardsInGame" name="wt_CardsInGameMainPlayer" native="true"/>
+     </item>
+    </layout>
+   </item>
+   <item row="0" column="4" rowspan="6">
+    <layout class="QVBoxLayout" name="lyt_Controls">
+     <item>
+      <widget class="QPushButton" name="btn_diplomacy">
+       <property name="text">
+        <string>Дипломатия</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_Trade">
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="text">
+        <string>Торговля</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_fast_action">
+       <property name="text">
+        <string>Быстрое действие</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_auto_advice">
+       <property name="text">
+        <string>Автосовет</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_Test">
+       <property name="text">
+        <string>Тест</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

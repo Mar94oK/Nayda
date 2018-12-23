@@ -30,7 +30,7 @@ public:
 
     bool is_MainPlayer() const;
     void setIs_MainPlayer(bool is_MainPlayer);
-    void RedrawAsASecondaryPlayer();
+    void RedrawAsASecondaryPlayer(uint32_t opponentOrder);
 
     void SetDecks(const AllDecksToBePassed &data);
 

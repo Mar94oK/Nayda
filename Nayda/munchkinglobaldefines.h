@@ -50,6 +50,12 @@ public:
     static constexpr uint32_t msTimeToHoldCardWhileAddingCardToCardsInGame = 1000;
 };
 
+class GamerWidgetPerfomanceValues
+{
 
+public:
+
+    static constexpr uint32_t totalOpponentsAtTopLayout = 2;
+};
 
 #endif // MUNCHKINGLOBALDEFINES_H
