@@ -59,13 +59,17 @@ void Hand::AddNewCardToHands(SimpleCard card, bool isMainPlayer)
     QString currentPictureAddress = "";
     if (isMainPlayer)
     {
-        _cardSize.setWidth(static_cast<int32_t>(GeometricLimitations::handCardSizeWidht*HW_Screen_Size_Width*2));
-        _cardSize.setHeight(static_cast<int32_t>(GeometricLimitations::handCardSizeHeight*HW_Screen_Size_Height*2));
+        _cardSize.setWidth(static_cast<int32_t>(GeometricLimitations::handCardSizeWidht
+                                                *GeometricLimitations::handCardMainGamerSizeRatio
+                                                *HW_Screen_Size_Width
+                                                ));
+        _cardSize.setHeight(static_cast<int32_t>(GeometricLimitations::handCardSizeHeight
+                                                 *GeometricLimitations::handCardMainGamerSizeRatio
+                                                 *HW_Screen_Size_Height
+                                                 ));
 
-        newCard->setMaximumWidth(static_cast<int32_t>(GeometricLimitations::handCardSizeWidht*HW_Screen_Size_Width*2));
-        newCard->setMaximumHeight(static_cast<int32_t>(GeometricLimitations::handCardSizeHeight*HW_Screen_Size_Height*2));
-        newCard->setMinimumWidth(static_cast<int32_t>(GeometricLimitations::handCardSizeWidht*HW_Screen_Size_Width*2));
-        newCard->setMinimumHeight(static_cast<int32_t>(GeometricLimitations::handCardSizeHeight*HW_Screen_Size_Height*2));
+       newCard->setMaximumSize(_cardSize);
+       newCard->setMinimumSize(_cardSize);
 
         currentPictureAddress = GetCardPictureAddress(card);
 

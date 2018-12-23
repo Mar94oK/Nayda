@@ -22,9 +22,11 @@ public:
     static constexpr float handCardSizeWidht = 0.019f;
     static constexpr float handCardSizeHeight = handcardsizeWidthToHeightRatio*handCardSizeWidht;
 
+    static constexpr float handCardMainGamerSizeRatio = 2.0f;
+
 //Related to CardsInGame widget;
 
-    static constexpr float cardInGametoCardOnHandSizeRatio = 0.66f;
+    static constexpr float cardInGametoCardOnHandSizeRatio = 1.3333333f;
 
     //Related to GamerWidget commons (level picture, battlePower picture, etc...)
     static constexpr float cardGamerWidgetSizeRatio = 1.65f;
