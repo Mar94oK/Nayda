@@ -293,10 +293,38 @@
     </layout>
    </item>
    <item row="4" column="3">
-    <layout class="QHBoxLayout" name="lyt_CardsInGameSecondary_Mirror"/>
+    <layout class="QHBoxLayout" name="lyt_CardsInGameSecondary_Mirror">
+     <item>
+      <spacer name="verticalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
    </item>
    <item row="5" column="3">
-    <layout class="QHBoxLayout" name="lyt_CardsOnHandsSecondary_Mirror"/>
+    <layout class="QHBoxLayout" name="lyt_CardsOnHandsSecondary_Mirror">
+     <item>
+      <spacer name="verticalSpacer_4">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
    </item>
    <item row="0" column="1" rowspan="6" colspan="2">
     <layout class="QVBoxLayout" name="lyt_CardsInGame_MP">

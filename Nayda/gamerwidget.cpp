@@ -115,7 +115,7 @@ void GamerWidget::AddTheCardToHandsWidget(SimpleCard card)
 
     if (_isMainPlayer)
     {
-        ui->wt_Hand->addNewCardToHands(card);
+        ui->wt_Hand->AddNewCardToHands(card);
         _cardsOnHandsGamerWidgetProperty.push_back(card);
     }
     else
@@ -126,7 +126,7 @@ void GamerWidget::AddTheCardToHandsWidget(SimpleCard card)
         else ui->wt_CardsOnHandsSecondary->SlotUpdateCardsOnHandsTreasures(++_totalTreasuresOnHands);
 
         //добавить карты в руку и для них
-        ui->wt_Hand->addNewCardToHands(card);
+        ui->wt_Hand->AddNewCardToHands(card, false);
         _cardsOnHandsGamerWidgetProperty.push_back(card);
     }
 }

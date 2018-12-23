@@ -85,7 +85,7 @@ public:
 
 public:
 
-    void addNewCardToHands(SimpleCard card);
+    void AddNewCardToHands(SimpleCard card, bool isMainPlayer = true);
 
 private:
 
@@ -169,6 +169,10 @@ public:
 private:
 
     QSize _cardSize;
+
+private:
+
+    QString GetCardPictureAddress(SimpleCard card);
 
 };
 
