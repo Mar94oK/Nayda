@@ -34,12 +34,12 @@ void CardsInGame::SetDecks(const AllDecksToBePassed &data)
 void CardsInGame::AddCardToCardsInGame(CardInGame card)
 {
     int32_t cardWidth = (CardsInGameWidgetPerfomanceValues::threeLayoutForCardsAreEnabled ?
-                              static_cast<int32_t>(_widnowSizeWidth *GeometricLimitations::handCardSizeWidht * 2 / 3)
+                              static_cast<int32_t>(_widnowSizeWidth *GeometricLimitations::handCardSizeWidht * 1.333f)
                             :
                               static_cast<int32_t>(_widnowSizeWidth *GeometricLimitations::handCardSizeWidht * 2));
 
     int32_t cardHeight = (CardsInGameWidgetPerfomanceValues::threeLayoutForCardsAreEnabled ?
-                              static_cast<int32_t>(_windowSizeHeight *GeometricLimitations::handCardSizeHeight * 2 / 3)
+                              static_cast<int32_t>(_windowSizeHeight *GeometricLimitations::handCardSizeHeight * 1.333f)
                             :
                               static_cast<int32_t>(_windowSizeHeight *GeometricLimitations::handCardSizeHeight * 2));
 
