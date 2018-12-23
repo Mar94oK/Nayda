@@ -7,6 +7,7 @@
 #define USE_RESOURCES
 #endif
 
+#include <stdint.h>
 
 class GeometricLimitations {
 
@@ -23,7 +24,7 @@ public:
 
 //Related to CardsInGame widget;
 
-    static constexpr float cardInGametoCardOnHandSizeRatio = 1.0f;
+    static constexpr float cardInGametoCardOnHandSizeRatio = 0.66f;
 
     //Related to GamerWidget commons (level picture, battlePower picture, etc...)
     static constexpr float cardGamerWidgetSizeRatio = 1.65f;
@@ -64,6 +65,8 @@ class CardsInGameWidgetPerfomanceValues
 public:
 
     static constexpr uint32_t maximumCardsInARowInTheCardsInActiveGameLayout = 5;
+
+    static constexpr bool threeLayoutForCardsAreEnabled = false;
 };
 
 #endif // MUNCHKINGLOBALDEFINES_H

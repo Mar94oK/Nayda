@@ -33,12 +33,18 @@ void CardsInGame::SetDecks(const AllDecksToBePassed &data)
 
 void CardsInGame::AddCardToCardsInGame(CardInGame card)
 {
-    QSize cardSize(static_cast<int32_t>(_widnowSizeWidth
-                                        *GeometricLimitations::handCardSizeWidht * 2
-                                        *GeometricLimitations::cardInGametoCardOnHandSizeRatio),
-                   static_cast<int32_t>(_windowSizeHeight
-                                        * GeometricLimitations::handCardSizeHeight * 2
-                                        * GeometricLimitations::cardInGametoCardOnHandSizeRatio));
+    int32_t cardWidth = (CardsInGameWidgetPerfomanceValues::threeLayoutForCardsAreEnabled ?
+                              static_cast<int32_t>(_widnowSizeWidth *GeometricLimitations::handCardSizeWidht * 2 / 3)
+                            :
+                              static_cast<int32_t>(_widnowSizeWidth *GeometricLimitations::handCardSizeWidht * 2));
+
+    int32_t cardHeight = (CardsInGameWidgetPerfomanceValues::threeLayoutForCardsAreEnabled ?
+                              static_cast<int32_t>(_windowSizeHeight *GeometricLimitations::handCardSizeHeight * 2 / 3)
+                            :
+                              static_cast<int32_t>(_windowSizeHeight *GeometricLimitations::handCardSizeHeight * 2));
+
+
+    QSize cardSize(cardWidth,cardHeight);
 
     qDebug() << "CardSize CardsInGame: _widnowSizeWidth: " << _widnowSizeWidth;
     qDebug() << "CardSize CardsInGame: _windowSizeHeight: " << _windowSizeHeight;
@@ -68,24 +74,31 @@ void CardsInGame::AddCardToCardsInGame(CardInGame card)
     {
         if (active)
         {
-            if (_cardsInGameHolder.size()
-                    < CardsInGameWidgetPerfomanceValues::maximumCardsInARowInTheCardsInActiveGameLayout)
+            if (CardsInGameWidgetPerfomanceValues::threeLayoutForCardsAreEnabled)
             {
-                ui->lyt_Top->addWidget(cardToShow);
-            }
-            else if (_cardsInGameHolder.size()
-                     > CardsInGameWidgetPerfomanceValues::maximumCardsInARowInTheCardsInActiveGameLayout
-                     && _cardsInGameHolder.size()
-                     < 2 * CardsInGameWidgetPerfomanceValues::maximumCardsInARowInTheCardsInActiveGameLayout)
-            {
-                ui->lyt_Middle->addWidget(cardToShow);
+                if (_cardsInGameHolder.size()
+                        < CardsInGameWidgetPerfomanceValues::maximumCardsInARowInTheCardsInActiveGameLayout)
+                {
+                    ui->lyt_Top->addWidget(cardToShow);
+                }
+                else if (_cardsInGameHolder.size()
+                         > CardsInGameWidgetPerfomanceValues::maximumCardsInARowInTheCardsInActiveGameLayout
+                         && _cardsInGameHolder.size()
+                         < 2 * CardsInGameWidgetPerfomanceValues::maximumCardsInARowInTheCardsInActiveGameLayout)
+                {
+                    ui->lyt_Middle->addWidget(cardToShow);
+                }
+                else
+                {
+                    if (_cardsInGameHolder.size() % 2)
+                        ui->lyt_Top->addWidget(cardToShow);
+                    else
+                        ui->lyt_Middle->addWidget(cardToShow);
+                }
             }
             else
             {
-                if (_cardsInGameHolder.size() % 2)
-                    ui->lyt_Top->addWidget(cardToShow);
-                else
-                    ui->lyt_Middle->addWidget(cardToShow);
+                ui->lyt_Top->addWidget(cardToShow);
             }
         }
         else
