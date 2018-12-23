@@ -3054,6 +3054,9 @@ void The_Game::Animation_PassPlayedCardToCardsInGame_Phase2(GamerWidget *wt, QPr
     connect(animation, &QPropertyAnimation::finished,
             card, &QPushButton::deleteLater);
 
+    connect(animation, &QPropertyAnimation::finished,
+            wt, &GamerWidget::SlotShowLastCardInGameAdded);
+
     connect(card, &QPushButton::destroyed,
             [] {qDebug() << "NAY-002: _movingCard->Destroyed";});
 

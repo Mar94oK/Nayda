@@ -287,6 +287,10 @@ public:
 
    QSize GetCardOnHandSize();
 
+public slots:
+
+   void SlotShowLastCardInGameAdded();
+
 
 };
 

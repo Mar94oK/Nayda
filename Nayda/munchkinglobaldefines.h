@@ -42,6 +42,14 @@ public:
 
 };
 
+class AnimationPhasesLimitation
+{
+
+public:
+
+    static constexpr uint32_t msTimeToHoldCardWhileAddingCardToCardsInGame = 1000;
+};
+
 
 
 #endif // MUNCHKINGLOBALDEFINES_H

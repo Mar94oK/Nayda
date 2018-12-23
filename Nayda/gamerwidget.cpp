@@ -621,5 +621,13 @@ QSize GamerWidget::GetCardOnHandSize()
     return ui->widget->ProvideCardSize();
 }
 
+void GamerWidget::SlotShowLastCardInGameAdded()
+{
+    if (_isMainPlayer)
+        ui->wt_CardsInGameMainPlayer->ShowLastCardAdded();
+    else
+        ui->wt_CardsInGameSecondaryPlayer->ShowLastCardAdded();
+}
+
 
 

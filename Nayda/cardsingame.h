@@ -119,6 +119,11 @@ private:
 public:
 
     void SetUpCardInGameWidgetMode(CardsInGameWidgetMode mode) { _mode = mode; }
+
+public:
+
+    void ShowLastCardAdded();
+
 };
 
 #endif // CARDSINGAME_H

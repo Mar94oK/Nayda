@@ -98,7 +98,8 @@ void CardsInGame::AddCardToCardsInGame(CardInGame card)
     }
 
     _cardsAsButtonsRepresenter.push_back(cardToShow);
-    cardToShow->show();
+//    cardToShow->show();
+    cardToShow->hide();
 }
 
 QString CardsInGame::GetCardPictureAddress(SimpleCard card)
@@ -210,6 +211,11 @@ void CardsInGame::SetUpButtonPicture(QPushButton * const btn, const QString &pic
     btn->setPalette(plteBtnMainRepresenter);
 
     qDebug() << "NAY-002: CardsInGameSetCardPicture Function Checker()";
+}
+
+void CardsInGame::ShowLastCardAdded()
+{
+    _cardsAsButtonsRepresenter.back()->show();
 }
 
 
