@@ -1,11 +1,17 @@
 #include "cardsingame.h"
 #include "ui_cardsingame.h"
+#include <QTimer>
 
 CardsInGame::CardsInGame(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::CardsInGame)
 {
     ui->setupUi(this);
+
+    _showCardsTimer = new QTimer(this);
+    _showCardsTimer->setSingleShot(true);
+    connect(_showCardsTimer, &QTimer::timeout, [this]{ emit SignalShowTheCard(_currentCardToShowNearItsPosition);});
+
 }
 
 CardsInGame::~CardsInGame()
@@ -119,6 +125,7 @@ void CardsInGame::AddCardToCardsInGame(CardInGame card)
     _cardsAsButtonsRepresenter.push_back(cardToShow);
 //    cardToShow->show();
     cardToShow->hide();
+    cardToShow->installEventFilter(this);
 }
 
 QString CardsInGame::GetCardPictureAddress(SimpleCard card)
@@ -235,6 +242,47 @@ void CardsInGame::SetUpButtonPicture(QPushButton * const btn, const QString &pic
 void CardsInGame::ShowLastCardAdded()
 {
     _cardsAsButtonsRepresenter.back()->show();
+}
+
+bool CardsInGame::eventFilter(QObject *o, QEvent *e)
+{
+    for (unsigned int var = 0; var < _cardsAsButtonsRepresenter.size(); ++var) {
+        if (o == _cardsAsButtonsRepresenter[var]) {
+
+            if (e->type() == QEvent::Enter) {
+//                qDebug() << "Mouse Enters Area!";
+#ifdef __linux__
+                if (_debounceTimer->isActive())
+                    _debounceTimer->stop();
+#endif
+                _currentCardToShow = _cardsInGameHolder[var].second; //no Class
+
+                _currentCardToShowNearItsPosition.SetSimpleCard(_cardsInGameHolder[var].second);
+                _currentCardToShowNearItsPosition.SetPositionTopLeft({ _cardsAsButtonsRepresenter[var]->pos().x(),
+                                                                       _cardsAsButtonsRepresenter[var]->pos().y()});
+                _currentCardToShowNearItsPosition.SetPositionBottomRight({_cardsAsButtonsRepresenter[var]->pos().x() + _cardsAsButtonsRepresenter[var]->width(),
+                                                                          _cardsAsButtonsRepresenter[var]->pos().y() + _cardsAsButtonsRepresenter[var]->height()});
+
+                _showCardsTimer->start(static_cast<int32_t>(_timeToShowTheCard));
+                return true;
+            }
+            else if (e->type() == QEvent::Leave)
+            {
+                if (_showCardsTimer->isActive()) _showCardsTimer->stop();
+                emit SignalHideTheCard(true);
+                return true;
+            }
+            else if (e->type() == QEvent::MouseButtonPress)
+            {
+                emit SignalHideTheCard(true);
+            }
+            else
+            {
+                return QWidget::eventFilter(o, e);
+            }
+        }
+    }
+    return QWidget::eventFilter(o, e);
 }
 
 

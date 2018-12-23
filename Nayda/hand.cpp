@@ -122,7 +122,6 @@ void Hand::SlotShowTheCardInCentreSlot()
 
 bool Hand::eventFilter(QObject *o, QEvent *e)
 {
-
     for (unsigned int var = 0; var < _cardsVector.size(); ++var) {
         if (o == _cardsVector[var]) {
 

@@ -195,18 +195,22 @@ void GamerWidget::SlotRepresentTheCardInCentre()
     emit SignalRepresentTheCardInCentre(_currentCardToShowNearItsPosition);
 }
 
-void GamerWidget::SlotRepresentTheCardFromHandsInCentre(PositionedCard card)
+void GamerWidget::SlotRepresentTheCardFromHandsScope(PositionedCard card, bool fromHand)
 {
-//    qDebug() << "NAY-001: SlotRepresentTheCardFromHandsInCentre():";
-    card.AddBase(ui->wt_Hand->pos());
-    card.AddBase(pos());
-//    qDebug() << "Related position of Given Card in GamerWidget: ";
-//    qDebug() << "NAY-001: SlotRepresentTheCardFromHandsInCentre Geometry POS TOP LEFT X: " << card.GetPositionTopLeft().x();
-//    qDebug() << "NAY-001: SlotRepresentTheCardFromHandsInCentre Geometry POS TOP LEFT Y: " << card.GetPositionTopLeft().y();
-//    qDebug() << "NAY-001: SlotRepresentTheCardFromHandsInCentre Geometry POS BOT RIGHT X: " << card.GetPositionBottomRight().x();
-//    qDebug() << "NAY-001: SlotRepresentTheCardFromHandsInCentre Geometry POS BOT RIGHT Y: " << card.GetPositionBottomRight().y();
-    emit SignalRepresentTheCardInCentre(card);
+    if (fromHand)
+    {
+        card.AddBase(ui->wt_Hand->pos());
+    }
+    else // from CardsInGame
+    {
+        if (_isMainPlayer)
+            card.AddBase(ui->wt_CardsInGameMainPlayer->pos());
+        else
+            card.AddBase(ui->wt_CardsInGameSecondaryPlayer->pos());
+    }
 
+    card.AddBase(pos());
+    emit SignalRepresentTheCardInCentre(card);
 }
 
 void GamerWidget::SlotHideTheCardInCentre(bool)
@@ -534,8 +538,18 @@ void GamerWidget::SetUpShowTimer()
     _showCardsTimer->setSingleShot(true);
     //connect timeout issue
     connect(_showCardsTimer, &QTimer::timeout, this, &GamerWidget::SlotRepresentTheCardInCentre);
-    connect(ui->wt_Hand, &Hand::SignalShowTheCard, this, &GamerWidget::SlotRepresentTheCardFromHandsInCentre);
+    connect(ui->wt_Hand, &Hand::SignalShowTheCard,
+            [this](PositionedCard card){ SlotRepresentTheCardFromHandsScope(card, true);});
     connect(ui->wt_Hand, &Hand::SignalHideTheCard, this, &GamerWidget::SlotHideTheCardInCentre);
+    connect(ui->wt_CardsInGameMainPlayer, &CardsInGame::SignalShowTheCard,
+            [this](PositionedCard card){ SlotRepresentTheCardFromHandsScope(card, false);});
+    connect(ui->wt_CardsInGameMainPlayer, &CardsInGame::SignalHideTheCard,
+            this, &GamerWidget::SlotHideTheCardInCentre);
+    connect(ui->wt_CardsInGameSecondaryPlayer, &CardsInGame::SignalShowTheCard,
+            [this](PositionedCard card){ SlotRepresentTheCardFromHandsScope(card, false);});
+    connect(ui->wt_CardsInGameSecondaryPlayer, &CardsInGame::SignalHideTheCard,
+            this, &GamerWidget::SlotHideTheCardInCentre);
+
 }
 
 void GamerWidget::SetUpWidgetsPerfomance()

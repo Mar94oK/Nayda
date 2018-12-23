@@ -1781,8 +1781,6 @@ void The_Game::dbg_return_to_the_main_window()
 void The_Game::SlotShowTheCardInCentre(PositionedCard card)
 {
     card.AddBase(this->pos());
-//    qDebug() << "Application Global Coordinates: " << "X: " <<  pos().x()<< " Y: " << pos().y();
-    //pass the card to PopUpWidget
 
     _popUpCardWidget->setUpPointsForPoly(card.GetPositionTopLeft(), card.GetPositionBottomRight());
     _popUpCardWidget->setUpPopUpCard(card.GetCard());

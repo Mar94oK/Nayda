@@ -78,6 +78,12 @@ private:
     std::vector <SimpleCard> _disabledCards;
     std::vector <SimpleCard> _activeCards;
 
+    SimpleCard _currentCardToShow;
+    PositionedCard _currentCardToShowNearItsPosition;
+
+    QTimer *_showCardsTimer;
+    uint32_t _timeToShowTheCard = 100; //ms
+
     std::vector <QPushButton* > _cardsAsButtonsRepresenter;
 
 private:
@@ -123,6 +129,15 @@ public:
 public:
 
     void ShowLastCardAdded();
+
+public:
+
+    bool eventFilter(QObject *o, QEvent *e);
+
+signals:
+
+    void SignalShowTheCard(PositionedCard card);
+    void SignalHideTheCard(bool);
 
 };
 

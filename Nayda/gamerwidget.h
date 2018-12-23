@@ -112,7 +112,7 @@ signals:
 public slots:
 
     void SlotRepresentTheCardInCentre();
-    void SlotRepresentTheCardFromHandsInCentre(PositionedCard);
+    void SlotRepresentTheCardFromHandsScope(PositionedCard, bool fromHand = true);
     void SlotHideTheCardInCentre(bool);
 
 private:
