@@ -437,7 +437,7 @@ void GameFunctionFightWithMonsterFromHand(SimpleCard monster);
 
 Вернуться к пункту 4 от 22.12.2018
 
-
+После изменения constexpr требуется снова прогонять qmake.
 
 
 
