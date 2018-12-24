@@ -295,7 +295,6 @@ public:
 
    QPoint ProvidePositionOfTheLastCardAddedToCardsInGame() const;
 
-
 };
 
 #endif // GAMERWIDGET_H

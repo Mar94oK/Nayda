@@ -91,6 +91,8 @@ void Hand::AddNewCardToHands(SimpleCard card, bool isMainPlayer)
             currentPictureAddress = ":/Pictures/stacksLevels/TreasureStack5_SingleCard.png";
         else
             currentPictureAddress = ":/Pictures/stacksLevels/DoorsStack5_SingleCard.png";
+
+        //newCard->installEventFilter(this);
     }
 
     QPixmap pxmpBtnMainRepresenter(currentPictureAddress);
@@ -106,9 +108,6 @@ void Hand::AddNewCardToHands(SimpleCard card, bool isMainPlayer)
     newCard->setFlat(true);
     newCard->setAutoFillBackground(true);
     newCard->setPalette(plteBtnMainRepresenter);
-
-
-
 
     _cardsVector.push_back(newCard);
     _cardsOnHandsHandsWidgetProperty.push_back(card);

@@ -786,6 +786,7 @@ private:
     QPoint GetDoorsStackPosition();
 
     QPoint GetAvatarPositon(const GamerWidget* const wt);
+    QPoint GetCardsInGamePosition(const GamerWidget* const wt);
     QPoint GetNewCardAddedToCardsInGamePosition(const GamerWidget* const wt);
     QPoint GetPlayerWidgetSelfPosition(const GamerWidget* const wt);
 

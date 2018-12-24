@@ -382,7 +382,7 @@ bool CardsInGame::eventFilter(QObject *o, QEvent *e)
 
 QPoint CardsInGame::ProvidePositionOfTheLastAddedCard()
 {
-    return _cardsAsButtonsRepresenter.front()->pos();
+    return _cardsAsButtonsRepresenter.back()->pos();
 }
 
 
