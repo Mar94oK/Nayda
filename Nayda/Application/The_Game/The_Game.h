@@ -638,6 +638,7 @@ private:
 private:
 
     void RemoveTheCardFromHand(GamerWidget* wt, SimpleCard card);
+    void RemoveCardEffect(GamerWidget* wt, SimpleCard card);
     void RemoveCardsFromCardsInGame(GamerWidget* wt, std::vector<SimpleCard> cards);
 
 

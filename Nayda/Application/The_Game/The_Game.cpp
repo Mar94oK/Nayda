@@ -3665,6 +3665,26 @@ void The_Game::RemoveTheCardFromHand(GamerWidget *wt, SimpleCard card)
     wt->RemoveCardFromHand(card);
 }
 
+void The_Game::RemoveCardEffect(GamerWidget *wt, SimpleCard card)
+{
+    //Только для отладки
+    const GameCardBasis* realCard = GetRealCard(card);
+    switch (realCard->GetCardType())
+    {
+        case CardType::TreasureArmor:
+        {
+            gameCardTreasureArmor armor(static_cast<const gameCardTreasureArmor*>(realCard));
+            ApplyNewArmor(wt, armor, CardApplyMode::Remove);
+        }
+        break;
+
+        default:
+            qDebug() << "Type: " << realCard->GetCardType()
+                    << "Is not supported yet by CardsInGame RemoveProcess!";
+        break;
+    }
+}
+
 void The_Game::RemoveCardsFromCardsInGame(GamerWidget *wt, std::vector<SimpleCard> cards)
 {   
     //перед тем, как карта будет удалена из вектора-хранилища, проверить, имела ли она эффект.
@@ -3677,24 +3697,7 @@ void The_Game::RemoveCardsFromCardsInGame(GamerWidget *wt, std::vector<SimpleCar
         if (wt->GetPointerToPlayer()->CardIsActive(cards[var]))
         {
             qDebug() << "Card Is Active! Up to delete!";
-            //Только для отладки
-            const GameCardBasis* card = GetRealCard(cards[var]);
-            switch (card->GetCardType())
-            {
-                case CardType::TreasureArmor:
-                {
-                    gameCardTreasureArmor armor(static_cast<const gameCardTreasureArmor*>(card));
-                    ApplyNewArmor(wt,armor, CardApplyMode::Remove);
-                }
-                break;
-
-                default:
-                    qDebug() << "Type: " << card->GetCardType()
-                            << "Is not supported yet by CardsInGame RemoveProcess!";
-                break;
-            }
-
-
+            RemoveCardEffect(wt, cards[var]);
         }
         else
             qDebug() << "Card Is not Active. It has had no effect.";
