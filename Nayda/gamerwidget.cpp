@@ -664,5 +664,13 @@ void GamerWidget::SlotShowLastCardInGameAdded()
         ui->wt_CardsInGameSecondaryPlayer->ShowLastCardAdded();
 }
 
+QPoint GamerWidget::ProvidePositionOfTheLastCardAddedToCardsInGame() const
+{
+    if (_isMainPlayer)
+        return ui->wt_CardsInGameMainPlayer->ProvidePositionOfTheLastAddedCard();
+    else
+        return ui->wt_CardsInGameSecondaryPlayer->ProvidePositionOfTheLastAddedCard();
+}
+
 
 

@@ -143,6 +143,10 @@ signals:
     void SignalShowTheCard(PositionedCard card);
     void SignalHideTheCard(bool);
 
+public:
+
+    QPoint ProvidePositionOfTheLastAddedCard();
+
 };
 
 #endif // CARDSINGAME_H

@@ -1960,6 +1960,11 @@ QPoint The_Game::GetAvatarPositon(const GamerWidget * const wt)
     return wt->ProvideCardsInGamePosition();
 }
 
+QPoint The_Game::GetNewCardAddedToCardsInGamePosition(const GamerWidget * const wt)
+{
+    return wt->ProvidePositionOfTheLastCardAddedToCardsInGame();
+}
+
 QPoint The_Game::GetPlayerWidgetSelfPosition(const GamerWidget * const wt)
 {
     return wt->pos();
@@ -3012,7 +3017,7 @@ void The_Game::Animation_PassPlayedCardToCardsInGame_Phase2(GamerWidget *wt, QPr
 
     disconnect(animation, &QPropertyAnimation::finished, this, &The_Game::DEBUG_SlotPhase_1);
 
-    QPoint EndPosition = GetPlayerWidgetSelfPosition(wt) + GetAvatarPositon(wt);
+    QPoint EndPosition = GetPlayerWidgetSelfPosition(wt) + GetNewCardAddedToCardsInGamePosition(wt);
 
     QSize EndSize;
     if (!CardsInGameWidgetPerfomanceValues::threeLayoutForCardsAreEnabled)

@@ -380,4 +380,9 @@ bool CardsInGame::eventFilter(QObject *o, QEvent *e)
     return QWidget::eventFilter(o, e);
 }
 
+QPoint CardsInGame::ProvidePositionOfTheLastAddedCard()
+{
+    return _cardsAsButtonsRepresenter.front()->pos();
+}
+
 

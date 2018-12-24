@@ -291,6 +291,10 @@ public slots:
 
    void SlotShowLastCardInGameAdded();
 
+public:
+
+   QPoint ProvidePositionOfTheLastCardAddedToCardsInGame() const;
+
 
 };
 
