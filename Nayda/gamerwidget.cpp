@@ -429,12 +429,11 @@ void GamerWidget::SetGamerName(const QString &gamerName)
 
 QPoint GamerWidget::ProvideCardsInGamePosition() const
 {
-    if (ui->btn_Master->pos().y() < ui->lbl_Avatar->pos().y())
-        return ui->btn_Master->pos();
+    if (_isMainPlayer)
+        return ui->wt_CardsInGameMainPlayer->pos();
     else
-        return ui->lbl_Avatar->pos();
+        return ui->wt_CardsInGameSecondaryPlayer->pos();
 
-    //return ui->btn_Avatar->pos();
 }
 
 QSize GamerWidget::ProvideExpectedCardsInGameSize() const
