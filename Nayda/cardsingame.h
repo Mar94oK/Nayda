@@ -66,7 +66,7 @@ public:
 
 public:
 
-    void AddCardToCardsInGame(CardInGame card);
+    void AddCardToCardsInGame(CardInGame card, bool isMainPlayer = true);
     void RemoveCard(SimpleCard card);
 
     PositionedCard GetCardPosition(SimpleCard card);

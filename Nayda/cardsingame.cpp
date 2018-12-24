@@ -37,22 +37,29 @@ void CardsInGame::SetDecks(const AllDecksToBePassed &data)
     _weaponsDeck = data._weaponsDeck;
 }
 
-void CardsInGame::AddCardToCardsInGame(CardInGame card)
-{
-    int32_t cardWidth = (CardsInGameWidgetPerfomanceValues::threeLayoutForCardsAreEnabled ?
-                              static_cast<int32_t>(_widnowSizeWidth *GeometricLimitations::handCardSizeWidht
-                                                   * GeometricLimitations::cardInGametoCardOnHandSizeRatio)
-                            :
-                              static_cast<int32_t>(_widnowSizeWidth *GeometricLimitations::handCardSizeWidht * 2));
+void CardsInGame::AddCardToCardsInGame(CardInGame card, bool isMainPlayer)
+{    
+    QSize cardSize;
 
-    int32_t cardHeight = (CardsInGameWidgetPerfomanceValues::threeLayoutForCardsAreEnabled ?
-                              static_cast<int32_t>(_windowSizeHeight *GeometricLimitations::handCardSizeHeight
-                                                   * GeometricLimitations::cardInGametoCardOnHandSizeRatio)
-                            :
-                              static_cast<int32_t>(_windowSizeHeight *GeometricLimitations::handCardSizeHeight * 2));
+    if (isMainPlayer)
+    {
+        cardSize.setWidth((CardsInGameWidgetPerfomanceValues::threeLayoutForCardsAreEnabled ?
+                                  static_cast<int32_t>(_widnowSizeWidth *GeometricLimitations::handCardSizeWidht
+                                                       * GeometricLimitations::cardInGametoCardOnHandSizeRatio)
+                                :
+                                  static_cast<int32_t>(_widnowSizeWidth *GeometricLimitations::handCardSizeWidht * 2)));
 
-
-    QSize cardSize(cardWidth,cardHeight);
+        cardSize.setHeight((CardsInGameWidgetPerfomanceValues::threeLayoutForCardsAreEnabled ?
+                                  static_cast<int32_t>(_windowSizeHeight *GeometricLimitations::handCardSizeHeight
+                                                       * GeometricLimitations::cardInGametoCardOnHandSizeRatio)
+                                :
+                                  static_cast<int32_t>(_windowSizeHeight *GeometricLimitations::handCardSizeHeight * 2)));
+    }
+    else
+    {
+        cardSize.setWidth(static_cast<int32_t>(GeometricLimitations::handCardSizeWidht*_widnowSizeWidth));
+        cardSize.setHeight(static_cast<int32_t>(GeometricLimitations::handCardSizeHeight*_windowSizeHeight));
+    }
 
     qDebug() << "CardSize CardsInGame: _widnowSizeWidth: " << _widnowSizeWidth;
     qDebug() << "CardSize CardsInGame: _windowSizeHeight: " << _windowSizeHeight;

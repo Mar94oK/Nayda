@@ -839,6 +839,11 @@ private:
     std::map<CardType, void (*)(GamerWidget* , GameCardBasis* , CardApplyMode )> _Applyers;
     void SetApplyers();
 
+private:
+
+    uint32_t _hwScreenSizeWidth;
+    uint32_t _hwScreenSizeHeigh;
+
 
 };
 

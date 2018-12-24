@@ -19,8 +19,9 @@ The_Game::The_Game(QWidget *parent) :
 
     //find the HW size of the window
     QRect HW_Screen_Size = QApplication::desktop()->screenGeometry();
-    uint32_t HW_Screen_Size_Width = static_cast<uint32_t>(HW_Screen_Size.width());
-    uint32_t HW_Screen_Size_Heigh = static_cast<uint32_t>(HW_Screen_Size.height());
+
+    _hwScreenSizeWidth = static_cast<uint32_t>(HW_Screen_Size.width());
+    _hwScreenSizeHeigh = static_cast<uint32_t>(HW_Screen_Size.height());
 
     //Regarding this note
     //https://stackoverflow.com/questions/44875309/why-does-qdesktopwidget-give-me-the-wrong-available-geometry-when-i-use-two-moni
@@ -28,19 +29,19 @@ The_Game::The_Game(QWidget *parent) :
     //make it 0.8 of height for example
 
 #ifdef __linux
-    static_cast<uint32_t>(HW_Screen_Size_Heigh *= 0.9);
-    static_cast<uint32_t>(HW_Screen_Size_Width *= 0.8);
+    static_cast<uint32_t>(_hwScreenSizeHeigh *= 0.9);
+    static_cast<uint32_t>(_hwScreenSizeWidth *= 0.8);
 #endif
 #ifdef Q_OS_WIN
-    static_cast<uint32_t>(HW_Screen_Size_Heigh *= 0.9);
-    static_cast<uint32_t>(HW_Screen_Size_Width *= 0.8);
+    static_cast<uint32_t>(_hwScreenSizeHeigh *= 0.9);
+    static_cast<uint32_t>(_hwScreenSizeWidth *= 0.8);
 #endif
 
     //1. SetUp Initial Signals-Slots connections
     SetUpSignalSlotsConnections();
 
     //2. GUI Adjustment
-    SetUpWidgetsProperties(HW_Screen_Size_Heigh, HW_Screen_Size_Width);
+    SetUpWidgetsProperties(_hwScreenSizeHeigh, _hwScreenSizeWidth);
     //SetUpPlayersAndWidgets(HW_Screen_Size_Heigh, HW_Screen_Size_Width);
 
     //3. Parse cards
@@ -3012,7 +3013,18 @@ void The_Game::Animation_PassPlayedCardToCardsInGame_Phase2(GamerWidget *wt, QPr
     disconnect(animation, &QPropertyAnimation::finished, this, &The_Game::DEBUG_SlotPhase_1);
 
     QPoint EndPosition = GetPlayerWidgetSelfPosition(wt) + GetAvatarPositon(wt);
-    QSize EndSize = GetAvatarSize(wt);
+
+    QSize EndSize;
+    if (!CardsInGameWidgetPerfomanceValues::threeLayoutForCardsAreEnabled)
+    {
+        EndSize.setWidth(_hwScreenSizeWidth*GeometricLimitations::handCardSizeWidht*GeometricLimitations::handCardMainGamerSizeRatio);
+        EndSize.setHeight(_hwScreenSizeHeigh*GeometricLimitations::handCardSizeHeight*GeometricLimitations::handCardMainGamerSizeRatio);
+    }
+    else
+    {
+        EndSize.setWidth(_hwScreenSizeWidth*GeometricLimitations::handCardSizeWidht);
+        EndSize.setHeight(_hwScreenSizeHeigh*GeometricLimitations::handCardSizeHeight);
+    }
 
     if (animation == nullptr)
     {
