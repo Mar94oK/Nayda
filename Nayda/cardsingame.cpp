@@ -80,9 +80,13 @@ void CardsInGame::AddCardToCardsInGame(CardInGame card, bool isMainPlayer)
     QPushButton* cardToShow = new QPushButton();
 
     qDebug() << "CardsInGame::AddCardToCardsInGame(CardInGame card): " << GetCardPictureAddress(card.second);
-    SetUpButtonPicture(cardToShow,
-                       GetCardPictureAddress(card.second),
-                       cardSize, card.first);
+
+    cardToShow->setMinimumSize(cardSize);
+    cardToShow->setMaximumSize(cardSize);
+    cardToShow->setFlat(true);
+    cardToShow->setAutoFillBackground(true);
+    cardToShow->setStyleSheet("QPushButton {background-color:transparent;}");
+    //btn->setPalette(plteBtnMainRepresenter);
 
     bool active = card.first;
     if (_mode == CardsInGameWidgetMode::MainPlayer)
@@ -130,8 +134,8 @@ void CardsInGame::AddCardToCardsInGame(CardInGame card, bool isMainPlayer)
     }
 
     _cardsAsButtonsRepresenter.push_back(cardToShow);
-//    cardToShow->show();
-    cardToShow->hide();
+    cardToShow->show();
+//    cardToShow->hide();
     cardToShow->installEventFilter(this);
 }
 
@@ -334,8 +338,35 @@ void CardsInGame::SetUpButtonPicture(QPushButton * const btn, const QString &pic
     qDebug() << "NAY-002: CardsInGameSetCardPicture Function Checker()";
 }
 
-void CardsInGame::ShowLastCardAdded()
+void CardsInGame::ShowLastCardAdded(bool isMainPlayer)
 {
+    QSize cardSize;
+
+    if (isMainPlayer)
+    {
+        cardSize.setWidth((CardsInGameWidgetPerfomanceValues::threeLayoutForCardsAreEnabled ?
+                                  static_cast<int32_t>(_widnowSizeWidth *GeometricLimitations::handCardSizeWidht
+                                                       * GeometricLimitations::cardInGametoCardOnHandSizeRatio)
+                                :
+                                  static_cast<int32_t>(_widnowSizeWidth *GeometricLimitations::handCardSizeWidht * 2)));
+
+        cardSize.setHeight((CardsInGameWidgetPerfomanceValues::threeLayoutForCardsAreEnabled ?
+                                  static_cast<int32_t>(_windowSizeHeight *GeometricLimitations::handCardSizeHeight
+                                                       * GeometricLimitations::cardInGametoCardOnHandSizeRatio)
+                                :
+                                  static_cast<int32_t>(_windowSizeHeight *GeometricLimitations::handCardSizeHeight * 2)));
+    }
+    else
+    {
+        cardSize.setWidth(static_cast<int32_t>(GeometricLimitations::handCardSizeWidht*_widnowSizeWidth));
+        cardSize.setHeight(static_cast<int32_t>(GeometricLimitations::handCardSizeHeight*_windowSizeHeight));
+    }
+
+
+    SetUpButtonPicture(_cardsAsButtonsRepresenter.back(),
+                       GetCardPictureAddress(_cardsInGameHolder.back().second),
+                       cardSize, _cardsInGameHolder.back().first);
+
     _cardsAsButtonsRepresenter.back()->show();
 }
 

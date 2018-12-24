@@ -132,7 +132,7 @@ public:
 
 public:
 
-    void ShowLastCardAdded();
+    void ShowLastCardAdded(bool isMainPlayer = true);
 
 public:
 

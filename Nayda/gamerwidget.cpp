@@ -659,9 +659,9 @@ QSize GamerWidget::GetCardOnHandSize()
 void GamerWidget::SlotShowLastCardInGameAdded()
 {
     if (_isMainPlayer)
-        ui->wt_CardsInGameMainPlayer->ShowLastCardAdded();
+        ui->wt_CardsInGameMainPlayer->ShowLastCardAdded(_isMainPlayer);
     else
-        ui->wt_CardsInGameSecondaryPlayer->ShowLastCardAdded();
+        ui->wt_CardsInGameSecondaryPlayer->ShowLastCardAdded(false);
 }
 
 QPoint GamerWidget::ProvidePositionOfTheLastCardAddedToCardsInGame() const
