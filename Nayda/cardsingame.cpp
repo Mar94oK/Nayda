@@ -251,10 +251,10 @@ bool CardsInGame::eventFilter(QObject *o, QEvent *e)
 
             if (e->type() == QEvent::Enter) {
 //                qDebug() << "Mouse Enters Area!";
-#ifdef __linux__
-                if (_debounceTimer->isActive())
-                    _debounceTimer->stop();
-#endif
+//#ifdef __linux__
+//                if (_debounceTimer->isActive())
+//                    _debounceTimer->stop();
+//#endif
                 _currentCardToShow = _cardsInGameHolder[var].second; //no Class
 
                 _currentCardToShowNearItsPosition.SetSimpleCard(_cardsInGameHolder[var].second);

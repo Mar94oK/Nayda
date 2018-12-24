@@ -3675,7 +3675,27 @@ void The_Game::RemoveCardsFromCardsInGame(GamerWidget *wt, std::vector<SimpleCar
     for (uint32_t var = 0; var < cards.size(); ++var)
     {
         if (wt->GetPointerToPlayer()->CardIsActive(cards[var]))
+        {
             qDebug() << "Card Is Active! Up to delete!";
+            //Только для отладки
+            const GameCardBasis* card = GetRealCard(cards[var]);
+            switch (card->GetCardType())
+            {
+                case CardType::TreasureArmor:
+                {
+                    gameCardTreasureArmor armor(static_cast<const gameCardTreasureArmor*>(card));
+                    ApplyNewArmor(wt,armor, CardApplyMode::Remove);
+                }
+                break;
+
+                default:
+                    qDebug() << "Type: " << card->GetCardType()
+                            << "Is not supported yet by CardsInGame RemoveProcess!";
+                break;
+            }
+
+
+        }
         else
             qDebug() << "Card Is not Active. It has had no effect.";
     }
