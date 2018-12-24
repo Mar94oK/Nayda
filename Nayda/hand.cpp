@@ -267,7 +267,7 @@ void Hand::SlotRemoveCardFromHand(SimpleCard card)
 
 PositionedCard Hand::GetCardPosition(SimpleCard card)
 {
-    //Define whether ther'es such card in the hand.
+    //Define whether there's such card in the hand.
     for (uint32_t var = 0; var < _cardsOnHandsHandsWidgetProperty.size(); ++var)
     {
         if (_cardsOnHandsHandsWidgetProperty[var] == card)

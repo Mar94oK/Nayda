@@ -377,18 +377,10 @@ std::vector<PositionedCard> GamerWidget::GetPositionedCardsFromCardsOnHand(const
 
 std::vector<PositionedCard> GamerWidget::GetPositionedCardsFromCardsInGame(const std::vector<SimpleCard> cards)
 {
-    QPoint avatarPosition = ui->btn_Avatar->pos();
-    std::vector<PositionedCard> posCards;
-    for (uint32_t var = 0; var < cards.size(); ++var)
-    {
-        PositionedCard card;
-        card.SetSimpleCard(cards[var]);
-        card.SetPositionTopLeft(avatarPosition);
-        card.SetPositionTopLeft(avatarPosition + QPoint(avatarPosition.x() + ui->btn_Avatar->size().width(),
-                                                  avatarPosition.y() + ui->btn_Avatar->size().height()));
-        posCards.push_back(card);
-    }
-    return posCards;
+    if (_isMainPlayer)
+        return  ui->wt_CardsInGameMainPlayer->GetPositionedCards(cards);
+    else
+        return ui->wt_CardsInGameSecondaryPlayer->GetPositionedCards(cards);
 }
 
 void GamerWidget::RemoveCardFromHand(SimpleCard card)
@@ -405,7 +397,17 @@ void GamerWidget::RemoveCardsFromCardsInGame(std::vector<SimpleCard> cards)
     {
         if (_cardsInGameObserver != nullptr)
             _cardsInGameObserver->RemoveCard(cards[var]);
+
+        if (_isMainPlayer)
+        {
+            ui->wt_CardsInGameMainPlayer->RemoveCard(cards[var]);
+        }
+        else
+        {
+            ui->wt_CardsInGameSecondaryPlayer->RemoveCard(cards[var]);
+        }
     }
+
 }
 
 QPoint GamerWidget::ProvideSelfPosition()

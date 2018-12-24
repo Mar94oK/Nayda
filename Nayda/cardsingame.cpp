@@ -128,6 +128,94 @@ void CardsInGame::AddCardToCardsInGame(CardInGame card)
     cardToShow->installEventFilter(this);
 }
 
+void CardsInGame::RemoveCard(SimpleCard card)
+{
+    //Как обычно - т.к. вектор кнопок, отображающих карты, и вектор карт - связанные сущности,
+    //Удалить из обоих мест
+
+    if (_cardsInGameHolder.size() != _cardsAsButtonsRepresenter.size())
+    {
+        qDebug() << "NAY-002: ERROR void CardsInGame::RemoveCard(SimpleCard card). Sizes of containers incompatible!";
+    }
+
+    for (uint32_t var = 0; var < _cardsInGameHolder.size(); ++var)
+    {
+        if (_cardsInGameHolder[var].second == card)
+        {
+            _cardsInGameHolder.erase(_cardsInGameHolder.begin() + var);
+            _cardsInGameHolder.shrink_to_fit();
+
+            _cardsAsButtonsRepresenter[var]->deleteLater();
+            _cardsAsButtonsRepresenter.erase(_cardsAsButtonsRepresenter.begin() + var);
+            _cardsAsButtonsRepresenter.shrink_to_fit();
+            qDebug() << "The card is removed from CardsInGame!";
+            break;
+        }
+    }
+    for (uint32_t var = 0; var < _activeCards.size(); ++var)
+    {
+        if (_activeCards[var] == card)
+        {
+            _activeCards.erase(_activeCards.begin() + var);
+            _activeCards.shrink_to_fit();
+            break;
+        }
+    }
+    for (uint32_t var = 0; var < _disabledCards.size(); ++var)
+    {
+        if (_disabledCards[var] == card)
+        {
+            _disabledCards.erase(_activeCards.begin() + var);
+            _disabledCards.shrink_to_fit();
+            break;
+        }
+    }
+}
+
+PositionedCard CardsInGame::GetCardPosition(SimpleCard card)
+{
+    //Define whether there's such card in the hand.
+    if (_cardsAsButtonsRepresenter.size() != _cardsInGameHolder.size())
+    {
+        qDebug() << "NAY-002: ERROR WHILE PositionedCard CardsInGame::GetCardPosition(SimpleCard card)"
+                 << "Sizes not equal!";
+    }
+
+    for (uint32_t var = 0; var < _cardsInGameHolder.size(); ++var)
+    {
+        if (_cardsInGameHolder[var].second == card)
+        {
+            PositionedCard posCard;
+            posCard.SetSimpleCard(card);
+            //Они добавляются в вектор карт точно в таком же порядке, их ID должны свопадать
+            //Им может служить в общем случае индекс массива
+
+            posCard.SetPositionTopLeft({ _cardsAsButtonsRepresenter[var]->pos().x(),
+                                                         _cardsAsButtonsRepresenter[var]->pos().y()});
+            posCard.SetPositionBottomRight({ _cardsAsButtonsRepresenter[var]->pos().x() + _cardsAsButtonsRepresenter[var]->width(),
+                                                             _cardsAsButtonsRepresenter[var]->pos().y() + _cardsAsButtonsRepresenter[var]->height()});
+            return posCard;
+
+        }
+    }
+    qDebug() << "NAY-002: ERROR WHILE PositionedCard CardsInGame::GetCardPosition(SimpleCard card)"
+             << "No card found!";
+
+    return PositionedCard();
+}
+
+std::vector<PositionedCard> CardsInGame::GetPositionedCards(const std::vector<SimpleCard> &cards)
+{
+    std::vector<PositionedCard> posCards;
+
+    for (uint32_t var = 0; var < cards.size(); ++var)
+    {
+        posCards.push_back(GetCardPosition(cards[var]));
+    }
+
+    return posCards;
+}
+
 QString CardsInGame::GetCardPictureAddress(SimpleCard card)
 {
     std::map<int, gameCardDoorMonster> :: const_iterator  _monstersIterator;

@@ -67,6 +67,10 @@ public:
 public:
 
     void AddCardToCardsInGame(CardInGame card);
+    void RemoveCard(SimpleCard card);
+
+    PositionedCard GetCardPosition(SimpleCard card);
+    std::vector<PositionedCard> GetPositionedCards(const std::vector<SimpleCard> &cards);
 
 private:
 
