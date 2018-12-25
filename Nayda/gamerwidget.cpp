@@ -375,6 +375,11 @@ std::vector<PositionedCard> GamerWidget::GetPositionedCardsFromCardsOnHand(const
     return ui->wt_Hand->GetPositionedCards(cards);
 }
 
+PositionedCard GamerWidget::GetPositionedCardFromCardsOnHand(SimpleCard card)
+{
+    return ui->wt_Hand->GetCardPosition(card)
+}
+
 std::vector<PositionedCard> GamerWidget::GetPositionedCardsFromCardsInGame(const std::vector<SimpleCard> cards)
 {
     if (_isMainPlayer)

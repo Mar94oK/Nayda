@@ -2154,7 +2154,6 @@ void The_Game::MainCardImplementer(GamerWidget *wt, PositionedCard card, CardImp
             return;
         }
 
-
         std::shared_ptr<CardPlayAllowanceBase> allowance = GetAllowance(basisCard, wt->GetPointerToPlayer(), direction);
         //Проверить, разрешено ли применить карту
         //Если да - применить её (причём, в зависимости от направления могут быть разные типы применения!)
@@ -2176,6 +2175,8 @@ void The_Game::MainCardImplementer(GamerWidget *wt, PositionedCard card, CardImp
                     ProcessCardAllowedToBeImplemented(allowance, basisCard, wt, card, direction);
                     emit SignalCardIsRejectedToBePlayed(false);
                     //Отсюда отправить сообщение на сервер о применении карты
+                    //в случае если это не сервер прислал сообщение о необходимости применения карты
+
                 }
                     break;
                 default:
@@ -2188,8 +2189,31 @@ void The_Game::MainCardImplementer(GamerWidget *wt, PositionedCard card, CardImp
         }
 
     }
-    else
+    else if (checkerPolicy == CardCheckerPolicy::ImplementByServerCommand)
     {
+        //Не проверять глобальных запретов.
+        //По сути это только анимация - не спровоцированные игроком действия.
+        std::shared_ptr<CardPlayAllowanceBase> allowance = GetAllowance(basisCard, wt->GetPointerToPlayer(), direction);
+
+        if (!allowance->GetAllowance())
+        {
+            qDebug() << "NAY-002: ERROR! Card SHOULD BE Implemented - server ONLY reports the card to be implemented";
+            return;
+        }
+        switch (basisCard->GetCardType())
+        {
+            case CardType::TreasureArmor:
+            {
+                ProcessCardAllowedToBeImplemented(allowance, basisCard, wt, card, direction);
+            }
+                break;
+            default:
+            {
+                qDebug() << "NAY-002: New ARCHITECTURE Starting: CardType: " << basisCard->GetCardType() << " not handled yet!";
+                ApplyCardImplementerMessage("This type of card is not suppirted yet!", false);
+                return;
+            }
+        }
 
     }
 
@@ -2353,7 +2377,6 @@ void The_Game::ImplementTreasureArmorToCardsInGame(std::shared_ptr<CardPlayAllow
     const gameCardTreasureArmor* cardPointer = static_cast<const gameCardTreasureArmor* >(card);
     gameCardTreasureArmor realCard(cardPointer);
 
-    bool isActive = armorAllowance->GetIsActive();
     ui->MainGamer->SlotAddCardToCardsInGame(std::make_pair(armorAllowance->GetIsActive(), SimpleCard(true, realCard.GetCardID())));
 
     MoveCardFromCardInHandToCardInGame(_mainPlayer, std::make_pair(armorAllowance->GetIsActive(), SimpleCard(true, realCard.GetCardID())));
@@ -3854,6 +3877,11 @@ std::vector<PositionedCard> The_Game::GetPositionedCardsFromHand(GamerWidget* wt
     return wt->GetPositionedCardsFromCardsOnHand(cards);
 }
 
+PositionedCard The_Game::GetPositionedCardFromHand(GamerWidget *wt, SimpleCard card)
+{
+    return wt->GetPositionedCardFromCardsOnHand(card);
+}
+
 std::vector<PositionedCard> The_Game::GetPositionedCardsFromCardsInGame(GamerWidget *wt, const std::vector<SimpleCard> &cards)
 {
     return  wt->GetPositionedCardsFromCardsInGame(cards);
@@ -4087,6 +4115,43 @@ void The_Game::SlotProcessOpponentHasSoldCards(TheGameMainGamerHasSoldCards data
     //start animation here
     if (!allCardsToBeDisplayed.empty())
         Animation_StartPassSoldCardsFromHandOrInGameToTreasureFold_Phase1(currentWidget, allCardsToBeDisplayed);
+
+}
+
+void The_Game::SlotProcessOpponentHasImplementedCard(TheGameMainGamerHasImplementedCard data)
+{
+    qDebug() << "NAY-002: void The_Game::SlotProcessOpponentHasImplementedCard(TheGameMainGamerHasImplementedCard data)";
+    qDebug() << "Process implementation of the card by another player";
+
+    qDebug() << "NAY-002: gamerID: " << data.gamerID;
+    qDebug() << "NAY-002: roomID: " << data.roomID;
+    qDebug() << "NAY-002: CardImplementationDirection: " << data.direction;
+    qDebug() << "NAY-002: SimpleCard: " << data.playedCard;
+    qDebug() << "NAY-002: battleStarts: " << data.battleStarts;
+
+    //1) Найти виджет, относительно которого будет применяться карта.
+    GamerWidget* currentWidget = _GamerWidgetsWithIDs[data.gamerID];
+
+    //2) Найти позицию карты
+    PositionedCard cardToBePlayed;
+    switch (data.direction)
+    {
+    case CardImplementationDirection::HandToCardsInGame:
+    {
+        cardToBePlayed = GetPositionedCardFromHand(currentWidget, data.playedCard);
+    }
+        break;
+    default:
+    {
+        qDebug() << "NAY-002: ERROR: This direction is not supported yet! Direction: " << data.direction;
+        return;
+    }
+        break;
+    }
+
+    //Применить карту.
+    //Лишние сигналы не должны сработать
+    MainCardImplementer(currentWidget, cardToBePlayed, data.direction, CardCheckerPolicy::ImplementByServerCommand);
 
 }
 

@@ -174,6 +174,22 @@ struct TheGameMainGamerHasSoldCards
     { }
 };
 
+struct TheGameMainGamerHasImplementedCard
+{
+    uint32_t gamerID;
+    SimpleCard playedCard;
+    uint32_t roomID;
+    bool battleStarts;
+    CardImplementationDirection direction;
+
+    explicit TheGameMainGamerHasImplementedCard(uint32_t gmrId, SimpleCard crd,
+                                                uint32_t rmId, bool strtBattle,
+                                                CardImplementationDirection dir) :
+        gamerID(gmrId), playedCard(crd), roomID(rmId),
+        battleStarts(strtBattle), direction(dir)
+    { }
+};
+
 
 #define ROOM_ID_NOT_DEFINED 9999
 

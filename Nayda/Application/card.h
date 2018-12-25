@@ -118,10 +118,14 @@ enum class CardImplementationDirection
 };
 QDebug operator<<(QDebug debug, const CardImplementationDirection& dt);
 
+
+//Проверять требуется только активность/неактивность карты
+//Для случая применения карт Рука-Карты в Игре
 enum class CardCheckerPolicy
 {
   ImplementWithoutCheck,
-  CheckBeforeImplementation
+  CheckBeforeImplementation,
+  ImplementByServerCommand
 };
 
 

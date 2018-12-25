@@ -519,10 +519,13 @@ signals:
     void SignalChartMessageSending(const QString& message);
 
     void SignalMainGamerHasSoldCards(TheGameMainGamerHasSoldCards data);
+    void SignalMainGamerHasImplementedCard(TheGameMainGamerHasImplementedCard data);
 
 public slots:
 
     void SlotProcessOpponentHasSoldCards(TheGameMainGamerHasSoldCards data);
+    void SlotProcessOpponentHasImplementedCard(TheGameMainGamerHasImplementedCard data);
+
     void SlotRoomIdHasBeenChanged(uint32_t roomID) { _roomID = roomID; }
     void SlotRoomNameHasBeenChanged(QString roomName) { _roomName = roomName; }
 
@@ -660,6 +663,7 @@ private:
 
     std::vector<PositionedCard> _soldCards;
     std::vector<PositionedCard> GetPositionedCardsFromHand(GamerWidget *wt, const std::vector<SimpleCard>& cards);
+    PositionedCard GetPositionedCardFromHand(GamerWidget *wt, SimpleCard card);
     std::vector<PositionedCard> GetPositionedCardsFromCardsInGame(GamerWidget *wt, const std::vector<SimpleCard>& cards);
 
     CardsFromHandAndInGame CardsSeparator(GamerWidget *wt, const std::vector<SimpleCard>& cards);

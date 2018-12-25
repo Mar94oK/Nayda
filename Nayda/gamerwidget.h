@@ -248,6 +248,7 @@ public slots:
 public:
 
    std::vector<PositionedCard> GetPositionedCardsFromCardsOnHand(const std::vector<SimpleCard> cards);
+   PositionedCard GetPositionedCardFromCardsOnHand(SimpleCard card);
    std::vector<PositionedCard> GetPositionedCardsFromCardsInGame(const std::vector<SimpleCard> cards);
    void RemoveCardFromHand(SimpleCard card);
    void RemoveCardsFromCardsInGame(std::vector<SimpleCard> cards);
