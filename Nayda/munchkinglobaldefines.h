@@ -51,6 +51,12 @@ class AnimationPhasesLimitations
 public:
 
     static constexpr uint32_t msTimeToHoldCardWhileAddingCardToCardsInGame = 1000;
+
+    //Trade Animation
+    static constexpr uint32_t msTimeForTradeAnimationPhase1 = 1000;  //Moving to centre
+    static constexpr uint32_t msTimeForTradeAnimationPhase2 = 1500; //Standing at the centre
+    static constexpr uint32_t msTimeForTradeAnimationPhase3 = 500;  //Moving to Treasure Fold
+
 };
 
 class GamerWidgetPerfomanceValues

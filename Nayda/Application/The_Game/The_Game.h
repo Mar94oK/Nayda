@@ -801,9 +801,9 @@ private:
 //Settings not given in the settings Selection menu:
 private:
     //Animation timings
-    uint32_t _msTimeForTradeAnimationPhase1 = 500; //Moving to centre
-    uint32_t _msTimeForTradeAnimationPhase2 = 1500; //Standing at the centre
-    uint32_t _msTimeForTradeAnimationPhase3 = 500;  //Moving to Treasure Fold
+    uint32_t _msTimeForTradeAnimationPhase1 = AnimationPhasesLimitations::msTimeForTradeAnimationPhase1; //Moving to centre
+    uint32_t _msTimeForTradeAnimationPhase2 = AnimationPhasesLimitations::msTimeForTradeAnimationPhase2; //Standing at the centre
+    uint32_t _msTimeForTradeAnimationPhase3 = AnimationPhasesLimitations::msTimeForTradeAnimationPhase3;  //Moving to Treasure Fold
 
     //костыль
     bool _phase1Completed = false;
