@@ -2176,7 +2176,12 @@ void The_Game::MainCardImplementer(GamerWidget *wt, PositionedCard card, CardImp
                     emit SignalCardIsRejectedToBePlayed(false);
                     //Отсюда отправить сообщение на сервер о применении карты
                     //в случае если это не сервер прислал сообщение о необходимости применения карты
-
+                    emit SignalMainGamerHasImplementedCard(TheGameMainGamerHasImplementedCard(
+                                                               _mainGamerOrderOfMove,
+                                                               card.GetCard(),
+                                                               _roomID,
+                                                               false,
+                                                               CardImplementationDirection::HandToCardsInGame));
                 }
                     break;
                 default:

@@ -68,4 +68,10 @@ SystemManager::SystemManager(Before_The_Game * beforeTheGame,
     QObject::connect(m_beforeTheGamePtr, &Before_The_Game::SignalRoomNameHasBeenChanged,
                      m_theGamePtr, &The_Game::SlotRoomNameHasBeenChanged);
 
+    QObject::connect(m_serverPtr, &Server::SignalServerReportsPlayerHasImplementedCard,
+                     m_theGamePtr, &The_Game::SlotProcessOpponentHasImplementedCard);
+
+    QObject::connect(m_theGamePtr, &The_Game::SignalMainGamerHasImplementedCard,
+                     m_serverPtr, &Server::SlotSendClientHasImplementedCard);
+
 }

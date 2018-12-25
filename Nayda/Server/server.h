@@ -126,11 +126,12 @@ signals:
 signals:
 
     void SignalServerReportsPlayerSoldCards(const TheGameMainGamerHasSoldCards& data);
-
+    void SignalServerReportsPlayerHasImplementedCard(const TheGameMainGamerHasSoldCards& data);
 
 public slots:
 
     void SlotSendClientHasSoldCards(const TheGameMainGamerHasSoldCards& data);
+    void SlotSendClientHasImplementedCard(const TheGameMainGamerHasImplementedCard& data);
 
 private:
 
@@ -140,6 +141,7 @@ private:
 public:
 
     QByteArray FormClientHasSoldCards(const TheGameMainGamerHasSoldCards& data);
+    QByteArray FormClientHasImplementedCard(const TheGameMainGamerHasImplementedCard& data);
 
 //THE_GAME_PROCESS===
 
@@ -187,7 +189,9 @@ public:
     QByteArray FormChartMessage(const QString& textMessage);
     QByteArray FormClientWantedToEnterTheRoom(uint32_t roomId);
 
-};
+  };
+
+
 
 
 #endif // SERVER_H

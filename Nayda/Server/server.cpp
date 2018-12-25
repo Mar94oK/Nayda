@@ -370,6 +370,12 @@ void Server::SlotSendClientHasSoldCards(const TheGameMainGamerHasSoldCards &data
     ConnectionSendOutgoingData(FormClientHasSoldCards(data));
 }
 
+void Server::SlotSendClientHasImplementedCard(const TheGameMainGamerHasImplementedCard &data)
+{
+    qDebug() << "NAY-002: Send SlotSendClientHasSoldCards";
+    ConnectionSendOutgoingData(FormClientHasImplementedCard(data));
+}
+
 void Server::ProcessClientHasSoldCards(const QByteArray &data, int socketDescriptor)
 {
    qDebug() << ("NAY-0001: Error while ProcessClientHasSoldCards() ");
@@ -432,6 +438,26 @@ QByteArray Server::FormClientHasSoldCards(const TheGameMainGamerHasSoldCards &da
     message.SerializeToArray(block.data(), block.size());
     qDebug() << "NAY-002: Serialized FormClientHasSoldCards is ready.";
     return block;
+}
+
+QByteArray Server::FormClientHasImplementedCard(const TheGameMainGamerHasImplementedCard &data)
+{
+    serverMessageSystem::ClientHasImplementedCard message;
+    serverMessageSystem::CommonHeader *header(message.mutable_header());
+    header->set_subsystem(serverMessageSystem::SubSystemID::GAME_ACTIONS_SUBSYSTEM);
+    header->set_commandid(static_cast<uint32_t>(serverMessageSystem::GameActionsSubSysCommandsID::CLIENT_HAS_IMPLEMENTED_CARD));
+    message.set_connectioncmdid(serverMessageSystem::GameActionsSubSysCommandsID::CLIENT_HAS_IMPLEMENTED_CARD);
+
+    message.set_gamerid(data.gamerID);
+    message.set_roomid(data.roomID);
+    switch (data.direction)
+    {
+    case CardImplementationDirection::HandToCardsInGame:
+        message.set_direction(serverMessageSystem::CardPlayDirection::HAND_TO_CARDS_IN_GAME);
+        break;
+    default:
+        break;
+    }
 
 
 }
@@ -1067,3 +1093,4 @@ QByteArray Server::FormClientWantedToEnterTheRoom(uint32_t roomId)
     return block;
 
 }
+

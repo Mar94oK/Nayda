@@ -281,12 +281,14 @@ inline bool GameActionsSubSysCommandsID_Parse(
 }
 enum CardPlayDirection {
   HAND_TO_CARDS_IN_GAME = 0,
+  HAND_TO_BATTLE_FIELD = 1,
+  CARDS_IN_GAME_TO_BATTLE_FIELD = 2,
   CardPlayDirection_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::google::protobuf::int32>::min(),
   CardPlayDirection_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::google::protobuf::int32>::max()
 };
 bool CardPlayDirection_IsValid(int value);
 const CardPlayDirection CardPlayDirection_MIN = HAND_TO_CARDS_IN_GAME;
-const CardPlayDirection CardPlayDirection_MAX = HAND_TO_CARDS_IN_GAME;
+const CardPlayDirection CardPlayDirection_MAX = CARDS_IN_GAME_TO_BATTLE_FIELD;
 const int CardPlayDirection_ARRAYSIZE = CardPlayDirection_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* CardPlayDirection_descriptor();

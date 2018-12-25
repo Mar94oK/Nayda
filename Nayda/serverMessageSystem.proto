@@ -58,6 +58,8 @@ enum GameActionsSubSysCommandsID
 enum CardPlayDirection
 {
     HAND_TO_CARDS_IN_GAME = 0;
+    HAND_TO_BATTLE_FIELD = 1;
+    CARDS_IN_GAME_TO_BATTLE_FIELD = 2;
 }
 
 

@@ -1015,12 +1015,14 @@ static ::google::protobuf::Message const * const file_default_instances[] = {
   "sCommandsID\022\021\n\rCHART_MESSAGE\020\000\022\026\n\022CHART_"
   "NOTIFICATION\020\001*Y\n\033GameActionsSubSysComma"
   "ndsID\022\031\n\025CLIENT_HAS_SOLD_CARDS\020\000\022\037\n\033CLIE"
-  "NT_HAS_IMPLEMENTED_CARD\020\001*.\n\021CardPlayDir"
-  "ection\022\031\n\025HAND_TO_CARDS_IN_GAME\020\000*9\n\023Gam"
-  "eCreationRequest\022\017\n\013JoinTheGame\020\000\022\021\n\rCre"
-  "ateTheGame\020\001b\006proto3"
+  "NT_HAS_IMPLEMENTED_CARD\020\001*k\n\021CardPlayDir"
+  "ection\022\031\n\025HAND_TO_CARDS_IN_GAME\020\000\022\030\n\024HAN"
+  "D_TO_BATTLE_FIELD\020\001\022!\n\035CARDS_IN_GAME_TO_"
+  "BATTLE_FIELD\020\002*9\n\023GameCreationRequest\022\017\n"
+  "\013JoinTheGame\020\000\022\021\n\rCreateTheGame\020\001b\006proto"
+  "3"
 ,
-  "serverMessageSystem.proto", &assign_descriptors_table_serverMessageSystem_2eproto, 6060,
+  "serverMessageSystem.proto", &assign_descriptors_table_serverMessageSystem_2eproto, 6121,
 };
 
 void AddDescriptors_serverMessageSystem_2eproto() {
@@ -1123,6 +1125,8 @@ const ::google::protobuf::EnumDescriptor* CardPlayDirection_descriptor() {
 bool CardPlayDirection_IsValid(int value) {
   switch (value) {
     case 0:
+    case 1:
+    case 2:
       return true;
     default:
       return false;
