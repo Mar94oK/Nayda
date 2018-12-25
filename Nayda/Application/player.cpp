@@ -592,7 +592,7 @@ bool Player::CardIsActive(SimpleCard card)
     }
     for (uint32_t var = 0; var < _disabledCardsInGame.size(); ++var)
     {
-        if (card == _activeCardsInGame[var])
+        if (card == _disabledCardsInGame[var])
         {
             return false;
         }
