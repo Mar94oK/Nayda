@@ -2124,7 +2124,7 @@ QDebug operator<<(QDebug debug, const CardImplementationDirection &dt)
             debug << "CardImplementationDirection::HandToBattleField";
             break;
         case CardImplementationDirection::HandToCardsInGame:
-            debug << "CardType::DoorMonster";
+            debug << "CardType::HandToCardsInGame";
             break;
     }
 

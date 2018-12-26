@@ -372,7 +372,7 @@ void Server::SlotSendClientHasSoldCards(const TheGameMainGamerHasSoldCards &data
 
 void Server::SlotSendClientHasImplementedCard(const TheGameMainGamerHasImplementedCard &data)
 {
-    qDebug() << "NAY-002: Send SlotSendClientHasSoldCards";
+    qDebug() << "NAY-002: Send SlotSendClientHasImplementedCard";
     ConnectionSendOutgoingData(FormClientHasImplementedCard(data));
 }
 
@@ -403,7 +403,6 @@ void Server::ProcessClientHasSoldCards(const QByteArray &data, int socketDescrip
 
 void Server::ProcessClientHasImplementedCard(const QByteArray &data, int socketDescriptor)
 {
-    qDebug() << ("NAY-002: Error while ProcessClientHasImplementedCard() ");
     serverMessageSystem::ClientHasImplementedCard message;
 
     if (!message.ParseFromArray(data.data(), data.size()))
@@ -495,6 +494,11 @@ QByteArray Server::FormClientHasImplementedCard(const TheGameMainGamerHasImpleme
     default:
         break;
     }
+
+    serverMessageSystem::SimpleCard *newCard(message.mutable_card());
+
+    newCard->set_doortreasure(data.playedCard.first);
+    newCard->set_cardid(data.playedCard.second);
 
     message.set_battlestarts(data.battleStarts);
 

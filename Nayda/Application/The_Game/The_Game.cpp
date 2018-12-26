@@ -2074,9 +2074,6 @@ void The_Game::SlotCheckCardIsAbleToBePlayed(PositionedCard card, bool fromHand)
     //сначала проверить, что не идёт процесс анимации карт.
 
 
-
-
-
     //Далее требуется найти текущую карту, и запустить для неё соответствующий парсер
     //В зависимости от того, играется ли карта с руки или из игры
     //парсер должен по-разному оценивать возможности розыграша данной карты в данный момент.
@@ -2090,53 +2087,8 @@ void The_Game::SlotCheckCardIsAbleToBePlayed(PositionedCard card, bool fromHand)
 
     //Но данный парсер оценивает только возможность разыгрывать карты в текущем бою.
 
-    //Debugging new Architecture:
     MainCardImplementer(ui->MainGamer, card, CardImplementationDirection::HandToCardsInGame);
 
-
-//    //14.12.2018
-//    //Начать отсюда.
-//    const GameCardBasis* basisCard(GetRealCard(card.GetCard()));
-//    if (basisCard == nullptr)
-//    {
-//        qDebug() << "ERROR WHILE SlotCheckCardIsAbleToBePlayed(): Card not found!";
-//    }
-//    //CardType currentType = GetRealCard(givenCard)->GetCardType();
-
-//    if (basisCard->GetCardType() == CardType::TreasureArmor)
-//    {
-//        //Получить (сделать) здесь карту из текущей (привести указатель к требуемому виду, т.к. известно,
-//        //какой объект вернулся)
-//        const gameCardTreasureArmor* cardPointer = static_cast<const gameCardTreasureArmor* >(basisCard);
-//        gameCardTreasureArmor realCard(cardPointer);
-//        TreasureArmorAllowance allowance = CardIsAbleToPlayChecker_TreasureArmor(realCard, fromHand);
-//        if (TreasureArmorCardImplementer(allowance, realCard))
-//        {
-//            emit SignalCardIsRejectedToBePlayed(false);
-//            //Отсюда отправить сообщение на сервер о применении карты
-
-//            SaveGamePhase();
-//            SetGamePhase(GamePhase::CardProcessing);
-//            qDebug() << "NAY-002: Animation_Phase1 played!";
-//            Animation_PassPlayedCardToCardsInGame_Phase1(ui->MainGamer, card, allowance.GetIsActive());
-//            if (!allowance.GetIsActive())
-//                ApplyCardImplementerMessage(allowance.GetReasonOfRestriction(), true);
-//        }
-//        else
-//        {
-//            emit SignalCardIsRejectedToBePlayed(true);
-//            ApplyCardImplementerMessage(allowance.GetReasonOfRestriction(), false);
-//        }
-
-//        //DEBUGPassTheCardToTheBattleField(card);
-
-//    }
-//    else
-//    {
-//        qDebug() << "NAY-002: This type is not implemented yet!" << basisCard->GetCardType();
-//        emit SignalCardIsRejectedToBePlayed(true);
-//        return;
-//    }
 }
 
 void The_Game::MainCardImplementer(GamerWidget *wt, PositionedCard card, CardImplementationDirection direction, CardCheckerPolicy checkerPolicy)
@@ -2198,6 +2150,7 @@ void The_Game::MainCardImplementer(GamerWidget *wt, PositionedCard card, CardImp
     {
         //Не проверять глобальных запретов.
         //По сути это только анимация - не спровоцированные игроком действия.
+        //Он сам должен удалить карты из того места, откуда они должны быть удалены.
         std::shared_ptr<CardPlayAllowanceBase> allowance = GetAllowance(basisCard, wt->GetPointerToPlayer(), direction);
 
         if (!allowance->GetAllowance())
@@ -4135,7 +4088,16 @@ void The_Game::SlotProcessOpponentHasImplementedCard(TheGameMainGamerHasImplemen
     qDebug() << "NAY-002: battleStarts: " << data.battleStarts;
 
     //1) Найти виджет, относительно которого будет применяться карта.
+    //2) И Игрока, относительно которого надо удлаять карты
     GamerWidget* currentWidget = _GamerWidgetsWithIDs[data.gamerID];
+    Player* currentPlayer = currentWidget->GetPointerToPlayer();
+
+    //Фаза установится по прохождении анимации
+    SaveGamePhase();
+    SetGamePhase(GamePhase::CardProcessing);
+
+    //Надо ли выключать окно торговли?
+    //    emit SignalHideTradeButton();
 
     //2) Найти позицию карты
     PositionedCard cardToBePlayed;
@@ -4148,11 +4110,35 @@ void The_Game::SlotProcessOpponentHasImplementedCard(TheGameMainGamerHasImplemen
         break;
     default:
     {
-        qDebug() << "NAY-002: ERROR: This direction is not supported yet! Direction: " << data.direction;
+        qDebug() << "NAY-002: SlotProcessOpponentHasImplementedCard() ERROR: This direction is not supported yet! Direction: " << data.direction;
         return;
     }
         break;
     }
+
+    //Удалить с руки или из других мест, откуда она была применена
+    switch (data.direction)
+    {
+        case CardImplementationDirection::HandToCardsInGame:
+        {
+            //Удалить эту карту с руки у игрока
+            //Проданные карты с руки
+
+            RemoveCardFromCardsAreAbleToBeSold(data.playedCard);
+            RemoveTheCardFromHand(currentWidget, data.playedCard);
+            currentPlayer->RemoveGivenCardFromHand(data.playedCard);
+        }
+        break;
+        default:
+        {
+            qDebug() << "NAY-002: SlotProcessOpponentHasImplementedCard() ERROR: This direction is not supported yet! Direction: " << data.direction;
+            return;
+        }
+    }
+
+    //3) Удалить карту с руки (из того места, где она должна быть удалена)
+    //Убрать проданные карты с руки и/или из игры. (Карты хранятся во временном векторе posCards)
+    //Была либо фаза торговли, либо фаза "ход другого игрока"
 
     //Применить карту.
     //Лишние сигналы не должны сработать
