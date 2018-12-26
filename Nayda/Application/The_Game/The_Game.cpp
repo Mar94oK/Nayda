@@ -3403,6 +3403,7 @@ void The_Game::SetUpPlayersAndWidgets(uint32_t windowHeight, uint32_t windowWidt
     {
         connect(_widgets4Opponents[var], &GamerWidget::SignalRepresentTheCardInCentre, this, &The_Game::SlotShowTheCardInCentre);
         connect(_widgets4Opponents[var], &GamerWidget::SignalHideTheCardInCentre, this, &The_Game::SlotHideTheCardInCentre);
+        connect(_widgets4Opponents[var], &GamerWidget::SignalRepresentTheCardInCentre, this, &The_Game::SlotShowTheCardInGameInspector);
     }
 
 
