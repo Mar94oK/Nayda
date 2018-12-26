@@ -413,6 +413,7 @@ bool CardsInGame::eventFilter(QObject *o, QEvent *e)
 
 QPoint CardsInGame::ProvidePositionOfTheLastAddedCard()
 {
+    //Здесь, скорее всего, упадёт - т.к. вектор пустой!!!
     return _cardsAsButtonsRepresenter.back()->pos();
 }
 

@@ -492,7 +492,10 @@ void GamerWidget::SlotHideCardsInGame()
 void GamerWidget::SlotAddCardToCardsInGame(CardInGame card)
 {
     _cardsInGameObserver->AddCard(card);
-    ui->wt_CardsInGameMainPlayer->AddCardToCardsInGame(card);
+    if (_isMainPlayer)
+        ui->wt_CardsInGameMainPlayer->AddCardToCardsInGame(card);
+    else
+        ui->wt_CardsInGameSecondaryPlayer->AddCardToCardsInGame(card);
 }
 
 void GamerWidget::SlotDeleteCardFromCardsInGame(SimpleCard card)

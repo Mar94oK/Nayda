@@ -2971,8 +2971,6 @@ void The_Game::Animation_PassPlayedCardToCardsInGame_Phase2(GamerWidget *wt, QPr
 {
     qDebug() << "NAY-002: Entering application Phase 2: ";
 
-    disconnect(animation, &QPropertyAnimation::finished, this, &The_Game::DEBUG_SlotPhase_1);
-
     QPoint EndPosition = GetPlayerWidgetSelfPosition(wt)
             + GetCardsInGamePosition(wt)
             + GetNewCardAddedToCardsInGamePosition(wt);

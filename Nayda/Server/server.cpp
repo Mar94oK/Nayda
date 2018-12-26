@@ -403,6 +403,8 @@ void Server::ProcessClientHasSoldCards(const QByteArray &data, int socketDescrip
 
 void Server::ProcessClientHasImplementedCard(const QByteArray &data, int socketDescriptor)
 {
+    qDebug() << "NAY-002: Server::ProcessClientHasImplementedCard.";
+
     serverMessageSystem::ClientHasImplementedCard message;
 
     if (!message.ParseFromArray(data.data(), data.size()))
