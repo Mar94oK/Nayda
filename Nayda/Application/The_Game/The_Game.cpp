@@ -2335,46 +2335,16 @@ void The_Game::ImplementTreasureArmorToCardsInGame(std::shared_ptr<CardPlayAllow
     const gameCardTreasureArmor* cardPointer = static_cast<const gameCardTreasureArmor* >(card);
     gameCardTreasureArmor realCard(cardPointer);
 
-    ui->MainGamer->SlotAddCardToCardsInGame(std::make_pair(armorAllowance->GetIsActive(), SimpleCard(true, realCard.GetCardID())));
+    wt->SlotAddCardToCardsInGame(std::make_pair(armorAllowance->GetIsActive(), SimpleCard(true, realCard.GetCardID())));
 
-    MoveCardFromCardInHandToCardInGame(_mainPlayer, std::make_pair(armorAllowance->GetIsActive(), SimpleCard(true, realCard.GetCardID())));
+    //Удалить карту с руки здесь же
+    RemoveTheCardFromHand(wt, posCard.GetCard());
+    MoveCardFromCardInHandToCardInGame(wt->GetPointerToPlayer(), std::make_pair(armorAllowance->GetIsActive(), SimpleCard(true, realCard.GetCardID())));
 
     if (!armorAllowance->GetIsActive())
         ApplyCardImplementerMessage(armorAllowance->GetReasonOfRestriction(), true);
     else
         ApplyNewArmor(wt, realCard);
-}
-
-bool The_Game::TreasureArmorCardImplementer(const TreasureArmorAllowance &allowance, const gameCardTreasureArmor &card)
-{
-    if (!allowance.GetAllowance())
-    {
-        ShowCardIsForbiddenToPlayMessage(allowance.GetReasonOfRestriction());
-        return false;
-    }
-
-    //проверить активна/неактивна и выложить
-    if (allowance.GetIsActive())
-    {
-        //если активна, применить
-        ApplyNewArmor(ui->MainGamer, card);
-        ui->MainGamer->SlotAddCardToCardsInGame(std::make_pair(true, SimpleCard(true, card.GetCardID())));
-        MoveCardFromCardInHandToCardInGame(_mainPlayer, std::make_pair(true, SimpleCard(true, card.GetCardID())));
-        return true;
-    }
-    else
-    {
-        //не применять, отобразить неактивной
-        ShowCardIsForbiddenToPlayMessage(allowance.GetReasonOfRestriction());
-        ui->MainGamer->SlotAddCardToCardsInGame(std::make_pair(false, SimpleCard(true, card.GetCardID())));
-        MoveCardFromCardInHandToCardInGame(_mainPlayer, std::make_pair(false, SimpleCard(true, card.GetCardID())));
-        return true;
-    }
-    // запустить анимацию - возможно в сером цвете? Для карты.
-
-    //теперь эту карту требуется удалить из вектора карт на руке,
-    //и добавить к вектору карт "в игре"
-
 }
 
 void The_Game::ShowCardIsForbiddenToPlayMessage(const QString &message)
@@ -4122,11 +4092,9 @@ void The_Game::SlotProcessOpponentHasImplementedCard(TheGameMainGamerHasImplemen
         case CardImplementationDirection::HandToCardsInGame:
         {
             //Удалить эту карту с руки у игрока
-            //Проданные карты с руки
-
-            RemoveCardFromCardsAreAbleToBeSold(data.playedCard);
             RemoveTheCardFromHand(currentWidget, data.playedCard);
-            currentPlayer->RemoveGivenCardFromHand(data.playedCard);
+            //Это действие выполнит "применитель"
+            //currentPlayer->RemoveGivenCardFromHand(data.playedCard);
         }
         break;
         default:

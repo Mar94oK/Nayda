@@ -470,8 +470,7 @@ private:
 
 private:
 
-    bool TreasureArmorCardImplementer(const TreasureArmorAllowance &allowance, const gameCardTreasureArmor &card);
-    void ShowCardIsForbiddenToPlayMessage(const QString& message);
+   void ShowCardIsForbiddenToPlayMessage(const QString& message);
 
 
     //Все подобные функции должны уметь и применять, и отменять действие карты
