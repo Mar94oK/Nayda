@@ -2330,7 +2330,7 @@ void The_Game::ImplementTreasureArmorToCardsInGame(std::shared_ptr<CardPlayAllow
     SaveGamePhase();
     SetGamePhase(GamePhase::CardProcessing);
     qDebug() << "NAY-002: Animation_Phase1 played!";
-    Animation_PassPlayedCardToCardsInGame_Phase1(ui->MainGamer, posCard, armorAllowance->GetIsActive());
+    Animation_PassPlayedCardToCardsInGame_Phase1(wt, posCard, armorAllowance->GetIsActive());
 
     const gameCardTreasureArmor* cardPointer = static_cast<const gameCardTreasureArmor* >(card);
     gameCardTreasureArmor realCard(cardPointer);
