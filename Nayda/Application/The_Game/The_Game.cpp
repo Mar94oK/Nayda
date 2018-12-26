@@ -3558,7 +3558,10 @@ void The_Game::SetUpSignalSlotsConnections()
 
     //connect theHand with checking the card slot;
     connect(ui->MainGamer, &GamerWidget::SignalSendTheCardToTheGameCheck, this, &The_Game::SlotCheckCardIsAbleToBePlayed);
-    //pass the answer form The_Game card check back to the Hand
+    //pass the answer form The_Game card check back to the Hand of THE MAIN GAMER ONLY!!!
+    //It has now (26.12.2018) no effect on Opponents
+    //Since there will be a very special function when another player
+    //Can choose cards from the other's player hands.
     connect(this, &The_Game::SignalCardIsRejectedToBePlayed, ui->MainGamer, &GamerWidget::SlotCardIsRejectedToBePlayed);
 
     QObject::connect(this, &The_Game::SignalChartMessageReceived, ui->wdgt_Chart, &MunchkinDialog::SlotShowMessage);

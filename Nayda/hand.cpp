@@ -235,7 +235,9 @@ void Hand::SlotCardIsRejectedToBePlayed(bool rejected)
     //up to be debugged!
     if (!rejected)
     {
-        SlotRemoveCardFromHand(_cardIsReadyToBePlayed.card);
+        //Теперь за удаление карты отвечает
+        // MainCardImplementer()
+        //SlotRemoveCardFromHand(_cardIsReadyToBePlayed.card);
         _cardIsReadyToBePlayed.thereIsCardToBePulledDown = false;
     }
 }
