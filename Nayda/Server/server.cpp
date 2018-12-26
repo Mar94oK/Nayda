@@ -601,7 +601,7 @@ void Server::ProtobufMessageParser(const QByteArray &data, int socketDescriptor)
                     }
                     break;
                 }
-                qDebug() << ("NAY-002: Unsupported Command in CHART_SUBSYSTEM with CmdID: ") << QString::number(defaultMessage.header().commandid());
+                qDebug() << ("NAY-002: Unsupported Command in GAME_ACTIONS_SUBSYSTEM with CmdID: ") << QString::number(defaultMessage.header().commandid());
             }
 
            break;
