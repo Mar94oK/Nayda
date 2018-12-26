@@ -4085,12 +4085,13 @@ void The_Game::SlotProcessOpponentHasImplementedCard(TheGameMainGamerHasImplemen
     }
 
     //Удалить с руки или из других мест, откуда она была применена
+    //Удалены они будут в применителе, после того, как будут добавлены "в игру"
     switch (data.direction)
     {
         case CardImplementationDirection::HandToCardsInGame:
         {
             //Удалить эту карту с руки у игрока
-            RemoveTheCardFromHand(currentWidget, data.playedCard);
+            //RemoveTheCardFromHand(currentWidget, data.playedCard);
             //Это действие выполнит "применитель"
             //currentPlayer->RemoveGivenCardFromHand(data.playedCard);
         }

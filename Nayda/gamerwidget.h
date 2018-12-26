@@ -275,7 +275,7 @@ public slots:
    void SlotHideCardsInGame();
 
    void SlotAddCardToCardsInGame(CardInGame card);
-   void SlotDeleteCardFromCardsInGame(SimpleCard card);
+
 
 private:
 

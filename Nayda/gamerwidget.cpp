@@ -498,10 +498,6 @@ void GamerWidget::SlotAddCardToCardsInGame(CardInGame card)
         ui->wt_CardsInGameSecondaryPlayer->AddCardToCardsInGame(card);
 }
 
-void GamerWidget::SlotDeleteCardFromCardsInGame(SimpleCard card)
-{
-    _cardsInGameObserver->RemoveCard(card);
-}
 
 void GamerWidget::SetUpSignalsSlotsConnections()
 {
