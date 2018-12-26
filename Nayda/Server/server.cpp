@@ -387,10 +387,6 @@ void Server::ProcessClientHasSoldCards(const QByteArray &data, int socketDescrip
        return;
    }
 
-//   uint32_t gamerID = message.gamerid();
-//   bool isCardProcessing = message.iscardprocessing();
-//   uint32_t levelDelta = message.leveldelta();
-
    std::vector<SimpleCard> soldCards;
 
    for (uint32_t var = 0; var < static_cast<uint32_t>(message.soldcards_size()); ++var)
@@ -398,17 +394,52 @@ void Server::ProcessClientHasSoldCards(const QByteArray &data, int socketDescrip
        soldCards.push_back(SimpleCard{ message.soldcards(static_cast<int32_t>(var)).doortreasure(),
                            message.soldcards(static_cast<int32_t>(var)).cardid()});
    }
-
-//   explicit TheGameMainGamerHasSoldCards(uint32_t gmrId, const std::vector<SimpleCard>& sldCards,
-//                                         uint32_t lvlDelta, bool crdPrcss) :
-//       gamerID(gmrId), soldCards(sldCards), levelDelta(lvlDelta), isCardProcessing(crdPrcss)
-//   { }
-
    emit SignalServerReportsPlayerSoldCards(TheGameMainGamerHasSoldCards(message.gamerid(),
                                                                         soldCards,
                                                                         message.leveldelta(),
                                                                         message.gamerid(),
                                                                         message.roomid()));
+}
+
+void Server::ProcessClientHasImplementedCard(const QByteArray &data, int socketDescriptor)
+{
+    qDebug() << ("NAY-002: Error while ProcessClientHasImplementedCard() ");
+    serverMessageSystem::ClientHasImplementedCard message;
+
+    if (!message.ParseFromArray(data.data(), data.size()))
+    {
+        qDebug() << ("NAY-0001: Error while ProcessClientHasImplementedCard() ");
+        return;
+    }
+
+    SimpleCard playedCard(message.card().doortreasure(), message.card().cardid());
+    CardImplementationDirection direction;
+
+    switch (message.direction())
+    {
+    case serverMessageSystem::CardPlayDirection::HAND_TO_CARDS_IN_GAME:
+        direction = CardImplementationDirection::HandToCardsInGame;
+        break;
+    case serverMessageSystem::CardPlayDirection::HAND_TO_BATTLE_FIELD:
+        direction = CardImplementationDirection::HandToBattleField;
+        break;
+    case serverMessageSystem::CardPlayDirection::CARDS_IN_GAME_TO_BATTLE_FIELD:
+        direction = CardImplementationDirection::CardsInGameToBattlefield;
+        break;
+    default:
+    {
+        qDebug() << "NAY-002: ERROR WHILE Server::ProcessClientHasImplementedCard. Not implemented type of CardImplementationDirection!";
+        return;
+    }
+        break;
+    }
+
+
+    emit SignalServerReportsPlayerHasImplementedCard(TheGameMainGamerHasImplementedCard( message.gamerid(),
+                                                                                playedCard,
+                                                                                message.roomid(),
+                                                                                message.battlestarts(),
+                                                                                direction));
 }
 
 QByteArray Server::FormClientHasSoldCards(const TheGameMainGamerHasSoldCards &data)
@@ -455,11 +486,23 @@ QByteArray Server::FormClientHasImplementedCard(const TheGameMainGamerHasImpleme
     case CardImplementationDirection::HandToCardsInGame:
         message.set_direction(serverMessageSystem::CardPlayDirection::HAND_TO_CARDS_IN_GAME);
         break;
+    case CardImplementationDirection::HandToBattleField:
+        message.set_direction(serverMessageSystem::CardPlayDirection::HAND_TO_BATTLE_FIELD);
+        break;
+    case CardImplementationDirection::CardsInGameToBattlefield:
+        message.set_direction(serverMessageSystem::CardPlayDirection::CARDS_IN_GAME_TO_BATTLE_FIELD);
+        break;
     default:
         break;
     }
 
+    message.set_battlestarts(data.battleStarts);
 
+    QByteArray block;
+    block.resize(message.ByteSize());
+    message.SerializeToArray(block.data(), block.size());
+    qDebug() << "NAY-002: Serialized FormClientHasImplementedCard is ready.";
+    return block;
 }
 
 void Server::ProtobufMessageParser(const QByteArray &data, int socketDescriptor)
@@ -546,6 +589,11 @@ void Server::ProtobufMessageParser(const QByteArray &data, int socketDescriptor)
                     case serverMessageSystem::GameActionsSubSysCommandsID::CLIENT_HAS_SOLD_CARDS:
                     {
                         ProcessClientHasSoldCards(data, socketDescriptor);
+                    }
+                    break;
+                    case serverMessageSystem::GameActionsSubSysCommandsID::CLIENT_HAS_IMPLEMENTED_CARD:
+                    {
+                        ProcessClientHasImplementedCard(data, socketDescriptor);
                     }
                     break;
                 }

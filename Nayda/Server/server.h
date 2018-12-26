@@ -126,7 +126,7 @@ signals:
 signals:
 
     void SignalServerReportsPlayerSoldCards(const TheGameMainGamerHasSoldCards& data);
-    void SignalServerReportsPlayerHasImplementedCard(const TheGameMainGamerHasSoldCards& data);
+    void SignalServerReportsPlayerHasImplementedCard(const TheGameMainGamerHasImplementedCard& data);
 
 public slots:
 
@@ -136,6 +136,7 @@ public slots:
 private:
 
     void ProcessClientHasSoldCards(const QByteArray &data, int socketDescriptor);
+    void ProcessClientHasImplementedCard(const QByteArray &data, int socketDescriptor);
 
 
 public:
