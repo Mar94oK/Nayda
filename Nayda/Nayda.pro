@@ -159,7 +159,8 @@ DISTFILES += \
     Pictures/doorsAreOpened.jpg \
     ToDoList \
     Pictures/treasures_Weapon/Vorpal Blade.jpg \
-    serverMessageSystem.proto
+    serverMessageSystem.proto \
+    ProtobufSetup
 
 unix: LIBS += /usr/local/lib/libprotobuf.a
 win32: LIBS += $$PWD/Libs/libprotobuf.a

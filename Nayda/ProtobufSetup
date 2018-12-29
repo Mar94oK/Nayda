@@ -1,0 +1,11 @@
+Перед сборкой Протобафа на Винде
+export PATH=/c/Qt/Tools/mingw530_32/bin/:$PATH
+//Home Working Machine
+export PATH=/d/Qt/Tools/mingw530_32/bin/:$PATH
+
+/d/Munchkin/Nayda/Libs/protoc.exe --cpp_out=. serverMessageSystem.proto
+/d/Munchkin/Viluy/Libs/protoc.exe --cpp_out=. serverMessageSystem.proto
+
+//Home Working Machine (Для компа, который стоит дома)
+/d/Munchkin/Nayda/Nayda/Libs/protoc.exe --cpp_out=. serverMessageSystem.proto
+/d/Munchkin/Viluy/Libs/protoc.exe --cpp_out=. serverMessageSystem.proto
