@@ -361,6 +361,13 @@ public:
 
 };
 
+class TreasureLevelUpAllowance : public CardPlayAllowanceBase
+{
+    bool _allowedAnyWay;
+
+};
+
+
 
 //_monstersDeck = data._monstersDeck;
 //_amplifiersDeck = data._amplifiersDeck;

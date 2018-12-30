@@ -494,6 +494,11 @@ void GameFunctionFightWithMonsterFromHand(SimpleCard monster);
 NAY-002: ERROR while void CardsInGameObserver::RemoveCard(SimpleCard card). Card not found!
 The card is removed from CardsInGame!
 
+//30.12.2018 (электричка/метро)
+6) Падает при продаже карт с руки и неаткивных карт
+--->Ok (Кажется, исправил)
+
+Писать применители для других карт.
 
 
 
