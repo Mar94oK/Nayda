@@ -99,6 +99,7 @@ void CardsInGameObserver::AddCard(CardInGame card)
 
 void CardsInGameObserver::RemoveCard(SimpleCard card)
 {
+    qDebug() << "NAY-002: CardsInGameObserver: Cards remove process: ";
     for (uint32_t var = 0; var < _cardsInGameHolder.size(); ++var)
     {
         if (_cardsInGameHolder[var].second == card)
@@ -112,6 +113,7 @@ void CardsInGameObserver::RemoveCard(SimpleCard card)
             _cardsInGameHolder.erase(_cardsInGameHolder.begin() + static_cast<int32_t>(var));
             _cardsAsButtonsRepresenter[var]->deleteLater();
             _cardsAsButtonsRepresenter.erase(_cardsAsButtonsRepresenter.begin() + static_cast<int32_t>(var));
+            return;
         }
     }
     qDebug() << "NAY-002: ERROR while void CardsInGameObserver::RemoveCard(SimpleCard card). Card not found!";
