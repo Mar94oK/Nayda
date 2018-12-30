@@ -2123,7 +2123,7 @@ void The_Game::MainCardImplementer(GamerWidget *wt, PositionedCard card, CardImp
                 case CardType::TreasureArmor:
                 {
                     std::shared_ptr<TreasureArmorAllowance> armorAllowance = std::static_pointer_cast<TreasureArmorAllowance>(allowance);
-                    qDebug() << "NAY-002: New ARCHITECTURE Starting: armorAllowance" << armorAllowance->GetReasonOfRestriction();
+                    qDebug() << "NAY-002: Starting TreasureArmor Implementation: armorAllowance: Reason of restriction: " << armorAllowance->GetReasonOfRestriction();
                     ProcessCardAllowedToBeImplemented(allowance, basisCard, wt, card, direction);
                     emit SignalCardIsRejectedToBePlayed(false);
                     //Отсюда отправить сообщение на сервер о применении карты
@@ -2136,7 +2136,15 @@ void The_Game::MainCardImplementer(GamerWidget *wt, PositionedCard card, CardImp
                                                                CardImplementationDirection::HandToCardsInGame));
                 }
                     break;
-                default:
+                case CardType::TreasureLevelUp:
+                {
+                    std::shared_ptr<TreasureLevelUpAllowance> levelUpAllowance = std::static_pointer_cast<TreasureLevelUpAllowance>(allowance);
+                    qDebug() << "NAY-002: Starting TreasureLevelUp Implementation: levelUpAllowance: Reason of restriction: " << levelUpAllowance->GetReasonOfRestriction();
+
+                }
+
+
+            default:
                 {
                     qDebug() << "NAY-002: New ARCHITECTURE Starting: CardType: " << basisCard->GetCardType() << " not handled yet!";
                     emit SignalCardIsRejectedToBePlayed(true);
@@ -2179,10 +2187,20 @@ void The_Game::MainCardImplementer(GamerWidget *wt, PositionedCard card, CardImp
 
 std::shared_ptr<CardPlayAllowanceBase> The_Game::GetAllowance(const GameCardBasis *card, Player *player, CardImplementationDirection direction)
 {
-    //if (card->GetCardType() == CardType::TreasureArmor)
+    if (card->GetCardType() == CardType::TreasureArmor)
+    {
         const gameCardTreasureArmor* cardPtr = static_cast<const gameCardTreasureArmor* >(card);
-
         return GetAllowanceTreasureArmor(cardPtr, player, true);
+    }
+    else if (card->GetCardType() == CardType::TreasureLevelUp)
+    {
+        const gameCardTreasureLevelUp* cardPtr = static_cast<const gameCardTreasureLevelUp* >(card);
+        //Продолжить здесь либо в следующем году, либо 31.12.2018 ()
+
+    }
+    qDebug() << "NAY-002: ERROR WHILE The_Game::GetAllowance. Not implemented type: "
+             << card->GetCardType();
+
 }
 
 void The_Game::ProcessCardMightNotBeImplemented(std::shared_ptr<CardPlayAllowanceBase> allowance)
@@ -2345,6 +2363,20 @@ void The_Game::ImplementTreasureArmorToCardsInGame(std::shared_ptr<CardPlayAllow
         ApplyCardImplementerMessage(armorAllowance->GetReasonOfRestriction(), true);
     else
         ApplyNewArmor(wt, realCard);
+}
+
+std::shared_ptr<TreasureLevelUpAllowance> The_Game::GetAllowanceTreasureLevelUp(const gameCardTreasureLevelUp *card, Player *player, bool fromHand)
+{
+
+    //Карты получения уровней могут иметь специальные особенности применения.
+    //Некоторые из них можно использловать только после боя ("Поглумись над трупами"),
+    //Некоторые можно использовать только при определённых условиях ("Пришей Наёмничка");
+
+    //Продолжить здесь в Новом Году! :)
+
+
+
+
 }
 
 void The_Game::ShowCardIsForbiddenToPlayMessage(const QString &message)

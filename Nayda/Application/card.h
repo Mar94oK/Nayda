@@ -365,6 +365,28 @@ class TreasureLevelUpAllowance : public CardPlayAllowanceBase
 {
     bool _allowedAnyWay;
 
+public:
+
+    void SetAllowedAnyway(bool anyway) { _allowedAnyWay = anyway; }
+    bool GetIsAllowedAnyway() const { return _allowedAnyWay; }
+
+    TreasureLevelUpAllowance(bool allowedToBePlayed, const QString& reason, bool anyway) :
+        _allowedAnyWay(anyway)
+    {
+        SetAllowance(allowedToBePlayed);
+        SetReasonOfRestriction(reason);
+    }
+
+public:
+
+    TreasureLevelUpAllowance(const TreasureLevelUpAllowance* ptr)
+    {
+        _allowedAnyWay = ptr->GetIsAllowedAnyway();
+        SetAllowance(ptr->GetAllowance());
+        SetReasonOfRestriction(ptr->GetReasonOfRestriction());
+    }
+
+
 };
 
 
