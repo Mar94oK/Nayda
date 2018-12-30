@@ -2195,7 +2195,6 @@ std::shared_ptr<CardPlayAllowanceBase> The_Game::GetAllowance(const GameCardBasi
     else if (card->GetCardType() == CardType::TreasureLevelUp)
     {
         const gameCardTreasureLevelUp* cardPtr = static_cast<const gameCardTreasureLevelUp* >(card);
-        //Продолжить здесь либо в следующем году, либо 31.12.2018 ()
 
     }
     qDebug() << "NAY-002: ERROR WHILE The_Game::GetAllowance. Not implemented type: "
