@@ -42,7 +42,7 @@ void Player::RemoveGivenCardFromHand(SimpleCard card)
     {
         if (_cardsOnHands[var] == card)
         {
-            _cardsOnHands.erase(_cardsOnHands.begin() + var);
+            _cardsOnHands.erase(_cardsOnHands.begin() + static_cast<int32_t>(var));
             return;
         }
     }

@@ -471,6 +471,7 @@ private:
     std::shared_ptr<TreasureLevelUpAllowance> GetAllowanceTreasureLevelUp(const gameCardTreasureLevelUp* card,
                                                                           Player* player,
                                                                           bool fromHand);
+    void ImplementTreasureLevelUpCard(std::shared_ptr<CardPlayAllowanceBase> allowance, const GameCardBasis *card, GamerWidget *wt, PositionedCard posCard);
 
 private:
 
@@ -556,6 +557,8 @@ private:
     QPushButton* CreateButtonForAnimation(SimpleCard card, QPoint cardPostionTopLeft, QPoint cardPostionBottomRight, bool active);
     void Animation_PassPlayedCardToCardsInGame_Phase1(GamerWidget* wt, const PositionedCard& card, bool active);
     void Animation_PassPlayedCardToCardsInGame_Phase2(GamerWidget *wt, QPropertyAnimation *animation, QPushButton *card);
+
+    void Animation_PassCardFromHandToTreasureFold_Phase1(GamerWidget* wt, PositionedCard card);
 
 private slots:
 

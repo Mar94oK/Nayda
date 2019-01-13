@@ -2372,9 +2372,42 @@ std::shared_ptr<TreasureLevelUpAllowance> The_Game::GetAllowanceTreasureLevelUp(
     //Некоторые можно использовать только при определённых условиях ("Пришей Наёмничка");
 
     //Продолжить здесь в Новом Году! :)
+    if (card->hasSpecialMechanic())
+    {
+        //Проверить, применима ли в этот момент
+        return std::make_shared<TreasureLevelUpAllowance>(TreasureLevelUpAllowance(false, "У карты есть специальная механика. Ещё не имплементирована.", false));
+    }
+    else
+    {
+        //Карта применима в любой момент.
+        return std::make_shared<TreasureLevelUpAllowance>(TreasureLevelUpAllowance(true, "", true));
+    }
+}
+
+void The_Game::ImplementTreasureLevelUpCard(std::shared_ptr<CardPlayAllowanceBase> allowance, const GameCardBasis *card, GamerWidget *wt, PositionedCard posCard)
+{
+    std::shared_ptr<TreasureLevelUpAllowance> levelUpAllowance = std::static_pointer_cast<TreasureLevelUpAllowance>(allowance);
+    SaveGamePhase();
+    SetGamePhase(GamePhase::CardProcessing);
+    qDebug() << "NAY-002: Animation_Phase1 played!";
 
 
+    //Добавить в сброс
+    AddCardToFoldStack(posCard.GetCard());
+    //Добавить в отображатель последнего сброса
+    _lastFold = {posCard.GetCard()};
 
+    //Установить новый уровень и Боевую Силу
+    wt->GetPointerToPlayer()->SetPlayerLevel(wt->GetPointerToPlayer()->GetPlayerLevel() + 1);
+    wt->GetPointerToPlayer()->SetBattlePower(wt->GetPointerToPlayer()->GetBattlePower() + 1);
+
+    //Удалить карту с руки
+    RemoveTheCardFromHand(wt, posCard.GetCard());
+    wt->GetPointerToPlayer()->RemoveGivenCardFromHand(posCard.GetCard());
+
+    //Отобразить анимацию попадания карты в сброс напрямую с руки
+    //(пригодится в дальнейшем)
+    Animation_PassCardFromHandToTreasureFold_Phase1(wt, posCard);
 
 }
 
@@ -2728,15 +2761,6 @@ void The_Game::Animation_StartPassSoldCardsFromHandOrInGameToTreasureFold_Phase1
         }
         else
         {
-            //Здесь будет костыль.
-            //Снизу передаются неправильные значения, но я и так знаю,
-            //что здесь должны быть:
-            //Для главного игрока:
-            //TopLeft = позиция кнопки Мастер либо позиция Label-имени
-            //Bottom Right = btnAvatar.BottomRight;
-            //Для других игроков - BottomRight - тот же аватар
-            //TopLeft Верхний уровень - позииция LblName
-
             QPoint cardsInGamePosition = wt->ProvideCardsInGamePosition();
             relativeCardPostionTopLeft = gamerWidgetPosition + cardsInGamePosition;
             relativeCardPostionBottomRight = gamerWidgetPosition + cardsInGamePosition;
@@ -3048,6 +3072,11 @@ void The_Game::Animation_PassPlayedCardToCardsInGame_Phase2(GamerWidget *wt, QPr
 
     QTimer::singleShot(1000, animation, [animation]{animation->start(QAbstractAnimation::DeleteWhenStopped);});
 
+}
+
+void The_Game::Animation_PassCardFromHandToTreasureFold_Phase1(GamerWidget *wt, PositionedCard card)
+{
+    //Продолжить здесь 14.01.2019.
 }
 
 void The_Game::DEBUG_SlotAnimation_PassPlayedCardToCardsInGame_Phase2(GamerWidget *wt, QPropertyAnimation *animation, QPushButton *card)
