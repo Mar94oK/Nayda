@@ -3077,6 +3077,84 @@ void The_Game::Animation_PassPlayedCardToCardsInGame_Phase2(GamerWidget *wt, QPr
 void The_Game::Animation_PassCardFromHandToTreasureFold_Phase1(GamerWidget *wt, PositionedCard card)
 {
     //Продолжить здесь 14.01.2019.
+
+   QPushButton* _movingCard = new QPushButton("Animated Button", this);
+
+    QPoint relativeCardPostionTopLeft;
+    QPoint relativeCardPostionBottomRight;
+    QPoint gamerWidgetPosition = wt->ProvideSelfPosition();
+    int sizeX;
+    int sizeY;
+    if (card.GetCard().second)
+    {
+        relativeCardPostionTopLeft = card.GetPositionTopLeft() + gamerWidgetPosition + wt->ProvideHandPosition();
+        relativeCardPostionBottomRight = card.GetPositionBottomRight() + gamerWidgetPosition + wt->ProvideHandPosition();
+        sizeX = relativeCardPostionBottomRight.x() - relativeCardPostionTopLeft.x() ;
+        sizeY = relativeCardPostionBottomRight.y() - relativeCardPostionTopLeft.y();
+    }
+    else
+    {
+        QPoint cardsInGamePosition = wt->ProvideCardsInGamePosition();
+        relativeCardPostionTopLeft = gamerWidgetPosition + cardsInGamePosition;
+        relativeCardPostionBottomRight = gamerWidgetPosition + cardsInGamePosition;
+
+        QSize size= wt->ProvideCardOnHandSize();
+
+        relativeCardPostionTopLeft.setX(relativeCardPostionTopLeft.x() + size.width());
+        relativeCardPostionBottomRight.setX(relativeCardPostionBottomRight.x() + size.width());
+
+        sizeX = size.width();
+        sizeY = size.height();
+    }
+
+    _movingCard->move(relativeCardPostionTopLeft.x(), relativeCardPostionTopLeft.y());
+
+    //qDebug() << "Size of the Card during moving: X: " << sizeX;
+    //qDebug() << "Size of the Card during moving: Y: " << sizeY;
+
+    QString picture = findTheCardPicture(card.GetCard());
+
+    QPixmap pxmp_movingCard(picture);
+    QPalette plte_movingCard;
+    plte_movingCard.setBrush(_movingCard->backgroundRole(),
+    QBrush(pxmp_movingCard.scaled(sizeX*2, sizeY*2, Qt::KeepAspectRatio, Qt::SmoothTransformation)));
+
+    _movingCard->setMaximumWidth(sizeX*2);
+    _movingCard->setMaximumHeight(sizeY*2);
+    _movingCard->setMinimumWidth(sizeX);
+    _movingCard->setMinimumHeight(sizeY);
+
+    //http://www.prog.org.ru/topic_7215_0.html
+    _movingCard->setFlat(true);
+    _movingCard->setAutoFillBackground(true);
+    _movingCard->setPalette(plte_movingCard);
+    _movingCard->setText("");
+    _movingCard->show();
+
+    QPropertyAnimation *animation = new QPropertyAnimation(_movingCard, "geometry");
+    animation->setDuration(static_cast<int32_t>(_msTimeForTradeAnimationPhase1));
+    animation->setStartValue(QRect(relativeCardPostionTopLeft.x(), relativeCardPostionTopLeft.y(), sizeX, sizeY));
+    animation->setEndValue(QRect(width()/2 - sizeX, height()/2 - sizeY, sizeX*2, sizeY*2));
+    animation->setEasingCurve(QEasingCurve::OutCubic);
+
+    connect(animation, &QPropertyAnimation::destroyed,
+            [animation]{qDebug() << "NAY-002: Animation_PassCardFromHandToTreasureFold_Phase1() destroyed. ID: ";
+
+
+    std::vector<PositionedCard> castedBackCards;
+
+
+    //Продолжить здесь 24.01.2019
+    QObject::connect(animation, &QPropertyAnimation::finished,
+            [this, animation, _movingCard]
+            { Animation_PassCardFromHandToTreasureFold_Phase2(wt, animation, _movingCard);});
+
+
+
+    animation->start(QAbstractAnimation::KeepWhenStopped);
+
+
+
 }
 
 void The_Game::DEBUG_SlotAnimation_PassPlayedCardToCardsInGame_Phase2(GamerWidget *wt, QPropertyAnimation *animation, QPushButton *card)
