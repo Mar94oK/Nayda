@@ -3138,23 +3138,18 @@ void The_Game::Animation_PassCardFromHandToTreasureFold_Phase1(GamerWidget *wt, 
     animation->setEasingCurve(QEasingCurve::OutCubic);
 
     connect(animation, &QPropertyAnimation::destroyed,
-            [animation]{qDebug() << "NAY-002: Animation_PassCardFromHandToTreasureFold_Phase1() destroyed. ID: ";
+            [animation]{qDebug() << "NAY-002: Animation_PassCardFromHandToTreasureFold_Phase1() destroyed. ID: ";});
 
 
     std::vector<PositionedCard> castedBackCards;
 
 
     //Продолжить здесь 24.01.2019
-    QObject::connect(animation, &QPropertyAnimation::finished,
-            [this, animation, _movingCard]
+    connect(animation, &QPropertyAnimation::finished,
+            [this, animation, _movingCard, wt]
             { Animation_PassCardFromHandToTreasureFold_Phase2(wt, animation, _movingCard);});
 
-
-
     animation->start(QAbstractAnimation::KeepWhenStopped);
-
-
-
 }
 
 void The_Game::DEBUG_SlotAnimation_PassPlayedCardToCardsInGame_Phase2(GamerWidget *wt, QPropertyAnimation *animation, QPushButton *card)
