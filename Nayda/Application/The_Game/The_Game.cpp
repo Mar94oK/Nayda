@@ -2140,9 +2140,14 @@ void The_Game::MainCardImplementer(GamerWidget *wt, PositionedCard card, CardImp
                 {
                     std::shared_ptr<TreasureLevelUpAllowance> levelUpAllowance = std::static_pointer_cast<TreasureLevelUpAllowance>(allowance);
                     qDebug() << "NAY-002: Starting TreasureLevelUp Implementation: levelUpAllowance: Reason of restriction: " << levelUpAllowance->GetReasonOfRestriction();
-
+                    ProcessCardAllowedToBeImplemented(allowance, basisCard, wt, card, direction);
+                    emit SignalCardIsRejectedToBePlayed(false);
+                    //Отсюда отправить сообщение на сервер о применении карты
+                    //в случае если это не сервер прислал сообщение о необходимости применения карты
+                    //TODO:
+                    //Сюда добавить сигнал для сервера!
                 }
-
+                    break;
 
             default:
                 {
@@ -2195,10 +2200,12 @@ std::shared_ptr<CardPlayAllowanceBase> The_Game::GetAllowance(const GameCardBasi
     else if (card->GetCardType() == CardType::TreasureLevelUp)
     {
         const gameCardTreasureLevelUp* cardPtr = static_cast<const gameCardTreasureLevelUp* >(card);
-
+        return  GetAllowanceTreasureLevelUp(cardPtr, player, true);
     }
     qDebug() << "NAY-002: ERROR WHILE The_Game::GetAllowance. Not implemented type: "
              << card->GetCardType();
+
+    return nullptr;
 
 }
 
@@ -2240,14 +2247,18 @@ void The_Game::ImplementCardFromHandsToCardsInGame(std::shared_ptr<CardPlayAllow
             ImplementTreasureArmorToCardsInGame(allowance, card, wt, posCard);
         }
             break;
+        case CardType::TreasureLevelUp:
+        {
+            ImplementTreasureLevelUpCard(allowance, card, wt, posCard);
+        }
+        break;
+
         default:
         {
             qDebug() << "NAY-002: ERROR WHILE ImplementCardFromHandsToCardsInGame(). Card is not supported yet!";
         }
            break;
     }
-
-
 }
 
 std::shared_ptr<TreasureArmorAllowance> The_Game::GetAllowanceTreasureArmor(const gameCardTreasureArmor *card, Player *player, bool fromHand)
