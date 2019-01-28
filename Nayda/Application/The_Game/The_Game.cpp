@@ -2402,6 +2402,8 @@ void The_Game::ImplementTreasureLevelUpCard(std::shared_ptr<CardPlayAllowanceBas
     SetGamePhase(GamePhase::CardProcessing);
     qDebug() << "NAY-002: Animation_Phase1 played!";
 
+    //Продолжить здесь 28.01.2019
+
 //    Добавить в сброс
     AddCardToFoldStack(posCard.GetCard());
     //Анимация добавит. Это, конечно, костыль, зато выглядит симпатичнее
@@ -3940,7 +3942,6 @@ void The_Game::SlotProcessCardsSelectedToBeSold(const std::vector<SimpleCard> ca
                                          GetLevelPurchased(totalMoneySpent),
                                          true,
                                          _roomID));
-
 
     ui->MainGamer->SlotChangeTheGamerLevel(static_cast<int32_t>(GetLevelPurchased(totalMoneySpent)));
 
