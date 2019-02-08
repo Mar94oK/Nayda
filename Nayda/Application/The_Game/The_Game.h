@@ -564,6 +564,8 @@ private:
     void Animation_PassCardFromHandToTreasureFold_Phase1(GamerWidget* wt, PositionedCard card);
     void Animation_PassCardFromHandToTreasureFold_Phase2(GamerWidget* wt, QPropertyAnimation *animation, QPushButton *button, PositionedCard card);
 
+    //New Animation Engine
+
 private slots:
 
     void DEBUG_SlotAnimation_PassPlayedCardToCardsInGame_Phase2(GamerWidget *wt, QPropertyAnimation *animation, QPushButton *card);

@@ -382,6 +382,8 @@ void CardStacks::SlotPassTheCardToFoldStack(SimpleCard card)
 
 void CardStacks::SlotPassTheCardsToFoldStack(const std::vector<SimpleCard>& cards)
 {
+    qDebug() << "24.01 NAY-002: Marker SlotPassCardsToFoldStack";
+
     for (uint32_t var = 0; var < cards.size(); ++var)
     {
         SlotPassTheCardToFoldStack(cards[var]);

@@ -2363,6 +2363,38 @@ void The_Game::ImplementTreasureArmorToCardsInGame(std::shared_ptr<CardPlayAllow
     const gameCardTreasureArmor* cardPointer = static_cast<const gameCardTreasureArmor* >(card);
     gameCardTreasureArmor realCard(cardPointer);
 
+
+    //ОООЧЕНЬ НЕУДОБНАЯ КОНСТРУКЦИЯ
+    //Для всех действий с картами необходимо сделать отдельный ХЭНДЛЕР
+    //Который будет заниматься непосредственно анимацией и раьотой остальных виджетов
+    //Если отдать это на откуп отдельным анимациям  - получается нехилая ошибка проектирвоания
+    // I should inplemet some mechanics to control cards as members of responsible classes while providing THEIR COPY
+    // To all the Animations and stacks
+    //So Th Algorythm SHOULD be the next::
+    //First of all,
+    //CardProcessor(SimpleCard card, struct where_to_move, bool deletFromCurrentHolder = true);
+    //CardProcessor SHOULD be responsible for the card moving from the one source to another:
+    //For example: Card is CardTreasure:
+    // where_to_move:
+    //
+    /*struct where_to_move
+     * {
+     * optional ThisPlayer (yes/no + pointer to wt)
+     * optional AnotherPlayer (yes/no + pointer to wt)
+     * bool LastFoldObsrever
+     * bool CardsInGame
+     * bool CardsInBattleField
+     * bool CardsOnHands
+     * bool AnimationPointer
+     * }
+    */
+
+    //So it will be possible to decide which animation to Implement here and START
+    //May be there should be also an animation Pointer!!!!
+    //So the Logic IS: Any Action - After Recieving AnyCard - CardProcessor!!!
+
+
+
     wt->SlotAddCardToCardsInGame(std::make_pair(armorAllowance->GetIsActive(), SimpleCard(true, realCard.GetCardID())));
 
     //Удалить карту с руки здесь же
@@ -3157,15 +3189,21 @@ void The_Game::Animation_PassCardFromHandToTreasureFold_Phase1(GamerWidget *wt, 
     animation->setEasingCurve(QEasingCurve::OutCubic);
 
     connect(animation, &QPropertyAnimation::destroyed,
-            [animation]{qDebug() << "NAY-002: Animation_PassCardFromHandToTreasureFold_Phase1() destroyed. ID: ";});
+            []{qDebug() << "NAY-002: Animation_PassCardFromHandToTreasureFold_Phase1() destroyed. ID: ";});
 
 
     std::vector<PositionedCard> castedBackCards;
 
     //Продолжить здесь 24.01.2019
+//    connect(animation, &QPropertyAnimation::finished,
+//            [this, animation, _movingCard, wt, card]
+//            { Animation_PassCardFromHandToTreasureFold_Phase2(wt, animation, _movingCard, card);});
+
     connect(animation, &QPropertyAnimation::finished,
             [this, animation, _movingCard, wt, card]
-            { Animation_PassCardFromHandToTreasureFold_Phase2(wt, animation, _movingCard, card);});
+    {(QTimer::singleShot(AnimationPhasesLimitations::msTimeToHoldCardWhileAddingCardToCardsInGame,
+                         animation,
+                         [this, animation, _movingCard, wt, card]{Animation_PassCardFromHandToTreasureFold_Phase2(wt, animation, _movingCard, card);}));});
 
     animation->start(QAbstractAnimation::KeepWhenStopped);
 }
@@ -3180,7 +3218,9 @@ void The_Game::Animation_PassCardFromHandToTreasureFold_Phase2(GamerWidget *wt,
     //1) Отобразить её в сбросе
     //2) Отобразить её в LastFoldObserver
     //So as in the SoldCards Animation
-    QPoint EndPosition = GetTreasuresFoldPosition();
+    qDebug() << "24.01 NAY-002: Entering Animation2 Phase!";
+
+    QPoint EndPosition = GetTreasuresFoldPosition() + GetCardsStackPosition();
     QSize EndSize = GetTreasuresFoldSize();
 
     animation->setDuration(static_cast<int32_t>(_msTimeForApplyCardToCardsInGamePhase2));
@@ -3193,19 +3233,20 @@ void The_Game::Animation_PassCardFromHandToTreasureFold_Phase2(GamerWidget *wt,
             []{qDebug() << "NAY-002: Animation_PassCardFromHandToTreasureFold_Phase2 destroyed";});
 
     qDebug() << "NAY-002: Connection: card->deleteLater()";
-    connect(animation, &QPropertyAnimation::finished,
-            button, &QPushButton::deleteLater);
+//    connect(animation, &QPropertyAnimation::finished,
+//            button, &QPushButton::deleteLater);
 
     connect(animation, &QPropertyAnimation::finished,
             wt, &GamerWidget::SlotShowLastCardInGameAdded);
 
     connect(animation, &QPropertyAnimation::finished,
-        [this, card]{ProcessFoldObserver({card.GetCard()});});
-    connect(animation, &QPropertyAnimation::finished,
             [this]{RestoreGamePhase();});
 
-//    connect(animation, &QPropertyAnimation::finished,
-//            [this, card]{ui->CardStacksWidget->SlotPassTheCardsToFoldStack({card.GetCard()});});
+    connect(animation, &QPropertyAnimation::finished,
+            [this, card]{ui->CardStacksWidget->SlotPassTheCardsToFoldStack({card.GetCard()});});
+
+    connect(animation, &QPropertyAnimation::finished,
+        [this, card]{ProcessFoldObserver({card.GetCard()});});
 
     QTimer::singleShot(1000, animation, [animation]{animation->start(QAbstractAnimation::DeleteWhenStopped);});
 

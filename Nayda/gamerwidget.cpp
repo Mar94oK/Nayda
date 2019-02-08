@@ -662,6 +662,8 @@ QSize GamerWidget::GetCardOnHandSize()
 
 void GamerWidget::SlotShowLastCardInGameAdded()
 {
+    qDebug() << "24.01 NAY-002: SlotShowLastCardInGameAdded!";
+
     if (_isMainPlayer)
         ui->wt_CardsInGameMainPlayer->ShowLastCardAdded(_isMainPlayer);
     else
