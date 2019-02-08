@@ -2364,6 +2364,9 @@ void The_Game::ImplementTreasureArmorToCardsInGame(std::shared_ptr<CardPlayAllow
     gameCardTreasureArmor realCard(cardPointer);
 
 
+    //Продолжить здесь 08.02.2019
+    //Переработанный режим применить для поправленной анимации получения уровня
+
     //ОООЧЕНЬ НЕУДОБНАЯ КОНСТРУКЦИЯ
     //Для всех действий с картами необходимо сделать отдельный ХЭНДЛЕР
     //Который будет заниматься непосредственно анимацией и раьотой остальных виджетов
@@ -3129,7 +3132,7 @@ void The_Game::Animation_PassCardFromHandToTreasureFold_Phase1(GamerWidget *wt, 
 {
     //Продолжить здесь 14.01.2019.
 
-   QPushButton* _movingCard = new QPushButton("Animated Button", this);
+    QPushButton* _movingCard = new QPushButton("Animated Button", this);
 
     QPoint relativeCardPostionTopLeft;
     QPoint relativeCardPostionBottomRight;
@@ -3159,10 +3162,6 @@ void The_Game::Animation_PassCardFromHandToTreasureFold_Phase1(GamerWidget *wt, 
     }
 
     _movingCard->move(relativeCardPostionTopLeft.x(), relativeCardPostionTopLeft.y());
-
-    //qDebug() << "Size of the Card during moving: X: " << sizeX;
-    //qDebug() << "Size of the Card during moving: Y: " << sizeY;
-
     QString picture = findTheCardPicture(card.GetCard());
 
     QPixmap pxmp_movingCard(picture);
@@ -3195,10 +3194,6 @@ void The_Game::Animation_PassCardFromHandToTreasureFold_Phase1(GamerWidget *wt, 
     std::vector<PositionedCard> castedBackCards;
 
     //Продолжить здесь 24.01.2019
-//    connect(animation, &QPropertyAnimation::finished,
-//            [this, animation, _movingCard, wt, card]
-//            { Animation_PassCardFromHandToTreasureFold_Phase2(wt, animation, _movingCard, card);});
-
     connect(animation, &QPropertyAnimation::finished,
             [this, animation, _movingCard, wt, card]
     {(QTimer::singleShot(AnimationPhasesLimitations::msTimeToHoldCardWhileAddingCardToCardsInGame,
@@ -3218,7 +3213,6 @@ void The_Game::Animation_PassCardFromHandToTreasureFold_Phase2(GamerWidget *wt,
     //1) Отобразить её в сбросе
     //2) Отобразить её в LastFoldObserver
     //So as in the SoldCards Animation
-    qDebug() << "24.01 NAY-002: Entering Animation2 Phase!";
 
     QPoint EndPosition = GetTreasuresFoldPosition() + GetCardsStackPosition();
     QSize EndSize = GetTreasuresFoldSize();
@@ -3233,11 +3227,8 @@ void The_Game::Animation_PassCardFromHandToTreasureFold_Phase2(GamerWidget *wt,
             []{qDebug() << "NAY-002: Animation_PassCardFromHandToTreasureFold_Phase2 destroyed";});
 
     qDebug() << "NAY-002: Connection: card->deleteLater()";
-//    connect(animation, &QPropertyAnimation::finished,
-//            button, &QPushButton::deleteLater);
-
     connect(animation, &QPropertyAnimation::finished,
-            wt, &GamerWidget::SlotShowLastCardInGameAdded);
+            button, &QPushButton::deleteLater);
 
     connect(animation, &QPropertyAnimation::finished,
             [this]{RestoreGamePhase();});
