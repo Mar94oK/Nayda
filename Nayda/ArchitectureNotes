@@ -1,0 +1,36 @@
+//Created on 13.02.3019
+
+
+ARCH_1
+/* ==============================
+*   CARD IMPLEMENTATION LOGIC
+*/ ==============================
+As far as card's transporting system is concerned:
+1) Each method responsible is unique, since implementation of cards are strongly type-based
+and the basis is to small to make the common method for all of them.
+2) So, For each card type there SHOULD BE own Implementer method, where card property transportation
+is taken place.
+3) All the actions with card as property SHOULD take place before animation!!!
+4) Generic structure is allways the same:
+
+A) User-initiated
+    a1) Check General Restrictions
+    a2) Check Implementation allowance
+    a3) According to allowance, start Implementer or Report Reason of Restriciton to User
+    a4) Start Animation if necessary,
+    a5) Report to Server
+
+B) Server-initiated
+    b1) Start Implementer Directly. With the only exeception of Armor and Weapon implementations - the
+    allowance should be recived to decide whether they are allowed to be ACTIVE on SHOULD BE Incative.
+    b2) Start Animation.
+
+*Note 1
+
+Battlefield cards processing MIGHT differ from the explained.
+
+===///===///===///===///===///===///===///===///===///===///===///===///===///===///===///===///===///===///===///
+
+
+
+
