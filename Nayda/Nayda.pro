@@ -70,8 +70,7 @@ SOURCES += main.cpp\
     selectablecardwidget.cpp \
     lastfoldobserver.cpp \
     cardsingameobserver.cpp \
-    cardsingame.cpp \
-    cardpropertytrasnporter.cpp
+    cardsingame.cpp
 
 HEADERS  += main_application.h \
     Application/Before_The_Game/Before_The_Game.h \
@@ -114,8 +113,7 @@ HEADERS  += main_application.h \
     selectablecardwidget.h \
     lastfoldobserver.h \
     cardsingameobserver.h \
-    cardsingame.h \
-    cardpropertytrasnporter.h
+    cardsingame.h
 
 FORMS    += main_application.ui \
     Application/Before_The_Game/Before_The_Game.ui \

@@ -2367,40 +2367,8 @@ void The_Game::ImplementTreasureArmorToCardsInGame(std::shared_ptr<CardPlayAllow
     const gameCardTreasureArmor* cardPointer = static_cast<const gameCardTreasureArmor* >(card);
     gameCardTreasureArmor realCard(cardPointer);
 
-
     //Продолжить здесь 08.02.2019
     //Переработанный режим применить для поправленной анимации получения уровня
-
-    //ОООЧЕНЬ НЕУДОБНАЯ КОНСТРУКЦИЯ
-    //Для всех действий с картами необходимо сделать отдельный ХЭНДЛЕР
-    //Который будет заниматься непосредственно анимацией и раьотой остальных виджетов
-    //Если отдать это на откуп отдельным анимациям  - получается нехилая ошибка проектирвоания
-    // I should inplemet some mechanics to control cards as members of responsible classes while providing THEIR COPY
-    // To all the Animations and stacks
-    //So Th Algorythm SHOULD be the next::
-    //First of all,
-    //CardProcessor(SimpleCard card, struct where_to_move, bool deletFromCurrentHolder = true);
-    //CardProcessor SHOULD be responsible for the card moving from the one source to another:
-    //For example: Card is CardTreasure:
-    // where_to_move:
-    //
-    /*struct where_to_move
-     * {
-     * optional ThisPlayer (yes/no + pointer to wt)
-     * optional AnotherPlayer (yes/no + pointer to wt)
-     * bool LastFoldObsrever
-     * bool CardsInGame
-     * bool CardsInBattleField
-     * bool CardsOnHands
-     * bool AnimationPointer
-     * }
-    */
-
-    //So it will be possible to decide which animation to Implement here and START
-    //May be there should be also an animation Pointer!!!!
-    //So the Logic IS: Any Action - After Recieving AnyCard - CardProcessor!!!
-
-
 
     wt->SlotAddCardToCardsInGame(std::make_pair(armorAllowance->GetIsActive(), SimpleCard(true, realCard.GetCardID())));
 
@@ -2459,6 +2427,9 @@ void The_Game::ImplementTreasureLevelUpCard(std::shared_ptr<CardPlayAllowanceBas
     //Установить новый уровень и Боевую Силу
     wt->GetPointerToPlayer()->SetPlayerLevel(wt->GetPointerToPlayer()->GetPlayerLevel() + 1);
     wt->GetPointerToPlayer()->SetBattlePower(wt->GetPointerToPlayer()->GetBattlePower() + 1);
+
+    //Отобразить изменения
+    wt->SlotChangeTheGamerLevel(1);
 
     //Удалить карту с руки
     RemoveTheCardFromHand(wt, posCard.GetCard());
@@ -3967,7 +3938,8 @@ void The_Game::SlotProcessCardsSelectedToBeSold(const std::vector<SimpleCard> ca
     _lastFold = cards;
     qDebug() << "NAY-002: Total Money Spent: " << totalMoneySpent;
     _mainPlayer->SetPlayerLevel(_mainPlayer->GetPlayerLevel() + GetLevelPurchased(totalMoneySpent));
-    _mainPlayer->SetBattlePower(_mainPlayer->GetBattlePower() + GetLevelPurchased(totalMoneySpent));
+    _mainPlayer->SetBattlePower(_mainPlayer->GetBattlePower()
+                                + static_cast<int32_t>(GetLevelPurchased(totalMoneySpent)));
 
     qDebug() << "NAY-002: Emitting Signal MainGamer Has Sold Cards: "
              << " For Room with id: " << _roomID;
