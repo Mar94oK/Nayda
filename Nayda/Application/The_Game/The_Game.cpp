@@ -2089,6 +2089,10 @@ void The_Game::SlotCheckCardIsAbleToBePlayed(PositionedCard card, bool fromHand)
 
     MainCardImplementer(ui->MainGamer, card, CardImplementationDirection::HandToCardsInGame);
 
+    //Пусть "Применитель карт" выполняет функционал передачи прав на карту
+    //Однако, пусть он явно указывает, какую карту и куда передать
+
+
 }
 
 void The_Game::MainCardImplementer(GamerWidget *wt, PositionedCard card, CardImplementationDirection direction, CardCheckerPolicy checkerPolicy)
@@ -2181,7 +2185,7 @@ void The_Game::MainCardImplementer(GamerWidget *wt, PositionedCard card, CardImp
             default:
             {
                 qDebug() << "NAY-002: New ARCHITECTURE Starting: CardType: " << basisCard->GetCardType() << " not handled yet!";
-                ApplyCardImplementerMessage("This type of card is not suppirted yet!", false);
+                ApplyCardImplementerMessage("This type of card is not supported yet!", false);
                 return;
             }
         }
