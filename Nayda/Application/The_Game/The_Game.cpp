@@ -2366,10 +2366,6 @@ void The_Game::ImplementTreasureArmorToCardsInGame(std::shared_ptr<CardPlayAllow
 
     const gameCardTreasureArmor* cardPointer = static_cast<const gameCardTreasureArmor* >(card);
     gameCardTreasureArmor realCard(cardPointer);
-
-    //Продолжить здесь 08.02.2019
-    //Переработанный режим применить для поправленной анимации получения уровня
-
     wt->SlotAddCardToCardsInGame(std::make_pair(armorAllowance->GetIsActive(), SimpleCard(true, realCard.GetCardID())));
 
     //Удалить карту с руки здесь же
@@ -2389,7 +2385,6 @@ std::shared_ptr<TreasureLevelUpAllowance> The_Game::GetAllowanceTreasureLevelUp(
     //Некоторые из них можно использловать только после боя ("Поглумись над трупами"),
     //Некоторые можно использовать только при определённых условиях ("Пришей Наёмничка");
 
-    //Продолжить здесь в Новом Году! :)
     if (card->hasSpecialMechanic())
     {
         //Проверить, применима ли в этот момент
@@ -2408,8 +2403,6 @@ void The_Game::ImplementTreasureLevelUpCard(std::shared_ptr<CardPlayAllowanceBas
     SaveGamePhase();
     SetGamePhase(GamePhase::CardProcessing);
     qDebug() << "NAY-002: Animation_Phase1 played!";
-
-    //Продолжить здесь 28.01.2019
 
 //    Добавить в сброс
     AddCardToFoldStack(posCard.GetCard());
@@ -3105,8 +3098,6 @@ void The_Game::Animation_PassPlayedCardToCardsInGame_Phase2(GamerWidget *wt, QPr
 
 void The_Game::Animation_PassCardFromHandToTreasureFold_Phase1(GamerWidget *wt, PositionedCard card)
 {
-    //Продолжить здесь 14.01.2019.
-
     QPushButton* _movingCard = new QPushButton("Animated Button", this);
 
     QPoint relativeCardPostionTopLeft;
@@ -3168,7 +3159,6 @@ void The_Game::Animation_PassCardFromHandToTreasureFold_Phase1(GamerWidget *wt, 
 
     std::vector<PositionedCard> castedBackCards;
 
-    //Продолжить здесь 24.01.2019
     connect(animation, &QPropertyAnimation::finished,
             [this, animation, _movingCard, wt, card]
     {(QTimer::singleShot(AnimationPhasesLimitations::msTimeToHoldCardWhileAddingCardToCardsInGame,
@@ -3982,7 +3972,6 @@ void The_Game::SlotProcessCardsSelectedToBeSold(const std::vector<SimpleCard> ca
     for (uint32_t var = 0; var < posCardsInGame.size(); ++var)
     {
         RemoveCardFromCardsAreAbleToBeSold(posCardsInGame[var].GetCard());
-        //продолжить здесь     
     }
     RemoveCardsFromCardsInGame(ui->MainGamer, PositionedCard::RevertToSimpleCardsVector(posCardsInGame));
 

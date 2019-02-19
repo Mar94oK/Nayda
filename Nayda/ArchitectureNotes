@@ -22,7 +22,7 @@ A) User-initiated
 
 B) Server-initiated
     b1) Start Implementer Directly. With the only exeception of Armor and Weapon implementations - the
-    allowance should be recived to decide whether they are allowed to be ACTIVE on SHOULD BE Incative.
+    allowance should be recived to decide whether they are allowed to be ACTIVE or SHOULD BE Incative.
     b2) Start Animation.
 
 *Note 1
