@@ -163,7 +163,8 @@ DISTFILES += \
     ProtobufSetup \
     ArchitectureNotes \
     UnhandledThings_CardsImplementation \
-    Setup
+    Setup \
+    Notes
 
 unix: LIBS += /usr/local/lib/libprotobuf.a
 win32: LIBS += $$PWD/Libs/libprotobuf.a
