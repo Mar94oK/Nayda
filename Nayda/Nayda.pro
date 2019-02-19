@@ -161,7 +161,8 @@ DISTFILES += \
     Pictures/treasures_Weapon/Vorpal Blade.jpg \
     serverMessageSystem.proto \
     ProtobufSetup \
-    ArchitectureNotes
+    ArchitectureNotes \
+    UnhandledThings_CardsImplementation
 
 unix: LIBS += /usr/local/lib/libprotobuf.a
 win32: LIBS += $$PWD/Libs/libprotobuf.a
