@@ -2150,6 +2150,13 @@ void The_Game::MainCardImplementer(GamerWidget *wt, PositionedCard card, CardImp
                     //в случае если это не сервер прислал сообщение о необходимости применения карты
                     //TODO:
                     //Сюда добавить сигнал для сервера!
+                    emit SignalMainGamerHasImplementedCard(TheGameMainGamerHasImplementedCard(
+                                                               _mainGamerOrderOfMove,
+                                                               card.GetCard(),
+                                                               _roomID,
+                                                               false,
+                                                               CardImplementationDirection::HandToCardsInGame));
+
                 }
                     break;
 
@@ -2181,7 +2188,13 @@ void The_Game::MainCardImplementer(GamerWidget *wt, PositionedCard card, CardImp
             {
                 ProcessCardAllowedToBeImplemented(allowance, basisCard, wt, card, direction);
             }
-                break;
+            break;
+
+            case CardType::TreasureLevelUp:
+            {
+                ProcessCardAllowedToBeImplemented(allowance, basisCard, wt, card, direction);
+            }
+            break;
             default:
             {
                 qDebug() << "NAY-002: New ARCHITECTURE Starting: CardType: " << basisCard->GetCardType() << " not handled yet!";
