@@ -162,7 +162,8 @@ DISTFILES += \
     serverMessageSystem.proto \
     ProtobufSetup \
     ArchitectureNotes \
-    UnhandledThings_CardsImplementation
+    UnhandledThings_CardsImplementation \
+    Setup
 
 unix: LIBS += /usr/local/lib/libprotobuf.a
 win32: LIBS += $$PWD/Libs/libprotobuf.a
