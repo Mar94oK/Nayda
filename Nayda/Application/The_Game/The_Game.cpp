@@ -2103,6 +2103,13 @@ void The_Game::MainCardImplementer(GamerWidget *wt, PositionedCard card, CardImp
     if (checkerPolicy == CardCheckerPolicy::CheckBeforeImplementation)
     {
         //Перед всеми остальными действиями сначала проверить глобальные запреты.
+        if (_currentGamePhase == GamePhase::OtherPlayerMove)
+        {
+            //Later while implementing Curses rechek this rule!
+            qDebug() << "NAY-002: DEBUG:: Other Player's Move! DEBUG!!! Not allowed to play cards!";
+            emit SignalCardIsRejectedToBePlayed(true);
+            return;
+        }
         if (_currentGamePhase == GamePhase::CardProcessing)
         {
             qDebug() << "NAY-002: DEBUG:: The Game is in the GamePhase::CardProcessing when it is not possible to use cards!";

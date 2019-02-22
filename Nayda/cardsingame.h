@@ -8,7 +8,8 @@
 
 
 
-enum class CardsInGameWidgetMode {
+enum class CardsInGameWidgetMode
+{
     MainPlayer,
     SecondaryPlayer
 };
