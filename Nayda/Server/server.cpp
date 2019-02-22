@@ -51,7 +51,7 @@ void Server::ConnectionSetUp()
         networkSession->open();
     }
 
-    connect(tcpSocket, &QIODevice::readyRead, this, &Server::slotConnectionReadIncomingData);
+    connect(tcpSocket, &QIODevice::readyRead, this, &Server::SlotConnectionReadIncomingData);
     typedef void (QAbstractSocket::*QAbstractSocketErrorSignal)(QAbstractSocket::SocketError);
     connect(tcpSocket, static_cast<QAbstractSocketErrorSignal>(&QAbstractSocket::error),this, &Server::displayError);
     connect(tcpSocket, &QAbstractSocket::stateChanged, this, &Server::SlotSocketStateChanged);
@@ -83,11 +83,11 @@ bool Server::ConnectionSendOutgoingData(const QByteArray &data)
  }
 
 
-void Server::slotConnectionReadIncomingData()
+void Server::SlotConnectionReadIncomingData()
 {
-    qDebug() << ("Reading Data.");
+    qDebug() << ("SlotConnectionReadIncomingData::Reading Data.");
     //1. Disconnect readyRead signal to be sure the packet will come here, in handler.
-    disconnect(tcpSocket, &QIODevice::readyRead, this, &Server::slotConnectionReadIncomingData);
+    disconnect(tcpSocket, &QIODevice::readyRead, this, &Server::SlotConnectionReadIncomingData);
 
     QByteArray initialArray;
     //2. Check the bytes available (They will allways be since there's ReadyRead here.)
@@ -105,7 +105,7 @@ void Server::slotConnectionReadIncomingData()
         QByteArray rejectedArray = tcpSocket->readAll();
         qDebug() << "Bytes rejected due to error: " << rejectedArray.size();
         rejectedArray.clear();
-        connect(tcpSocket, &QIODevice::readyRead, this, &Server::slotConnectionReadIncomingData);
+        connect(tcpSocket, &QIODevice::readyRead, this, &Server::SlotConnectionReadIncomingData);
         return;
     }
 
@@ -155,7 +155,7 @@ void Server::slotConnectionReadIncomingData()
         QObject().thread()->wait(300);
     }
     //re-enable Reading
-    connect(tcpSocket, &QIODevice::readyRead, this, &Server::slotConnectionReadIncomingData);
+    connect(tcpSocket, &QIODevice::readyRead, this, &Server::SlotConnectionReadIncomingData);
 
     //Take a long time. So first read all till there's nothing to read;
     ProtobufMessageParser(initialArray, tcpSocket->socketDescriptor());
@@ -519,13 +519,13 @@ void Server::ProtobufMessageParser(const QByteArray &data, int socketDescriptor)
     serverMessageSystem::DefaultMessage defaultMessage;
     if(!defaultMessage.ParseFromArray(data.data(), data.size()))
     {
-       qDebug() << "NAY-0001: Error during protobuf message parsing! ";
-       qDebug() << "NAY-001: Array size: array.size()";
+       qDebug() << "NAY-001: Error during protobuf message parsing! ";
+//       qDebug() << "NAY-001: Array size: array.size()";
     }
     else
     {
-       qDebug() << "NAY-0001: Header Parsed successfully! ";
-       qDebug() << "NAY-0010: Array size: " << data.size();
+//       qDebug() << "NAY-0001: Header Parsed successfully! ";
+//       qDebug() << "NAY-0010: Array size: " << data.size();
 
        switch (defaultMessage.header().subsystem())
        {

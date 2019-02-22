@@ -74,7 +74,7 @@ public:
 private slots:
 
     //void slotReadIncomingData();
-    void slotConnectionReadIncomingData();
+    void SlotConnectionReadIncomingData();
     uint32_t ReadIncomingLenght();
 
     void displayError(QAbstractSocket::SocketError socketError);

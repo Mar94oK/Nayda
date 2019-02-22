@@ -111,8 +111,8 @@ public:
         _mainWindowSize = size;
         _windowSizeHeight = size.height();
         _widnowSizeWidth = size.width();
-        qDebug() << "NAY-002: width: " << size.width();
-        qDebug() << "NAY-002: height: " << size.height();
+//        qDebug() << "NAY-002: width: " << size.width();
+//        qDebug() << "NAY-002: height: " << size.height();
     }
 
 private:
