@@ -61,7 +61,7 @@ enum class GamePhase
     Diplomacy,
     WaitingForAnOpponentToMove,
     HandAlignment,
-    CardProcessing,
+    CardAnimation,
     AfterBattleWin,
     AfterBattleLoose //запрещено подкидывать игроку что-нибудь, пока он разбирается с непотребством
 };

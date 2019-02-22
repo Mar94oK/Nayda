@@ -2087,6 +2087,9 @@ void The_Game::SlotCheckCardIsAbleToBePlayed(PositionedCard card, bool fromHand)
 
     //Но данный парсер оценивает только возможность разыгрывать карты в текущем бою.
 
+    //SaveGamePhase();
+    //SetGamePhase(GamePhase::CardAnimation);
+
     MainCardImplementer(ui->MainGamer, card, CardImplementationDirection::HandToCardsInGame);
 
     //Пусть "Применитель карт" выполняет функционал передачи прав на карту
@@ -2110,9 +2113,9 @@ void The_Game::MainCardImplementer(GamerWidget *wt, PositionedCard card, CardImp
             emit SignalCardIsRejectedToBePlayed(true);
             return;
         }
-        if (_currentGamePhase == GamePhase::CardProcessing)
+        if (_currentGamePhase == GamePhase::CardAnimation)
         {
-            qDebug() << "NAY-002: DEBUG:: The Game is in the GamePhase::CardProcessing when it is not possible to use cards!";
+            qDebug() << "NAY-002: DEBUG:: The Game is in the GamePhase::CardAnimation when it is not possible to use cards!";
             emit SignalCardIsRejectedToBePlayed(true);
             return;
         }
@@ -2379,9 +2382,10 @@ std::shared_ptr<TreasureArmorAllowance> The_Game::GetAllowanceTreasureArmor(cons
 void The_Game::ImplementTreasureArmorToCardsInGame(std::shared_ptr<CardPlayAllowanceBase> allowance, const GameCardBasis *card, GamerWidget *wt, PositionedCard posCard)
 {
     std::shared_ptr<TreasureArmorAllowance> armorAllowance = std::static_pointer_cast<TreasureArmorAllowance>(allowance);
+
     SaveGamePhase();
-    SetGamePhase(GamePhase::CardProcessing);
-    qDebug() << "NAY-002: Animation_Phase1 played!";
+    SetGamePhase(GamePhase::CardAnimation);
+
     Animation_PassPlayedCardToCardsInGame_Phase1(wt, posCard, armorAllowance->GetIsActive());
 
     const gameCardTreasureArmor* cardPointer = static_cast<const gameCardTreasureArmor* >(card);
@@ -2421,7 +2425,7 @@ void The_Game::ImplementTreasureLevelUpCard(std::shared_ptr<CardPlayAllowanceBas
 {
     std::shared_ptr<TreasureLevelUpAllowance> levelUpAllowance = std::static_pointer_cast<TreasureLevelUpAllowance>(allowance);
     SaveGamePhase();
-    SetGamePhase(GamePhase::CardProcessing);
+    SetGamePhase(GamePhase::CardAnimation);
     qDebug() << "NAY-002: Animation_Phase1 played!";
 
 //    Добавить в сброс
@@ -3965,11 +3969,10 @@ void The_Game::SlotProcessCardsSelectedToBeSold(const std::vector<SimpleCard> ca
     qDebug() << "NAY-002: posCardsOnHands size " << posCardsOnHands.size();
     qDebug() << "NAY-002: posCardsInGame size " << posCardsInGame.size();
 
-
     //Убрать проданные карты с руки и/или из игры. (Карты хранятся во временном векторе posCards)
     //Была либо фаза торговли, либо фаза "ход другого игрока"
     SaveGamePhase();
-    SetGamePhase(GamePhase::CardProcessing);
+    SetGamePhase(GamePhase::CardAnimation);
 
     emit SignalHideTradeButton();
 
@@ -4214,7 +4217,7 @@ void The_Game::SlotProcessOpponentHasSoldCards(TheGameMainGamerHasSoldCards data
     //Убрать проданные карты с руки и/или из игры. (Карты хранятся во временном векторе posCards)
     //Была либо фаза торговли, либо фаза "ход другого игрока"
     SaveGamePhase();
-    SetGamePhase(GamePhase::CardProcessing);
+    SetGamePhase(GamePhase::CardAnimation);
 
     emit SignalHideTradeButton();
 
@@ -4266,8 +4269,8 @@ void The_Game::SlotProcessOpponentHasImplementedCard(TheGameMainGamerHasImplemen
     Player* currentPlayer = currentWidget->GetPointerToPlayer();
 
     //Фаза установится по прохождении анимации
-    SaveGamePhase();
-    SetGamePhase(GamePhase::CardProcessing);
+//    SaveGamePhase();
+//    SetGamePhase(GamePhase::CardProcessing);
 
     //Надо ли выключать окно торговли?
     //    emit SignalHideTradeButton();
@@ -4510,7 +4513,7 @@ QDebug operator<<(QDebug debug, const GamePhase &dt)
     case GamePhase::Battle:
         debug << "Battle";
         break;
-    case GamePhase::CardProcessing:
+    case GamePhase::CardAnimation:
         debug << "CardProcessing";
         break;
     case GamePhase::Diplomacy:
