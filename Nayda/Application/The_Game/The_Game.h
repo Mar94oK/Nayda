@@ -50,26 +50,29 @@
 
 
 //For the Diplomacy there should be another timer.
-enum class GamePhase {
-                        GameInitialization,
-                        OtherPlayerMove,
-                        StartOfTheMove,
-                        Theft,
-                        AfterOpenDoorNoMonster,
-                        Battle,
-                        Diplomacy,
-                        WaitingForAnOpponentToMove,
-                        HandAlignment,
-                        CardProcessing,
-                        AfterBattleWin,
-                        AfterBattleLoose //запрещено подкидывать игроку что-нибудь, пока он разбирается с непотребством
-                      };
+enum class GamePhase
+{
+    GameInitialization,
+    OtherPlayerMove,
+    StartOfTheMove,
+    Theft,
+    AfterOpenDoorNoMonster,
+    Battle,
+    Diplomacy,
+    WaitingForAnOpponentToMove,
+    HandAlignment,
+    CardProcessing,
+    AfterBattleWin,
+    AfterBattleLoose //запрещено подкидывать игроку что-нибудь, пока он разбирается с непотребством
+};
+QDebug operator<<(QDebug debug, const GamePhase& dt);
 
 enum class GlobalGamePhase
 {
     OwnMove,
     OtherPlayerMove
 };
+QDebug operator<<(QDebug debug, const GlobalGamePhase& dt);
 
 enum class CardApplyMode
 {
@@ -436,8 +439,16 @@ private:
     GlobalGamePhase _globalGamePhase = GlobalGamePhase::OtherPlayerMove;
 
 
-    void SaveGamePhase() { _storedGamePhase = _currentGamePhase; }
-    void RestoreGamePhase() { _currentGamePhase = _storedGamePhase; }
+    void SaveGamePhase()
+    {
+        qDebug() << "NAY-002:: Saving GamePhase! " << _currentGamePhase;
+        _storedGamePhase = _currentGamePhase;
+    }
+    void RestoreGamePhase()
+    {
+        qDebug() << "NAY-002:: Restoring GamePhase! " << _storedGamePhase;
+        _currentGamePhase = _storedGamePhase;
+    }
     void SetGamePhase(GamePhase phase) { _currentGamePhase = phase; }
     GamePhase GetCurrentGamePhase() { return _currentGamePhase; }
 

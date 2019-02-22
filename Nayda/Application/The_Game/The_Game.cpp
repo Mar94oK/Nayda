@@ -3192,13 +3192,6 @@ void The_Game::Animation_PassCardFromHandToTreasureFold_Phase2(GamerWidget *wt,
                                                                QPropertyAnimation *animation,
                                                                QPushButton *button, PositionedCard card)
 {
-
-    //Задержка запуска в предыдущей фазе
-    //После отрисовки перемещения карты:
-    //1) Отобразить её в сбросе
-    //2) Отобразить её в LastFoldObserver
-    //So as in the SoldCards Animation
-
     QPoint EndPosition = GetTreasuresFoldPosition() + GetCardsStackPosition();
     QSize EndSize = GetTreasuresFoldSize();
 
@@ -4499,4 +4492,63 @@ unsigned int The_Game::treasuresLeft() const
 void The_Game::setTreasuresLeft(unsigned int treasuresLeft)
 {
     _treasuresLeft = treasuresLeft;
+}
+
+QDebug operator<<(QDebug debug, const GamePhase &dt)
+{
+    switch (dt)
+    {
+    case GamePhase::AfterBattleLoose:
+        debug << "AfterBattleLoose";
+        break;
+    case GamePhase::AfterBattleWin:
+        debug << "AfterBattleWin";
+        break;
+    case GamePhase::AfterOpenDoorNoMonster:
+        debug << "AfterOpenDoorNoMonster";
+        break;
+    case GamePhase::Battle:
+        debug << "Battle";
+        break;
+    case GamePhase::CardProcessing:
+        debug << "CardProcessing";
+        break;
+    case GamePhase::Diplomacy:
+        debug << "Diplomacy";
+        break;
+    case GamePhase::GameInitialization:
+        debug << "GameInitialization";
+        break;
+    case GamePhase::HandAlignment:
+        debug << "HandAlignment";
+        break;
+    case GamePhase::OtherPlayerMove:
+        debug << "OtherPlayerMove";
+        break;
+    case GamePhase::StartOfTheMove:
+        debug << "StartOfTheMove";
+        break;
+    case GamePhase::Theft:
+        debug << "Theft";
+        break;
+    case GamePhase::WaitingForAnOpponentToMove:
+        debug << "WaitingForAnOpponentToMove";
+        break;
+    }
+    return debug;
+}
+
+QDebug operator<<(QDebug debug, const GlobalGamePhase &dt)
+{
+    switch (dt)
+    {
+    case GlobalGamePhase::OwnMove:
+        debug << "OwnMove";
+        break;
+    case GlobalGamePhase::OtherPlayerMove:
+        debug << "OtherPlayerMove";
+        break;
+    }
+
+    return debug;
 }
