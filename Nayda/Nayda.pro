@@ -113,7 +113,8 @@ HEADERS  += main_application.h \
     selectablecardwidget.h \
     lastfoldobserver.h \
     cardsingameobserver.h \
-    cardsingame.h
+    cardsingame.h \
+    smartqtlogger.h
 
 FORMS    += main_application.ui \
     Application/Before_The_Game/Before_The_Game.ui \
