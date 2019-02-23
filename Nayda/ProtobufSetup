@@ -9,3 +9,6 @@ export PATH=/d/Qt/Tools/mingw530_32/bin/:$PATH
 //Home Working Machine (Для компа, который стоит дома)
 /d/Munchkin/Nayda/Nayda/Libs/protoc.exe --cpp_out=. serverMessageSystem.proto
 /d/Munchkin/Viluy/Libs/protoc.exe --cpp_out=. serverMessageSystem.proto
+
+//Win MI Machine
+/c/Work/Munchkin/Nayda/Nayda/Libs/protoc.exe --cpp_out=. serverMessageSystem.proto
