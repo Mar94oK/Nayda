@@ -14,6 +14,7 @@ enum class LoggerLevel
     Essential,
     TaskCompletion,
     Observation,
+    Algorithm,
     All
 };
 
@@ -49,6 +50,8 @@ private:
             return "TaskCompletion";
         case LoggerLevel::Observation:
             return "Observation";
+        case LoggerLevel::Algorithm:
+            return "Algorithm";
         case LoggerLevel::All:
             return "All";
         }
@@ -118,6 +121,13 @@ public:
     Logger& Observation()
     {
         _initializerString = "[" + GetLogLevelName(LoggerLevel::Observation) + "]";
+        _notifyCalssName ? _initializerString += " " + _className + " :: " : "GeneralNotification:: ";
+        return *this;
+    }
+
+    Logger& Algorithm()
+    {
+        _initializerString = "[" + GetLogLevelName(LoggerLevel::Algorithm) + "]";
         _notifyCalssName ? _initializerString += " " + _className + " :: " : "GeneralNotification:: ";
         return *this;
     }

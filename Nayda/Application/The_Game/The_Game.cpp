@@ -239,7 +239,7 @@ strongAgainst The_Game::theMonsterStrongAgainstParser(const QString &strongAgain
 void The_Game::theAmplifiersParser(const QString &filename)
 {
     QFile file(filename);
-    qDebug() << "Amplifiers parsing starts!";
+    logger.Algorithm() << "Amplifiers parsing starts!";
 
     if (file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
@@ -256,7 +256,7 @@ void The_Game::theAmplifiersParser(const QString &filename)
 
     else
     {
-        qDebug()<< "Cannot open this file!";
+        logger.Error() << "Cannot open this file!";
     }
 
 }
@@ -320,7 +320,7 @@ gameCardDoorAmplifier The_Game::amplifierStringParser(const QString &amplifier_s
 void The_Game::theCursesParser(const QString &filename)
 {
     QFile file(filename);
-    qDebug() << "Curses parsing starts!";
+    logger.Algorithm() << "Curses parsing starts!";
 
     if (file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
@@ -337,7 +337,7 @@ void The_Game::theCursesParser(const QString &filename)
 
     else
     {
-        qDebug()<< "Cannot open this file!";
+        logger.Error() << "Cannot open this file!";
     }
 }
 
@@ -375,7 +375,7 @@ gameCardDoorCurse The_Game::curseStringParser(const QString &curse_string)
 void The_Game::theProfessionsParser(const QString &filename)
 {
     QFile file(filename);
-    qDebug() << "Professions parsing starts!";
+    logger.Algorithm() << "Professions parsing starts!";
 
     if (file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
@@ -388,7 +388,7 @@ void The_Game::theProfessionsParser(const QString &filename)
     }
     else
     {
-        qDebug()<< "Cannot open this file!";
+       logger.Error() << "Cannot open this file!";
     }
 }
 
@@ -429,7 +429,7 @@ gameCardDoorProfession The_Game::professionStringParser(const QString &professio
 void The_Game::theRacesParser(const QString &filename)
 {
     QFile file(filename);
-    qDebug() << "Races parsing starts!";
+    logger.Algorithm() << "Races parsing starts!";
 
     if (file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
@@ -442,7 +442,7 @@ void The_Game::theRacesParser(const QString &filename)
     }
     else
     {
-        qDebug()<< "Cannot open this file!";
+        logger.Error() << "Cannot open this file!";
     }
 }
 
@@ -485,7 +485,7 @@ gameCardDoorRace The_Game::racesStringParser(const QString &race_string)
 void The_Game::theSpecialMechanicsParser(const QString &filename)
 {
     QFile file(filename);
-    qDebug() << "SpecialMechanics parsing starts!";
+    logger.Algorithm() << "SpecialMechanics parsing starts!";
 
     if (file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
@@ -498,7 +498,7 @@ void The_Game::theSpecialMechanicsParser(const QString &filename)
     }
     else
     {
-        qDebug()<< "Cannot open this file!";
+        logger.Error() << "Cannot open this file!";
     }
 }
 
@@ -535,7 +535,7 @@ gameCardDoorSpecialMechanic The_Game::specialMechanicStringParser(const QString 
 void The_Game::theArmorsParser(const QString &filename)
 {
     QFile file(filename);
-    qDebug() << "Armors parsing starts!";
+    logger.Algorithm() << "Armors parsing starts!";
 
     if (file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
@@ -550,7 +550,7 @@ void The_Game::theArmorsParser(const QString &filename)
 
     else
     {
-        qDebug()<< "Cannot open this file!";
+        logger.Error() << "Cannot open this file!";
     }
 }
 
@@ -622,7 +622,8 @@ gameCardTreasureArmor The_Game::armorsStringParser(const QString &armor_string)
     lst.removeFirst();
 
     theArmor.setIsCombined(false);
-    if (lst.first() == "yes\n") {
+    if (lst.first() == "yes\n")
+    {
         theArmor.setIsCombined(true);
     };
 
@@ -673,7 +674,7 @@ isOnlyFor The_Game::TheArmorIsForParser(const QString &isFor_string)
 void The_Game::theArmorAmplifiersParser(const QString &filename)
 {
     QFile file(filename);
-    qDebug() << "ArmorAmplifiers parsing starts!";
+    logger.Algorithm() << "ArmorAmplifiers parsing starts!";
 
     if (file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
@@ -690,7 +691,7 @@ void The_Game::theArmorAmplifiersParser(const QString &filename)
 
     else
     {
-        qDebug()<< "Cannot open this file!";
+       logger.Error() << "Cannot open this file!";
     }
 }
 
@@ -731,7 +732,7 @@ gameCardTreasureArmorAmplifier The_Game::armorAmplifierStringParser(const QStrin
 void The_Game::theBattleAmplifiersParser(const QString &filename)
 {
     QFile file(filename);
-    qDebug() << "BattleAmplifiers parsing starts!";
+    logger.Algorithm() << "BattleAmplifiers parsing starts!";
 
     if (file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
@@ -747,7 +748,7 @@ void The_Game::theBattleAmplifiersParser(const QString &filename)
     }
     else
     {
-        qDebug()<< "Cannot open this file!";
+        logger.Error() << "Cannot open this file!";
     }
 }
 
@@ -806,7 +807,7 @@ gameCardTreasureBattleAmplifier The_Game::battleAmplifierStringParser(const QStr
 void The_Game::theLevelUpParser(const QString &filename)
 {
     QFile file(filename);
-    qDebug() << "LevelUp parsing starts!";
+    logger.Algorithm() << "LevelUp parsing starts!";
 
     if (file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
@@ -819,7 +820,7 @@ void The_Game::theLevelUpParser(const QString &filename)
     }
     else
     {
-        qDebug()<< "Cannot open this file!";
+        logger.Error() << "Cannot open this file!";
     }
 }
 
@@ -930,7 +931,7 @@ Time_To_Use The_Game::theTimeToUseParser(const QString &timeTouse_string)
 void The_Game::theSpecialMechanicTreasureParser(const QString &filename)
 {
     QFile file(filename);
-    qDebug() << "TreasureSpecialMechanics parsing starts!";
+    logger.Algorithm() << "TreasureSpecialMechanics parsing starts!";
 
     if (file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
@@ -946,7 +947,7 @@ void The_Game::theSpecialMechanicTreasureParser(const QString &filename)
     }
     else
     {
-        qDebug()<< "Cannot open this file!";
+        logger.Error() << "Cannot open this file!";
     }
 }
 
@@ -1042,7 +1043,7 @@ isOnlyFor_ThingsAmplifiers The_Game::TheThingsAmplifiersIsForParser(const QStrin
 void The_Game::theThingsAmplifiersParser(const QString &filename)
 {
     QFile file(filename);
-    qDebug() << "Things Amplifiers parsing starts!";
+    logger.Algorithm() << "Things Amplifiers parsing starts!";
 
     if (file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
@@ -1056,7 +1057,7 @@ void The_Game::theThingsAmplifiersParser(const QString &filename)
     }
     else
     {
-        qDebug()<< "Cannot open this file!";
+        logger.Error() << "Cannot open this file!";
     }
 }
 
@@ -1216,7 +1217,7 @@ isOnlyFor_Weapon The_Game::TheWeaponIsForParser(const QString &isFor_string)
 void The_Game::theWeaponParser(const QString &filename)
 {
     QFile file(filename);
-    qDebug() << "Weapons parsing starts!";
+    logger.Algorithm() << "Weapons parsing starts!";
 
     if (file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
@@ -1230,7 +1231,7 @@ void The_Game::theWeaponParser(const QString &filename)
 
     else
     {
-        qDebug()<< "Cannot open this file!";
+        logger.Error() << "Cannot open this file!";
     }
 }
 
@@ -1738,7 +1739,7 @@ unsigned int The_Game::randUnsignedInt(unsigned int low, unsigned int high)
 void The_Game::theMonstersParser(const QString &filename)
 {
     QFile file(filename);
-    qDebug() << "Monsters parsing starts!";
+    logger.Algorithm() << "Monsters parsing starts!";
 
     if (file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
@@ -1753,7 +1754,7 @@ void The_Game::theMonstersParser(const QString &filename)
     }
     else
     {
-        qDebug()<< "Cannot open this file!";
+        logger.Error() << "Cannot open this file!";
     }
 }
 
@@ -3682,83 +3683,83 @@ void The_Game::MainParser()
 #ifndef USE_RESOURCES
 
     theMonstersParser("Tables/cards_doors_monsters.csv");
-    qDebug() << "Monsters parsing complete!";
+    logger.Algorithm() << "Monsters parsing complete!";
 
     theAmplifiersParser("Tables/cards_doors_amplifiers.csv");
-    qDebug() << "Amplifiers parsing complete!";
+    logger.Algorithm() << "Amplifiers parsing complete!";
 
     theCursesParser("Tables/cards_doors_curses.csv");
-    qDebug() << "Curses parsing complete!";
+    logger.Algorithm() << "Curses parsing complete!";
 
     theProfessionsParser("Tables/cards_doors_professions.csv");
-    qDebug() << "Professions parsing complete!";
+    logger.Algorithm() << "Professions parsing complete!";
 
     theRacesParser("Tables/cards_doors_races.csv");
-    qDebug() << "Races parsing complete!";
+    logger.Algorithm() << "Races parsing complete!";
 
     theSpecialMechanicsParser("Tables/cards_doors_specialmechanics.csv");
-    qDebug() << "Special mechanics parsing complete!";
+    logger.Algorithm() << "Special mechanics parsing complete!";
 
     theArmorsParser("Tables/cards_treasures_armor.csv");
-    qDebug() << "Armor parsing complete!";
+    logger.Algorithm() << "Armor parsing complete!";
 
     theArmorAmplifiersParser("Tables/cards_treasures_armorAmplifiers.csv");
-    qDebug() << "ArmorAmplifiers parsing complete!";
+    logger.Algorithm() << "ArmorAmplifiers parsing complete!";
 
     theBattleAmplifiersParser("Tables/cards_treasures_battleAmplifiers.csv");
-    qDebug() << "BattleAmplifiers parsing complete!";
+    logger.Algorithm() << "BattleAmplifiers parsing complete!";
 
     theLevelUpParser("Tables/cards_treasures_levelUp.csv");
-    qDebug() << "LevelUps parsing complete!";
+    logger.Algorithm() << "LevelUps parsing complete!";
 
     theSpecialMechanicTreasureParser("Tables/cards_treasures_specialMechanics.csv");
-    qDebug() << "SpecialMechanicsTreasures parsing complete!";
+    logger.Algorithm() << "SpecialMechanicsTreasures parsing complete!";
 
     theThingsAmplifiersParser("Tables/cards_treasures_thingsAmplifiers.csv");
-    qDebug() << "ThingsAmplifiers parsing complete!";
+    logger.Algorithm() << "ThingsAmplifiers parsing complete!";
 
     theWeaponParser("Tables/cards_treasures_Weapon.csv");
-    qDebug() << "Weapons parsing complete!";
+    logger.Algorithm() << "Weapons parsing complete!";
 
 #else
     theMonstersParser(":/Tables/cards_doors_monsters.csv");
-    qDebug() << "Monsters parsing complete!";
+    logger.Algorithm() << "Monsters parsing complete!";
 
     theAmplifiersParser(":/Tables/cards_doors_amplifiers.csv");
-    qDebug() << "Amplifiers parsing complete!";
+    logger.Algorithm() << "Amplifiers parsing complete!";
 
     theCursesParser(":/Tables/cards_doors_curses.csv");
-    qDebug() << "Curses parsing complete!";
+    logger.Algorithm() << "Curses parsing complete!";
 
     theProfessionsParser(":/Tables/cards_doors_professions.csv");
-    qDebug() << "Professions parsing complete!";
+    logger.Algorithm() << "Professions parsing complete!";
 
     theRacesParser(":/Tables/cards_doors_races.csv");
-    qDebug() << "Races parsing complete!";
+    logger.Algorithm() << "Races parsing complete!";
 
     theSpecialMechanicsParser(":/Tables/cards_doors_specialmechanics.csv");
-    qDebug() << "Special mechanics parsing complete!";
+    logger.Algorithm() << "Special mechanics parsing complete!";
 
     theArmorsParser(":/Tables/cards_treasures_armor.csv");
-    qDebug() << "Armor parsing complete!";
+    logger.Algorithm() << "Armor parsing complete!";
 
     theArmorAmplifiersParser(":/Tables/cards_treasures_armorAmplifiers.csv");
-    qDebug() << "ArmorAmplifiers parsing complete!";
+    logger.Algorithm() << "ArmorAmplifiers parsing complete!";
 
     theBattleAmplifiersParser(":/Tables/cards_treasures_battleAmplifiers.csv");
-    qDebug() << "BattleAmplifiers parsing complete!";
+    logger.Algorithm() << "BattleAmplifiers parsing complete!";
 
     theLevelUpParser(":/Tables/cards_treasures_levelUp.csv");
-    qDebug() << "LevelUps parsing complete!";
+    logger.Algorithm() << "LevelUps parsing complete!";
 
     theSpecialMechanicTreasureParser(":/Tables/cards_treasures_specialMechanics.csv");
-    qDebug() << "SpecialMechanicsTreasures parsing complete!";
+    logger.Algorithm() << "SpecialMechanicsTreasures parsing complete!";
 
     theThingsAmplifiersParser(":/Tables/cards_treasures_thingsAmplifiers.csv");
-    qDebug() << "ThingsAmplifiers parsing complete!";
+    logger.Algorithm() << "ThingsAmplifiers parsing complete!";
 
     theWeaponParser(":/Tables/cards_treasures_Weapon.csv");
-    qDebug() << "Weapons parsing complete!";
+    logger.Algorithm() << "Weapons parsing complete!";
 #endif
 }
 

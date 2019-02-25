@@ -776,7 +776,6 @@ void battleField::SetUpTimersLabels()
 
 void battleField::SetFontAndAlignment(QLabel *lbl, uint32_t size)
 {
-    qDebug() << "NAY-002: Set Font and Alignment";
     QFont        TextLabelFont ("times", static_cast<int32_t>(size));
     QFontMetrics TextLabelFontInterval (TextLabelFont);
     lbl->setText(lbl->text());

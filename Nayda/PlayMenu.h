@@ -12,6 +12,7 @@
 #include "connectiontoroomrejectedmessagewindow.h"
 #include "serverqueryoversizedwindow.h"
 #include "roomselectionlobby.h"
+#include "smartqtlogger.h"
 
 namespace Ui {
 class startNewRoom;
@@ -22,9 +23,13 @@ enum class ConnectionState { NoServerSettingsProvided,
                              Connection,
                              ConnectionTimeout };
 
-class playMenu : public QWidget
+class PlayMenu : public QWidget
 {
     Q_OBJECT
+
+public:
+
+    Logger logger;
 
 private:
 
@@ -69,8 +74,8 @@ private:
 
 public:
 
-    explicit playMenu(QWidget *parent = 0);
-    ~playMenu();
+    explicit PlayMenu(QWidget *parent = 0);
+    ~PlayMenu();
 
 signals:
 

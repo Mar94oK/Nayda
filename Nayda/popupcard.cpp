@@ -36,7 +36,7 @@ PopUpCard::PopUpCard(QWidget *parent) :
 
     // Производим установку текста в размещение, ...
     layout.addWidget(&label, 0, 0);
-    setLayout(&layout); // которое помещаем в виджет
+    //setLayout(&layout); // которое помещаем в виджет
 
     // По сигналу таймера будет произведено скрытие уведомления, если оно видимо
     timer = new QTimer();
@@ -44,8 +44,6 @@ PopUpCard::PopUpCard(QWidget *parent) :
 #ifdef HIDE_THE_CARD_ON_TIMEOUT
     connect(timer, &QTimer::timeout, this, &PopUpCard::hideAnimation);
 #endif
-
-
 
 }
 

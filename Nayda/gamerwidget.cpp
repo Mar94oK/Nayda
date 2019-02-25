@@ -564,7 +564,6 @@ void GamerWidget::SetUpWidgetsPerfomance()
     int HW_Screen_Size_Width = HW_Screen_Size.width();
     int HW_Screen_Size_Height = HW_Screen_Size.height();
 
-    qDebug() << "NAY-002: void GamerWidget::SetUpWidgetsPerfomance()";
     ui->wt_CardsInGameMainPlayer->SetUpMainWindowSize(QSize(HW_Screen_Size_Width,HW_Screen_Size_Height));
     ui->wt_CardsInGameSecondaryPlayer->SetUpMainWindowSize(QSize(HW_Screen_Size_Width,HW_Screen_Size_Height));
 

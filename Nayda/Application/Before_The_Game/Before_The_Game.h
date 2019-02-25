@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include "Server/server.h"
 #include <QDebug>
-#include "playMenu.h"
+#include "PlayMenu.h"
 #include "gamesettings.h"
 #include "MessagesDefinitions.h"
 #include "roomcreationwaitinglobby.h"
@@ -160,7 +160,7 @@ private:
     Server* m_server_ptr;
 
     GameSettings _gameSettings;
-    playMenu* newRoomDialog;
+    PlayMenu* newRoomDialog;
 
     RoomCreationWaitingLobby* _roomCreationWaitingLobby = nullptr;
     ServerHadClosedConnectionWindow* _serverHadClosedConnectionWindow = nullptr;

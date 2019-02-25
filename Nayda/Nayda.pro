@@ -52,7 +52,6 @@ SOURCES += main.cpp\
     handcardpointer.cpp \
     serversettings.cpp \
     helpserversettings.cpp \
-    playMenu.cpp \
     gamesettings.cpp \
     serverMessageSystem.pb.cc \
     gamesettingswindow.cpp \
@@ -71,7 +70,8 @@ SOURCES += main.cpp\
     lastfoldobserver.cpp \
     cardsingameobserver.cpp \
     cardsingame.cpp \
-    smartqtlogger.cpp
+    smartqtlogger.cpp \
+    PlayMenu.cpp
 
 HEADERS  += main_application.h \
     Application/Before_The_Game/Before_The_Game.h \
@@ -95,7 +95,6 @@ HEADERS  += main_application.h \
     munchkinglobaldefines.h \
     serversettings.h \
     helpserversettings.h \
-    playMenu.h \
     gamesettings.h \
     serverMessageSystem.pb.h \
     gamesettingswindow.h \
@@ -115,7 +114,8 @@ HEADERS  += main_application.h \
     lastfoldobserver.h \
     cardsingameobserver.h \
     cardsingame.h \
-    smartqtlogger.h
+    smartqtlogger.h \
+    PlayMenu.h
 
 FORMS    += main_application.ui \
     Application/Before_The_Game/Before_The_Game.ui \

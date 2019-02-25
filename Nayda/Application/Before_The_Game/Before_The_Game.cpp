@@ -8,7 +8,7 @@
 Before_The_Game::Before_The_Game(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::Before_The_Game),
-    newRoomDialog(new playMenu)
+    newRoomDialog(new PlayMenu)
 {
     ui->setupUi(this);
 
@@ -143,33 +143,33 @@ void Before_The_Game::setUpSignalsSlotsConnections()
     QObject::connect( ui->btnHide, SIGNAL(clicked()), this, SLOT(hide()));
     QObject::connect (ui->btnHide, SIGNAL(clicked(bool)), this, SLOT(dbg_switch_to_game_mode_button_pressed()));
 
-    QObject::connect(newRoomDialog, &playMenu::sig_userHaveChangedServerSettings, this, &Before_The_Game::slot_userHaveChangedServerSettings);
-    QObject::connect(newRoomDialog, &playMenu::SignalUserHaveChangedGameSettings, this, &Before_The_Game::SlotApplyNewGameSettings);
-    QObject::connect(newRoomDialog, &playMenu::SignalSetUpConnection, this, &Before_The_Game::SlotSetUpConnection);
-    QObject::connect(newRoomDialog, &playMenu::sig_sendTestDataToServer, this, &Before_The_Game::slot_sendTestDataToServer);
+    QObject::connect(newRoomDialog, &PlayMenu::sig_userHaveChangedServerSettings, this, &Before_The_Game::slot_userHaveChangedServerSettings);
+    QObject::connect(newRoomDialog, &PlayMenu::SignalUserHaveChangedGameSettings, this, &Before_The_Game::SlotApplyNewGameSettings);
+    QObject::connect(newRoomDialog, &PlayMenu::SignalSetUpConnection, this, &Before_The_Game::SlotSetUpConnection);
+    QObject::connect(newRoomDialog, &PlayMenu::sig_sendTestDataToServer, this, &Before_The_Game::slot_sendTestDataToServer);
 
-    QObject::connect(ui->btn_Play, &QPushButton::clicked, newRoomDialog, &playMenu::show);
+    QObject::connect(ui->btn_Play, &QPushButton::clicked, newRoomDialog, &PlayMenu::show);
     QObject::connect(ui->btn_Play, &QPushButton::clicked, this, &Before_The_Game::hide);
-    QObject::connect(newRoomDialog, &playMenu::sig_userIsClosingStartNewRoomWindow, this, &Before_The_Game::show);
+    QObject::connect(newRoomDialog, &PlayMenu::sig_userIsClosingStartNewRoomWindow, this, &Before_The_Game::show);
 
-    connect(newRoomDialog, &playMenu::sig_dbgBtnPlayWithDefaultsPressed, this, &Before_The_Game::dbg_start_the_game_with_default_settings);
-    connect(newRoomDialog, &playMenu::sig_dbgBtnPlayWithDefaultsPressed, this, &Before_The_Game::hide);
+    connect(newRoomDialog, &PlayMenu::sig_dbgBtnPlayWithDefaultsPressed, this, &Before_The_Game::dbg_start_the_game_with_default_settings);
+    connect(newRoomDialog, &PlayMenu::sig_dbgBtnPlayWithDefaultsPressed, this, &Before_The_Game::hide);
 
-    QObject::connect(this, &Before_The_Game::SignalServerQueryReplyData, newRoomDialog, &playMenu::SlotProcessServerQueryReplyData);
-    QObject::connect(this, &Before_The_Game::SignalRemoteHostClosedErrorReport, newRoomDialog, &playMenu::SlotProcessRemoteHostClosedErrorReport);
-    QObject::connect(this, &Before_The_Game::SignalRemoteHostNotFoundErrorReport, newRoomDialog, &playMenu::SlotProcessRemoteHostNotFoundErrorReport);
-    QObject::connect(this, &Before_The_Game::SignalRemoteHostConnectionRefusedErrorReport, newRoomDialog, &playMenu::SlotProcessRemoteHostConnectionRefusedErrorReport);
-    QObject::connect(this, &Before_The_Game::SignalUnclockConnectionButtonAfterConnection, newRoomDialog, &playMenu::SlotProcessUnlockConnectionButtonAfterConnection);
-    QObject::connect(this, &Before_The_Game::SignalLockConnectionButtonWhileConnecting, newRoomDialog, &playMenu::SlotProcessLockingConnectionButtonWhileConnecting);
-    QObject::connect(newRoomDialog, &playMenu::SignalSendClientRoomCreationRequest, this, &Before_The_Game::SlotSendClientRoomCreationRequest);
+    QObject::connect(this, &Before_The_Game::SignalServerQueryReplyData, newRoomDialog, &PlayMenu::SlotProcessServerQueryReplyData);
+    QObject::connect(this, &Before_The_Game::SignalRemoteHostClosedErrorReport, newRoomDialog, &PlayMenu::SlotProcessRemoteHostClosedErrorReport);
+    QObject::connect(this, &Before_The_Game::SignalRemoteHostNotFoundErrorReport, newRoomDialog, &PlayMenu::SlotProcessRemoteHostNotFoundErrorReport);
+    QObject::connect(this, &Before_The_Game::SignalRemoteHostConnectionRefusedErrorReport, newRoomDialog, &PlayMenu::SlotProcessRemoteHostConnectionRefusedErrorReport);
+    QObject::connect(this, &Before_The_Game::SignalUnclockConnectionButtonAfterConnection, newRoomDialog, &PlayMenu::SlotProcessUnlockConnectionButtonAfterConnection);
+    QObject::connect(this, &Before_The_Game::SignalLockConnectionButtonWhileConnecting, newRoomDialog, &PlayMenu::SlotProcessLockingConnectionButtonWhileConnecting);
+    QObject::connect(newRoomDialog, &PlayMenu::SignalSendClientRoomCreationRequest, this, &Before_The_Game::SlotSendClientRoomCreationRequest);
 
-    QObject::connect(this, &Before_The_Game::SignalRoomCreationAllowed, newRoomDialog, &playMenu::close);
+    QObject::connect(this, &Before_The_Game::SignalRoomCreationAllowed, newRoomDialog, &PlayMenu::close);
     QObject::connect(this, &Before_The_Game::SignalRoomCreationAllowed, this, &Before_The_Game::SlotCreateNewRoomCreationWaitingLobby);
-    QObject::connect(this, &Before_The_Game::SignalRoomCreationForbidden, newRoomDialog, &playMenu::SlotProcessRoomCreationReplyError);
+    QObject::connect(this, &Before_The_Game::SignalRoomCreationForbidden, newRoomDialog, &PlayMenu::SlotProcessRoomCreationReplyError);
     QObject::connect(this, &Before_The_Game::SignalRoomCreationAllowed, this, &Before_The_Game::close);
-    QObject::connect(this, &Before_The_Game::SignalAbortingConnectionByUserInitiative, newRoomDialog, &playMenu::SlotAbortingConnectionByUserInitiative);
-    QObject::connect(newRoomDialog, &playMenu::SignalSendClientConnectionToRoomRequest, this, &Before_The_Game::SlotSendClientConnectionToRoomRequest);
-    QObject::connect(this, &Before_The_Game::SignalServerQueryOversize, newRoomDialog, &playMenu::SlotShowServerQueueOversizedWindow);
+    QObject::connect(this, &Before_The_Game::SignalAbortingConnectionByUserInitiative, newRoomDialog, &PlayMenu::SlotAbortingConnectionByUserInitiative);
+    QObject::connect(newRoomDialog, &PlayMenu::SignalSendClientConnectionToRoomRequest, this, &Before_The_Game::SlotSendClientConnectionToRoomRequest);
+    QObject::connect(this, &Before_The_Game::SignalServerQueryOversize, newRoomDialog, &PlayMenu::SlotShowServerQueueOversizedWindow);
 
 }
 
@@ -177,7 +177,7 @@ void Before_The_Game::SlotCreateNewRoomCreationWaitingLobby()
 {
     _roomCreationWaitingLobby = new RoomCreationWaitingLobby(_gameSettings);
     _roomCreationWaitingLobby->SetUpInitalState(_gameSettings);
-    QObject::connect(_roomCreationWaitingLobby, &RoomCreationWaitingLobby::SignalUserIsClosingRoomCreationLobby, newRoomDialog, &playMenu::show);
+    QObject::connect(_roomCreationWaitingLobby, &RoomCreationWaitingLobby::SignalUserIsClosingRoomCreationLobby, newRoomDialog, &PlayMenu::show);
     QObject::connect(_roomCreationWaitingLobby, &RoomCreationWaitingLobby::SignalUserIsClosingRoomCreationLobby, this, &Before_The_Game::SlotAbortingConnectionByUserInitiative);
     QObject::connect(this, &Before_The_Game::SignalRemoteHostClosedErrorReport, _roomCreationWaitingLobby, &RoomCreationWaitingLobby::SlotProcessRemoteHostClosedErrorReport);
     QObject::connect(this, &Before_The_Game::SignalChartMessageReceived, _roomCreationWaitingLobby, &RoomCreationWaitingLobby::SlotProcessChartMessageReceived);
@@ -202,11 +202,11 @@ void Before_The_Game::SlotProcessClientConnectionToRoomReply(ClientConnectionToR
 
 
     QObject::connect(_roomSelectionLobby, &RoomSelectionLobby::SignalUserIsClosingRoomSelectionLobby,
-                     newRoomDialog, &playMenu::show);
+                     newRoomDialog, &PlayMenu::show);
     QObject::connect(_roomSelectionLobby, &RoomSelectionLobby::SignalUserIsClosingRoomSelectionLobby,
-                     newRoomDialog, &playMenu::show);
+                     newRoomDialog, &PlayMenu::show);
     QObject::connect(_roomSelectionLobby, &RoomSelectionLobby::SignalUserIsClosingRoomSelectionLobby,
-                     newRoomDialog, &playMenu::SlotProcessUnlockConnectionButtonAfterConnection);
+                     newRoomDialog, &PlayMenu::SlotProcessUnlockConnectionButtonAfterConnection);
 
     QObject::connect(_roomSelectionLobby, &RoomSelectionLobby::SignalUserIsClosingRoomSelectionLobby,
                      this, &Before_The_Game::SlotAbortingConnectionByUserInitiative);
@@ -276,7 +276,7 @@ void Before_The_Game::SlotProcessServerClientWantedToEnterTheRoomReply(const Ser
         _roomCreationWaitingLobby = new RoomCreationWaitingLobby(_gameSettings);
 
         _roomCreationWaitingLobby->SetUpForNotMasterPossessionType(data);
-        QObject::connect(_roomCreationWaitingLobby, &RoomCreationWaitingLobby::SignalUserIsClosingRoomCreationLobby, newRoomDialog, &playMenu::show);
+        QObject::connect(_roomCreationWaitingLobby, &RoomCreationWaitingLobby::SignalUserIsClosingRoomCreationLobby, newRoomDialog, &PlayMenu::show);
         QObject::connect(_roomCreationWaitingLobby, &RoomCreationWaitingLobby::SignalUserIsClosingRoomCreationLobby, this, &Before_The_Game::SlotAbortingConnectionByUserInitiative);
         QObject::connect(this, &Before_The_Game::SignalRemoteHostClosedErrorReport, _roomCreationWaitingLobby, &RoomCreationWaitingLobby::SlotProcessRemoteHostClosedErrorReport);
         QObject::connect(this, &Before_The_Game::SignalChartMessageReceived, _roomCreationWaitingLobby, &RoomCreationWaitingLobby::SlotProcessChartMessageReceived);
@@ -307,7 +307,7 @@ void Before_The_Game::SlotServerReportsTheGameIsAboutToStart(const TheGameIsAbou
     //addedData.playersOrder = _roomCreationWaitingLobby->GetPlayersOrder();
     if(_roomCreationWaitingLobby != nullptr)
     {
-        QObject::disconnect(_roomCreationWaitingLobby, &RoomCreationWaitingLobby::SignalUserIsClosingRoomCreationLobby, newRoomDialog, &playMenu::show);
+        QObject::disconnect(_roomCreationWaitingLobby, &RoomCreationWaitingLobby::SignalUserIsClosingRoomCreationLobby, newRoomDialog, &PlayMenu::show);
         QObject::disconnect(_roomCreationWaitingLobby, &RoomCreationWaitingLobby::SignalUserIsClosingRoomCreationLobby, this, &Before_The_Game::SlotAbortingConnectionByUserInitiative);
         QObject::disconnect(_roomCreationWaitingLobby, &RoomCreationWaitingLobby::SignalChartMessageToBeSend, this, &Before_The_Game::SlotProcessChartMessageSending);
 

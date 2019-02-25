@@ -13,7 +13,6 @@ LastFoldObserver::LastFoldObserver(AllDecksToBePassed decksData,
     SetDecks(decksData);
 
     _mainWindowSize = mainWindowSize;
-    qDebug() << "NAY-002: Size" << _mainWindowSize;
     _widnowSizeWidth = static_cast<uint32_t>(_mainWindowSize.width());
     _windowSizeHeight = static_cast<uint32_t>(_mainWindowSize.height());
 
