@@ -34,10 +34,13 @@ private:
 
     QDebug _debug = qDebug();
 
+    bool _initializerStringAlreadyPrinted = false;
+
     void NewLine()
     {
         QDebug dbg = qDebug();
         _debug.swap(dbg);
+        _initializerStringAlreadyPrinted = false;
     }
 
 private:
@@ -80,7 +83,14 @@ public:
 
         if (std::find(levels.begin(), levels.end(), _currentMessageLevel) != levels.end() )
         {
-            _debug << qPrintable(_initializerString) << message;
+            if (_initializerStringAlreadyPrinted)
+                _debug << message;
+            else
+            {
+               _debug << qPrintable(_initializerString) << message;
+               _initializerStringAlreadyPrinted = true;
+            }
+
         }
         return *this;
     }
@@ -90,6 +100,7 @@ public:
     Logger& Info()
     {
         NewLine();
+
         _initializerString = "[" + GetLogLevelName(LoggerLevel::Info) + "]";
         _notifyCalssName ? _initializerString += " " + _className + " :: " : "GeneralNotification:: ";
         return *this;
