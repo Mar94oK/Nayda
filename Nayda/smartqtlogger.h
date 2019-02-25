@@ -66,7 +66,7 @@ public:
     {
         if (std::find(levels.begin(), levels.end(), _currentMessageLevel) != levels.end() )
         {
-            qDebug() << _initializerString << message;
+            qDebug() << qPrintable(_initializerString) << message;
         }
         return *this;
     }
