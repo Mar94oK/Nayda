@@ -70,7 +70,8 @@ SOURCES += main.cpp\
     selectablecardwidget.cpp \
     lastfoldobserver.cpp \
     cardsingameobserver.cpp \
-    cardsingame.cpp
+    cardsingame.cpp \
+    smartqtlogger.cpp
 
 HEADERS  += main_application.h \
     Application/Before_The_Game/Before_The_Game.h \

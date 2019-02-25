@@ -8,10 +8,14 @@
 #include <QSharedPointer>
 
 
+
+
 The_Game::The_Game(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::The_Game)
 {
+    DECLARE_NAMED_LOGGER(The_Game);
+
     ui->setupUi(this);
 
     InitializePopUpWidgets();
@@ -1756,6 +1760,9 @@ void The_Game::theMonstersParser(const QString &filename)
 
 void The_Game::DEBUG_SlotWasPushedToGameMode()
 {   
+//
+    logger.Info() << "Smart Logger Fisrt Message.";
+
     _playersOrder.push_back(_gameSettings.clientName());
     _playersOrder.push_back("DEBUG_Opponent");
     if (_gameSettings.maximumNumberOfPlayers() != 2)

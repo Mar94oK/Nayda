@@ -31,6 +31,8 @@
 
 #include "lastfoldobserver.h"
 
+#include "smartqtlogger.h"
+
 #define PC_VERSION //begin with PC
 #define DEBUG_MESSAGES //start with debug enabled
 #define DEBUG_NO_SERVER
@@ -191,6 +193,10 @@ struct CardsFromHandAndInGame
 class The_Game :  public QMainWindow
 {
     Q_OBJECT
+
+private:
+
+    Logger logger;
 
 public:
     explicit The_Game (QWidget *parent = 0);
