@@ -1760,8 +1760,14 @@ void The_Game::theMonstersParser(const QString &filename)
 
 void The_Game::DEBUG_SlotWasPushedToGameMode()
 {   
-//
-    logger.Info() << "Smart Logger Fisrt Message.";
+
+    logger.Info()           << "Smart Logger Fisrt Message.";
+    logger.Warning()        << "Smart Logger Second Message.";
+    logger.Debug()          << "Smart Logger Third Message.";
+    logger.Error()          << "Smart Logger Fourth Message.";
+    logger.Essential()      << "Smart Logger Fifth Message.";
+    logger.Observation()    << "Smart Logger Sizth Message.";
+    logger.TaskCompletion() << "Smart Logger Seventh Message.";
 
     _playersOrder.push_back(_gameSettings.clientName());
     _playersOrder.push_back("DEBUG_Opponent");

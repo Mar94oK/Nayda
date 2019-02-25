@@ -80,6 +80,48 @@ public:
         return *this;
     }
 
+    Logger& Warning()
+    {
+        _initializerString = "[" + GetLogLevelName(LoggerLevel::Warning) + "]";
+        _notifyCalssName ? _initializerString += " " + _className + " :: " : "GeneralNotification:: ";
+        return *this;
+    }
+
+    Logger& Debug()
+    {
+        _initializerString = "[" + GetLogLevelName(LoggerLevel::Debug) + "]";
+        _notifyCalssName ? _initializerString += " " + _className + " :: " : "GeneralNotification:: ";
+        return *this;
+    }
+
+    Logger& Error()
+    {
+        _initializerString = "[" + GetLogLevelName(LoggerLevel::Error) + "]";
+        _notifyCalssName ? _initializerString += " " + _className + " :: " : "GeneralNotification:: ";
+        return *this;
+    }
+
+    Logger& Essential()
+    {
+        _initializerString = "[" + GetLogLevelName(LoggerLevel::Essential) + "]";
+        _notifyCalssName ? _initializerString += " " + _className + " :: " : "GeneralNotification:: ";
+        return *this;
+    }
+
+    Logger& TaskCompletion()
+    {
+        _initializerString = "[" + GetLogLevelName(LoggerLevel::TaskCompletion) + "]";
+        _notifyCalssName ? _initializerString += " " + _className + " :: " : "GeneralNotification:: ";
+        return *this;
+    }
+
+    Logger& Observation()
+    {
+        _initializerString = "[" + GetLogLevelName(LoggerLevel::Observation) + "]";
+        _notifyCalssName ? _initializerString += " " + _className + " :: " : "GeneralNotification:: ";
+        return *this;
+    }
+
     Logger () { }
     Logger (const QString& className) : _className(className) { }
 
