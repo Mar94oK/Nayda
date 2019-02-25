@@ -1605,7 +1605,7 @@ void The_Game::GivingCardsToPlayers()
     }
 
     ui->CardStacksWidget->updateDoorsLeft(initialSizeDoors - cardsToGive*(_gameSettings.maximumNumberOfPlayers()));
-    qDebug() << "Doors are given to the players!";
+    logger.Algorithm() << "Doors are given to the players!";
 
     for (uint32_t var = 0; var < _orderOfMove.size(); ++var)
     {
@@ -1625,7 +1625,7 @@ void The_Game::GivingCardsToPlayers()
                 }
                 catch (...)
                 {
-                    qDebug() << "NAY-002: _debugCardsToBeGivenToMainPlayer.size() < cardsToGive!!!!";
+                    logger.Error() << "NAY-002: _debugCardsToBeGivenToMainPlayer.size() < cardsToGive!!!!";
                 }
 
                 _orderOfMove[var]->AddCardToHands(_debugCardsToBeGivenToMainPlayer[y]);
@@ -1646,7 +1646,7 @@ void The_Game::GivingCardsToPlayers()
     }
 
     ui->CardStacksWidget->updateTreasuresLeft(initialSizeTreasures - cardsToGive*_gameSettings.maximumNumberOfPlayers());
-    qDebug() << "Treasures are given to the players!";
+    logger.Algorithm() << "Treasures are given to the players!";
 
 #endif
 }
@@ -1692,10 +1692,10 @@ void The_Game::DEBUGformingInitialDecks()
    //This data should be given by master to the server while passing settings
    //(Not visible to user)
 
-   if (!totalTreasures)  qDebug() << "Error during Treasures Stack Initialization. Stack is Empty! ";
-   qDebug() << "Size of Treasures Stack Report: " << totalTreasures;
-   if (!totalDoors)  qDebug() << "Error during Doors Stack Initialization. Stack is Empty! ";
-   qDebug() << "Size of Doors Stack Report: " << totalDoors;
+   if (!totalTreasures)  logger.Error() << "Error during Treasures Stack Initialization. Stack is Empty! ";
+   logger.Debug() << "Size of Treasures Stack Report: " << totalTreasures;
+   if (!totalDoors)  logger.Error() << "Error during Doors Stack Initialization. Stack is Empty! ";
+   logger.Debug() << "Size of Doors Stack Report: " << totalDoors;
 
     //the server knows exact values of sizes of arrays
     for (unsigned int var = 1; var < totalTreasures+1; ++var) {
@@ -1713,7 +1713,7 @@ void The_Game::DEBUGformingInitialDecks()
         valuesTreasures.shrink_to_fit();
     }
 
-    qDebug() << "Treasures Stack is Filled Now!";
+    logger.Algorithm() << "Treasures Stack is Filled Now!";
 
     for (unsigned int var = 0; var < totalDoors; ++var) {
 
@@ -1724,7 +1724,7 @@ void The_Game::DEBUGformingInitialDecks()
         valuesDoors.shrink_to_fit();
     }
 
-    qDebug() << "Doors Stack is Filled Now!";
+    logger.Algorithm() << "Doors Stack is Filled Now!";
 
 #endif
 
@@ -3493,15 +3493,15 @@ void The_Game::FormingInitialDecks(const std::vector<uint32_t> &doorsVector, con
         _doorsDeck.push_back({false,doorsVector[var]});
     }
 
-    qDebug() << "NAY-001: Doors Stack is Filled Now!";
+    logger.Algorithm() << "NAY-001: Doors Stack is Filled Now!";
 
 }
 
 void The_Game::SetUpPlayersAndWidgets(uint32_t windowHeight, uint32_t windowWidth, const std::vector<QString> &playersOrder)
 {
     uint32_t totalOpponents = _gameSettings.maximumNumberOfPlayers();
-    qDebug() << "Total players from settings: " << totalOpponents;
-    qDebug() << "Total players given by SetUp Opponents: " << playersOrder.size();
+    logger.Debug() << "Total players from settings: " << totalOpponents;
+    logger.Debug() << "Total players given by SetUp Opponents: " << playersOrder.size();
 
     _mainPlayer = new Player(_gameSettings.clientName());
     //Из-за того, что я сделал давным давно основного игрока также не динамически создаваемым,
@@ -3512,13 +3512,13 @@ void The_Game::SetUpPlayersAndWidgets(uint32_t windowHeight, uint32_t windowWidt
     ui->MainGamer->SetPointerToPlayer(_mainPlayer);
     _roomMasterName = _playersOrder[0];
     SetIsRoomMaster(CheckIsMainPlayerTheRoomMaster(_playersOrder[0]));
-    qDebug() << "NAY-001: Master's name: " << playersOrder[0];
-    qDebug() << "NAY-002: Clients name: " << _gameSettings.clientName();
+    logger.Debug() << "NAY-002: Master's name: " << playersOrder[0];
+    logger.Debug() << "NAY-002: Clients name: " << _gameSettings.clientName();
     //Set Players name:
 
     if (totalOpponents != playersOrder.size())
-        qDebug() << "ERROR while The_Game::SetUpOpponents(): Total opponents from settings"
-                    "and given by server differs!";
+        logger.Error() << "ERROR while The_Game::SetUpOpponents(): Total opponents from settings"
+                          "and given by server differs!";
 
     //Один из них может быть мастером!
     for (uint32_t var = 0; var < playersOrder.size(); ++var)
@@ -3528,7 +3528,7 @@ void The_Game::SetUpPlayersAndWidgets(uint32_t windowHeight, uint32_t windowWidt
             Player* currentPlayer = new Player (playersOrder[var]);
             currentPlayer->SetPlayersName(playersOrder[var]);
             _playersOpponents.push_back(currentPlayer);
-            qDebug() << "NAY-002: _playersOpponents Size: " << _playersOpponents.size();
+            logger.Debug() << "NAY-002: _playersOpponents Size: " << _playersOpponents.size();
         }
     }
 
@@ -3556,10 +3556,10 @@ void The_Game::SetUpPlayersAndWidgets(uint32_t windowHeight, uint32_t windowWidt
     //save the order;
     _orderOfMove = orderOfMove;
 
-    qDebug() << "NAY-002: " << "Order of move: ";
+    logger.Debug() << "NAY-002: " << "Order of move: ";
     for (uint32_t var = 0; var < _orderOfMove.size(); ++var)
     {
-        qDebug() << _orderOfMove[var]->GetPlayersName();
+        logger.Debug() << var << " " << _orderOfMove[var]->GetPlayersName();
     }
 
     uint32_t orderOfOpponent = 1;

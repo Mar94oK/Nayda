@@ -2,7 +2,8 @@
 #define SMARTQTLOGGER_H
 #include <QDebug>
 #include <QString>
-
+#include <stdio.h>
+#include <stdlib.h>
 
 
 enum class LoggerLevel
@@ -22,6 +23,7 @@ static const LoggerLevel logLevel = LoggerLevel::All;
 
 class Logger
 {
+
 private:
 
     static const std::vector<LoggerLevel> levels;
@@ -29,6 +31,14 @@ private:
     QString _initializerString;
     QString _className;
     bool _notifyCalssName = true;
+
+    QDebug _debug = qDebug();
+
+    void NewLine()
+    {
+        QDebug dbg = qDebug();
+        _debug.swap(dbg);
+    }
 
 private:
 
@@ -67,9 +77,10 @@ public:
     template <typename T>
     Logger& operator<< (const T& message)
     {
+
         if (std::find(levels.begin(), levels.end(), _currentMessageLevel) != levels.end() )
         {
-            qDebug() << qPrintable(_initializerString) << message;
+            _debug << qPrintable(_initializerString) << message;
         }
         return *this;
     }
@@ -78,6 +89,7 @@ public:
 
     Logger& Info()
     {
+        NewLine();
         _initializerString = "[" + GetLogLevelName(LoggerLevel::Info) + "]";
         _notifyCalssName ? _initializerString += " " + _className + " :: " : "GeneralNotification:: ";
         return *this;
@@ -85,6 +97,7 @@ public:
 
     Logger& Warning()
     {
+        NewLine();
         _initializerString = "[" + GetLogLevelName(LoggerLevel::Warning) + "]";
         _notifyCalssName ? _initializerString += " " + _className + " :: " : "GeneralNotification:: ";
         return *this;
@@ -92,6 +105,7 @@ public:
 
     Logger& Debug()
     {
+        NewLine();
         _initializerString = "[" + GetLogLevelName(LoggerLevel::Debug) + "]";
         _notifyCalssName ? _initializerString += " " + _className + " :: " : "GeneralNotification:: ";
         return *this;
@@ -99,6 +113,7 @@ public:
 
     Logger& Error()
     {
+        NewLine();
         _initializerString = "[" + GetLogLevelName(LoggerLevel::Error) + "]";
         _notifyCalssName ? _initializerString += " " + _className + " :: " : "GeneralNotification:: ";
         return *this;
@@ -106,6 +121,7 @@ public:
 
     Logger& Essential()
     {
+        NewLine();
         _initializerString = "[" + GetLogLevelName(LoggerLevel::Essential) + "]";
         _notifyCalssName ? _initializerString += " " + _className + " :: " : "GeneralNotification:: ";
         return *this;
@@ -113,6 +129,7 @@ public:
 
     Logger& TaskCompletion()
     {
+        NewLine();
         _initializerString = "[" + GetLogLevelName(LoggerLevel::TaskCompletion) + "]";
         _notifyCalssName ? _initializerString += " " + _className + " :: " : "GeneralNotification:: ";
         return *this;
@@ -120,6 +137,7 @@ public:
 
     Logger& Observation()
     {
+        NewLine();
         _initializerString = "[" + GetLogLevelName(LoggerLevel::Observation) + "]";
         _notifyCalssName ? _initializerString += " " + _className + " :: " : "GeneralNotification:: ";
         return *this;
@@ -127,12 +145,17 @@ public:
 
     Logger& Algorithm()
     {
+        NewLine();
         _initializerString = "[" + GetLogLevelName(LoggerLevel::Algorithm) + "]";
         _notifyCalssName ? _initializerString += " " + _className + " :: " : "GeneralNotification:: ";
         return *this;
     }
 
-    Logger () { }
+    Logger ()
+    {
+        QMessageLogger* logger = new QMessageLogger(QT_MESSAGELOG_FILE, QT_MESSAGELOG_LINE, QT_MESSAGELOG_FUNC);
+        logger->debug();
+    }
     Logger (const QString& className) : _className(className) { }
 
 };
