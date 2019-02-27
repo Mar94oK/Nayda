@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <QTimer>
+#include <QTime>
 
 enum class LoggerLevel
 {
@@ -93,7 +94,7 @@ public:
                 _debug << message;
             else
             {
-               _debug << qPrintable(_initializerString) << message;
+               _debug << QTime::currentTime().toString("hh:mm:ss.zzz") << qPrintable(_initializerString) << message;
                _initializerStringAlreadyPrinted = true;
             }
             _outputController->setInterval(100);
