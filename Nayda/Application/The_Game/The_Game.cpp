@@ -1590,9 +1590,9 @@ void The_Game::GivingCardsToPlayers()
     uint32_t initialSizeDoors = _doorsDeck.size();
     uint32_t initialSizeTreasures = _treasuresDeck.size();
 
-    qDebug() << "NAY-002: PlayersOrder size: " << _orderOfMove.size();
+    logger.Debug() << "NAY-002: PlayersOrder size: " << _orderOfMove.size();
     if (_orderOfMove.size() != _playersOpponents.size() + 1)
-        qDebug() << "NAY-002: ERROR WHILE void The_Game::GivingCardsToPlayers()"
+        logger.Error() << "NAY-002: ERROR WHILE void The_Game::GivingCardsToPlayers()"
                  << "orderOfMove.size() != _playersOpponents.size() + 1";
 
     for (uint32_t var = 0; var < _orderOfMove.size(); ++var)
@@ -1653,14 +1653,14 @@ void The_Game::GivingCardsToPlayers()
 
 void The_Game::ShowInitialCardsOnHands()
 {
-    qDebug() << "showInitialCardsOnHands:: Started";
+    logger.Algorithm() << "showInitialCardsOnHands:: Started";
 
     for (uint32_t var = 0; var < _orderOfMove.size(); ++var)
     {
         std::vector<SimpleCard> cardsOnHands = _orderOfMove[var]->GetCardsOnHands();
         for (uint32_t y = 0; y < cardsOnHands.size(); ++y)
         {
-            qDebug() << "NAY-002: " << "Showing Card with id: " << cardsOnHands[y].second;
+            //logger.Debug() << "NAY-002: " << "Showing Card with id: " << cardsOnHands[y].second;
             _GamerWidgetsWithIDs[var]->AddTheCardToHandsWidget(cardsOnHands[y]);
         }
     }
@@ -1761,15 +1761,6 @@ void The_Game::theMonstersParser(const QString &filename)
 
 void The_Game::DEBUG_SlotWasPushedToGameMode()
 {   
-
-    logger.Info()           << "Smart Logger Fisrt Message.";
-    logger.Warning()        << "Smart Logger Second Message.";
-    logger.Debug()          << "Smart Logger Third Message.";
-    logger.Error()          << "Smart Logger Fourth Message.";
-    logger.Essential()      << "Smart Logger Fifth Message.";
-    logger.Observation()    << "Smart Logger Sizth Message.";
-    logger.TaskCompletion() << "Smart Logger Seventh Message.";
-
     _playersOrder.push_back(_gameSettings.clientName());
     _playersOrder.push_back("DEBUG_Opponent");
     if (_gameSettings.maximumNumberOfPlayers() != 2)
@@ -4074,7 +4065,7 @@ void The_Game::SlotShowAllSoldCardsInCentre(const std::vector<SimpleCard> cards,
 
 bool The_Game::CheckThePlayerIsAbleToSell(Player* player)
 {
-    qDebug() <<"NAY-002: Entering AbleToSell Checker";
+    logger.Algorithm() <<"NAY-002: Entering AbleToSell Checker";
 
     //Fisrt of all, clear the vector!
     ClearCardsAreReadyToBeSoldHolder();
@@ -4090,7 +4081,7 @@ bool The_Game::CheckThePlayerIsAbleToSell(Player* player)
     std::vector<SimpleCard> cardsOnHands = player->GetCardsOnHands();
     std::vector<SimpleCard> cardsInGame = player->GetCardsInGame();
 
-    qDebug() <<"NAY-002: AbleToSell Checker cardsOnHands: size: " << player->GetCardsOnHands().size();
+    //logger.Debug() <<"NAY-002: AbleToSell Checker cardsOnHands: size: " << player->GetCardsOnHands().size();
 
     for (uint32_t var = 0; var < cardsOnHands.size(); ++var)
     {
@@ -4111,7 +4102,7 @@ bool The_Game::CheckThePlayerIsAbleToSell(Player* player)
         if (GetCardPrice(sumChecker[var]))
             _cardsAreReadyToBeSoldHolder.push_back(sumChecker[var]);
     }
-    qDebug() << "NAY-002: Total Price of all the cards the player has: " << totalSumOfAllTheCards;
+    logger.Debug() << "NAY-002: Total Price of all the cards the player has: " << totalSumOfAllTheCards;
 
     if (totalSumOfAllTheCards >= 1000)
     {
@@ -4176,7 +4167,7 @@ uint32_t The_Game::GetLevelPurchased(uint32_t totalMoneySpent)
 
 void The_Game::RealGameStart()
 {
-    qDebug() << "NAY-002 : RealGameStart()!";
+    logger.Essential() << "NAY-002 : RealGameStart()!";
 
     if (_gameSettings.clientName() == _playersOrder[0])
     {
@@ -4375,7 +4366,7 @@ void The_Game::InitializeMainPlayerMove()
     SetCurrentGamePhase(GamePhase::StartOfTheMove);
 
     if (CheckThePlayerIsAbleToSell(_mainPlayer))
-        qDebug() << "NAY-001: The player is able to sell!";
+        logger.Debug() << "NAY-001: The player is able to sell!";
 }
 
 void The_Game::InitializeOpponentMove(const QString &opponentsName)
@@ -4383,7 +4374,7 @@ void The_Game::InitializeOpponentMove(const QString &opponentsName)
     SetGlobalGamePhase(GlobalGamePhase::OtherPlayerMove);
     SetCurrentGamePhase(GamePhase::OtherPlayerMove);
 
-    qDebug() << "NAY-002: Other PlayerMove!";
+    logger.Algorithm() << "NAY-002: Other PlayerMove!";
 }
 
 void The_Game::StartMoveTimer()
@@ -4467,12 +4458,12 @@ void The_Game::InitializePhaseTimer()
 
 void The_Game::SlotMoveTimerHandler()
 {
-    qDebug() << "NAY-002: MoveTimer timeout!";
+   logger.Algorithm() << "NAY-002: MoveTimer timeout!";
 }
 
 void The_Game::SlotPhaseTimerHandler()
 {
-    qDebug() << "NAY-002:: PhaseTimer timeout!";
+    logger.Algorithm() << "NAY-002:: PhaseTimer timeout!";
 }
 
 void The_Game::SlotSecondsMoveTimerHandler()

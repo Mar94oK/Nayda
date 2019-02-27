@@ -10,6 +10,8 @@ GamerWidget::GamerWidget(QWidget *parent, Player *player) :
 
     //https://wiki.qt.io/Qt_Coding_Style/ru
 
+    DECLARE_NAMED_LOGGER(GamerWidget);
+
     SetUpWidgetsPerfomance();
     ui->btn_Trade->hide();
 
@@ -110,8 +112,8 @@ void GamerWidget::PassCardsDecksToHandsAndCardsInGameWidgets(const AllDecksToBeP
 void GamerWidget::AddTheCardToHandsWidget(SimpleCard card)
 {
 
-    qDebug() << "NAY-002: IsMainPlayer: " << is_MainPlayer();
-    qDebug() << "";
+    //logger.Info() << "NAY-002: IsMainPlayer: " << is_MainPlayer();
+    //logger.Info() << "";
 
     if (_isMainPlayer)
     {
@@ -366,7 +368,7 @@ void GamerWidget::SlotHideTradeButton()
 
 void GamerWidget::SlotShowTradeButton()
 {
-    qDebug() << "NAY-002: Show Trade Button!!!";
+    logger.Debug() << "NAY-002: Show Trade Button!!!";
     ui->btn_Trade->show();
 }
 

@@ -12,6 +12,8 @@ Before_The_Game::Before_The_Game(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    DECLARE_NAMED_LOGGER(Before_The_Game);
+
     newRoomDialog->hide();
     setUpGeometricRelations();
     setUpSignalsSlotsConnections();
@@ -29,7 +31,7 @@ void Before_The_Game::dbg_switch_to_game_mode_button_pressed()
     emit DEBUG_SignalSwitchToGameMode(true);
     emit dbg_the_game_begins(true);
     //emit update_game_options_card_stack_type(this->card_stack_mode);
-    qDebug() << "Start with debug button. ONLY VIEW!!!!";
+    logger.Essential() << "Start with debug button. ONLY VIEW!!!!";
     //emit update_game
 }
 
@@ -39,7 +41,7 @@ void Before_The_Game::dbg_start_the_game_with_default_settings()
     emit DEBUG_SignalSwitchToGameMode(true);
     emit dbg_the_game_begins(true);
     //emit update_game_options_card_stack_type(this->card_stack_mode);
-    qDebug() << "Start with debug button. DEFAULT SETTING ARE PROVIDED!!!!";
+    logger.Essential() << "Start with debug button. DEFAULT SETTING ARE PROVIDED!!!!";
 }
 
 

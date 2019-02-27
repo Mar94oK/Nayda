@@ -13,6 +13,7 @@
 #include "gamesettings.h"
 #include "Application/The_Game/The_Game.h"
 #include "playersordernotification.h"
+#include "smartqtlogger.h"
 
 namespace Ui {
 class battleField;
@@ -21,6 +22,10 @@ class battleField;
 class battleField : public QWidget
 {
     Q_OBJECT
+
+private:
+
+    Logger logger;
 
 public:
     explicit battleField(QWidget *parent = 0);

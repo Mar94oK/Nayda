@@ -14,6 +14,8 @@
 #include "Application/card.h"
 #include "Application/player.h"
 
+#include "smartqtlogger.h"
+
 #define DEBUG_GAMER_WIDGET
 
 namespace Ui {
@@ -23,6 +25,10 @@ class GamerWidget;
 class GamerWidget : public QWidget
 {
     Q_OBJECT
+
+private:
+
+    Logger logger;
 
 public:
     explicit GamerWidget(QWidget *parent = nullptr, Player* GetPointerToPlayer = nullptr);

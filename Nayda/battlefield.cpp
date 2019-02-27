@@ -10,6 +10,8 @@ battleField::battleField(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    DECLARE_NAMED_LOGGER(battleField);
+
     QObject::connect(ui->btnStartTestCards, SIGNAL(clicked()), this, SLOT(startCardsRepresentation()));
 
     //disable the button for cards' testing.
@@ -559,7 +561,7 @@ void battleField::InitializeStartUpProcedureVisualization()
 
 void battleField::SlotStartUpAnimationCompleted()
 {
-    qDebug() << "SlotStartUpAnimationCompleted() ";
+    logger.Algorithm() << "SlotStartUpAnimationCompleted() ";
 
     ui->btn_MoveTimer->show();
     ui->btn_PhaseTimer->show();

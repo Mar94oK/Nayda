@@ -10,6 +10,7 @@
 #include "roomcreationwaitinglobby.h"
 #include "serverhadclosedconnectionwindow.h"
 #include "roomcreationwaitinglobby.h"
+#include "smartqtlogger.h"
 #define DEBUG_MESSAGES
 
 
@@ -30,6 +31,10 @@ class Before_The_Game;
 class Before_The_Game :  public QMainWindow
 {
     Q_OBJECT
+
+private:
+
+    Logger logger;
 
 public:
 
