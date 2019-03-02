@@ -1,6 +1,6 @@
 #include "player.h"
 
-QString Player::GetPlayersName() const
+QString Player::GetPlayerName() const
 {
     return _name;
 }
@@ -49,12 +49,12 @@ void Player::RemoveGivenCardFromHand(SimpleCard card)
     qDebug() << "NAY-002: ERROR WHILE void Player::RemoveGivenCardFromHand(SimpleCard card). Card not found!";
 }
 
-Players_Sex Player::playersSex() const
+PlayerSex Player::GetPlayerSex() const
 {
     return _playersSex;
 }
 
-void Player::setPlayersSex(const Players_Sex &playersSex)
+void Player::SetPlayerSex(const PlayerSex &playersSex)
 {
     _playersSex = playersSex;
 }
@@ -77,6 +77,24 @@ bool Player::GetRightHandSlotFull() const
 void Player::SetRightHandSlotFull(bool rightHandSlotFull)
 {
     _rightHandSlotFull = rightHandSlotFull;
+}
+
+void Player::IncreaseTotalHands(uint32_t diff)
+{
+    _totalHands += diff;
+    AddFreeHands(diff);
+}
+
+
+void Player::DecreaseTotalHands(uint32_t diff)
+{
+    logger.Essential() << "Did you forget to process weapons which the player is no longer able to handle? For player:: " << GetPlayerName();
+    _totalHands -= diff;
+    if (_totalHands < 2)
+    {
+        _totalHands += diff;
+        logger.Error() << GetPlayerName() <<  " ERROR while DECREASING hands. Diff: " << diff;
+    }
 }
 
 
@@ -221,6 +239,16 @@ void Player::SetCombinedHead(const uint32_t &combinedHead)
     _combinedHead = combinedHead;
 }
 
+bool Player::GetIsAffectedByTinyHands() const
+{
+    return _affectedByTinyHands;
+}
+
+void Player::SetIsAffectedByTinyHands(bool affectedByTinyHands)
+{
+    _affectedByTinyHands = affectedByTinyHands;
+}
+
 bool Player::CheckCardIsFromCardsInGame(SimpleCard card)
 {
     for (uint32_t var = 0; var < _activeCardsInGame.size(); ++var)
@@ -248,6 +276,8 @@ bool Player::CheckCardIsFromCardsOnHand(SimpleCard card)
 
 Player::Player(const QString& name) : _name(name)
 {
+    DECLARE_NAMED_LOGGER(Player);
+
     _isMainPlayer = false;
     
     _playerLevel = 1;

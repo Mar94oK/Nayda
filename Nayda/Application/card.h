@@ -82,7 +82,7 @@ enum class Abilities_Keys_Professions {warriors_ability_1, warriors_ability_2, r
                                       priests_ability_1, priests_ability_2, bards_ability_1, bards_ability_2,
                                       mage_ability_1, mage_ability_2};
 
-enum class Players_Sex {Man, Woman};
+enum class PlayerSex {Man, Woman};
 
 enum class Body_Part {Head, Armor, Feet};
 
@@ -390,24 +390,34 @@ public:
 };
 
 
+class TreasureWeaponAllowance : public CardPlayAllowanceBase
+{
+    bool _active;
 
-//_monstersDeck = data._monstersDeck;
-//_amplifiersDeck = data._amplifiersDeck;
-//_cursesDeck = data._cursesDeck;
-//_professionsDeck = data._professionsDeck;
-//_racesDeck = data._racesDeck;
-//_specialMechanicsDeck = data._specialMechanicsDeck;
+public:
 
-//_armorDeck = data._armorDeck;
-//_armorAmplifiersDeck = data._armorAmplifiersDeck;
-//_battleAmplifiersDeck = data._battleAmplifiersDeck;
-//_levelUpDeck = data._levelUpDeck;
-//_specialMechanicsTreasureDeck = data._specialMechanicsTreasureDeck;
-//_thingsAmplifiersDeck = data._thingsAmplifiersDeck;
-//_weaponsDeck = data._weaponsDeck;
+    void Setctive(bool active) { _active = active; }
+    bool GetIsActive() const { return _active; }
 
+public:
 
+    TreasureWeaponAllowance(bool allowedToBePlayed, const QString& reason, bool active) :
+        _active(active)
+    {
+        SetAllowance(allowedToBePlayed);
+        SetReasonOfRestriction(reason);
+    }
 
+public:
+
+    TreasureWeaponAllowance(const TreasureWeaponAllowance* ptr)
+    {
+        _active = ptr->GetIsActive();
+        SetAllowance(ptr->GetAllowance());
+        SetReasonOfRestriction(ptr->GetReasonOfRestriction());
+    }
+
+};
 
 //Fake-class to return it's pointer in the card-detector
 class GameCardBasis
@@ -1028,7 +1038,7 @@ class gameCardTreasureWeapon : public GameCardBasis
     cardAddon _addOn;
     treasureType _type;
 
-    int _hands;
+    uint32_t _hands;
     Size _size;
     int _bonus;
 
@@ -1073,8 +1083,8 @@ public:
     void setAddOn(const cardAddon &addOn);
     treasureType type() const;
     void setType(const treasureType &type);
-    int hands() const;
-    void setHands(int hands);
+    uint32_t GetNecessaryHands() const;
+    void SetNecessaryHands(int GetNecessaryHands);
     int bonus() const;
     void setBonus(int bonus);
     bool isOnlyForElf() const;
@@ -1128,7 +1138,7 @@ class Game_Card_Stock
 {
 public:
 
-  Game_Card_Stock();
+    Game_Card_Stock();
   Game_Card_Stock (int stock_type, int total_cards_to_be_played, int cards_left_to_be_played, int time_replayed);
 
   int type() const;

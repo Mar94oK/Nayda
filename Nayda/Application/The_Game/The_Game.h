@@ -385,7 +385,7 @@ private:
     bool GetIsRoomMaster() { return _isRoomMaster; }
     bool CheckIsMainPlayerTheRoomMaster(const QString& master)
     {
-        if (_mainPlayer->GetPlayersName() == master)
+        if (_mainPlayer->GetPlayerName() == master)
             return true;
         return false;
     }
@@ -492,6 +492,10 @@ private:
                                                                           Player* player,
                                                                           bool fromHand);
     void ImplementTreasureLevelUpCard(std::shared_ptr<CardPlayAllowanceBase> allowance, const GameCardBasis *card, GamerWidget *wt, PositionedCard posCard);
+
+    std::shared_ptr<TreasureWeaponAllowance> GetAllowanceTreasureWeapon(const gameCardTreasureWeapon *card,
+                                                                        Player* player,
+                                                                        bool fromHand);
 
 private:
 

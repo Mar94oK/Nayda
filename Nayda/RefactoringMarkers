@@ -1,0 +1,20 @@
+//Created 02.03.2019
+//To define markers where some work is expected to be done later.
+//At least, it makes sense to pay attention to them.
+
+
+EXPECTED_IMPROVEMENT
+//Expectation to make the things better. Should be with notes;
+
+HARDCODED_BEHAVIOUR
+//Some thing wich expected to be done as non-hard-coded. Rework it!
+
+ARCHITECTURE
+//Notes about ARCHITECTURE. Pay attention. There might be some issues.
+
+ADD_LATER
+//NECESSARY additions. SHOULD BE added before Munchkin can be released.
+
+REWORK
+//The process is WRONG!!!! Rework it. Some approach was taken to be able to work further,
+but they BREAKS the Game LOGIC. Therefore REWORK IS NECESSARY!!!

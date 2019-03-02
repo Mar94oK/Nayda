@@ -166,7 +166,8 @@ DISTFILES += \
     ArchitectureNotes \
     UnhandledThings_CardsImplementation \
     Setup \
-    Notes
+    Notes \
+    RefactoringMarkers
 
 unix: LIBS += /usr/local/lib/libprotobuf.a
 win32: LIBS += $$PWD/Libs/libprotobuf.a

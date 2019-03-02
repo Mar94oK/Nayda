@@ -1262,7 +1262,7 @@ gameCardTreasureWeapon The_Game::WeaponStringParser(const QString &weapons_strin
     theWeapon.setType(treasureType::Weapon);
     lst.removeFirst();
 
-    theWeapon.setHands(lst.first().toInt());
+    theWeapon.SetNecessaryHands(lst.first().toInt());
     lst.removeFirst();
 
     theWeapon.setSize(Size::Small);
@@ -2114,13 +2114,13 @@ void The_Game::MainCardImplementer(GamerWidget *wt, PositionedCard card, CardImp
         if (_currentGamePhase == GamePhase::OtherPlayerMove)
         {
             //Later while implementing Curses rechek this rule!
-            qDebug() << "NAY-002: DEBUG:: Other Player's Move! DEBUG!!! Not allowed to play cards!";
+            logger.Debug() << "NAY-002: DEBUG:: Other Player's Move! DEBUG!!! Not allowed to play cards!";
             emit SignalCardIsRejectedToBePlayed(true);
             return;
         }
         if (_currentGamePhase == GamePhase::CardAnimation)
         {
-            qDebug() << "NAY-002: DEBUG:: The Game is in the GamePhase::CardAnimation when it is not possible to use cards!";
+            logger.Debug() << "NAY-002: DEBUG:: The Game is in the GamePhase::CardAnimation when it is not possible to use cards!";
             emit SignalCardIsRejectedToBePlayed(true);
             return;
         }
@@ -2234,7 +2234,12 @@ std::shared_ptr<CardPlayAllowanceBase> The_Game::GetAllowance(const GameCardBasi
         const gameCardTreasureLevelUp* cardPtr = static_cast<const gameCardTreasureLevelUp* >(card);
         return  GetAllowanceTreasureLevelUp(cardPtr, player, true);
     }
-    qDebug() << "NAY-002: ERROR WHILE The_Game::GetAllowance. Not implemented type: "
+    else if (card->GetCardType() == CardType::TreasureWeapon)
+    {
+        const gameCardTreasureWeapon* cardPtr = static_cast<const gameCardTreasureWeapon* >(card);
+        return GetAllowanceTreasureWeapon(cardPtr, player, true);
+    }
+    logger.Debug() << "NAY-002: ERROR WHILE The_Game::GetAllowance. Not implemented type: "
              << card->GetCardType();
 
     return nullptr;
@@ -2461,6 +2466,137 @@ void The_Game::ImplementTreasureLevelUpCard(std::shared_ptr<CardPlayAllowanceBas
     //(пригодится в дальнейшем)
     Animation_PassCardFromHandToTreasureFold_Phase1(wt, posCard);
 
+}
+
+std::shared_ptr<TreasureWeaponAllowance> The_Game::GetAllowanceTreasureWeapon(const gameCardTreasureWeapon *card, Player *player, bool fromHand)
+{
+    //Все подобные парсеры предполагают, что проверка на глобальные запреты уже пройдена.
+    //На 11.12.2018 это только процесс анимирования карт (карт-процессинг CardProcessing)
+
+    //Играть карту "Оружие" можно в любой момент игры, кроме собственного боя.
+    //Причём она может быть как "активной, так и не активной"
+
+    //MunRules
+    //https://hobbyworld.ru/download/rules/m_color_rules.pdf
+    //https://hobbyworld.ru/chastie-voprosi-po-manchkin#cardsitems
+
+    //Запреты на применение оружие такие же, как и для брони,
+    //но к ним добавляются ограничения, связанные с количеством "рук".
+
+    //1) большая шмотка
+    //2) "только для"
+    //3) "запрещено для"
+    //4) число рук
+
+
+    //Проверка, что нет боя:
+    if (GetCurrentGamePhase() == GamePhase::Battle)
+        return std::make_shared<TreasureWeaponAllowance>(TreasureWeaponAllowance(false, "Странное дело, но в бою нельзя брать в руки дополнительное оружие. "
+                                                                                        "Готовьтесь заранее!", false));
+
+    //NAY-002: REWORK. Оружие, как и броню, можно выкладывать в чужой ход!
+    if (GetCurrentGamePhase() == GamePhase::OtherPlayerMove)
+        return std::make_shared<TreasureWeaponAllowance>(TreasureWeaponAllowance(false, "Сейчас чужой ход. Броню можно вводить в игру только в свой ход.", false));
+
+    if (player->GetThereIsLimitOnBigThings() && player->GetThereIsOneBigThing()
+            && (card->size() == Size::Big))
+        return std::make_shared<TreasureWeaponAllowance>(TreasureWeaponAllowance(false, "К сожалению, у Вас уже есть большие шмотки в игре!", false));
+
+    if (card->isOnlyForElf()
+            && player->GetRace() != Race::Elf
+            && player->GetSecondRace() != Race::Elf)
+    {
+        return std::make_shared<TreasureWeaponAllowance>(TreasureArmorAllowance(true, "Увы, карта активна только для эльфа!\n Разве вы эльф?", false));
+    }
+
+    if (card->isOnlyForDwarf()
+            && player->GetRace() != Race::Dwarf
+            && player->GetSecondRace() != Race::Dwarf)
+    {
+        return std::make_shared<TreasureWeaponAllowance>(TreasureArmorAllowance(true, "Увы, карта активна только для дворфа!\n Разве вы дфорф?", false));
+    }
+
+    if (card->isOnlyForHuman()
+            && player->GetRace() != Race::Human)
+    {
+        return std::make_shared<TreasureWeaponAllowance>(TreasureWeaponAllowance(true, "Увы, карта активна только для человека./n Теперь вы другой.", false));
+    }
+
+    if (card->isOnlyForOrk()
+            && player->GetRace() != Race::Ork
+            && player->GetSecondRace() != Race::Ork)
+    {
+        return std::make_shared<TreasureWeaponAllowance>(TreasureWeaponAllowance(true, "Увы, карта активна только для орка./n Вы не орк.", false));
+    }
+
+    if (card->isOnlyForHalfling()
+            && player->GetRace() != Race::Halfling
+            && player->GetSecondRace() != Race::Halfling)
+    {
+        return std::make_shared<TreasureWeaponAllowance>(TreasureWeaponAllowance(true, "Фродо Бэггинс любил эту карту./n А вы не халфлинг.", false));
+    }
+
+    if (card->isOnlyForGnome()
+            && player->GetRace() != Race::Gnome
+            && player->GetSecondRace() != Race::Gnome)
+    {
+        return std::make_shared<TreasureWeaponAllowance>(TreasureWeaponAllowance(true, "Увы, карта активна только для гнома!\n Разве вы гном?", false));
+    }
+
+    if (card->isOnlyForWizard()
+            && player->GetProfession() != Profession::Wizard
+            && player->GetSecondProfession() != Profession::Wizard)
+    {
+        return std::make_shared<TreasureWeaponAllowance>(TreasureWeaponAllowance(true, "Увы, карта активна только для волшебника!\n"
+                                            "Разве к вам в детстве прилетала сова с письмом?\n"
+                                            "...Но ведь вы её ждали?\n", false));
+    }
+
+    if (card->isOnlyForWarrior()
+            && player->GetProfession() != Profession::Warrior
+            && player->GetSecondProfession() != Profession::Warrior)
+    {
+        return std::make_shared<TreasureWeaponAllowance>(TreasureWeaponAllowance(true, "Увы, карта активна только для воина!\n"
+                                            "А ты и меч-бастард в руках не удержишь!", false));
+    }
+
+    if (card->isOnlyForThief()
+            && player->GetProfession() != Profession::Thief
+            && player->GetSecondProfession() != Profession::Thief)
+    {
+        return std::make_shared<TreasureWeaponAllowance>(TreasureWeaponAllowance(true, "Увы, карта активна только для вора!\n"
+                                            "А вы ещё ничего не украли!", false));
+    }
+
+    if (card->isOnlyForBard()
+            && player->GetProfession() != Profession::Bard
+            && player->GetSecondProfession() != Profession::Bard)
+    {
+        return std::make_shared<TreasureWeaponAllowance>(TreasureWeaponAllowance(true, "Увы, карта активна только для барда!\n"
+                                            "Ах, какая невезуха! Нет ни голоса, ни слуха! ", false));
+    }
+
+    if (card->isOnlyForCleric()
+            && player->GetProfession() != Profession::Cleric
+            && player->GetSecondProfession() != Profession::Cleric)
+    {
+        return std::make_shared<TreasureWeaponAllowance>(TreasureWeaponAllowance(true, "Увы, карта активна только для клерика!\n"
+                                            "Вы не клерик!", false));
+    }
+
+    if (card->isOnlyForMan() && player->GetPlayerSex() != PlayerSex::Man)
+        return std::make_shared<TreasureWeaponAllowance>(TreasureWeaponAllowance(true, "Увы, карта активна только для мужчин!\n"
+                                            "Мои извинения, леди!", false));
+
+    if (card->isOnlyForWoman() && player->GetPlayerSex() != PlayerSex::Woman)
+        return std::make_shared<TreasureWeaponAllowance>(TreasureWeaponAllowance(true, "Увы, карта активна только для женщин!\n", false));
+
+    //Проверить колличество свободных рук!
+    if (player->GetFreeHands() < card->GetNecessaryHands())
+        return std::make_shared<TreasureWeaponAllowance>(TreasureWeaponAllowance(true, "Не хватает рук, чтобы удержать!\n", false));
+
+    //Запретов больше нет!
+    return std::make_shared<TreasureWeaponAllowance>(TreasureWeaponAllowance(true, "", true));
 }
 
 void The_Game::ShowCardIsForbiddenToPlayMessage(const QString &message)
@@ -3527,14 +3663,14 @@ void The_Game::SetUpPlayersAndWidgets(uint32_t windowHeight, uint32_t windowWidt
     std::vector<Player*> orderOfMove;
     for (uint32_t var = 0; var < _playersOrder.size(); ++var)
     {
-        if (_mainPlayer->GetPlayersName() == _playersOrder[var])
+        if (_mainPlayer->GetPlayerName() == _playersOrder[var])
         {
             _mainGamerOrderOfMove = var;
             orderOfMove.push_back(_mainPlayer);
         }
         for (uint32_t y = 0; y < _playersOpponents.size(); ++y)
         {
-            if (_playersOpponents[y]->GetPlayersName() == _playersOrder[var])
+            if (_playersOpponents[y]->GetPlayerName() == _playersOrder[var])
             {
                 orderOfMove.push_back(_playersOpponents[y]);
                 //NAY-002: MARK_EXPECTED_ERROR
@@ -3550,7 +3686,7 @@ void The_Game::SetUpPlayersAndWidgets(uint32_t windowHeight, uint32_t windowWidt
     logger.Debug() << "NAY-002: " << "Order of move: ";
     for (uint32_t var = 0; var < _orderOfMove.size(); ++var)
     {
-        logger.Debug() << var << " " << _orderOfMove[var]->GetPlayersName();
+        logger.Debug() << var << " " << _orderOfMove[var]->GetPlayerName();
     }
 
     uint32_t orderOfOpponent = 1;
@@ -3569,7 +3705,7 @@ void The_Game::SetUpPlayersAndWidgets(uint32_t windowHeight, uint32_t windowWidt
            //Проверить, что указатели точно устанавливаются.
            for (uint32_t y = 0; y < _playersOpponents.size(); ++y)
            {
-                if (_playersOpponents[y]->GetPlayersName() == playersOrder[var])
+                if (_playersOpponents[y]->GetPlayerName() == playersOrder[var])
                     _widgets4Opponents.back()->SetPointerToPlayer(_playersOpponents[y]);
            }
 

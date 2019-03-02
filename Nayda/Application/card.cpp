@@ -1761,14 +1761,16 @@ void gameCardTreasureWeapon::setType(const treasureType &type)
     _type = type;
 }
 
-int gameCardTreasureWeapon::hands() const
+uint32_t gameCardTreasureWeapon::GetNecessaryHands() const
 {
     return _hands;
 }
 
-void gameCardTreasureWeapon::setHands(int hands)
+void gameCardTreasureWeapon::SetNecessaryHands(int hands)
 {
-    _hands = hands;
+    //Костыль. Я и так знаю, что это число должно быть неотрицательным.
+    //И таблицы тоже составляю я. Если писать все эти проверки, Манчкин никогда не будет написан.
+    _hands = static_cast<uint32_t>(hands);
 }
 
 int gameCardTreasureWeapon::bonus() const
@@ -2000,6 +2002,7 @@ void gameCardTreasureWeapon::setSize(const Size &size)
 {
     _size = size;
 }
+
 
 int gameCardTreasureWeapon::cardID() const
 {

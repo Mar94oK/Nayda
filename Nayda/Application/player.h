@@ -5,11 +5,13 @@
 #include "card.h" //since it is better to store "Races", "Professions" inside the class of card.h
 #include <QDebug>
 #include "munchkinglobaldefines.h"
-
+#include "smartqtlogger.h"
 
 
 class Player
 {
+    Logger logger;
+
     QString _name = "";
 
     bool _isMainPlayer = false;
@@ -29,6 +31,10 @@ class Player
     bool _rightHandSlotFull = false;
     bool _armorSlotFull = false;
 
+    uint32_t _freeHands = 2;
+    uint32_t _totalHands = 2;
+    bool _affectedByTinyHands = false;
+
     bool _thereIsOneBigThing = false;
     bool _thereIsLimitOnBigThings= true; //may be remove it if checking the race
 
@@ -37,7 +43,7 @@ class Player
 
     Race _race = Race::Human;
     Profession _profession = Profession::No_Profession;
-    Players_Sex _playersSex = Players_Sex::Man;
+    PlayerSex _playersSex = PlayerSex::Man;
 
     bool _halfBreed = false;
     bool _superMunchkin = false;
@@ -108,6 +114,8 @@ public:
     void SetFleeChance(int GetFleeChance);
 
 
+
+
     uint32_t GetCardsOnHands() const;
     uint32_t GetCardsOnHandsLimit() const;
     void SetCardsOnHandsLimit(int GetCardsOnHandsLimit);
@@ -119,10 +127,26 @@ public:
     void SetHeadSlotIsFull(bool GetHeadSlotIsFull);
     bool GetLegsSlotIsFull() const;
     void SetLegsSlotIsFull(bool GetLegsSlotIsFull);
+
+    //May be useless...
     bool GetLeftHandSlotIsFull() const;
     void SetLeftHandSlotIsFull(bool GetLeftHandSlotIsFull);
     bool GetRightHandSlotFull() const;
     void SetRightHandSlotFull(bool GetRightHandSlotFull);
+
+    uint32_t GetFreeHands() const { return _freeHands; }
+    void AddFreeHands(uint32_t numberOfHands) { _freeHands += numberOfHands; }
+    uint32_t GetTotalHands() const { return _totalHands; }
+    void IncreaseTotalHands(uint32_t diff);
+    //После уменьшения общего колличества доступных рук - за счёт различных прибамбасов -
+    //логично проверить, можно ли беспрепятсвенно освободить
+    //занятые руки - если в них было оружие, потребуется предложить игроку выбор
+    //От какого оружия отказаться!!!
+    void DecreaseTotalHands(uint32_t diff);
+
+    bool GetIsAffectedByTinyHands() const;
+    void SetIsAffectedByTinyHands(bool GetIsAffectedByTinyHands);
+
     bool GetArmorSlotFull() const;
     void SetArmorSlotFull(bool GetArmorSlotFull);
 
@@ -135,6 +159,8 @@ public:
     void SetThereIsLimitOnBigThings(bool GetThereIsLimitOnBigThings);
     Race GetRace() const;
     void SetRace(const Race &GetRace);
+    PlayerSex GetPlayerSex() const;
+    void SetPlayerSex(const PlayerSex &GetPlayerSex);
     Profession GetProfession() const;
     void SetProfession(const Profession &GetProfession);
     Race GetSecondRace() const;
@@ -163,16 +189,13 @@ public:
     std::vector<SimpleCard> GetCardsInGame()
     { return (_activeCardsInGame + _disabledCardsInGame); }
 
-    QString GetPlayersName() const;
-    void SetPlayersName(const QString &GetPlayersName);
+    QString GetPlayerName() const;
+    void SetPlayersName(const QString &GetPlayerName);
 
     void RemoveGivenCardsFromHand(const std::vector<SimpleCard>& cards);
     void RemoveGivenCardsFromCardsInGame(const std::vector<SimpleCard>& cards);
 
     void RemoveGivenCardFromHand(SimpleCard card);
-
-    Players_Sex playersSex() const;
-    void setPlayersSex(const Players_Sex &playersSex);
 
     bool GetHasFreeHireling() const;
     void SetHasFreeHireling(bool GetHasFreeHireling);
@@ -220,10 +243,6 @@ private:
     //it is necessary to save the property in the player class of the card responsible for the
     //class review
     //SimpleCard
-
-public:
-
-
 
 };
 
