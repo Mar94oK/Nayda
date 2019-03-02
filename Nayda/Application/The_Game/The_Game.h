@@ -496,6 +496,7 @@ private:
     std::shared_ptr<TreasureWeaponAllowance> GetAllowanceTreasureWeapon(const gameCardTreasureWeapon *card,
                                                                         Player* player,
                                                                         bool fromHand);
+    void ImplementTreasureWeapon(std::shared_ptr<CardPlayAllowanceBase> allowance, const GameCardBasis *card, GamerWidget *wt, PositionedCard posCard);
 
 private:
 
@@ -505,8 +506,9 @@ private:
     //Все подобные функции должны уметь и применять, и отменять действие карты
     //Вызванная с флагом false, она должна отменить действие карты.
     void ApplyNewArmor(GamerWidget* wt, const gameCardTreasureArmor& card, CardApplyMode apply = CardApplyMode::Apply);
+    void ApplyNewWeapon(GamerWidget* wt, const gameCardTreasureWeapon& card, CardApplyMode apply = CardApplyMode::Apply);
 
-    TreasureArmorAllowance CardIsAbleToPlayChecker_TreasureArmor(gameCardTreasureArmor card, bool fromHand);
+
 
 signals:
 

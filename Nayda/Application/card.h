@@ -99,7 +99,7 @@ enum class Additional_Request {noCompanion, failedToFlee,
 //Their values should be equal to their cardIDs
 //If card has Special Function, Implementer should run trough whole the 
 //Cards below  
-enum class CardsWithPassiveSpecialFunctions_TreasureArmor
+enum class CardsWithSpecialFunctions_TreasureArmor
 {
     FlamingArmor = 7,
     AwfulSocks = 122,
@@ -108,6 +108,15 @@ enum class CardsWithPassiveSpecialFunctions_TreasureArmor
     MagnificentHat = 120,
     SandalsOfProtection = 12,
     TinfoilHat = 75,
+};
+
+enum class CardsWithSpecialFunctions_TreasureWeapon
+{
+    BoomDagger = 111,
+    RatOnAStick = 69,
+    SiegeEngine = 117,
+    StabAMatic = 157,
+    TubaOfCharm = 65
 };
 
 enum class CardImplementationDirection
@@ -1042,95 +1051,103 @@ class gameCardTreasureWeapon : public GameCardBasis
     Size _size;
     int _bonus;
 
-    bool _isOnlyForElf;
-    bool _isOnlyForMan;
-    bool _isOnlyForDwarf;
-    bool _isOnlyForHuman;
-    bool _isOnlyForWizard;
-    bool _isOnlyForWoman;
-    bool _isOnlyForWarrior;
-    bool _isOnlyForOrk;
-    bool _isOnlyForThief;
-    bool _isOnlyForHalfling;
-    bool _isOnlyForGnome;
-    bool _isOnlyForBard;
-    bool _isOnlyForCleric;
+    bool _isOnlyForElf = false;
+    bool _isOnlyForMan = false;
+    bool _isOnlyForDwarf = false;
+    bool _isOnlyForHuman = false;
+    bool _isOnlyForWizard = false;
+    bool _isOnlyForWoman = false;
+    bool _isOnlyForWarrior = false;
+    bool _isOnlyForOrk = false;
+    bool _isOnlyForThief = false;
+    bool _isOnlyForHalfling = false;
+    bool _isOnlyForGnome = false;
+    bool _isOnlyForBard = false;
+    bool _isOnlyForCleric = false;
 
-    bool _hasSpecialMechanic;
+    bool _hasSpecialMechanic = false;
 
     int _price;
 
-    int _bonusToFlee;
-    int _additionalBonusAgainstUndead;
+    int _bonusToFlee = 0;
 
-    bool _automaticLooseToCalmadzila;
+    uint32_t _additionalBonusAgainstUndead = 0;
+    uint32_t _additionalBonusAgainst_J = 0;
 
-    int _additionalBonusAgainst_J;
+    bool _automaticLooseToCalmadzila = false;
 
-    bool _addingClericalAbility;
 
-    bool _addingThiefAbility;
+
+    bool _addingClericalAbility = false;
+
+    bool _addingThiefAbility = false;
 
 public:
 
-    int cardID() const;
-    void setCardID(int cardID);
-    QString pictureAddress() const;
-    void setPictureAddress(const QString &pictureAddress);
-    QString cardName() const;
-    void setCardName(const QString &cardName);
-    cardAddon addOn() const;
-    void setAddOn(const cardAddon &addOn);
-    treasureType type() const;
-    void setType(const treasureType &type);
+    int GetCardID() const;
+    void SetCardID(int GetCardID);
+    QString GetPictureAddress() const;
+    void SetPictureAddress(const QString &GetPictureAddress);
+    QString CardName() const;
+    void SetCardName(const QString &CardName);
+    cardAddon GetAddOn() const;
+    void SetAddOn(const cardAddon &GetAddOn);
+    treasureType GetType() const;
+    void SetType(const treasureType &GetType);
     uint32_t GetNecessaryHands() const;
     void SetNecessaryHands(int GetNecessaryHands);
-    int bonus() const;
-    void setBonus(int bonus);
+    int GetBonus() const;
+    void SetBonus(int GetBonus);
     bool isOnlyForElf() const;
-    void setIsOnlyForElf(bool isOnlyForElf);
+    void SetIsOnlyForElf(bool isOnlyForElf);
     bool isOnlyForMan() const;
-    void setIsOnlyForMan(bool isOnlyForMan);
+    void SetIsOnlyForMan(bool isOnlyForMan);
     bool isOnlyForDwarf() const;
-    void setIsOnlyForDwarf(bool isOnlyForDwarf);
+    void SetIsOnlyForDwarf(bool isOnlyForDwarf);
     bool isOnlyForHuman() const;
-    void setIsOnlyForHuman(bool isOnlyForHuman);
+    void SetIsOnlyForHuman(bool isOnlyForHuman);
     bool isOnlyForWizard() const;
-    void setIsOnlyForWizard(bool isOnlyForWizard);
+    void SetIsOnlyForWizard(bool isOnlyForWizard);
     bool isOnlyForWoman() const;
-    void setIsOnlyForWoman(bool isOnlyForWoman);
+    void SetIsOnlyForWoman(bool isOnlyForWoman);
     bool isOnlyForWarrior() const;
-    void setIsOnlyForWarrior(bool isOnlyForWarrior);
+    void SetIsOnlyForWarrior(bool isOnlyForWarrior);
     bool isOnlyForOrk() const;
-    void setIsOnlyForOrk(bool isOnlyForOrk);
+    void SetIsOnlyForOrk(bool isOnlyForOrk);
     bool isOnlyForThief() const;
-    void setIsOnlyForThief(bool isOnlyForThief);
+    void SetIsOnlyForThief(bool isOnlyForThief);
     bool isOnlyForHalfling() const;
-    void setIsOnlyForHalfling(bool isOnlyForHalfling);
+    void SetIsOnlyForHalfling(bool isOnlyForHalfling);
     bool isOnlyForGnome() const;
-    void setIsOnlyForGnome(bool isOnlyForGnome);
+    void SetIsOnlyForGnome(bool isOnlyForGnome);
     bool isOnlyForBard() const;
-    void setIsOnlyForBard(bool isOnlyForBard);
-    bool hasSpecialMechanic() const;
-    void setHasSpecialMechanic(bool hasSpecialMechanic);
-    int price() const;
-    void setPrice(int price);
-    int bonusToFlee() const;
-    void setBonusToFlee(int bonusToFlee);
-    int additionalBonusAgainstUndead() const;
-    void setAdditionalBonusAgainstUndead(int additionalBonusAgainstUndead);
-    bool automaticLooseToCalmadzila() const;
-    void setAutomaticLooseToCalmadzila(bool automaticLooseToCalmadzila);
-    int additionalBonusAgainst_J() const;
-    void setAdditionalBonusAgainst_J(int additionalBonusAgainst_J);
-    bool addingClericalAbility() const;
-    void setAddingClericalAbility(bool addingClericalAbility);
-    bool addingThiefAbility() const;
-    void setAddingThiefAbility(bool addingThiefAbility);
+    void SetIsOnlyForBard(bool isOnlyForBard);
+    bool GetHasSpecialMechanic() const;
+    void SetHasSpecialMechanic(bool GetHasSpecialMechanic);
+    int GetPrice() const;
+    void SetPrice(int GetPrice);
+    int GetBonusToFlee() const;
+    void SetBonusToFlee(int GetBonusToFlee);
+    uint32_t GetAdditionalBonusAgainstUndead() const;
+    void SetAdditionalBonusAgainstUndead(uint32_t GetAdditionalBonusAgainstUndead);
+    bool GetAutomaticLooseToCalmadzila() const;
+    void SetAutomaticLooseToCalmadzila(bool GetAutomaticLooseToCalmadzila);
+    uint32_t GetAdditionalBonusAgainst_J() const;
+    void SetAdditionalBonusAgainst_J(uint32_t GetAdditionalBonusAgainst_J);
+    bool AddingClericalAbility() const;
+    void SetAddingClericalAbility(bool AddingClericalAbility);
+    bool GetAddingThiefAbility() const;
+    void SetAddingThiefAbility(bool GetAddingThiefAbility);
     bool isOnlyForCleric() const;
-    void setIsOnlyForCleric(bool isOnlyForCleric);
-    Size size() const;
-    void setSize(const Size &size);
+    void SetIsOnlyForCleric(bool isOnlyForCleric);
+    Size GetSize() const;
+    void SetSize(const Size &GetSize);
+
+public:
+
+    gameCardTreasureWeapon(const gameCardTreasureWeapon* ptr);
+    gameCardTreasureWeapon() { }
+    gameCardTreasureWeapon(const gameCardTreasureWeapon &other);
 };
 
 

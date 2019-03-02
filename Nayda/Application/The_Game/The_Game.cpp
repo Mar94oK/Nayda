@@ -1240,90 +1240,90 @@ gameCardTreasureWeapon The_Game::WeaponStringParser(const QString &weapons_strin
     gameCardTreasureWeapon theWeapon;
     QStringList lst = weapons_string.split(";");
 
-    theWeapon.setCardID((lst.first()).toInt());
+    theWeapon.SetCardID((lst.first()).toInt());
     lst.removeFirst();
 
 #ifndef USE_RESOURCES
     theWeapon.setPictureAddress(lst.first());
 #else
-    theWeapon.setPictureAddress(":/" + lst.first());
+    theWeapon.SetPictureAddress(":/" + lst.first());
 #endif
 
     lst.removeFirst();
 
-    theWeapon.setCardName(lst.first());
+    theWeapon.SetCardName(lst.first());
     lst.removeFirst();
 
-    if (lst.first() == "Basic") theWeapon.setAddOn(cardAddon::Basic);
-    else if (lst.first() == "WildAxe") theWeapon.setAddOn(cardAddon::WildAxe);
-    else if (lst.first() == "ClericalErrors") theWeapon.setAddOn(cardAddon::ClericalErrors);
+    if (lst.first() == "Basic") theWeapon.SetAddOn(cardAddon::Basic);
+    else if (lst.first() == "WildAxe") theWeapon.SetAddOn(cardAddon::WildAxe);
+    else if (lst.first() == "ClericalErrors") theWeapon.SetAddOn(cardAddon::ClericalErrors);
     lst.removeFirst();
 
-    theWeapon.setType(treasureType::Weapon);
+    theWeapon.SetType(treasureType::Weapon);
     lst.removeFirst();
 
     theWeapon.SetNecessaryHands(lst.first().toInt());
     lst.removeFirst();
 
-    theWeapon.setSize(Size::Small);
+    theWeapon.SetSize(Size::Small);
     if (lst.first() == "big") {
-        theWeapon.setSize(Size::Big);
+        theWeapon.SetSize(Size::Big);
     }
     lst.removeFirst();
 
-    theWeapon.setBonus(lst.first().toInt());
+    theWeapon.SetBonus(lst.first().toInt());
     lst.removeFirst();
 
     isOnlyFor_Weapon restrictions = TheWeaponIsForParser(lst.first());
-    theWeapon.setIsOnlyForBard(restrictions.isOnlyForBard);
-    theWeapon.setIsOnlyForCleric(restrictions.isOnlyForCleric);
-    theWeapon.setIsOnlyForDwarf(restrictions.isOnlyForDwarf);
-    theWeapon.setIsOnlyForElf(restrictions.isOnlyForElf);
-    theWeapon.setIsOnlyForGnome(restrictions.isOnlyForGnome);
-    theWeapon.setIsOnlyForHalfling(restrictions.isOnlyForHalfling);
-    theWeapon.setIsOnlyForHuman(restrictions.isOnlyForHuman);
-    theWeapon.setIsOnlyForMan(restrictions.isOnlyForMan);
-    theWeapon.setIsOnlyForOrk(restrictions.isOnlyForOrk);
-    theWeapon.setIsOnlyForThief(restrictions.isOnlyForThief);
-    theWeapon.setIsOnlyForWarrior(restrictions.isOnlyForWarrior);
-    theWeapon.setIsOnlyForWizard(restrictions.isOnlyForWizard);
-    theWeapon.setIsOnlyForWoman(restrictions.isOnlyForWoman);
+    theWeapon.SetIsOnlyForBard(restrictions.isOnlyForBard);
+    theWeapon.SetIsOnlyForCleric(restrictions.isOnlyForCleric);
+    theWeapon.SetIsOnlyForDwarf(restrictions.isOnlyForDwarf);
+    theWeapon.SetIsOnlyForElf(restrictions.isOnlyForElf);
+    theWeapon.SetIsOnlyForGnome(restrictions.isOnlyForGnome);
+    theWeapon.SetIsOnlyForHalfling(restrictions.isOnlyForHalfling);
+    theWeapon.SetIsOnlyForHuman(restrictions.isOnlyForHuman);
+    theWeapon.SetIsOnlyForMan(restrictions.isOnlyForMan);
+    theWeapon.SetIsOnlyForOrk(restrictions.isOnlyForOrk);
+    theWeapon.SetIsOnlyForThief(restrictions.isOnlyForThief);
+    theWeapon.SetIsOnlyForWarrior(restrictions.isOnlyForWarrior);
+    theWeapon.SetIsOnlyForWizard(restrictions.isOnlyForWizard);
+    theWeapon.SetIsOnlyForWoman(restrictions.isOnlyForWoman);
 
     lst.removeFirst();
 
-    theWeapon.setHasSpecialMechanic(false);
+    theWeapon.SetHasSpecialMechanic(false);
     if (lst.first() == "yes") {
-        theWeapon.setHasSpecialMechanic(true);;
+        theWeapon.SetHasSpecialMechanic(true);;
     }
     lst.removeFirst();
 
-    theWeapon.setPrice(lst.first().toInt());
+    theWeapon.SetPrice(lst.first().toInt());
     lst.removeFirst();
 
-    theWeapon.setBonusToFlee(lst.first().toInt());
+    theWeapon.SetBonusToFlee(lst.first().toInt());
     lst.removeFirst();
 
-    theWeapon.setAdditionalBonusAgainstUndead(lst.first().toInt());
+    theWeapon.SetAdditionalBonusAgainstUndead(lst.first().toInt());
     lst.removeFirst();
 
-    theWeapon.setAutomaticLooseToCalmadzila(false);
+    theWeapon.SetAutomaticLooseToCalmadzila(false);
     if (lst.first().toInt()) {
-         theWeapon.setAutomaticLooseToCalmadzila(true);
+         theWeapon.SetAutomaticLooseToCalmadzila(true);
     }
     lst.removeFirst();
 
-    theWeapon.setAdditionalBonusAgainst_J(lst.first().toInt());
+    theWeapon.SetAdditionalBonusAgainst_J(lst.first().toInt());
     lst.removeFirst();
 
-    theWeapon.setAddingClericalAbility(false);
+    theWeapon.SetAddingClericalAbility(false);
     if (lst.first().toInt()) {
-         theWeapon.setAddingClericalAbility(true);
+         theWeapon.SetAddingClericalAbility(true);
     }
     lst.removeFirst();
 
-    theWeapon.setAddingThiefAbility(false);
+    theWeapon.SetAddingThiefAbility(false);
     if (lst.first().toInt()) {
-         theWeapon.setAddingThiefAbility(true);
+         theWeapon.SetAddingThiefAbility(true);
     }
 
     theWeapon.SetCardType(CardType::TreasureWeapon);
@@ -2175,6 +2175,26 @@ void The_Game::MainCardImplementer(GamerWidget *wt, PositionedCard card, CardImp
                 }
                     break;
 
+            case CardType::TreasureWeapon:
+            {
+                std::shared_ptr<TreasureWeaponAllowance> weaponAllowance = std::static_pointer_cast<TreasureWeaponAllowance>(allowance);
+                logger.Algorithm() << "NAY-002: Starting TreasureLevelUp Implementation: weaponAllowance: Reason of restriction: " << weaponAllowance->GetReasonOfRestriction();
+                ProcessCardAllowedToBeImplemented(allowance, basisCard, wt, card, direction);
+                emit SignalCardIsRejectedToBePlayed(false);
+                //Отсюда отправить сообщение на сервер о применении карты
+                //в случае если это не сервер прислал сообщение о необходимости применения карты
+                //TODO:
+                //Сюда добавить сигнал для сервера!
+                emit SignalMainGamerHasImplementedCard(TheGameMainGamerHasImplementedCard(
+                                                           _mainGamerOrderOfMove,
+                                                           card.GetCard(),
+                                                           _roomID,
+                                                           false,
+                                                           CardImplementationDirection::HandToCardsInGame));
+
+            }
+                break;
+
             default:
                 {
                     qDebug() << "NAY-002: New ARCHITECTURE Starting: CardType: " << basisCard->GetCardType() << " not handled yet!";
@@ -2254,7 +2274,7 @@ void The_Game::ProcessCardMightNotBeImplemented(std::shared_ptr<CardPlayAllowanc
 
 void The_Game::ProcessCardAllowedToBeImplemented(std::shared_ptr<CardPlayAllowanceBase> allowance, const GameCardBasis *card, GamerWidget *wt, PositionedCard posCard, CardImplementationDirection direction)
 {
-    qDebug() << "NAY-002: ProcessCardAllowedToBeImplemented() ImplementationDirection: " << direction;
+    logger.Algorithm() << "NAY-002: ProcessCardAllowedToBeImplemented() ImplementationDirection: " << direction;
 
     switch (direction)
     {
@@ -2283,16 +2303,24 @@ void The_Game::ImplementCardFromHandsToCardsInGame(std::shared_ptr<CardPlayAllow
         {
             ImplementTreasureArmorToCardsInGame(allowance, card, wt, posCard);
         }
-            break;
+        break;
+
         case CardType::TreasureLevelUp:
         {
             ImplementTreasureLevelUpCard(allowance, card, wt, posCard);
         }
         break;
 
+        case CardType::TreasureWeapon:
+        {
+            ImplementTreasureWeapon(allowance, card, wt, posCard);
+        }
+        break;
+
+
         default:
         {
-            qDebug() << "NAY-002: ERROR WHILE ImplementCardFromHandsToCardsInGame(). Card is not supported yet!";
+            logger.Error() << "NAY-002: ERROR WHILE ImplementCardFromHandsToCardsInGame(). Card is not supported yet!";
         }
            break;
     }
@@ -2499,7 +2527,7 @@ std::shared_ptr<TreasureWeaponAllowance> The_Game::GetAllowanceTreasureWeapon(co
         return std::make_shared<TreasureWeaponAllowance>(TreasureWeaponAllowance(false, "Сейчас чужой ход. Броню можно вводить в игру только в свой ход.", false));
 
     if (player->GetThereIsLimitOnBigThings() && player->GetThereIsOneBigThing()
-            && (card->size() == Size::Big))
+            && (card->GetSize() == Size::Big))
         return std::make_shared<TreasureWeaponAllowance>(TreasureWeaponAllowance(false, "К сожалению, у Вас уже есть большие шмотки в игре!", false));
 
     if (card->isOnlyForElf()
@@ -2599,6 +2627,29 @@ std::shared_ptr<TreasureWeaponAllowance> The_Game::GetAllowanceTreasureWeapon(co
     return std::make_shared<TreasureWeaponAllowance>(TreasureWeaponAllowance(true, "", true));
 }
 
+void The_Game::ImplementTreasureWeapon(std::shared_ptr<CardPlayAllowanceBase> allowance, const GameCardBasis *card, GamerWidget *wt, PositionedCard posCard)
+{
+    std::shared_ptr<TreasureWeaponAllowance> weaponAllowance = std::static_pointer_cast<TreasureWeaponAllowance>(allowance);
+
+    SaveGamePhase();
+    SetGamePhase(GamePhase::CardAnimation);
+
+    Animation_PassPlayedCardToCardsInGame_Phase1(wt, posCard, weaponAllowance->GetIsActive());
+
+    const gameCardTreasureWeapon* cardPointer = static_cast<const gameCardTreasureWeapon* >(card);
+    gameCardTreasureWeapon realCard(cardPointer);
+    wt->SlotAddCardToCardsInGame(std::make_pair(weaponAllowance->GetIsActive(), SimpleCard(true, realCard.GetCardID())));
+
+    //Удалить карту с руки здесь же
+    RemoveTheCardFromHand(wt, posCard.GetCard());
+    MoveCardFromCardInHandToCardInGame(wt->GetPointerToPlayer(), std::make_pair(weaponAllowance->GetIsActive(), SimpleCard(true, realCard.GetCardID())));
+
+    if (!weaponAllowance->GetIsActive())
+        ApplyCardImplementerMessage(weaponAllowance->GetReasonOfRestriction(), true);
+    else
+        ApplyNewWeapon(wt, realCard);
+}
+
 void The_Game::ShowCardIsForbiddenToPlayMessage(const QString &message)
 {
     qDebug() << "NAY-002: Show Card is forbiden to play message: " << message;
@@ -2642,31 +2693,31 @@ void The_Game::ApplyNewArmor(GamerWidget* wt, const gameCardTreasureArmor &card,
 
         switch (card.GetCardID())
         {
-            case static_cast<uint32_t>(CardsWithPassiveSpecialFunctions_TreasureArmor::AwfulSocks):
+            case static_cast<uint32_t>(CardsWithSpecialFunctions_TreasureArmor::AwfulSocks):
                 player->SetNotAbleToHelp(true && addEffect);
                 break;
 
-            case static_cast<uint32_t>(CardsWithPassiveSpecialFunctions_TreasureArmor::FlamingArmor):
+            case static_cast<uint32_t>(CardsWithSpecialFunctions_TreasureArmor::FlamingArmor):
                 player->SetHasFireArmor(true && addEffect);
                 break;
 
-            case static_cast<uint32_t>(CardsWithPassiveSpecialFunctions_TreasureArmor::FreudianSlippers):
+            case static_cast<uint32_t>(CardsWithSpecialFunctions_TreasureArmor::FreudianSlippers):
                 player->SetIsAbleToChangeSexOnline(true && addEffect);
                 break;
 
-            case static_cast<uint32_t>(CardsWithPassiveSpecialFunctions_TreasureArmor::HelmOfPeripherialVision):
+            case static_cast<uint32_t>(CardsWithSpecialFunctions_TreasureArmor::HelmOfPeripherialVision):
                 player->SetIsProtectedFromTheft(true && addEffect);
                 break;
 
-            case static_cast<uint32_t>(CardsWithPassiveSpecialFunctions_TreasureArmor::MagnificentHat):
+            case static_cast<uint32_t>(CardsWithSpecialFunctions_TreasureArmor::MagnificentHat):
                 player->SetHasCursesMirroring(true && addEffect);
                 break;
 
-            case static_cast<uint32_t>(CardsWithPassiveSpecialFunctions_TreasureArmor::SandalsOfProtection):
+            case static_cast<uint32_t>(CardsWithSpecialFunctions_TreasureArmor::SandalsOfProtection):
                 player->SetIsProtecetedFromCursesFromDoors(true && addEffect);
                 break;
 
-            case static_cast<uint32_t>(CardsWithPassiveSpecialFunctions_TreasureArmor::TinfoilHat):
+            case static_cast<uint32_t>(CardsWithSpecialFunctions_TreasureArmor::TinfoilHat):
                 player->SetIsProtectedFromCursesFromPlayers(true && addEffect);
                 break;
 
@@ -2682,13 +2733,13 @@ void The_Game::ApplyNewArmor(GamerWidget* wt, const gameCardTreasureArmor &card,
     if (addEffect)
     {
         player->SetFleeChance(_mainPlayer->GetFleeChance() + card.bonusToFleeing());
-        player->SetBattlePower(_mainPlayer->GetBattlePower() + totalBonus);
+        player->SetBattlePower(static_cast<int32_t>(_mainPlayer->GetBattlePower() + static_cast<int32_t>(totalBonus)));
     }
     else
     {
         player->SetFleeChance(_mainPlayer->GetFleeChance() - card.bonusToFleeing());
-        player->SetBattlePower(_mainPlayer->GetBattlePower() - totalBonus);
-    }
+        player->SetBattlePower(static_cast<int32_t>(_mainPlayer->GetBattlePower() + static_cast<int32_t>(totalBonus)));
+   }
 
 
     //Установка карты в слот
@@ -2722,98 +2773,99 @@ void The_Game::ApplyNewArmor(GamerWidget* wt, const gameCardTreasureArmor &card,
     wt->SlotChangeTheGamerBattlePower(static_cast<int32_t>(addEffect ? totalBonus : -totalBonus));
 }
 
-
-TreasureArmorAllowance The_Game::CardIsAbleToPlayChecker_TreasureArmor(gameCardTreasureArmor card, bool fromHand)
+void The_Game::ApplyNewWeapon(GamerWidget *wt, const gameCardTreasureWeapon &card, CardApplyMode apply)
 {
-    //Все подобные парсеры предполагают, что проверка на глобальные запреты уже пройдена.
-    //На 11.12.2018 это только процесс анимирования карт (карт-процессинг CardProcessing)
+    Player* player = wt->GetPointerToPlayer();
 
-    //Играть карту "Броня" можно в любой момент игры, кроме собственного боя.
-    //Причём она может быть как "активной, так и не активной"
+    bool addEffect = true;
 
-    //MunRules
-    //https://hobbyworld.ru/download/rules/m_color_rules.pdf
-    //https://hobbyworld.ru/chastie-voprosi-po-manchkin#cardsitems
+    if (apply == CardApplyMode::Remove)
+       addEffect = false;
 
-    //Проверка, что нет боя:
-    if (GetCurrentGamePhase() == GamePhase::Battle)
-        return TreasureArmorAllowance(false, "Нельзя надевать броню в бою!", false);
+    //добавить основной бонус
+    uint32_t totalBonus = static_cast<uint32_t>(card.GetBonus());
 
-    if (GetCurrentGamePhase() == GamePhase::OtherPlayerMove)
-        return TreasureArmorAllowance(false, "Сейчас чужой ход. Броню можно вводить в игру только в свой ход.", false);
+    //Дополнительные бонусы оружие даёт только против типов противников.
+    //Соответсвенно такие бонусы должны быть записаны в свойства игрока.
 
-    //NAY-002: HARDCODED_BEHAVIOUR
-    //К сожалению, таблица сокровищ-доспехов не предусматривала поле "большой"
-    //Т.к. на ДАННЫЙ МОМЕНТ имеется лишь одна шмотка "Мифрильная броня", имеющая тип "большая"
-    //Я не буду дописывать в таблицу целое поле и дополнительно его парсить.
-    //Ниже сделаю привязку к конкретному Card-ID
+    player->SetAdditionalBonusAgainst_J(card.GetAdditionalBonusAgainst_J());
+    player->SetAdditionalBonusAgainstUndead(card.GetAdditionalBonusAgainstUndead());
 
-    //Ан-нет, я сделал это ещё тогда. =))))
-    if (_mainPlayer->GetThereIsLimitOnBigThings() && _mainPlayer->GetThereIsOneBigThing()
-            && (card.size() == Size::Big))
-        return TreasureArmorAllowance(false, "К сожалению, у Вас уже есть большие шмотки в игре!", false);
+    player->SetAutomaticLooseToCalmadzilla(card.GetAutomaticLooseToCalmadzila());
 
-    //Запреты кончились, теперь принятие решения о том, какой параметр ставить для активна/неактивна
 
-    //Наличие карты "Чит" пока не рассматривается
-
-    if (card.isOnlyForDwarf()
-            && _mainPlayer->GetRace() != Race::Dwarf
-            && _mainPlayer->GetSecondRace() != Race::Dwarf)
+    //Процедура, приведённая ниже, добавит или уберёт эффект
+    if (card.GetHasSpecialMechanic()) //Добавить сюда описание специальных функций, которые появляются у игрока.
     {
-        return TreasureArmorAllowance(true, "Увы, карта активна только для дворфа!\n Разве вы дфорф?", false);
+        qDebug() << "NAY-002: cardID: " << card.GetCardID();
+
+        switch (card.GetCardID())
+        {
+            case static_cast<uint32_t>(CardsWithSpecialFunctions_TreasureWeapon::BoomDagger):
+                player->SetHasBoomDagger(true && addEffect);
+                break;
+
+            case static_cast<uint32_t>(CardsWithSpecialFunctions_TreasureWeapon::StabAMatic):
+                player->SetHasStabAMatic(true && addEffect);
+                break;
+
+            case static_cast<uint32_t>(CardsWithSpecialFunctions_TreasureWeapon::RatOnAStick):
+                player->SetHasRatOnAStick(true && addEffect);
+                break;
+
+            case static_cast<uint32_t>(CardsWithSpecialFunctions_TreasureWeapon::SiegeEngine):
+                player->SetHasSiegeEngine(true && addEffect);
+                break;
+
+            case static_cast<uint32_t>(CardsWithSpecialFunctions_TreasureWeapon::TubaOfCharm):
+                player->SetHasTubaOfCharm(true && addEffect);
+                break;
+
+            default:
+                logger.Error() << "NAY-002: ERROR While void "
+                                  "The_Game::ApplyNewWeapon: "
+                                  "No special mechanic assigned!";
+                break;
+        }
     }
 
-    if (card.isOnlyForGnome()
-            && _mainPlayer->GetRace() != Race::Gnome
-            && _mainPlayer->GetSecondRace() != Race::Gnome)
+    //Добавление (удаление) обычных бонусов:
+
+    if (addEffect)
     {
-        return TreasureArmorAllowance(true, "Увы, карта активна только для гнома!\n Разве вы гном?", false);
+        //Бонус к смывке. Проверить, работает ли.
+        logger.Essential() << "NAY-002: AddNewWeapon is adding FleeChance Bonus! Check the procedure!";
+        logger.Essential() << "NAY-002: Flee chance was: " << player->GetFleeChance();
+        logger.Essential() << "NAY-002: Flee chance is expected to be added: " << card.GetBonusToFlee();
+        player->SetFleeChance(_mainPlayer->GetFleeChance() + card.GetBonusToFlee());
+        logger.Essential() << "NAY-002: Flee chance resulted: " << player->GetFleeChance();
+
+        player->SetBattlePower(static_cast<int32_t>(_mainPlayer->GetBattlePower() + static_cast<int32_t>(totalBonus)));
+    }
+    else
+    {
+        player->SetFleeChance(_mainPlayer->GetFleeChance() - card.GetBonusToFlee());
+        player->SetBattlePower(static_cast<int32_t>(_mainPlayer->GetBattlePower() - static_cast<int32_t>(totalBonus)));
     }
 
-    if (card.isOnlyForWizard()
-            && _mainPlayer->GetProfession() != Profession::Wizard
-            && _mainPlayer->GetSecondProfession() != Profession::Wizard)
+
+    //Процедура изменения колличества свободных рук ()
+    //Разрешениев этот момент уже получено.
+    //Разрешение надо выдавать в том числе и тогда, когда нет свободных рук,
+    //Но применяется "двурукий меч" - он в любом случае добавит ещё одну руку
+    if (addEffect)
     {
-        return TreasureArmorAllowance(true, "Увы, карта активна только для волшебника!\n"
-                                            "Разве к вам в детстве прилетала сова с письмом?\n"
-                                            "...Но ведь вы её ждали?\n", false);
+        player->SetFreeHands()
     }
 
-    if (card.isOnlyForHuman()
-            && _mainPlayer->GetRace() != Race::Human)
-    {
-        return TreasureArmorAllowance(true, "Увы, карта активна только для человека./n Теперь вы другой.", false);
-    }
-    
-    if (card.isRestrictedToGnome() &&
-            ((_mainPlayer->GetRace() == Race::Gnome) || (_mainPlayer->GetSecondRace() == Race::Gnome))
-            && !_mainPlayer->GetIsHalfBloodWithoutSecondRace())
-        return TreasureArmorAllowance(true, "Увы, этот доспех \n не могут носить гномы.", false);
-    
-    if (card.isRestrictedToWizard() &&
-            ((_mainPlayer->GetProfession() == Profession::Wizard) || (_mainPlayer->GetSecondProfession() == Profession::Wizard))
-            && !_mainPlayer->GetIsSuperMunchkinWithoutSecondProfession())
-        return TreasureArmorAllowance(true, "Увы, этот доспех \n слишком тяжёл для магов.", false);
 
-    //NAY-002: EXPECTED_ERROR
-    //NAY-002: EXPECTED_IMPROVEMENT
-    //На будущее надо бы сделать защиту от возможности надеть сразу два "комбинируемых" доспеха.
-    //С другой стороны, может юыть, их можно надевать по несколько - капусточка. =)))
-    if (_mainPlayer->GetLegsSlotIsFull() && (card.GetBodyPart()  == Body_Part::Feet) && (!card.isCombined()))
-        return TreasureArmorAllowance(true, "Вторые ботинки поверх существующих\n никак не надеть.\n Но при большом желании...", false);
+    //Теперь  можно передать карту анимации
+    //Анимация должна отдать карту в cardsInGameObserver
+    //Анимацией занимается другая функция
 
-    if (_mainPlayer->GetArmorSlotFull() && (card.GetBodyPart()  == Body_Part::Armor) && (!card.isCombined()))
-        return TreasureArmorAllowance(true, "Доспех надевали поверх кольчуги.\n Но игра такое, увы, запрещает.", false);
-
-    if (_mainPlayer->GetHeadSlotIsFull() && (card.GetBodyPart()  == Body_Part::Head) && (!card.isCombined()))
-        return TreasureArmorAllowance(true, "Две головы лучше, чем \n две шапки на одной.", false);
-
-
-    //Запретов больше нет
-    return TreasureArmorAllowance(true, "", true);
-
+    wt->SlotChangeTheGamerBattlePower(static_cast<int32_t>(addEffect ? totalBonus : -totalBonus));
 }
+
 
 void The_Game::SlotServerReportsTheGameIsAboutToStart(const TheGameIsAboutToStartData &data)
 {

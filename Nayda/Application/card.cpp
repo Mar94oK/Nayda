@@ -1721,42 +1721,42 @@ void gameCardTreasureThingsAmplifiers::setCardID(int cardID)
     _cardID = cardID;
 }
 
-QString gameCardTreasureWeapon::pictureAddress() const
+QString gameCardTreasureWeapon::GetPictureAddress() const
 {
     return _pictureAddress;
 }
 
-void gameCardTreasureWeapon::setPictureAddress(const QString &pictureAddress)
+void gameCardTreasureWeapon::SetPictureAddress(const QString &pictureAddress)
 {
     _pictureAddress = pictureAddress;
 }
 
-QString gameCardTreasureWeapon::cardName() const
+QString gameCardTreasureWeapon::CardName() const
 {
     return _cardName;
 }
 
-void gameCardTreasureWeapon::setCardName(const QString &cardName)
+void gameCardTreasureWeapon::SetCardName(const QString &cardName)
 {
     _cardName = cardName;
 }
 
-cardAddon gameCardTreasureWeapon::addOn() const
+cardAddon gameCardTreasureWeapon::GetAddOn() const
 {
     return _addOn;
 }
 
-void gameCardTreasureWeapon::setAddOn(const cardAddon &addOn)
+void gameCardTreasureWeapon::SetAddOn(const cardAddon &addOn)
 {
     _addOn = addOn;
 }
 
-treasureType gameCardTreasureWeapon::type() const
+treasureType gameCardTreasureWeapon::GetType() const
 {
     return _type;
 }
 
-void gameCardTreasureWeapon::setType(const treasureType &type)
+void gameCardTreasureWeapon::SetType(const treasureType &type)
 {
     _type = type;
 }
@@ -1773,12 +1773,12 @@ void gameCardTreasureWeapon::SetNecessaryHands(int hands)
     _hands = static_cast<uint32_t>(hands);
 }
 
-int gameCardTreasureWeapon::bonus() const
+int gameCardTreasureWeapon::GetBonus() const
 {
     return _bonus;
 }
 
-void gameCardTreasureWeapon::setBonus(int bonus)
+void gameCardTreasureWeapon::SetBonus(int bonus)
 {
     _bonus = bonus;
 }
@@ -1788,7 +1788,7 @@ bool gameCardTreasureWeapon::isOnlyForElf() const
     return _isOnlyForElf;
 }
 
-void gameCardTreasureWeapon::setIsOnlyForElf(bool isOnlyForElf)
+void gameCardTreasureWeapon::SetIsOnlyForElf(bool isOnlyForElf)
 {
     _isOnlyForElf = isOnlyForElf;
 }
@@ -1798,7 +1798,7 @@ bool gameCardTreasureWeapon::isOnlyForMan() const
     return _isOnlyForMan;
 }
 
-void gameCardTreasureWeapon::setIsOnlyForMan(bool isOnlyForMan)
+void gameCardTreasureWeapon::SetIsOnlyForMan(bool isOnlyForMan)
 {
     _isOnlyForMan = isOnlyForMan;
 }
@@ -1808,7 +1808,7 @@ bool gameCardTreasureWeapon::isOnlyForDwarf() const
     return _isOnlyForDwarf;
 }
 
-void gameCardTreasureWeapon::setIsOnlyForDwarf(bool isOnlyForDwarf)
+void gameCardTreasureWeapon::SetIsOnlyForDwarf(bool isOnlyForDwarf)
 {
     _isOnlyForDwarf = isOnlyForDwarf;
 }
@@ -1818,7 +1818,7 @@ bool gameCardTreasureWeapon::isOnlyForHuman() const
     return _isOnlyForHuman;
 }
 
-void gameCardTreasureWeapon::setIsOnlyForHuman(bool isOnlyForHuman)
+void gameCardTreasureWeapon::SetIsOnlyForHuman(bool isOnlyForHuman)
 {
     _isOnlyForHuman = isOnlyForHuman;
 }
@@ -1828,7 +1828,7 @@ bool gameCardTreasureWeapon::isOnlyForWizard() const
     return _isOnlyForWizard;
 }
 
-void gameCardTreasureWeapon::setIsOnlyForWizard(bool isOnlyForWizard)
+void gameCardTreasureWeapon::SetIsOnlyForWizard(bool isOnlyForWizard)
 {
     _isOnlyForWizard = isOnlyForWizard;
 }
@@ -1838,7 +1838,7 @@ bool gameCardTreasureWeapon::isOnlyForWoman() const
     return _isOnlyForWoman;
 }
 
-void gameCardTreasureWeapon::setIsOnlyForWoman(bool isOnlyForWoman)
+void gameCardTreasureWeapon::SetIsOnlyForWoman(bool isOnlyForWoman)
 {
     _isOnlyForWoman = isOnlyForWoman;
 }
@@ -1848,7 +1848,7 @@ bool gameCardTreasureWeapon::isOnlyForWarrior() const
     return _isOnlyForWarrior;
 }
 
-void gameCardTreasureWeapon::setIsOnlyForWarrior(bool isOnlyForWarrior)
+void gameCardTreasureWeapon::SetIsOnlyForWarrior(bool isOnlyForWarrior)
 {
     _isOnlyForWarrior = isOnlyForWarrior;
 }
@@ -1858,7 +1858,7 @@ bool gameCardTreasureWeapon::isOnlyForOrk() const
     return _isOnlyForOrk;
 }
 
-void gameCardTreasureWeapon::setIsOnlyForOrk(bool isOnlyForOrk)
+void gameCardTreasureWeapon::SetIsOnlyForOrk(bool isOnlyForOrk)
 {
     _isOnlyForOrk = isOnlyForOrk;
 }
@@ -1868,7 +1868,7 @@ bool gameCardTreasureWeapon::isOnlyForThief() const
     return _isOnlyForThief;
 }
 
-void gameCardTreasureWeapon::setIsOnlyForThief(bool isOnlyForThief)
+void gameCardTreasureWeapon::SetIsOnlyForThief(bool isOnlyForThief)
 {
     _isOnlyForThief = isOnlyForThief;
 }
@@ -1878,7 +1878,7 @@ bool gameCardTreasureWeapon::isOnlyForHalfling() const
     return _isOnlyForHalfling;
 }
 
-void gameCardTreasureWeapon::setIsOnlyForHalfling(bool isOnlyForHalfling)
+void gameCardTreasureWeapon::SetIsOnlyForHalfling(bool isOnlyForHalfling)
 {
     _isOnlyForHalfling = isOnlyForHalfling;
 }
@@ -1888,7 +1888,7 @@ bool gameCardTreasureWeapon::isOnlyForGnome() const
     return _isOnlyForGnome;
 }
 
-void gameCardTreasureWeapon::setIsOnlyForGnome(bool isOnlyForGnome)
+void gameCardTreasureWeapon::SetIsOnlyForGnome(bool isOnlyForGnome)
 {
     _isOnlyForGnome = isOnlyForGnome;
 }
@@ -1898,87 +1898,87 @@ bool gameCardTreasureWeapon::isOnlyForBard() const
     return _isOnlyForBard;
 }
 
-void gameCardTreasureWeapon::setIsOnlyForBard(bool isOnlyForBard)
+void gameCardTreasureWeapon::SetIsOnlyForBard(bool isOnlyForBard)
 {
     _isOnlyForBard = isOnlyForBard;
 }
 
-bool gameCardTreasureWeapon::hasSpecialMechanic() const
+bool gameCardTreasureWeapon::GetHasSpecialMechanic() const
 {
     return _hasSpecialMechanic;
 }
 
-void gameCardTreasureWeapon::setHasSpecialMechanic(bool hasSpecialMechanic)
+void gameCardTreasureWeapon::SetHasSpecialMechanic(bool hasSpecialMechanic)
 {
     _hasSpecialMechanic = hasSpecialMechanic;
 }
 
-int gameCardTreasureWeapon::price() const
+int gameCardTreasureWeapon::GetPrice() const
 {
     return _price;
 }
 
-void gameCardTreasureWeapon::setPrice(int price)
+void gameCardTreasureWeapon::SetPrice(int price)
 {
     _price = price;
 }
 
-int gameCardTreasureWeapon::bonusToFlee() const
+int gameCardTreasureWeapon::GetBonusToFlee() const
 {
     return _bonusToFlee;
 }
 
-void gameCardTreasureWeapon::setBonusToFlee(int bonusToFlee)
+void gameCardTreasureWeapon::SetBonusToFlee(int bonusToFlee)
 {
     _bonusToFlee = bonusToFlee;
 }
 
-int gameCardTreasureWeapon::additionalBonusAgainstUndead() const
+uint32_t gameCardTreasureWeapon::GetAdditionalBonusAgainstUndead() const
 {
     return _additionalBonusAgainstUndead;
 }
 
-void gameCardTreasureWeapon::setAdditionalBonusAgainstUndead(int additionalBonusAgainstUndead)
+void gameCardTreasureWeapon::SetAdditionalBonusAgainstUndead(uint32_t additionalBonusAgainstUndead)
 {
     _additionalBonusAgainstUndead = additionalBonusAgainstUndead;
 }
 
-bool gameCardTreasureWeapon::automaticLooseToCalmadzila() const
+bool gameCardTreasureWeapon::GetAutomaticLooseToCalmadzila() const
 {
     return _automaticLooseToCalmadzila;
 }
 
-void gameCardTreasureWeapon::setAutomaticLooseToCalmadzila(bool automaticLooseToCalmadzila)
+void gameCardTreasureWeapon::SetAutomaticLooseToCalmadzila(bool automaticLooseToCalmadzila)
 {
     _automaticLooseToCalmadzila = automaticLooseToCalmadzila;
 }
 
-int gameCardTreasureWeapon::additionalBonusAgainst_J() const
+uint32_t gameCardTreasureWeapon::GetAdditionalBonusAgainst_J() const
 {
     return _additionalBonusAgainst_J;
 }
 
-void gameCardTreasureWeapon::setAdditionalBonusAgainst_J(int additionalBonusAgainst_J)
+void gameCardTreasureWeapon::SetAdditionalBonusAgainst_J(uint32_t additionalBonusAgainst_J)
 {
     _additionalBonusAgainst_J = additionalBonusAgainst_J;
 }
 
-bool gameCardTreasureWeapon::addingClericalAbility() const
+bool gameCardTreasureWeapon::AddingClericalAbility() const
 {
     return _addingClericalAbility;
 }
 
-void gameCardTreasureWeapon::setAddingClericalAbility(bool addingClericalAbility)
+void gameCardTreasureWeapon::SetAddingClericalAbility(bool addingClericalAbility)
 {
     _addingClericalAbility = addingClericalAbility;
 }
 
-bool gameCardTreasureWeapon::addingThiefAbility() const
+bool gameCardTreasureWeapon::GetAddingThiefAbility() const
 {
     return _addingThiefAbility;
 }
 
-void gameCardTreasureWeapon::setAddingThiefAbility(bool addingThiefAbility)
+void gameCardTreasureWeapon::SetAddingThiefAbility(bool addingThiefAbility)
 {
     _addingThiefAbility = addingThiefAbility;
 }
@@ -1988,28 +1988,98 @@ bool gameCardTreasureWeapon::isOnlyForCleric() const
     return _isOnlyForCleric;
 }
 
-void gameCardTreasureWeapon::setIsOnlyForCleric(bool isOnlyForCleric)
+void gameCardTreasureWeapon::SetIsOnlyForCleric(bool isOnlyForCleric)
 {
     _isOnlyForCleric = isOnlyForCleric;
 }
 
-Size gameCardTreasureWeapon::size() const
+Size gameCardTreasureWeapon::GetSize() const
 {
     return _size;
 }
 
-void gameCardTreasureWeapon::setSize(const Size &size)
+void gameCardTreasureWeapon::SetSize(const Size &size)
 {
     _size = size;
 }
 
+gameCardTreasureWeapon::gameCardTreasureWeapon(const gameCardTreasureWeapon *ptr)
+{
+    _size = ptr->GetSize();
+    _type = ptr->GetType();
+    _addOn = ptr->GetAddOn();
+    _bonus = ptr->GetBonus();
+    _hands = ptr->GetNecessaryHands();
+    _price = ptr->GetPrice();
+    _cardID = ptr->GetCardID();
+    _cardName = ptr->CardName();
+    _bonusToFlee = ptr->GetBonusToFlee();
 
-int gameCardTreasureWeapon::cardID() const
+    _isOnlyForElf = ptr->isOnlyForElf();
+    _isOnlyForMan = ptr->isOnlyForMan();
+    _isOnlyForOrk = ptr->isOnlyForOrk();
+    _isOnlyForBard = ptr->isOnlyForBard();
+    _isOnlyForDwarf = ptr->isOnlyForDwarf();
+    _isOnlyForGnome = ptr->isOnlyForGnome();
+    _isOnlyForHuman = ptr->isOnlyForHuman();
+    _isOnlyForThief = ptr->isOnlyForThief();
+    _isOnlyForWoman = ptr->isOnlyForWoman();
+    _isOnlyForCleric = ptr->isOnlyForCleric();
+    _isOnlyForWizard = ptr->isOnlyForWizard();
+    _isOnlyForWarrior = ptr->isOnlyForWarrior();
+    _isOnlyForHalfling = ptr->isOnlyForHalfling();
+
+    _pictureAddress = ptr->GetPictureAddress();
+    _addingThiefAbility = ptr->GetAddingThiefAbility();
+    _hasSpecialMechanic = ptr->GetHasSpecialMechanic();
+    _addingClericalAbility = ptr->AddingClericalAbility();
+    _additionalBonusAgainst_J = ptr->GetAdditionalBonusAgainst_J();
+    _automaticLooseToCalmadzila = ptr->GetAutomaticLooseToCalmadzila();
+    _additionalBonusAgainstUndead = ptr->GetAdditionalBonusAgainstUndead();
+}
+
+gameCardTreasureWeapon::gameCardTreasureWeapon(const gameCardTreasureWeapon &other)
+{
+    _size = other.GetSize();
+    _type = other.GetType();
+    _addOn = other.GetAddOn();
+    _bonus = other.GetBonus();
+    _hands = other.GetNecessaryHands();
+    _price = other.GetPrice();
+    _cardID = other.GetCardID();
+    _cardName = other.CardName();
+    _bonusToFlee = other.GetBonusToFlee();
+
+    _isOnlyForElf = other.isOnlyForElf();
+    _isOnlyForMan = other.isOnlyForMan();
+    _isOnlyForOrk = other.isOnlyForOrk();
+    _isOnlyForBard = other.isOnlyForBard();
+    _isOnlyForDwarf = other.isOnlyForDwarf();
+    _isOnlyForGnome = other.isOnlyForGnome();
+    _isOnlyForHuman = other.isOnlyForHuman();
+    _isOnlyForThief = other.isOnlyForThief();
+    _isOnlyForWoman = other.isOnlyForWoman();
+    _isOnlyForCleric = other.isOnlyForCleric();
+    _isOnlyForWizard = other.isOnlyForWizard();
+    _isOnlyForWarrior = other.isOnlyForWarrior();
+    _isOnlyForHalfling = other.isOnlyForHalfling();
+
+    _pictureAddress = other.GetPictureAddress();
+    _addingThiefAbility = other.GetAddingThiefAbility();
+    _hasSpecialMechanic = other.GetHasSpecialMechanic();
+    _addingClericalAbility = other.AddingClericalAbility();
+    _additionalBonusAgainst_J = other.GetAdditionalBonusAgainst_J();
+    _automaticLooseToCalmadzila = other.GetAutomaticLooseToCalmadzila();
+    _additionalBonusAgainstUndead = other.GetAdditionalBonusAgainstUndead();
+}
+
+
+int gameCardTreasureWeapon::GetCardID() const
 {
     return _cardID;
 }
 
-void gameCardTreasureWeapon::setCardID(int cardID)
+void gameCardTreasureWeapon::SetCardID(int cardID)
 {
     _cardID = cardID;
 }

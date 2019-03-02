@@ -19,6 +19,11 @@ class Player
     uint32_t _playerLevel = 1;
     int _battlePower = 1;
 
+    uint32_t _additionalBonusAgainstAndead = 0;
+    uint32_t _additionalBonusAgainst_J = 0;
+
+    bool _automaticLooseToCalmadzilla = false;
+
     int _fleeChance = 5; //less than - loose
 
     uint32_t _totalCardsOnHands = HardCodedSettingsLimitations::totalCardsToGiveFromTheStart *2;
@@ -34,6 +39,10 @@ class Player
     uint32_t _freeHands = 2;
     uint32_t _totalHands = 2;
     bool _affectedByTinyHands = false;
+
+    bool _hasAdditionalClericalAbility = false;
+    bool _hasAdditionalTheftAbility = false;
+
 
     bool _thereIsOneBigThing = false;
     bool _thereIsLimitOnBigThings= true; //may be remove it if checking the race
@@ -77,15 +86,17 @@ class Player
     bool _cursesMirroring = false; // Сиятельная шляпа
     bool _notAbleToHelp = false; // Вонючие потники
     bool _protectedFromOthersPotions = false; //Дождевик
-
-    bool _bonusFromNoseActive = false; //вонючие носки дадут плюс 5;
-    
+    bool _bonusFromNoseActive = false; //вонючие носки дадут плюс 5; 
     bool _hasFireArmor = false; //Пламенный доспех
-    
     bool _ableToChangeSexOnline = false; //Опорки по Фрейду
-
     bool _protectedFromTheft = false; // Шлем заднего вида
 
+    //Enabling additional special mechanics from weapon:
+    bool _hasBoomDagger = false;
+    bool _hasRatOnAStick = false;
+    bool _hasSiegeEngine = false;
+    bool _hasStabAMatic = false;
+    bool _hasTubaOfCharm = false;
 
     //Для более лёгкого определения, какую карту стоит сбросить в процессе удаления основной
     uint32_t _combinedFeet = 0;
@@ -135,7 +146,7 @@ public:
     void SetRightHandSlotFull(bool GetRightHandSlotFull);
 
     uint32_t GetFreeHands() const { return _freeHands; }
-    void AddFreeHands(uint32_t numberOfHands) { _freeHands += numberOfHands; }
+    void SetFreeHands(uint32_t numberOfHands);
     uint32_t GetTotalHands() const { return _totalHands; }
     void IncreaseTotalHands(uint32_t diff);
     //После уменьшения общего колличества доступных рук - за счёт различных прибамбасов -
@@ -237,6 +248,36 @@ public:
 
     uint32_t GetCombinedHead() const;
     void SetCombinedHead(const uint32_t &GetCombinedHead);
+
+    uint32_t GetAdditionalBonusAgainstAndead() const;
+    void SetAdditionalBonusAgainstUndead(const uint32_t &GetAdditionalBonusAgainstAndead);
+
+    uint32_t GetAdditionalBonusAgainst_J() const;
+    void SetAdditionalBonusAgainst_J(const uint32_t &GetAdditionalBonusAgainst_J);
+
+    bool GetAutomaticLooseToCalmadzilla() const;
+    void SetAutomaticLooseToCalmadzilla(bool GetAutomaticLooseToCalmadzilla);
+
+    bool HasAdditionalClericalAbility() const;
+    void SetHasAdditionalClericalAbility(bool HasAdditionalClericalAbility);
+
+    bool HasAdditionalTheftAbility() const;
+    void SetHasAdditionalTheftAbility(bool HasAdditionalTheftAbility);
+
+    bool HasBoomDagger() const;
+    void SetHasBoomDagger(bool HasBoomDagger);
+
+    bool HasRatOnAStick() const;
+    void SetHasRatOnAStick(bool HasRatOnAStick);
+
+    bool HasSiegeEngine() const;
+    void SetHasSiegeEngine(bool HasSiegeEngine);
+
+    bool HasStabAMatic() const;
+    void SetHasStabAMatic(bool HasStabAMatic);
+
+    bool HasTubaOfCharm() const;
+    void SetHasTubaOfCharm(bool HasTubaOfCharm);
 
 private:
     

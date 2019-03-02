@@ -79,10 +79,12 @@ void Player::SetRightHandSlotFull(bool rightHandSlotFull)
     _rightHandSlotFull = rightHandSlotFull;
 }
 
+void Player::SetFreeHands(uint32_t numberOfHands) { _freeHands += numberOfHands; }
+
 void Player::IncreaseTotalHands(uint32_t diff)
 {
     _totalHands += diff;
-    AddFreeHands(diff);
+    SetFreeHands(GetFreeHands() + diff);
 }
 
 
@@ -247,6 +249,106 @@ bool Player::GetIsAffectedByTinyHands() const
 void Player::SetIsAffectedByTinyHands(bool affectedByTinyHands)
 {
     _affectedByTinyHands = affectedByTinyHands;
+}
+
+uint32_t Player::GetAdditionalBonusAgainstAndead() const
+{
+    return _additionalBonusAgainstAndead;
+}
+
+void Player::SetAdditionalBonusAgainstUndead(const uint32_t &additionalBonusAgainstAndead)
+{
+    _additionalBonusAgainstAndead = additionalBonusAgainstAndead;
+}
+
+uint32_t Player::GetAdditionalBonusAgainst_J() const
+{
+    return _additionalBonusAgainst_J;
+}
+
+void Player::SetAdditionalBonusAgainst_J(const uint32_t &additionalBonusAgainst_J)
+{
+    _additionalBonusAgainst_J = additionalBonusAgainst_J;
+}
+
+bool Player::GetAutomaticLooseToCalmadzilla() const
+{
+    return _automaticLooseToCalmadzilla;
+}
+
+void Player::SetAutomaticLooseToCalmadzilla(bool automaticLooseToCalmadzilla)
+{
+    _automaticLooseToCalmadzilla = automaticLooseToCalmadzilla;
+}
+
+bool Player::HasAdditionalClericalAbility() const
+{
+    return _hasAdditionalClericalAbility;
+}
+
+void Player::SetHasAdditionalClericalAbility(bool hasAdditionalClericalAbility)
+{
+    _hasAdditionalClericalAbility = hasAdditionalClericalAbility;
+}
+
+bool Player::HasAdditionalTheftAbility() const
+{
+    return _hasAdditionalTheftAbility;
+}
+
+void Player::SetHasAdditionalTheftAbility(bool hasAdditionalTheftAbility)
+{
+    _hasAdditionalTheftAbility = hasAdditionalTheftAbility;
+}
+
+bool Player::HasBoomDagger() const
+{
+    return _hasBoomDagger;
+}
+
+void Player::SetHasBoomDagger(bool hasBoomDagger)
+{
+    _hasBoomDagger = hasBoomDagger;
+}
+
+bool Player::HasRatOnAStick() const
+{
+    return _hasRatOnAStick;
+}
+
+void Player::SetHasRatOnAStick(bool hasRatOnAStick)
+{
+    _hasRatOnAStick = hasRatOnAStick;
+}
+
+bool Player::HasSiegeEngine() const
+{
+    return _hasSiegeEngine;
+}
+
+void Player::SetHasSiegeEngine(bool hasSiegeEngine)
+{
+    _hasSiegeEngine = hasSiegeEngine;
+}
+
+bool Player::HasStabAMatic() const
+{
+    return _hasStabAMatic;
+}
+
+void Player::SetHasStabAMatic(bool hasStabAMatic)
+{
+    _hasStabAMatic = hasStabAMatic;
+}
+
+bool Player::HasTubaOfCharm() const
+{
+    return _hasTubaOfCharm;
+}
+
+void Player::SetHasTubaOfCharm(bool hasTubaOfCharm)
+{
+    _hasTubaOfCharm = hasTubaOfCharm;
 }
 
 bool Player::CheckCardIsFromCardsInGame(SimpleCard card)
