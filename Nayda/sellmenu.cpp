@@ -122,8 +122,8 @@ CardToBeSoldCredentials SellMenu::GetCardToBeSoldCredentials(SimpleCard card)
 
     _weaponsIterator = _weaponsDeck.find(static_cast <int> (card.second));
     if (_weaponsIterator != _weaponsDeck.end())
-        return CardToBeSoldCredentials((*_weaponsIterator).second.pictureAddress(),
-                                        static_cast<uint32_t>((*_weaponsIterator).second.price()));
+        return CardToBeSoldCredentials((*_weaponsIterator).second.GetPictureAddress(),
+                                        static_cast<uint32_t>((*_weaponsIterator).second.GetPrice()));
 
     qDebug() << "NAY-002: Error During GetCardToBeSoldCredentials() in SellMenu. Card Not Found!!!";
     return CardToBeSoldCredentials();
@@ -171,7 +171,7 @@ uint32_t SellMenu::GetCardPrice(SimpleCard card)
 
     _weaponsIterator = _weaponsDeck.find(static_cast <int> (card.second));
     if (_weaponsIterator != _weaponsDeck.end())
-        return static_cast<uint32_t>((*_weaponsIterator).second.price());
+        return static_cast<uint32_t>((*_weaponsIterator).second.GetPrice());
 
     qDebug() << "NAY-002: Error During CheckCardPrice(). Card Not Found!!!";
     return 0;

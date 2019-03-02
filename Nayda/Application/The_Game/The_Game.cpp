@@ -2620,7 +2620,7 @@ std::shared_ptr<TreasureWeaponAllowance> The_Game::GetAllowanceTreasureWeapon(co
         return std::make_shared<TreasureWeaponAllowance>(TreasureWeaponAllowance(true, "Увы, карта активна только для женщин!\n", false));
 
     //Проверить колличество свободных рук!
-    if (player->GetFreeHands() < card->GetNecessaryHands())
+    if (card->GetNecessaryHands() < static_cast<int32_t>(player->GetFreeHands()))
         return std::make_shared<TreasureWeaponAllowance>(TreasureWeaponAllowance(true, "Не хватает рук, чтобы удержать!\n", false));
 
     //Запретов больше нет!
@@ -2855,9 +2855,25 @@ void The_Game::ApplyNewWeapon(GamerWidget *wt, const gameCardTreasureWeapon &car
     //Но применяется "двурукий меч" - он в любом случае добавит ещё одну руку
     if (addEffect)
     {
-        player->SetFreeHands()
+        //Меч должен добавить одну руку!
+        logger.Essential() << "NAY-002: Free Hands Before Applying Weapon: " << player->GetFreeHands();
+        //В функции - сумма. Если передать туда отрицательное число, то число свободных рук уменьшится
+        //Двурукий меч, наоборот, добавит единичку
+        player->ChangeFreeHands((-1) * card.GetNecessaryHands());
+        logger.Essential() << "NAY-002: Free Hands After Applying Weapon Effect: " << player->GetFreeHands();
+    }
+    else
+    {
+        logger.Essential() << "NAY-002: Free Hands Before Applying Weapon: " << player->GetFreeHands();
+        player->ChangeFreeHands(card.GetNecessaryHands());
+        logger.Essential() << "NAY-002: Free Hands After Applying Weapon Effect: " << player->GetFreeHands();
     }
 
+    //ADD_LATER
+    //При потере двурукого меча число рук может уменьшиться ниже требуемого значения
+    //Здесь это требуется проверить, и автоматически деактивировать карту(ы) оружия,
+    //Для которых теперь не хватает рук.
+    //bool CheckHandsSufficience();
 
     //Теперь  можно передать карту анимации
     //Анимация должна отдать карту в cardsInGameObserver
@@ -3532,7 +3548,7 @@ QString The_Game::findTheCardPicture(SimpleCard card)
         if (!isFound) {
             _weaponsIterator = _weaponsDeck.find(static_cast <int> (card.second));
             if (_weaponsIterator != _weaponsDeck.end()) {
-                currentPictureAddress = (*_weaponsIterator).second.pictureAddress();
+                currentPictureAddress = (*_weaponsIterator).second.GetPictureAddress();
                 isFound = true;
             }
         }
@@ -4342,7 +4358,7 @@ uint32_t The_Game::GetCardPrice(SimpleCard card)
 
     _weaponsIterator = _weaponsDeck.find(static_cast <int> (card.second));
     if (_weaponsIterator != _weaponsDeck.end())
-        return static_cast<uint32_t>((*_weaponsIterator).second.price());
+        return static_cast<uint32_t>((*_weaponsIterator).second.GetPrice());
 
     qDebug() << "NAY-002: Error During CheckCardPrice(). Card Not Found!!!";
     return 0;

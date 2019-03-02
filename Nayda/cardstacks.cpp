@@ -336,7 +336,7 @@ void CardStacks::SlotPassTheCardToFoldStack(SimpleCard card)
         if (!isFound) {
             _weaponsIterator = _weaponsDeck->find(static_cast <int> (card.second));
             if (_weaponsIterator != _weaponsDeck->end()) {
-                currentPictureAddress = (*_weaponsIterator).second.pictureAddress();
+                currentPictureAddress = (*_weaponsIterator).second.GetPictureAddress();
                 isFound = true;
             }
         }
@@ -584,7 +584,7 @@ void CardStacks::testTheFoldProcess()
                                                    + _specialMechanicsTreasureDeck->size() + _thingsAmplifiersDeck->size()
                                                    + _weaponsDeck->size())){
         currentCard.first = true;
-        currentCard.second = _weaponsIterator->second.cardID();
+        currentCard.second = _weaponsIterator->second.GetCardID();
         _weaponsIterator++;
         _currCardsArrayRepresentationStep++;
     }

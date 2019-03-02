@@ -169,7 +169,7 @@ QString LastFoldObserver::GetCardPictureAddress(SimpleCard card)
 
         _weaponsIterator = _weaponsDeck.find(static_cast <int> (card.second));
         if (_weaponsIterator != _weaponsDeck.end())
-            return (*_weaponsIterator).second.pictureAddress();
+            return (*_weaponsIterator).second.GetPictureAddress();
 
     }
     qDebug() << "NAY-002: Error while QString LastFoldObserver::GetCardPictureAddress(SimpleCard card)"

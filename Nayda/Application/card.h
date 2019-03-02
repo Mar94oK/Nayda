@@ -1047,7 +1047,7 @@ class gameCardTreasureWeapon : public GameCardBasis
     cardAddon _addOn;
     treasureType _type;
 
-    uint32_t _hands;
+    int32_t _hands;
     Size _size;
     int _bonus;
 
@@ -1094,7 +1094,7 @@ public:
     void SetAddOn(const cardAddon &GetAddOn);
     treasureType GetType() const;
     void SetType(const treasureType &GetType);
-    uint32_t GetNecessaryHands() const;
+    int32_t GetNecessaryHands() const;
     void SetNecessaryHands(int GetNecessaryHands);
     int GetBonus() const;
     void SetBonus(int GetBonus);

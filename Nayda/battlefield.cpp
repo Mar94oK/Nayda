@@ -315,7 +315,7 @@ void battleField::continueCardRepresentation()
                                                    + _battleAmplifiersDeck->size() + _levelUpDeck->size()
                                                    + _specialMechanicsTreasureDeck->size() + _thingsAmplifiersDeck->size()
                                                    + _weaponsDeck->size())){
-        pxmpMainBtn.load(_weaponsIterator->second.pictureAddress());
+        pxmpMainBtn.load(_weaponsIterator->second.GetPictureAddress());
         _weaponsIterator++;
         _currCardsArrayRepresentationStep++;
     }

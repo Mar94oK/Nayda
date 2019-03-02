@@ -79,25 +79,8 @@ void Player::SetRightHandSlotFull(bool rightHandSlotFull)
     _rightHandSlotFull = rightHandSlotFull;
 }
 
-void Player::SetFreeHands(uint32_t numberOfHands) { _freeHands += numberOfHands; }
-
-void Player::IncreaseTotalHands(uint32_t diff)
-{
-    _totalHands += diff;
-    SetFreeHands(GetFreeHands() + diff);
-}
-
-
-void Player::DecreaseTotalHands(uint32_t diff)
-{
-    logger.Essential() << "Did you forget to process weapons which the player is no longer able to handle? For player:: " << GetPlayerName();
-    _totalHands -= diff;
-    if (_totalHands < 2)
-    {
-        _totalHands += diff;
-        logger.Error() << GetPlayerName() <<  " ERROR while DECREASING hands. Diff: " << diff;
-    }
-}
+void Player::ChangeFreeHands(int32_t diff)
+{ _freeHands = _freeHands + diff; }
 
 
 bool Player::GetArmorSlotFull() const

@@ -205,7 +205,7 @@ void CardInspector::SetUpCardToShow(SimpleCard card)
         if (!isFound) {
             _weaponsIterator = _weaponsDeck->find(static_cast <int> (card.second));
             if (_weaponsIterator != _weaponsDeck->end()) {
-                currentPictureAddress = (*_weaponsIterator).second.pictureAddress();
+                currentPictureAddress = (*_weaponsIterator).second.GetPictureAddress();
                 isFound = true;
             }
         }

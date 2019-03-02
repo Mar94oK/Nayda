@@ -36,7 +36,7 @@ class Player
     bool _rightHandSlotFull = false;
     bool _armorSlotFull = false;
 
-    uint32_t _freeHands = 2;
+    int32_t _freeHands = 2;
     uint32_t _totalHands = 2;
     bool _affectedByTinyHands = false;
 
@@ -146,14 +146,7 @@ public:
     void SetRightHandSlotFull(bool GetRightHandSlotFull);
 
     uint32_t GetFreeHands() const { return _freeHands; }
-    void SetFreeHands(uint32_t numberOfHands);
-    uint32_t GetTotalHands() const { return _totalHands; }
-    void IncreaseTotalHands(uint32_t diff);
-    //После уменьшения общего колличества доступных рук - за счёт различных прибамбасов -
-    //логично проверить, можно ли беспрепятсвенно освободить
-    //занятые руки - если в них было оружие, потребуется предложить игроку выбор
-    //От какого оружия отказаться!!!
-    void DecreaseTotalHands(uint32_t diff);
+    void ChangeFreeHands(int32_t diff);
 
     bool GetIsAffectedByTinyHands() const;
     void SetIsAffectedByTinyHands(bool GetIsAffectedByTinyHands);
