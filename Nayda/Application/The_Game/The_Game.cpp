@@ -2506,14 +2506,14 @@ std::shared_ptr<TreasureWeaponAllowance> The_Game::GetAllowanceTreasureWeapon(co
             && player->GetRace() != Race::Elf
             && player->GetSecondRace() != Race::Elf)
     {
-        return std::make_shared<TreasureWeaponAllowance>(TreasureArmorAllowance(true, "Увы, карта активна только для эльфа!\n Разве вы эльф?", false));
+        return std::make_shared<TreasureWeaponAllowance>(TreasureWeaponAllowance(true, "Увы, карта активна только для эльфа!\n Разве вы эльф?", false));
     }
 
     if (card->isOnlyForDwarf()
             && player->GetRace() != Race::Dwarf
             && player->GetSecondRace() != Race::Dwarf)
     {
-        return std::make_shared<TreasureWeaponAllowance>(TreasureArmorAllowance(true, "Увы, карта активна только для дворфа!\n Разве вы дфорф?", false));
+        return std::make_shared<TreasureWeaponAllowance>(TreasureWeaponAllowance(true, "Увы, карта активна только для дворфа!\n Разве вы дфорф?", false));
     }
 
     if (card->isOnlyForHuman()
