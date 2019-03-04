@@ -1685,7 +1685,7 @@ void The_Game::DEBUGformingInitialDecks()
     unsigned int totalDoors = _monstersDeck.size() + _amplifiersDeck.size() + _cursesDeck.size() + _professionsDeck.size() +
             _racesDeck.size() + _specialMechanicsDeck.size();
 
-   //NAY-001: MARK_EXPECTED_ERROR
+   //NAY-001: EXPECTED_ERROR
    //These sizes ARE USED AS DEFINES ON SERVER SIDE.
    //HERE TO CHECK AND THROW AN EXCEPTION IF THEY ARE NOT CORRECT
    //I do not want to place all the code on the server's side - with cards and so on;
@@ -2645,7 +2645,13 @@ void The_Game::ImplementTreasureWeapon(std::shared_ptr<CardPlayAllowanceBase> al
 
     //Удалить карту с руки здесь же
     RemoveTheCardFromHand(wt, posCard.GetCard());
-    MoveCardFromCardInHandToCardInGame(wt->GetPointerToPlayer(), std::make_pair(weaponAllowance->GetIsActive(), SimpleCard(true, realCard.GetCardID())));
+    //Осадная машина ПО УМОЛЧАНИЮ добавляется НЕАКТИВНОЙ - даже если её МОЖНО использовать!
+    //EXPECTED_ERROR
+    //Всё равно требуется проверить работу с осадкой. Хоть сейчас она и продаётся корректно, и устанавливается ПЕРЕД БОЕМ
+    //Корректно
+    MoveCardFromCardInHandToCardInGame(wt->GetPointerToPlayer(),
+                                       std::make_pair(weaponAllowance->GetIsActive() && !CardIsSiegeEngine(cardPointer),
+                                       SimpleCard(true, realCard.GetCardID())));
 
     if (!weaponAllowance->GetIsActive())
         ApplyCardImplementerMessage(weaponAllowance->GetReasonOfRestriction(), true);
@@ -2800,7 +2806,7 @@ void The_Game::ApplyNewWeapon(GamerWidget *wt, const gameCardTreasureWeapon &car
     //Процедура, приведённая ниже, добавит или уберёт эффект
     if (card.GetHasSpecialMechanic()) //Добавить сюда описание специальных функций, которые появляются у игрока.
     {
-        qDebug() << "NAY-002: cardID: " << card.GetCardID();
+//        logger.Debug() << "NAY-002: cardID: " << card.GetCardID();
 
         switch (card.GetCardID())
         {
@@ -2833,14 +2839,14 @@ void The_Game::ApplyNewWeapon(GamerWidget *wt, const gameCardTreasureWeapon &car
     }
 
     //Добавление (удаление) обычных бонусов, КРОМЕ ОСАДНОЙ машины:
-    //RULE-NOTE-001
+    //RULE_NOTE-001
     if (addEffect)
     {
         //Бонус к смывке. Проверить, работает ли.
         //Добавлять только в том случае, если это не осадка.
         //Она влияет на бонус только если активна. Её активация - вопрос, который выносится на начало каждого боя.
         //По умолчанию она должна рассматриваться НЕактивной.
-        //RULE-NOTE-001
+        //RULE_NOTE-001
         logger.Essential() << "NAY-002: AddNewWeapon is adding FleeChance Bonus! Check the procedure!";
         logger.Essential() << "NAY-002: Flee chance was: " << player->GetFleeChance();
         logger.Essential() << "NAY-002: Flee chance is expected to be added: " << card.GetBonusToFlee();
@@ -3660,7 +3666,7 @@ void The_Game::FormingInitialDecks(const std::vector<uint32_t> &doorsVector, con
     uint32_t totalDoors = _monstersDeck.size() + _amplifiersDeck.size() + _cursesDeck.size() + _professionsDeck.size() +
             _racesDeck.size() + _specialMechanicsDeck.size();
 
-    //NAY-001: MARK_EXPECTED_ERROR
+    //NAY-001: EXPECTED_ERROR
     //These sizes ARE USED AS DEFINES ON SERVER SIDE.
     //HERE TO CHECK AND THROW AN EXCEPTION IF THEY ARE NOT CORRECT
     //I do not want to place all the code on the server's side - with cards and so on;
@@ -3753,7 +3759,7 @@ void The_Game::SetUpPlayersAndWidgets(uint32_t windowHeight, uint32_t windowWidt
             if (_playersOpponents[y]->GetPlayerName() == _playersOrder[var])
             {
                 orderOfMove.push_back(_playersOpponents[y]);
-                //NAY-002: MARK_EXPECTED_ERROR
+                //NAY-002: EXPECTED_ERROR
                 //To Test under 3 or more players.
                 break;
             }
@@ -4081,9 +4087,23 @@ void The_Game::RemoveCardEffect(GamerWidget *wt, SimpleCard card)
             ApplyNewArmor(wt, armor, CardApplyMode::Remove);
         }
         break;
+        case CardType::TreasureWeapon:
+        {
+            gameCardTreasureWeapon weapon(static_cast<const gameCardTreasureWeapon*>(realCard));
+            //EXPECTED_ERROR
+            //Очевидно, что потребуется АККУРАТНО вызывать этот удалитель
+            //во время принудительного СБРОСА (аннигиляции или "Потеряй большую шмотку" и им подобных)
+            //карты SiegeEngine Во время боя, если она была АКТИВНА!
+            //Впрочем, удалитель ффекта будет вызван ТОЛЬКО если карта БЫЛА активна.
+            //А значит УДАЛЯТЬ эффект даже для ОСАДКИ при вызове Функции-Применителя
+            //ТРЕБУЕТСЯ ВСЕГДА!
+
+            ApplyNewWeapon(wt, weapon, CardApplyMode::Remove);
+        }
+        break;
 
         default:
-            qDebug() << "Type: " << realCard->GetCardType()
+            logger.Essential() << "Type: " << realCard->GetCardType()
                     << "Is not supported yet by CardsInGame RemoveProcess!";
         break;
     }
@@ -4100,7 +4120,7 @@ void The_Game::RemoveCardsFromCardsInGame(GamerWidget *wt, std::vector<SimpleCar
     {
         if (wt->GetPointerToPlayer()->CardIsActive(cards[var]))
         {
-            qDebug() << "Card Is Active! Up to delete!";
+            logger.Algorithm() << "Card Is Active! Effect SHOULD BE REMOVED!";
             RemoveCardEffect(wt, cards[var]);
         }
         else

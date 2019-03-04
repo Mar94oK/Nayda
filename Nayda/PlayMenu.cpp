@@ -277,7 +277,7 @@ void PlayMenu::setUpUiPicturesAddresses()
 
 
 #ifdef Q_OS_WIN
-//NAY-001: MARK_EXPECTED_ERROR
+//NAY-001: EXPECTED_ERROR
      QString uiPlayMenuFilesLocation = "Munchkin/Nayda/Pictures/playMenu";
      homeDirectory = "D:/";
 #elif defined Q_OS_UNIX

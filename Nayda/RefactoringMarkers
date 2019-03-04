@@ -15,12 +15,15 @@ ARCHITECTURE
 ADD_LATER
 //NECESSARY additions. SHOULD BE added before Munchkin can be released.
 
+EXPECTED_ERROR
+//Possible ERROR here. Up to check twice while DEBUG.
+
 REWORK
 //The process is WRONG!!!! Rework it. Some approach was taken to be able to work further,
 but they BREAKS the Game LOGIC. Therefore REWORK IS NECESSARY!!!
 
-RULE-NOTE
+RULE_NOTE
 //My assumptions regarding Rules and the algorithm applied.
 //May be checked in the list of the RulesNotes
-//And, ofcourse, scoped by RULE-NOTE marker.
+//And, ofcourse, scoped by RULE_NOTE marker.
 

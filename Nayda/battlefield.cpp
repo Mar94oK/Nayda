@@ -365,7 +365,7 @@ void battleField::SetBackgroundPicture()
     QString homeDirectory = QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory);
 
 #ifdef Q_OS_WIN
-//NAY-001: MARK_EXPECTED_ERROR
+//NAY-001: EXPECTED_ERROR
      QString uiBattleFieldFilesLocation = "Munchkin/Nayda/Pictures/playMenu";
      homeDirectory = "D:/";
 #elif defined Q_OS_UNIX
@@ -619,7 +619,7 @@ void battleField::SlotStartUpTimerHandler()
 //    QString homeDirectory = QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory);
 
 //#ifdef Q_OS_WIN
-////NAY-001: MARK_EXPECTED_ERROR
+////NAY-001: EXPECTED_ERROR
 //     QString uiBattleFieldFilesLocation = "Munchkin/Nayda/Pictures/battleField/";
 //     homeDirectory = "D:/";
 //#elif defined Q_OS_UNIX
@@ -657,7 +657,7 @@ void battleField::SetUpPictureAddresses()
     QString homeDirectory = QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory);
 
 #ifdef Q_OS_WIN
-//NAY-001: MARK_EXPECTED_ERROR
+//NAY-001: EXPECTED_ERROR
      QString uiPlayMenuFilesLocation = "Munchkin/Nayda/Pictures/gameSettingsWidget";
      homeDirectory = "D:/";
 #elif defined Q_OS_UNIX

@@ -70,14 +70,14 @@ bool Server::ConnectionSendOutgoingData(const QByteArray &data)
         else
         {
             qDebug() << "Error during data send. Socket is not closed, but in NOTConnected state! ";
-//        NAY-001: MARK_EXPECTED_ERROR
+//        NAY-001: EXPECTED_ERROR
             return false;
         }
     }
     else
     {
         qDebug() << "Error during data send. Socket is closed! ";
-//        NAY-001: MARK_EXPECTED_ERROR
+//        NAY-001: EXPECTED_ERROR
         return false;
     }
  }
@@ -109,7 +109,7 @@ void Server::SlotConnectionReadIncomingData()
         return;
     }
 
-    //NAY-001: MARK_EXPECTED_ERROR
+    //NAY-001: EXPECTED_ERROR
 
     //then wait for ReadyRead if there are no bytes in message.
     if (!tcpSocket->bytesAvailable())
@@ -736,7 +736,7 @@ void Server::ProcessChartMessage(const QByteArray &data, int socketDescriptor)
 
     qDebug() << "NAY-001: message: Sender's name: " << QString::fromStdString(message.sendername());
     qDebug() << "NAY-001: message: Message: " << QString::fromStdString(message.chartmessage());
-    //NAY-001: MARK_EXPECTED_ERROR
+    //NAY-001: EXPECTED_ERROR
     //May find some way to check?
     qDebug() << "NAY-001: message: Room ID: " << QString::number(message.roomid());
 
@@ -1013,7 +1013,7 @@ void Server::ConnectionUnexpectedBehaviourHandler()
     {
         qDebug() << "Connection unhelded error occured,"
                     "or unhelded behaviour timeout is longer then the system timeout!";
-        //NAY-001: MARK_EXPECTED_ERROR.
+        //NAY-001: EXPECTED_ERROR.
         //By the fact, the Error occured here might differ from the actual error reported by the signal.
         //Consider reworking the handler of the errors making signal signal-slot connection passing actual error there
         emit SignalRemoteHostNotFoundErrorReport();

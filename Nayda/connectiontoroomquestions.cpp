@@ -37,7 +37,7 @@ void ConnectionToRoomQuestions::SetUpPicturesAddresses()
     QString homeDirectory = QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory);
 
 #ifdef Q_OS_WIN
-//NAY-001: MARK_EXPECTED_ERROR
+//NAY-001: EXPECTED_ERROR
      QString uiConnectionToRoomQuestionsFilesLocation = "Munchkin/Nayda/Pictures/connectionToRoomQuestions";
      homeDirectory = "D:/";
 #elif defined Q_OS_UNIX

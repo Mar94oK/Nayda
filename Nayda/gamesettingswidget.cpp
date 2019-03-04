@@ -27,7 +27,7 @@ void GameSettingsWidget::setUpUiPicturesAddresses()
     QString homeDirectory = QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory);
 
 #ifdef Q_OS_WIN
-//NAY-001: MARK_EXPECTED_ERROR
+//NAY-001: EXPECTED_ERROR
      QString uiPlayMenuFilesLocation = "Munchkin/Nayda/Pictures/gameSettingsWidget";
      homeDirectory = "D:/";
 #elif defined Q_OS_UNIX

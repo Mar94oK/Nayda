@@ -4,7 +4,7 @@
 #include <QDialog>
 #include "MessagesDefinitions.h"
 
-//NAY-001: MARK_EXPECTED_ERROR
+//NAY-001: EXPECTED_ERROR
 //Later to improve this value
 #define UNSELECTED_ROOM 9000
 

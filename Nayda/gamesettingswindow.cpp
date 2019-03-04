@@ -167,7 +167,7 @@ void GameSettingsWindow::SlotUserHaveChangedRoomName(const QString &roomName)
 void GameSettingsWindow::SlotUserHaveChangedRulesType(int automatic)
 {
     _gameSettings.setRulesType((automatic ? RulesType::Automatic : RulesType::Manual));
-    //NAY-001: MARK_EXPECTED_ERROR
+    //NAY-001: EXPECTED_ERROR
     //Scroll may later provide any digit, but here will be only true/false selector!
     ui->lbl_RulesType->setText(_RulesTypeBaseText + (automatic ? "Автоматические." : "Ручные!"));
     //emit SignalUserHaveChangedSettings(_gameSettings);

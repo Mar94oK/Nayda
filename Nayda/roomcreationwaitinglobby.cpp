@@ -59,7 +59,7 @@ void RoomCreationWaitingLobby::SetUpPicturesAddressses()
     QString homeDirectory = QStandardPaths::locate(QStandardPaths::HomeLocation, QString(), QStandardPaths::LocateDirectory);
 
 #ifdef Q_OS_WIN
-//NAY-001: MARK_EXPECTED_ERROR
+//NAY-001: EXPECTED_ERROR
      QString uiWaitingForOpponentsLobbyFilesLocation = "Munchkin/Nayda/Pictures/waitingForOpponentsLobby";
      homeDirectory = "D:/";
 #elif defined Q_OS_UNIX
@@ -206,7 +206,7 @@ void RoomCreationWaitingLobby::SlotProcessServerReportsOpponentIsEnteringRoom(co
     else
     {
         qDebug() << "NAY-001: Error while Opponent's entering! More then expected! Incorrect opponents number IN GUI! Check GUI!";
-        //NAY-001: MARK_EXPECTED_ERROR
+        //NAY-001: EXPECTED_ERROR
         //this number - _opponnets.size() should be set with respect to maximum number of players allowed by the game!
         //so add gui buttons for them!
         //this ussue also true for The_Game itself.
