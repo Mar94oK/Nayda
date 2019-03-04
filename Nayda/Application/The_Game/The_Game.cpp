@@ -1872,11 +1872,7 @@ const GameCardBasis* The_Game::GetRealCard(SimpleCard card)
     { //treasure
         _armorIterator = _armorDeck.find(static_cast <int> (card.second));
         if (_armorIterator != _armorDeck.end())
-        {
-            logger.Debug() << "NAY-002: GetRealCard() Returning treasure armor!";
-            const gameCardTreasureArmor* checker = &(_armorIterator->second);
-            return checker;
-        }
+            return &(*_armorIterator).second;
 
         _armorAmplifiersIterator = _armorAmplifiersDeck.find(static_cast <int> (card.second));
         if (_armorAmplifiersIterator != _armorAmplifiersDeck.end())
@@ -1888,11 +1884,7 @@ const GameCardBasis* The_Game::GetRealCard(SimpleCard card)
 
         _levelUpIterator = _levelUpDeck.find(static_cast <int> (card.second));
         if (_levelUpIterator != _levelUpDeck.end())
-        {
-            logger.Debug() << "NAY-002: GetRealCard() Returning treasure levelUp! ";
-            const gameCardTreasureLevelUp* checker = &(_levelUpIterator->second);
-            return checker;
-        }
+            return &(*_levelUpIterator).second;
 
         _specialMechanicsTreasureIterator = _specialMechanicsTreasureDeck.find(static_cast <int> (card.second));
         if (_specialMechanicsTreasureIterator != _specialMechanicsTreasureDeck.end())
@@ -1904,16 +1896,12 @@ const GameCardBasis* The_Game::GetRealCard(SimpleCard card)
 
         _weaponsIterator = _weaponsDeck.find(static_cast <int> (card.second));
         if (_weaponsIterator != _weaponsDeck.end())
-        {
-            logger.Debug() << "NAY-002: GetRealCard() Returning treasure weapon! ";
-            const gameCardTreasureWeapon* checker = &(_weaponsIterator->second);
-            return checker;
-        }
+            return &(*_weaponsIterator).second;
 
     }
-    qDebug() << "NAY-002: Error while GameCardBasis The_Game::GetRealCard(SimpleCard card)"
-             << "Card Not found! May be unsupported yet?";
-    //GameCardBasis emptyCard = GameCardBasis();
+    logger.Error() << "NAY-002: Error while GameCardBasis The_Game::GetRealCard(SimpleCard card)"
+                   << "Card Not found! May be unsupported yet?";
+
     return nullptr;
 }
 

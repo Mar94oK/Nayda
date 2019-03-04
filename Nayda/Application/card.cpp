@@ -1149,39 +1149,39 @@ gameCardTreasureArmor::gameCardTreasureArmor(const gameCardTreasureArmor *ptr)
     _isCombined = ptr->isCombined();
 }
 
-gameCardTreasureArmor::gameCardTreasureArmor(const gameCardTreasureArmor& other)
-{
-    SetCardType(other.GetCardType());
+//gameCardTreasureArmor::gameCardTreasureArmor(const gameCardTreasureArmor& other)
+//{
+//    SetCardType(other.GetCardType());
 
-    _cardID = other.GetCardID();
-    _pictureAddress = other.pictureAddress();
-    _cardName = other.cardName();
-    _addOn = other.addOn();
-    _type = other.type();
+//    _cardID = other.GetCardID();
+//    _pictureAddress = other.pictureAddress();
+//    _cardName = other.cardName();
+//    _addOn = other.addOn();
+//    _type = other.type();
 
-    _part = other.GetBodyPart();
-    _size = other.size();
+//    _part = other.GetBodyPart();
+//    _size = other.size();
 
-    _bonus = other.GetBonus();
-    _additionalBonusforElf = other.GetAdditionalBonusforElf();
-    _additionalBonusforOrk = other.GetAdditionalBonusforOrk();
+//    _bonus = other.GetBonus();
+//    _additionalBonusforElf = other.GetAdditionalBonusforElf();
+//    _additionalBonusforOrk = other.GetAdditionalBonusforOrk();
 
-    _isOnlyForHuman = other.isOnlyForHuman();
-    _isOnlyForWizard = other.isOnlyForWizard();
-    _isOnlyForDwarf = other.isOnlyForDwarf();
-    _isOnlyForGnome = other.isOnlyForGnome();
+//    _isOnlyForHuman = other.isOnlyForHuman();
+//    _isOnlyForWizard = other.isOnlyForWizard();
+//    _isOnlyForDwarf = other.isOnlyForDwarf();
+//    _isOnlyForGnome = other.isOnlyForGnome();
 
-    _isRestrictedToWizard = other.isRestrictedToWizard();
-    _isRestrictedToGnome = other.isRestrictedToGnome();
+//    _isRestrictedToWizard = other.isRestrictedToWizard();
+//    _isRestrictedToGnome = other.isRestrictedToGnome();
 
-    _hasSpecialMechanic = other.hasSpecialMechanic();
+//    _hasSpecialMechanic = other.hasSpecialMechanic();
 
-    _price = other.price();
+//    _price = other.price();
 
-    _bonusToFleeing = other.bonusToFleeing();
+//    _bonusToFleeing = other.bonusToFleeing();
 
-    _isCombined = other.isCombined();
-}
+//    _isCombined = other.isCombined();
+//}
 
 int gameCardTreasureArmor::GetCardID() const
 {
@@ -2040,42 +2040,42 @@ gameCardTreasureWeapon::gameCardTreasureWeapon(const gameCardTreasureWeapon *ptr
     _additionalBonusAgainstUndead = ptr->GetAdditionalBonusAgainstUndead();
 }
 
-gameCardTreasureWeapon::gameCardTreasureWeapon(const gameCardTreasureWeapon &other)
-{
-    SetCardType(other.GetCardType());
+//gameCardTreasureWeapon::gameCardTreasureWeapon(const gameCardTreasureWeapon &other)
+//{
+//    SetCardType(other.GetCardType());
 
-    _size = other.GetSize();
-    _type = other.GetType();
-    _addOn = other.GetAddOn();
-    _bonus = other.GetBonus();
-    _hands = other.GetNecessaryHands();
-    _price = other.GetPrice();
-    _cardID = other.GetCardID();
-    _cardName = other.CardName();
-    _bonusToFlee = other.GetBonusToFlee();
+//    _size = other.GetSize();
+//    _type = other.GetType();
+//    _addOn = other.GetAddOn();
+//    _bonus = other.GetBonus();
+//    _hands = other.GetNecessaryHands();
+//    _price = other.GetPrice();
+//    _cardID = other.GetCardID();
+//    _cardName = other.CardName();
+//    _bonusToFlee = other.GetBonusToFlee();
 
-    _isOnlyForElf = other.isOnlyForElf();
-    _isOnlyForMan = other.isOnlyForMan();
-    _isOnlyForOrk = other.isOnlyForOrk();
-    _isOnlyForBard = other.isOnlyForBard();
-    _isOnlyForDwarf = other.isOnlyForDwarf();
-    _isOnlyForGnome = other.isOnlyForGnome();
-    _isOnlyForHuman = other.isOnlyForHuman();
-    _isOnlyForThief = other.isOnlyForThief();
-    _isOnlyForWoman = other.isOnlyForWoman();
-    _isOnlyForCleric = other.isOnlyForCleric();
-    _isOnlyForWizard = other.isOnlyForWizard();
-    _isOnlyForWarrior = other.isOnlyForWarrior();
-    _isOnlyForHalfling = other.isOnlyForHalfling();
+//    _isOnlyForElf = other.isOnlyForElf();
+//    _isOnlyForMan = other.isOnlyForMan();
+//    _isOnlyForOrk = other.isOnlyForOrk();
+//    _isOnlyForBard = other.isOnlyForBard();
+//    _isOnlyForDwarf = other.isOnlyForDwarf();
+//    _isOnlyForGnome = other.isOnlyForGnome();
+//    _isOnlyForHuman = other.isOnlyForHuman();
+//    _isOnlyForThief = other.isOnlyForThief();
+//    _isOnlyForWoman = other.isOnlyForWoman();
+//    _isOnlyForCleric = other.isOnlyForCleric();
+//    _isOnlyForWizard = other.isOnlyForWizard();
+//    _isOnlyForWarrior = other.isOnlyForWarrior();
+//    _isOnlyForHalfling = other.isOnlyForHalfling();
 
-    _pictureAddress = other.GetPictureAddress();
-    _addingThiefAbility = other.GetAddingThiefAbility();
-    _hasSpecialMechanic = other.GetHasSpecialMechanic();
-    _addingClericalAbility = other.AddingClericalAbility();
-    _additionalBonusAgainst_J = other.GetAdditionalBonusAgainst_J();
-    _automaticLooseToCalmadzila = other.GetAutomaticLooseToCalmadzila();
-    _additionalBonusAgainstUndead = other.GetAdditionalBonusAgainstUndead();
-}
+//    _pictureAddress = other.GetPictureAddress();
+//    _addingThiefAbility = other.GetAddingThiefAbility();
+//    _hasSpecialMechanic = other.GetHasSpecialMechanic();
+//    _addingClericalAbility = other.AddingClericalAbility();
+//    _additionalBonusAgainst_J = other.GetAdditionalBonusAgainst_J();
+//    _automaticLooseToCalmadzila = other.GetAutomaticLooseToCalmadzila();
+//    _additionalBonusAgainstUndead = other.GetAdditionalBonusAgainstUndead();
+//}
 
 
 int gameCardTreasureWeapon::GetCardID() const

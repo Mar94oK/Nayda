@@ -818,7 +818,7 @@ public:
     gameCardTreasureArmor(const gameCardTreasureArmor* ptr);
     gameCardTreasureArmor()
     { }
-    gameCardTreasureArmor(const gameCardTreasureArmor &other);
+//    gameCardTreasureArmor(const gameCardTreasureArmor &other);
 
 };
 
@@ -1147,7 +1147,7 @@ public:
 
     gameCardTreasureWeapon(const gameCardTreasureWeapon* ptr);
     gameCardTreasureWeapon() { }
-    gameCardTreasureWeapon(const gameCardTreasureWeapon &other);
+//    gameCardTreasureWeapon(const gameCardTreasureWeapon &other);
 };
 
 
