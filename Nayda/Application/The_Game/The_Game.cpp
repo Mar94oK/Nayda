@@ -1873,14 +1873,10 @@ const GameCardBasis* The_Game::GetRealCard(SimpleCard card)
         _armorIterator = _armorDeck.find(static_cast <int> (card.second));
         if (_armorIterator != _armorDeck.end())
         {
-            qDebug() << "NAY-002: Returning treasure armor: ";
-            //const GameCardBasis* checker = &(*_armorIterator).second;
+            logger.Debug() << "NAY-002: GetRealCard() Returning treasure armor!";
             const gameCardTreasureArmor* checker = &(_armorIterator->second);
-            //checker->SetCardType(CardType::TreasureArmor);
-            //_armorIterator->second
             return checker;
         }
-
 
         _armorAmplifiersIterator = _armorAmplifiersDeck.find(static_cast <int> (card.second));
         if (_armorAmplifiersIterator != _armorAmplifiersDeck.end())
@@ -1892,7 +1888,11 @@ const GameCardBasis* The_Game::GetRealCard(SimpleCard card)
 
         _levelUpIterator = _levelUpDeck.find(static_cast <int> (card.second));
         if (_levelUpIterator != _levelUpDeck.end())
-            return &(*_levelUpIterator).second;
+        {
+            logger.Debug() << "NAY-002: GetRealCard() Returning treasure levelUp! ";
+            const gameCardTreasureLevelUp* checker = &(_levelUpIterator->second);
+            return checker;
+        }
 
         _specialMechanicsTreasureIterator = _specialMechanicsTreasureDeck.find(static_cast <int> (card.second));
         if (_specialMechanicsTreasureIterator != _specialMechanicsTreasureDeck.end())
@@ -1904,7 +1904,11 @@ const GameCardBasis* The_Game::GetRealCard(SimpleCard card)
 
         _weaponsIterator = _weaponsDeck.find(static_cast <int> (card.second));
         if (_weaponsIterator != _weaponsDeck.end())
-            return &(*_weaponsIterator).second;
+        {
+            logger.Debug() << "NAY-002: GetRealCard() Returning treasure weapon! ";
+            const gameCardTreasureWeapon* checker = &(_weaponsIterator->second);
+            return checker;
+        }
 
     }
     qDebug() << "NAY-002: Error while GameCardBasis The_Game::GetRealCard(SimpleCard card)"
@@ -2072,7 +2076,7 @@ void The_Game::SlotAdjustSizeOfTheGamerWidgetToMakeCardsToBeInPlace()
 
 void The_Game::SlotCheckCardIsAbleToBePlayed(PositionedCard card, bool fromHand)
 {
-    qDebug() << "The Card is checking!!!";
+    logger.Algorithm() << "The Card is checking!!!";
 
 
     //Перед запуском парсеров с указателями причин невозможности разыграть карту
@@ -2107,7 +2111,9 @@ void The_Game::MainCardImplementer(GamerWidget *wt, PositionedCard card, CardImp
 {
     //Сначала требуется понять, вычислять ли наличие разрешения
     //В случае запроса от сервера разрешение не требуется - можно сразу применять карту.
-    const GameCardBasis* basisCard(GetRealCard(card.GetCard()));
+    logger.Algorithm() << "Entering MainCardImplementer!";
+
+    const GameCardBasis* basisCard = GetRealCard(card.GetCard());
     if (checkerPolicy == CardCheckerPolicy::CheckBeforeImplementation)
     {
         //Перед всеми остальными действиями сначала проверить глобальные запреты.
@@ -2125,12 +2131,15 @@ void The_Game::MainCardImplementer(GamerWidget *wt, PositionedCard card, CardImp
             return;
         }
 
+        logger.Algorithm() << "MainCardImplementer:: Trying to get Allowance!";
         std::shared_ptr<CardPlayAllowanceBase> allowance = GetAllowance(basisCard, wt->GetPointerToPlayer(), direction);
         //Проверить, разрешено ли применить карту
         //Если да - применить её (причём, в зависимости от направления могут быть разные типы применения!)
         //В будущем - т.е. "Дипломатия" будет проверять, выполнены ли условия по передаче карты и т.п.
         //В настоящий момент (21.12.2018) выполняет только применение карты в игру
         //Вывести причину, если нельзя
+        //ADD_LATER
+        logger.Algorithm() << "MainCardImplementer:: Checking allowance received.";
         if (!allowance->GetAllowance())
         {
             ProcessCardMightNotBeImplemented(allowance);
@@ -2259,7 +2268,7 @@ std::shared_ptr<CardPlayAllowanceBase> The_Game::GetAllowance(const GameCardBasi
         const gameCardTreasureWeapon* cardPtr = static_cast<const gameCardTreasureWeapon* >(card);
         return GetAllowanceTreasureWeapon(cardPtr, player, true);
     }
-    logger.Debug() << "NAY-002: ERROR WHILE The_Game::GetAllowance. Not implemented type: "
+    logger.Error() << "NAY-002: ERROR WHILE The_Game::GetAllowance. Not implemented type: "
              << card->GetCardType();
 
     return nullptr;
@@ -2516,6 +2525,7 @@ std::shared_ptr<TreasureWeaponAllowance> The_Game::GetAllowanceTreasureWeapon(co
     //3) "запрещено для"
     //4) число рук
 
+    logger.Debug() << "NAY-002:: Debugging Weapon Implementation: Getting Weapon Allowance.";
 
     //Проверка, что нет боя:
     if (GetCurrentGamePhase() == GamePhase::Battle)

@@ -1117,6 +1117,8 @@ void gameCardTreasureArmor::setIsCombined(bool isCombined)
 
 gameCardTreasureArmor::gameCardTreasureArmor(const gameCardTreasureArmor *ptr)
 {
+    SetCardType(ptr->GetCardType());
+
     _cardID = ptr->GetCardID();
     _pictureAddress = ptr->pictureAddress();
     _cardName = ptr->cardName();
@@ -2003,6 +2005,8 @@ void gameCardTreasureWeapon::SetSize(const Size &size)
 
 gameCardTreasureWeapon::gameCardTreasureWeapon(const gameCardTreasureWeapon *ptr)
 {
+    SetCardType(ptr->GetCardType());
+
     _size = ptr->GetSize();
     _type = ptr->GetType();
     _addOn = ptr->GetAddOn();
@@ -2038,6 +2042,8 @@ gameCardTreasureWeapon::gameCardTreasureWeapon(const gameCardTreasureWeapon *ptr
 
 gameCardTreasureWeapon::gameCardTreasureWeapon(const gameCardTreasureWeapon &other)
 {
+    SetCardType(other.GetCardType());
+
     _size = other.GetSize();
     _type = other.GetType();
     _addOn = other.GetAddOn();
