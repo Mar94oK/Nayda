@@ -2851,7 +2851,7 @@ void The_Game::ApplyNewWeapon(GamerWidget *wt, const gameCardTreasureWeapon &car
         logger.Essential() << "NAY-002: Flee chance was: " << player->GetFleeChance();
         logger.Essential() << "NAY-002: Flee chance is expected to be added: " << card.GetBonusToFlee();
         if (!CardIsSiegeEngine(&card))
-            player->SetFleeChance(_mainPlayer->GetFleeChance() + card.GetBonusToFlee());
+            player->SetFleeChance(_mainPlayer->GetFleeChance() - card.GetBonusToFlee());
         logger.Essential() << "NAY-002: Flee chance resulted: " << player->GetFleeChance();
 
         if (!CardIsSiegeEngine(&card))
@@ -2859,7 +2859,7 @@ void The_Game::ApplyNewWeapon(GamerWidget *wt, const gameCardTreasureWeapon &car
     }
     else
     {
-        player->SetFleeChance(_mainPlayer->GetFleeChance() - card.GetBonusToFlee());
+        player->SetFleeChance(_mainPlayer->GetFleeChance() + card.GetBonusToFlee());
         player->SetBattlePower(static_cast<int32_t>(_mainPlayer->GetBattlePower() - static_cast<int32_t>(totalBonus)));
     }
 
@@ -2896,7 +2896,8 @@ void The_Game::ApplyNewWeapon(GamerWidget *wt, const gameCardTreasureWeapon &car
     //Анимация должна отдать карту в cardsInGameObserver
     //Анимацией занимается другая функция
 
-    if (!CardIsSiegeEngine(&card))
+    //Должен удалить эффект осадки в случае если Применитель вызван с фалгом "удалить"
+    if (!CardIsSiegeEngine(&card) && addEffect)
         wt->SlotChangeTheGamerBattlePower(static_cast<int32_t>(addEffect ? totalBonus : -totalBonus));
 }
 
