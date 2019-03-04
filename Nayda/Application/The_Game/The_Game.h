@@ -501,6 +501,13 @@ private:
                                                                         bool fromHand);
     void ImplementTreasureWeapon(std::shared_ptr<CardPlayAllowanceBase> allowance, const GameCardBasis *card, GamerWidget *wt, PositionedCard posCard);
 
+
+private:
+//Specific checkers according to special functions!
+
+    bool CardIsSiegeEngine(const gameCardTreasureWeapon * card)
+    { return (card->GetCardID() == static_cast<uint32_t>(CardsWithSpecialFunctions_TreasureWeapon::SiegeEngine)); }
+
 private:
 
    void ShowCardIsForbiddenToPlayMessage(const QString& message);

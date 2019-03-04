@@ -2525,7 +2525,7 @@ std::shared_ptr<TreasureWeaponAllowance> The_Game::GetAllowanceTreasureWeapon(co
         return std::make_shared<TreasureWeaponAllowance>(TreasureWeaponAllowance(false, "Сейчас чужой ход. Броню можно вводить в игру только в свой ход.", false));
 
     if (player->GetThereIsLimitOnBigThings() && player->GetThereIsOneBigThing()
-            && (card->GetSize() == Size::Big))
+            && ((card->GetSize() == Size::Big) && !CardIsSiegeEngine(card)))
         return std::make_shared<TreasureWeaponAllowance>(TreasureWeaponAllowance(false, "К сожалению, у Вас уже есть большие шмотки в игре!", false));
 
     if (card->isOnlyForElf()
@@ -2618,8 +2618,13 @@ std::shared_ptr<TreasureWeaponAllowance> The_Game::GetAllowanceTreasureWeapon(co
         return std::make_shared<TreasureWeaponAllowance>(TreasureWeaponAllowance(true, "Увы, карта активна только для женщин!\n", false));
 
     //Проверить колличество свободных рук!
-    if (card->GetNecessaryHands() < static_cast<int32_t>(player->GetFreeHands()))
-        return std::make_shared<TreasureWeaponAllowance>(TreasureWeaponAllowance(true, "Не хватает рук, чтобы удержать!\n", false));
+    {
+        logger.Debug() << "NAY-002: Necessary Hands for card: " << card->GetNecessaryHands();
+        logger.Debug() << "NAY-002: Free hands the player has: " << player->GetFreeHands();
+        if (card->GetNecessaryHands() > static_cast<int32_t>(player->GetFreeHands()))
+            return std::make_shared<TreasureWeaponAllowance>(TreasureWeaponAllowance(true, "Не хватает рук, чтобы удержать!\n", false));
+
+    }
 
     //Запретов больше нет!
     return std::make_shared<TreasureWeaponAllowance>(TreasureWeaponAllowance(true, "", true));
@@ -2736,7 +2741,7 @@ void The_Game::ApplyNewArmor(GamerWidget* wt, const gameCardTreasureArmor &card,
     else
     {
         player->SetFleeChance(_mainPlayer->GetFleeChance() - card.bonusToFleeing());
-        player->SetBattlePower(static_cast<int32_t>(_mainPlayer->GetBattlePower() + static_cast<int32_t>(totalBonus)));
+        player->SetBattlePower(static_cast<int32_t>(_mainPlayer->GetBattlePower() - static_cast<int32_t>(totalBonus)));
    }
 
 
@@ -2827,18 +2832,24 @@ void The_Game::ApplyNewWeapon(GamerWidget *wt, const gameCardTreasureWeapon &car
         }
     }
 
-    //Добавление (удаление) обычных бонусов:
-
+    //Добавление (удаление) обычных бонусов, КРОМЕ ОСАДНОЙ машины:
+    //RULE-NOTE-001
     if (addEffect)
     {
         //Бонус к смывке. Проверить, работает ли.
+        //Добавлять только в том случае, если это не осадка.
+        //Она влияет на бонус только если активна. Её активация - вопрос, который выносится на начало каждого боя.
+        //По умолчанию она должна рассматриваться НЕактивной.
+        //RULE-NOTE-001
         logger.Essential() << "NAY-002: AddNewWeapon is adding FleeChance Bonus! Check the procedure!";
         logger.Essential() << "NAY-002: Flee chance was: " << player->GetFleeChance();
         logger.Essential() << "NAY-002: Flee chance is expected to be added: " << card.GetBonusToFlee();
-        player->SetFleeChance(_mainPlayer->GetFleeChance() + card.GetBonusToFlee());
+        if (!CardIsSiegeEngine(&card))
+            player->SetFleeChance(_mainPlayer->GetFleeChance() + card.GetBonusToFlee());
         logger.Essential() << "NAY-002: Flee chance resulted: " << player->GetFleeChance();
 
-        player->SetBattlePower(static_cast<int32_t>(_mainPlayer->GetBattlePower() + static_cast<int32_t>(totalBonus)));
+        if (!CardIsSiegeEngine(&card))
+            player->SetBattlePower(static_cast<int32_t>(_mainPlayer->GetBattlePower() + static_cast<int32_t>(totalBonus)));
     }
     else
     {
@@ -2857,13 +2868,15 @@ void The_Game::ApplyNewWeapon(GamerWidget *wt, const gameCardTreasureWeapon &car
         logger.Essential() << "NAY-002: Free Hands Before Applying Weapon: " << player->GetFreeHands();
         //В функции - сумма. Если передать туда отрицательное число, то число свободных рук уменьшится
         //Двурукий меч, наоборот, добавит единичку
-        player->ChangeFreeHands((-1) * card.GetNecessaryHands());
+        if (!CardIsSiegeEngine(&card))
+            player->ChangeFreeHands((-1) * card.GetNecessaryHands());
         logger.Essential() << "NAY-002: Free Hands After Applying Weapon Effect: " << player->GetFreeHands();
     }
     else
     {
         logger.Essential() << "NAY-002: Free Hands Before Applying Weapon: " << player->GetFreeHands();
-        player->ChangeFreeHands(card.GetNecessaryHands());
+        if (!CardIsSiegeEngine(&card))
+            player->ChangeFreeHands(card.GetNecessaryHands());
         logger.Essential() << "NAY-002: Free Hands After Applying Weapon Effect: " << player->GetFreeHands();
     }
 
@@ -2877,7 +2890,8 @@ void The_Game::ApplyNewWeapon(GamerWidget *wt, const gameCardTreasureWeapon &car
     //Анимация должна отдать карту в cardsInGameObserver
     //Анимацией занимается другая функция
 
-    wt->SlotChangeTheGamerBattlePower(static_cast<int32_t>(addEffect ? totalBonus : -totalBonus));
+    if (!CardIsSiegeEngine(&card))
+        wt->SlotChangeTheGamerBattlePower(static_cast<int32_t>(addEffect ? totalBonus : -totalBonus));
 }
 
 

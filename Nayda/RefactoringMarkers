@@ -18,3 +18,9 @@ ADD_LATER
 REWORK
 //The process is WRONG!!!! Rework it. Some approach was taken to be able to work further,
 but they BREAKS the Game LOGIC. Therefore REWORK IS NECESSARY!!!
+
+RULE-NOTE
+//My assumptions regarding Rules and the algorithm applied.
+//May be checked in the list of the RulesNotes
+//And, ofcourse, scoped by RULE-NOTE marker.
+
