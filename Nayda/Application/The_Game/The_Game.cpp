@@ -2703,7 +2703,7 @@ std::shared_ptr<TreasureArmorAmplifiersAllowance> The_Game::GetAllowanceTreasure
     {
         //Получить карты, имеющие бонус (можно и неактивные)
          std::vector<ActiveIncativeCard> result = GetThingsWithBonusesInGame(player);
-                 //Продолжить здесь 06.03
+        //Продолжить здесь 06.03
     }
 
 }
