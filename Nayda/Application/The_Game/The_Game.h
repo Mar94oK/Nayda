@@ -519,6 +519,7 @@ private:
     { return (cardId == static_cast<int32_t>(CardsWithSpecialFunctions_TreasureArmorAmplifiers::ConvenientHandles));}
 
     std::vector<ActiveIncativeCard> GetBigThingsInGame(const Player* player);
+    std::vector<ActiveIncativeCard> GetThingsWithBonusesInGame(const Player* player);
 
     bool CardIsBigThing(SimpleCard card);
     bool CardIsWeapon(SimpleCard card);

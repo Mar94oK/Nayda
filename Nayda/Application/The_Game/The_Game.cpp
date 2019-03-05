@@ -2702,7 +2702,8 @@ std::shared_ptr<TreasureArmorAmplifiersAllowance> The_Game::GetAllowanceTreasure
     else
     {
         //Получить карты, имеющие бонус (можно и неактивные)
-        //Продолжить здесь 06.03
+         std::vector<ActiveIncativeCard> result = GetThingsWithBonusesInGame(player);
+                 //Продолжить здесь 06.03
     }
 
 }
@@ -2739,6 +2740,45 @@ std::vector<ActiveIncativeCard> The_Game::GetBigThingsInGame(const Player *playe
         _armorIterator = _armorDeck.find(static_cast <int> (it->second));
         if (_armorIterator != _armorDeck.end())
             result.push_back(std::make_pair(false, SimpleCard(true, it->second)));
+
+    }
+
+    return result;
+}
+
+std::vector<ActiveIncativeCard> The_Game::GetThingsWithBonusesInGame(const Player *player)
+{
+    std::map<int, gameCardTreasureWeapon> :: const_iterator _weaponsIterator;
+    std::map<int, gameCardTreasureArmor> :: const_iterator _armorIterator;
+
+    std::vector<ActiveIncativeCard> result;
+
+    for (std::vector<SimpleCard>::iterator it = player->GetActiveCardsInGame().begin();
+         it != player->GetActiveCardsInGame().end(); ++it)
+    {
+        _weaponsIterator = _weaponsDeck.find(static_cast <int> (it->second));
+        if (_weaponsIterator != _weaponsDeck.end())
+            if (_weaponsIterator->second.GetBonus())
+                result.push_back(std::make_pair(true, SimpleCard(true, it->second)));
+
+        _armorIterator = _armorDeck.find(static_cast <int> (it->second));
+        if (_armorIterator != _armorDeck.end())
+            if (_armorIterator->second.GetBonus())
+                result.push_back(std::make_pair(true, SimpleCard(true, it->second)));
+    }
+
+    for (std::vector<SimpleCard>::iterator it = player->GetDisabledCardsInGame().begin();
+         it != player->GetDisabledCardsInGame().end(); ++it)
+    {
+        _weaponsIterator = _weaponsDeck.find(static_cast <int> (it->second));
+        if (_weaponsIterator != _weaponsDeck.end())
+            if (_weaponsIterator->second.GetBonus())
+                result.push_back(std::make_pair(false, SimpleCard(true, it->second)));
+
+        _armorIterator = _armorDeck.find(static_cast <int> (it->second));
+        if (_armorIterator != _armorDeck.end())
+            if (_armorIterator->second.GetBonus())
+                result.push_back(std::make_pair(false, SimpleCard(true, it->second)));
 
     }
 
