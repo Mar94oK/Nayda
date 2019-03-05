@@ -501,12 +501,28 @@ private:
                                                                         bool fromHand);
     void ImplementTreasureWeapon(std::shared_ptr<CardPlayAllowanceBase> allowance, const GameCardBasis *card, GamerWidget *wt, PositionedCard posCard);
 
+    std::shared_ptr<TreasureArmorAmplifiersAllowance> GetAllowanceTreasureArmorAmplifiers(const gameCardTreasureArmorAmplifier *card,
+                                                                                          Player* player,
+                                                                                          bool fromHand);
+
 
 private:
 //Specific checkers according to special functions!
+//А потом вообще сделать их статическими и убрать, скорее всего, в карты
 
     bool CardIsSiegeEngine(const gameCardTreasureWeapon * card)
     { return (card->GetCardID() == static_cast<uint32_t>(CardsWithSpecialFunctions_TreasureWeapon::SiegeEngine)); }
+
+    //Нет смысла писать другой проверяльщик, т.к.
+    //Такая карта всего одна - остальные с точки зрения получения разрешения на применение однородны
+    bool ArmorAmplifierIsConvinientHandles(int32_t cardId)
+    { return (cardId == static_cast<int32_t>(CardsWithSpecialFunctions_TreasureArmorAmplifiers::ConvenientHandles));}
+
+    std::vector<ActiveIncativeCard> GetBigThingsInGame(const Player* player);
+
+    bool CardIsBigThing(SimpleCard card);
+    bool CardIsWeapon(SimpleCard card);
+    bool CardIsArmor(SimpleCard card);
 
 private:
 

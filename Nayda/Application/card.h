@@ -119,6 +119,15 @@ enum class CardsWithSpecialFunctions_TreasureWeapon
     TubaOfCharm = 65
 };
 
+
+enum class CardsWithSpecialFunctions_TreasureArmorAmplifiers
+{
+    OfDoom = 79,
+    Blessed = 123,
+    Poisoned = 124,
+    ConvenientHandles = 125
+};
+
 enum class CardImplementationDirection
 {
     HandToCardsInGame,
@@ -422,6 +431,40 @@ public:
     TreasureWeaponAllowance(const TreasureWeaponAllowance* ptr)
     {
         _active = ptr->GetIsActive();
+        SetAllowance(ptr->GetAllowance());
+        SetReasonOfRestriction(ptr->GetReasonOfRestriction());
+    }
+
+};
+
+typedef std::pair<bool, SimpleCard> ActiveIncativeCard; // пусть и понятно, что это всегда только сокровища
+//всё равно...
+
+class TreasureArmorAmplifiersAllowance : public CardPlayAllowanceBase
+{
+    std::vector<ActiveIncativeCard> _cards; //cards to which it is possible to add the amplifier.
+    //возвращать надо карты по принципу активные/неактивные иначе их никак не различить!!!
+
+public:
+
+    void SetCardsAllowedToBeAmplified(const std::vector<ActiveIncativeCard>& cards)
+    { _cards = cards; }
+    std::vector<ActiveIncativeCard> GetCardsAllowedToBeAmplified() const { return _cards; }
+
+public:
+
+    TreasureArmorAmplifiersAllowance(bool allowedToBePlayed, const QString& reason, const std::vector<ActiveIncativeCard>& cards) :
+        _cards(cards)
+    {
+        SetAllowance(allowedToBePlayed);
+        SetReasonOfRestriction(reason);
+    }
+
+public:
+
+    TreasureArmorAmplifiersAllowance(const TreasureArmorAmplifiersAllowance* ptr)
+    {
+        _cards = ptr->GetCardsAllowedToBeAmplified();
         SetAllowance(ptr->GetAllowance());
         SetReasonOfRestriction(ptr->GetReasonOfRestriction());
     }

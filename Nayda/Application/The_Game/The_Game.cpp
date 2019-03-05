@@ -2513,7 +2513,7 @@ std::shared_ptr<TreasureWeaponAllowance> The_Game::GetAllowanceTreasureWeapon(co
     //3) "запрещено для"
     //4) число рук
 
-    logger.Debug() << "NAY-002:: Debugging Weapon Implementation: Getting Weapon Allowance.";
+    //logger.Debug() << "NAY-002:: Debugging Weapon Implementation: Getting Weapon Allowance.";
 
     //Проверка, что нет боя:
     if (GetCurrentGamePhase() == GamePhase::Battle)
@@ -2657,6 +2657,104 @@ void The_Game::ImplementTreasureWeapon(std::shared_ptr<CardPlayAllowanceBase> al
         ApplyCardImplementerMessage(weaponAllowance->GetReasonOfRestriction(), true);
     else
         ApplyNewWeapon(wt, realCard);
+}
+
+std::shared_ptr<TreasureArmorAmplifiersAllowance> The_Game::GetAllowanceTreasureArmorAmplifiers(const gameCardTreasureArmorAmplifier *card, Player *player, bool fromHand)
+{
+    //Согласно назначению этих вещей проверить следует следующее:
+    //1. Есть ли у игрока вещи, к которым можно применять усилители
+    //И, кажется, всё.
+    //Начинать с обычных "фазовых" проверок
+
+    //Проверка, что нет боя:
+    if (GetCurrentGamePhase() == GamePhase::Battle)
+        return std::make_shared<TreasureArmorAmplifiersAllowance>
+                (TreasureArmorAmplifiersAllowance(false,
+                                                  "Странное дело, но в бою нельзя "
+                                                  "брать в руки дополнительное оружие. "
+                                                  "Готовьтесь заранее!", {}));
+
+    //NAY-002: REWORK. Оружие, как и броню, можно выкладывать в чужой ход!
+    if (GetCurrentGamePhase() == GamePhase::OtherPlayerMove)
+        return std::make_shared<TreasureArmorAmplifiersAllowance>
+                (TreasureArmorAmplifiersAllowance(false,
+                                                  "Сейчас чужой ход. Броню можно вводить"
+                                                  " в игру только в свой ход.", {}));
+
+    //Далее проверка по вещам.
+    //Три из них применяются ТОЛЬКО к шмоткам с БОЕВЫМ бонусом
+    //Одна - к БОЛЬШИМ шмоткам. Причём я решил запретить её применение к Осадной машине
+    //Применение этих шмоток к картам других игроков ЗАПРЕЩЕНО
+
+    if (ArmorAmplifierIsConvinientHandles(card->cardID()))
+    {
+        //Проверить, что есть большие шмотки, и при этом НЕ ОСАДНАЯ МАШИНА
+        //Но она, кстати, по моему алгоритму, не добавляет себя как большая.
+        if (player->GetThereIsOneBigThing()) // должен устанавливаться даже в том случае, если игрок- дворф!!!!
+        {
+            //Составить вектор с АйДи больших карт
+            //В руках могут быть только сокровища, по этому придётся проверять среди всех сокровищ, которые
+            //Могут быть большими - а это ТОЛЬКО ОРУЖИЕ И БРОНЯ
+
+            std::vector<ActiveIncativeCard> result = GetBigThingsInGame(player);
+        }
+    }
+    else
+    {
+        //Получить карты, имеющие бонус (можно и неактивные)
+        //Продолжить здесь 06.03
+    }
+
+}
+
+std::vector<ActiveIncativeCard> The_Game::GetBigThingsInGame(const Player *player)
+{
+    //В игре нет ДВУХ ухватистых ручек, так что проверять здесь сразу на "уже улучшенность"
+    //Нет смысла
+
+    std::map<int, gameCardTreasureWeapon> :: const_iterator _weaponsIterator;
+    std::map<int, gameCardTreasureArmor> :: const_iterator _armorIterator;
+
+    std::vector<ActiveIncativeCard> result;
+
+    for (std::vector<SimpleCard>::iterator it = player->GetActiveCardsInGame().begin();
+         it != player->GetActiveCardsInGame().end(); ++it)
+    {
+        _weaponsIterator = _weaponsDeck.find(static_cast <int> (it->second));
+        if (_weaponsIterator != _weaponsDeck.end())
+            result.push_back(std::make_pair(true, SimpleCard(true, it->second)));
+
+        _armorIterator = _armorDeck.find(static_cast <int> (it->second));
+        if (_armorIterator != _armorDeck.end())
+            result.push_back(std::make_pair(true, SimpleCard(true, it->second)));
+    }
+
+    for (std::vector<SimpleCard>::iterator it = player->GetDisabledCardsInGame().begin();
+         it != player->GetDisabledCardsInGame().end(); ++it)
+    {
+        _weaponsIterator = _weaponsDeck.find(static_cast <int> (it->second));
+        if (_weaponsIterator != _weaponsDeck.end())
+            result.push_back(std::make_pair(false, SimpleCard(true, it->second)));
+
+        _armorIterator = _armorDeck.find(static_cast <int> (it->second));
+        if (_armorIterator != _armorDeck.end())
+            result.push_back(std::make_pair(false, SimpleCard(true, it->second)));
+
+    }
+
+    return result;
+}
+
+bool The_Game::CardIsBigThing(SimpleCard card)
+{
+    if ()
+}
+
+bool The_Game::CardIsWeapon(SimpleCard card)
+{
+
+
+
 }
 
 void The_Game::ShowCardIsForbiddenToPlayMessage(const QString &message)

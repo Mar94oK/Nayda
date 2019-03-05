@@ -47,6 +47,10 @@ class Player
     bool _thereIsOneBigThing = false;
     bool _thereIsLimitOnBigThings= true; //may be remove it if checking the race
 
+    //А вот эта конструкция легко бы влезла в std::optional
+    bool _thereIsBigThingModifiedByConvinientHandles = false;
+    uint32_t _cardIdModifiedByConvinientHandles = 0;
+
     bool _hasFreeHireling = false;
     uint32_t _totalHireLings = 0;
 
@@ -124,9 +128,6 @@ public:
     int GetFleeChance() const;
     void SetFleeChance(int GetFleeChance);
 
-
-
-
     uint32_t GetCardsOnHands() const;
     uint32_t GetCardsOnHandsLimit() const;
     void SetCardsOnHandsLimit(int GetCardsOnHandsLimit);
@@ -145,7 +146,7 @@ public:
     bool GetRightHandSlotFull() const;
     void SetRightHandSlotFull(bool GetRightHandSlotFull);
 
-    uint32_t GetFreeHands() const { return _freeHands; }
+    int32_t GetFreeHands() const { return _freeHands; }
     void ChangeFreeHands(int32_t diff);
 
     bool GetIsAffectedByTinyHands() const;
@@ -192,6 +193,9 @@ public:
 
     std::vector<SimpleCard> GetCardsInGame()
     { return (_activeCardsInGame + _disabledCardsInGame); }
+
+    //Игрок не может выполнить эту процедуру - у него нет доступа к наполняемым массивам карт
+    //std::vector<ActiveIncativeCard> GetBigThingsInGame();
 
     QString GetPlayerName() const;
     void SetPlayersName(const QString &GetPlayerName);
@@ -271,6 +275,18 @@ public:
 
     bool HasTubaOfCharm() const;
     void SetHasTubaOfCharm(bool HasTubaOfCharm);
+
+    std::vector<SimpleCard> GetActiveCardsInGame() const;
+    std::vector<SimpleCard> GetDisabledCardsInGame() const;
+
+public:
+
+    bool CheckThereIsBigThingModifiedByConvinientHandles() {return _thereIsBigThingModifiedByConvinientHandles; }
+    void SetThereIsThingModifiedByConvinientHandles(uint32_t cardId)
+    {
+        _thereIsBigThingModifiedByConvinientHandles = true;
+        _cardIdModifiedByConvinientHandles = cardId;
+    }
 
 private:
     

@@ -334,6 +334,16 @@ void Player::SetHasTubaOfCharm(bool hasTubaOfCharm)
     _hasTubaOfCharm = hasTubaOfCharm;
 }
 
+std::vector<SimpleCard> Player::GetActiveCardsInGame() const
+{
+    return _activeCardsInGame;
+}
+
+std::vector<SimpleCard> Player::GetDisabledCardsInGame() const
+{
+    return _disabledCardsInGame;
+}
+
 bool Player::CheckCardIsFromCardsInGame(SimpleCard card)
 {
     for (uint32_t var = 0; var < _activeCardsInGame.size(); ++var)
