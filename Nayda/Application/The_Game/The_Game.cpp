@@ -2787,14 +2787,12 @@ std::vector<ActiveIncativeCard> The_Game::GetThingsWithBonusesInGame(const Playe
 
 bool The_Game::CardIsBigThing(SimpleCard card)
 {
-    if ()
+    return true;
 }
 
 bool The_Game::CardIsWeapon(SimpleCard card)
 {
-
-
-
+    return true;
 }
 
 void The_Game::ShowCardIsForbiddenToPlayMessage(const QString &message)
