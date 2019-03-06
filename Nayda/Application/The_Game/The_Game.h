@@ -65,7 +65,10 @@ enum class GamePhase
     HandAlignment,
     CardAnimation,
     AfterBattleWin,
-    AfterBattleLoose //запрещено подкидывать игроку что-нибудь, пока он разбирается с непотребством
+    AfterBattleLoose,           //запрещено подкидывать игроку что-нибудь, пока он разбирается с непотребством
+    ImplementationOfAmplifier   //В этой фазе разрешено применение проклятий и прочего
+                                //По общему временному лимиту эта фаза входит в общее время хода
+
 };
 QDebug operator<<(QDebug debug, const GamePhase& dt);
 
@@ -504,6 +507,8 @@ private:
     std::shared_ptr<TreasureArmorAmplifiersAllowance> GetAllowanceTreasureArmorAmplifiers(const gameCardTreasureArmorAmplifier *card,
                                                                                           Player* player,
                                                                                           bool fromHand);
+
+    void ImplementTreasureArmorAmplifier(std::shared_ptr<CardPlayAllowanceBase> allowance, const GameCardBasis *card, GamerWidget *wt, PositionedCard posCard);
 
 
 private:

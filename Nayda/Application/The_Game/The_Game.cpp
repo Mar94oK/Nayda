@@ -2160,8 +2160,6 @@ void The_Game::MainCardImplementer(GamerWidget *wt, PositionedCard card, CardImp
                     emit SignalCardIsRejectedToBePlayed(false);
                     //Отсюда отправить сообщение на сервер о применении карты
                     //в случае если это не сервер прислал сообщение о необходимости применения карты
-                    //TODO:
-                    //Сюда добавить сигнал для сервера!
                     emit SignalMainGamerHasImplementedCard(TheGameMainGamerHasImplementedCard(
                                                                _mainGamerOrderOfMove,
                                                                card.GetCard(),
@@ -2180,8 +2178,24 @@ void The_Game::MainCardImplementer(GamerWidget *wt, PositionedCard card, CardImp
                 emit SignalCardIsRejectedToBePlayed(false);
                 //Отсюда отправить сообщение на сервер о применении карты
                 //в случае если это не сервер прислал сообщение о необходимости применения карты
-                //TODO:
-                //Сюда добавить сигнал для сервера!
+                emit SignalMainGamerHasImplementedCard(TheGameMainGamerHasImplementedCard(
+                                                           _mainGamerOrderOfMove,
+                                                           card.GetCard(),
+                                                           _roomID,
+                                                           false,
+                                                           CardImplementationDirection::HandToCardsInGame));
+
+            }
+                break;
+
+            case CardType::TreasureArmorAmplifier:
+            {
+                std::shared_ptr<TreasureArmorAmplifiersAllowance> armorAmplifierAllowance = std::static_pointer_cast<TreasureArmorAmplifiersAllowance>(allowance);
+                logger.Algorithm() << "NAY-002: Starting armorAmplifier Implementation: armorAmplifierAllowance: Reason of restriction: " << armorAmplifierAllowance->GetReasonOfRestriction();
+                ProcessCardAllowedToBeImplemented(allowance, basisCard, wt, card, direction);
+                emit SignalCardIsRejectedToBePlayed(false);
+                //Отсюда отправить сообщение на сервер о применении карты
+                //в случае если это не сервер прислал сообщение о необходимости применения карты
                 emit SignalMainGamerHasImplementedCard(TheGameMainGamerHasImplementedCard(
                                                            _mainGamerOrderOfMove,
                                                            card.GetCard(),
@@ -2241,6 +2255,8 @@ void The_Game::MainCardImplementer(GamerWidget *wt, PositionedCard card, CardImp
 
 std::shared_ptr<CardPlayAllowanceBase> The_Game::GetAllowance(const GameCardBasis *card, Player *player, CardImplementationDirection direction)
 {
+    Q_UNUSED(direction);
+
     if (card->GetCardType() == CardType::TreasureArmor)
     {
         const gameCardTreasureArmor* cardPtr = static_cast<const gameCardTreasureArmor* >(card);
@@ -2255,6 +2271,11 @@ std::shared_ptr<CardPlayAllowanceBase> The_Game::GetAllowance(const GameCardBasi
     {
         const gameCardTreasureWeapon* cardPtr = static_cast<const gameCardTreasureWeapon* >(card);
         return GetAllowanceTreasureWeapon(cardPtr, player, true);
+    }
+    else if (card->GetCardType() == CardType::TreasureArmorAmplifier)
+    {
+        const gameCardTreasureArmorAmplifier* cardPtr = static_cast<const gameCardTreasureArmorAmplifier* >(card);
+        return GetAllowanceTreasureArmorAmplifiers(cardPtr, player, true);
     }
     logger.Error() << "NAY-002: ERROR WHILE The_Game::GetAllowance. Not implemented type: "
              << card->GetCardType();
@@ -2282,7 +2303,7 @@ void The_Game::ProcessCardAllowedToBeImplemented(std::shared_ptr<CardPlayAllowan
             break;
         default:
         {
-            qDebug() << "NAY-002: ProcessCardAllowedToBeImplemented ImplementationDirection: " << direction << "Is not supported yet!";
+            logger.Error() << "EEROR: NAY-002: ProcessCardAllowedToBeImplemented ImplementationDirection: " << direction << "Is not supported yet!";
             emit SignalCardIsRejectedToBePlayed(true);
             ApplyCardImplementerMessage(QString("This direction is not supported yet!"), false);
         }
@@ -2313,6 +2334,11 @@ void The_Game::ImplementCardFromHandsToCardsInGame(std::shared_ptr<CardPlayAllow
             ImplementTreasureWeapon(allowance, card, wt, posCard);
         }
         break;
+
+        case CardType::TreasureArmorAmplifier:
+        {
+            ImplementTreasureArmorAmplifier(allowance, card, wt, posCard);
+        }
 
 
         default:
@@ -2730,6 +2756,48 @@ std::shared_ptr<TreasureArmorAmplifiersAllowance> The_Game::GetAllowanceTreasure
 
     return std::make_shared<TreasureArmorAmplifiersAllowance>
             (TreasureArmorAmplifiersAllowance(false, "Ошибка!", {}));
+
+}
+
+void The_Game::ImplementTreasureArmorAmplifier(std::shared_ptr<CardPlayAllowanceBase> allowance, const GameCardBasis *card, GamerWidget *wt, PositionedCard posCard)
+{
+    std::shared_ptr<TreasureArmorAmplifiersAllowance> armorAmplifierAllowance = std::static_pointer_cast<TreasureArmorAmplifiersAllowance>(allowance);
+
+    //Отсылать на сервер сигнал о применении этой команды можно только после того, как игрок принял решение
+    //О том, к какой карте применить. Соответственно, здесь придётся применить новый алгоритм.
+    //Когда игроку требуется принять решение, к какой карте применить усилитель,
+    //На время принятия решения требуется заблокировать действия других игроков -
+    //чтобы не могли выбить, к примеру, Проклятием карту из руки.
+    //Это время регламентируется. И в случае отсутствия решения карта БУДЕТ применена
+    //К первой возможной вещи из списка тех, к которым она может быть применена.
+
+    //Или НЕ выставлять такой блокирующйи сигнал?
+    //Ведь на самом деле это - пробелмы каждого конкретного игрока.
+    //Когда будет применено проклятие фаза выбора карты будет ОТМЕНЕНА
+    //И игрок перейдёт в фазу РАБОТА_С_ПРОКЛЯТЬЕМ, в которой ПРИМЕНЕНИЕ любых других ПРОКЛЯТИЙ
+    //Запрещено.
+    //В этом случае у него будет время на обработку этого процесса.
+    //Алгоритм работы с проклятиями будет рассмотрен отдельно.
+    //Т.е. применение усилителя МОЖЕТ БЫТЬ прервано применением проклятия к игроку
+    //Игрок может ОТКАЗАТЬСЯ от применения проклятия
+
+    SaveGamePhase();
+    SetGamePhase(GamePhase::ImplementationOfAmplifier);
+
+    //Итого, будет применена следующая идеология
+    //Все Фазы хода игрока МОГУТ быть прерваны проклятиями,
+    //ЗА ИСКЛЮЧЕНИЕМ
+    //Фазы разбирательства с непотребствами:
+    //GamePhase::AfterBattleLoose
+    //Фазы процессинга анимации карт:
+    //GamePhase::CardAnimation
+    //Воровства (требуется определиться, у кого в итоге окажется карта):
+    //GamePhase::Theft
+    //Т.е., к примеру, фаза торговли МОЖЕТ быть прервана сигналом от СЕРВЕРА
+    //о применении к ТЕКУЩЕМУ игроку "проклятия".
+    //Применение же проклятия к ДРУГОМУ игроку НЕ ВЛИЯЕТ на ход мысли текущего игрока
+    //Разбираться с проклятиями - не его задача.
+
 
 }
 
