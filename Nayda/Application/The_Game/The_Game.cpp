@@ -2661,25 +2661,27 @@ void The_Game::ImplementTreasureWeapon(std::shared_ptr<CardPlayAllowanceBase> al
 
 std::shared_ptr<TreasureArmorAmplifiersAllowance> The_Game::GetAllowanceTreasureArmorAmplifiers(const gameCardTreasureArmorAmplifier *card, Player *player, bool fromHand)
 {
+
     //Согласно назначению этих вещей проверить следует следующее:
     //1. Есть ли у игрока вещи, к которым можно применять усилители
     //И, кажется, всё.
     //Начинать с обычных "фазовых" проверок
 
+    Q_UNUSED(fromHand);
+
     //Проверка, что нет боя:
     if (GetCurrentGamePhase() == GamePhase::Battle)
         return std::make_shared<TreasureArmorAmplifiersAllowance>
                 (TreasureArmorAmplifiersAllowance(false,
-                                                  "Странное дело, но в бою нельзя "
-                                                  "брать в руки дополнительное оружие. "
+                                                  "В бою нельзя применять улучшения!"
                                                   "Готовьтесь заранее!", {}));
 
-    //NAY-002: REWORK. Оружие, как и броню, можно выкладывать в чужой ход!
+    //NAY-002: REWORK. Вещи можно улучшать в чужой ход!
     if (GetCurrentGamePhase() == GamePhase::OtherPlayerMove)
         return std::make_shared<TreasureArmorAmplifiersAllowance>
                 (TreasureArmorAmplifiersAllowance(false,
-                                                  "Сейчас чужой ход. Броню можно вводить"
-                                                  " в игру только в свой ход.", {}));
+                                                  "Сейчас чужой ход. Улучшайте вещи"
+                                                  " только в свой ход.", {}));
 
     //Далее проверка по вещам.
     //Три из них применяются ТОЛЬКО к шмоткам с БОЕВЫМ бонусом
@@ -2697,14 +2699,37 @@ std::shared_ptr<TreasureArmorAmplifiersAllowance> The_Game::GetAllowanceTreasure
             //Могут быть большими - а это ТОЛЬКО ОРУЖИЕ И БРОНЯ
 
             std::vector<ActiveIncativeCard> result = GetBigThingsInGame(player);
+            if (result.empty())
+                return std::make_shared<TreasureArmorAmplifiersAllowance>
+                        (TreasureArmorAmplifiersAllowance(false,
+                                                          "У вас нет вещей, к которым"
+                                                          " можно приделать"
+                                                          " удобные ручки!", {}));
+            else
+                return std::make_shared<TreasureArmorAmplifiersAllowance>
+                        (TreasureArmorAmplifiersAllowance(true, "", result));
         }
     }
     else
     {
         //Получить карты, имеющие бонус (можно и неактивные)
-         std::vector<ActiveIncativeCard> result = GetThingsWithBonusesInGame(player);
+        std::vector<ActiveIncativeCard> result = GetThingsWithBonusesInGame(player);
         //Продолжить здесь 06.03
+        if (result.empty())
+            return std::make_shared<TreasureArmorAmplifiersAllowance>
+                    (TreasureArmorAmplifiersAllowance(false,
+                                                      "У вас нет вещей, дающих бонус,"
+                                                      " которые можно улучшить"
+                                                      " этой картой", {}));
+        else
+            return std::make_shared<TreasureArmorAmplifiersAllowance>
+                    (TreasureArmorAmplifiersAllowance(true, "", result));
     }
+
+    logger.Error() << "GetAllowanceTreasureArmorAmplifiers:: ERROR. Should never be here!";
+
+    return std::make_shared<TreasureArmorAmplifiersAllowance>
+            (TreasureArmorAmplifiersAllowance(false, "Ошибка!", {}));
 
 }
 
