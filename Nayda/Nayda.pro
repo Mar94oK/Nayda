@@ -71,7 +71,8 @@ SOURCES += main.cpp\
     cardsingameobserver.cpp \
     cardsingame.cpp \
     smartqtlogger.cpp \
-    PlayMenu.cpp
+    PlayMenu.cpp \
+    cardselector.cpp
 
 HEADERS  += main_application.h \
     Application/Before_The_Game/Before_The_Game.h \
@@ -115,7 +116,8 @@ HEADERS  += main_application.h \
     cardsingameobserver.h \
     cardsingame.h \
     smartqtlogger.h \
-    PlayMenu.h
+    PlayMenu.h \
+    cardselector.h
 
 FORMS    += main_application.ui \
     Application/Before_The_Game/Before_The_Game.ui \
