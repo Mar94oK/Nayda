@@ -1,39 +1,55 @@
 #ifndef CARDSELECTOR_H
 #define CARDSELECTOR_H
 
-#include <QWidget>
+#include <QDialog>
+
 #include <Application/card.h>
-
-//Архитектура:
-//Общий для всех процедур класс, который позволяет создавать
-//Массив видимых пользователю "выбираемых" карт.
-//Он будет поддерживать несколько типов конструкторов
-//Который может подсвечивать некоторые (например неактивные) карты
-//И, возможно, иметь некоторые другие особенности
+#include <selectablecardwidget.h>
 
 
-//Селектор регулирует положение карт только относительно самого себя
-//Сигнал о финализированном выборе передаётся наружу (Игре).
+enum class CardSelectorMode
+{
+   Normal,
+   Extended //пока сам не знаю, что будет под ним подразумеваться
+};
 
 
-//Прерывания по проклятию НЕ ПОПАДАЮТ в объект этого класса.
-//С ними разбирается сама игра
+enum class SelectionMode
+{
+    Single,
+    Group
+};
 
-class CardSelector : public QWidget
+enum class NecessityOfChoice
+{
+    UserCan,
+    UserShould
+};
+
+namespace Ui {
+class CardSelector;
+}
+
+class CardSelector : public QDialog
 {
     Q_OBJECT
+
 public:
-    explicit CardSelector(const std::vector<SimpleCard>& cards, QWidget *parent = nullptr);
+    explicit CardSelector(CardSelectorMode mode = CardSelectorMode::Normal,
+                          SelectionMode selectionMode = SelectionMode::Single,
+                          NecessityOfChoice choice = NecessityOfChoice::UserCan,
+                          QWidget *parent = 0);
+    ~CardSelector();
+
+private:
+    Ui::CardSelector *ui;
 
 private:
 
     std::vector<SimpleCard> _selectableCards;
-
-signals:
-
-    void SignalCardSelected(SimpleCard card);
-
-public slots:
+    std::vector<SelectableCardWidget*> _cardsToBeSelected; //к сожалению, этот класс плохо спроектирован - ему нужно передавать тип CardToBeShownInSellMenu
+                                                           //придётся либо переработать его, либо написать новый
+    std::vector<SimpleCard> _selectedCards;
 
 
 };

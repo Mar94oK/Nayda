@@ -2808,6 +2808,8 @@ void The_Game::ImplementTreasureArmorAmplifier(std::shared_ptr<CardPlayAllowance
     //Прерывание процесса работы с усилителем.
     //Работа селектора МОЖЕТ быть прервана проклятием
 
+    //_cardSelector = new CardSelector();
+
 
 }
 

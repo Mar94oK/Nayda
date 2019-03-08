@@ -33,6 +33,7 @@
 
 #include "smartqtlogger.h"
 
+
 #define PC_VERSION //begin with PC
 #define DEBUG_MESSAGES //start with debug enabled
 #define DEBUG_NO_SERVER
@@ -308,9 +309,15 @@ private:
 
     std::vector<SimpleCard> _lastFold;
 
-//DECKS PROCESSING===
 
+private:
+//====================================
+//CardSelector
+//====================================
 
+    //CardSelector* _cardSelector = nullptr;
+
+//====================================
 
     //SERVREW
     void DEBUGformingInitialDecks();

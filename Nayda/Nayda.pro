@@ -151,7 +151,8 @@ FORMS    += main_application.ui \
     selectablecardwidget.ui \
     lastfoldobserver.ui \
     cardsingameobserver.ui \
-    cardsingame.ui
+    cardsingame.ui \
+    cardselector.ui
 
 RESOURCES += \
     tables.qrc \
