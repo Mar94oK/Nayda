@@ -2837,6 +2837,11 @@ void The_Game::ImplementTreasureArmorAmplifier(std::shared_ptr<CardPlayAllowance
                                      CardSelectorSetup(SelectableCardMode::AmplifierAddition)
                                      );
 
+    _cardSelector->show();
+
+    //Соединить здесь требуемые сигналы!
+    //Продолжить здесь 10.03.2019
+
 
 }
 
