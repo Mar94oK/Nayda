@@ -193,21 +193,6 @@ void SellMenu::SetDecks(const AllDecksToBePassed &data)
     _specialMechanicsTreasureDeck = data._specialMechanicsTreasureDeck;
     _thingsAmplifiersDeck = data._thingsAmplifiersDeck;
     _weaponsDeck = data._weaponsDeck;
-
-    qDebug() << "NAY-002: Decks Sizes: "
-             << _monstersDeck.size()
-             << _amplifiersDeck.size()
-             << _cursesDeck.size()
-             << _professionsDeck.size()
-             << _racesDeck.size()
-             << _specialMechanicsDeck.size()
-             << _armorDeck.size()
-             << _armorAmplifiersDeck.size()
-             << _battleAmplifiersDeck.size()
-             << _levelUpDeck.size()
-             << _specialMechanicsTreasureDeck.size()
-             << _thingsAmplifiersDeck.size()
-             << _weaponsDeck.size();
 }
 
 CardPosition SellMenu::GetCurrentCardPosition()
