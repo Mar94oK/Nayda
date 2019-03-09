@@ -287,7 +287,6 @@ void SellMenu::SetUpSignalsSlotsConnections()
 
     connect(ui->buttonBox->button(QDialogButtonBox::StandardButton::Cancel), &QPushButton::pressed,
             [this]{emit SignalUserClosedTradeMenu();});
-
 }
 
 void SellMenu::closeEvent(QCloseEvent *event)

@@ -2853,6 +2853,10 @@ std::vector<ActiveIncativeCard> The_Game::GetBigThingsInGame(const Player *playe
 
 std::vector<ActiveIncativeCard> The_Game::GetThingsWithBonusesInGame(const Player *player)
 {
+    //ADD_LATER
+    //REWORK
+    //09.03.2019 - РАЗРЕШИТЬ ПРИМЕНЯТЬ Усилители в т.ч. и к шмоткам не-броне, не-оружию!!!!
+
     std::map<int, gameCardTreasureWeapon> :: const_iterator _weaponsIterator;
     std::map<int, gameCardTreasureArmor> :: const_iterator _armorIterator;
 

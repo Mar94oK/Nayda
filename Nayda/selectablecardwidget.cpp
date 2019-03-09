@@ -32,6 +32,27 @@ SelectableCardWidget::SelectableCardWidget(SelectableCardMode mode,
 
         }
         break;
+        case SelectableCardMode::AmplifierAddition:
+        {
+            std::shared_ptr<CardToBeAmplifiedData> infoData
+                    = std::static_pointer_cast<CardToBeAmplifiedData>(data);
+
+            ui->lbl_Price->setText("Стоимость карты: " + QString::number(infoData->price));
+
+            QLabel* bonusLabel = new QLabel("Бонус: " + QString::number(infoData->bonus));
+            QLabel* bonusFleeLabel = new QLabel("Бонус на смывку: " +
+                                           QString::number(infoData->flightBonus));
+            QLabel* cardSizeLabel = new QLabel("Размер: " + QString(infoData->size == Size::Big ? "Большая" : " Мелкая"));
+
+            ui->lyt_OtherLabels->AddWidget(bonusLabel);
+            ui->lyt_OtherLabels->AddWidget(bonusFleeLabel);
+            ui->lyt_OtherLabels->AddWidget(cardSizeLabel);
+
+
+        }
+        break;
+
+
 
 
     default:

@@ -14,10 +14,7 @@
    <string>Dialog</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
-   <item row="0" column="0">
-    <layout class="QGridLayout" name="lyt_SelectableCards"/>
-   </item>
-   <item row="1" column="0">
+   <item row="3" column="0">
     <widget class="QDialogButtonBox" name="btnBox_Controls">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -29,6 +26,37 @@
       <bool>true</bool>
      </property>
     </widget>
+   </item>
+   <item row="1" column="0">
+    <layout class="QHBoxLayout" name="lyt_SelectorDefinintion">
+     <item>
+      <widget class="QLabel" name="lbl_SelecotrDefinition">
+       <property name="text">
+        <string>Описание селектора</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="2" column="0">
+    <layout class="QGridLayout" name="lyt_SelectableCards"/>
+   </item>
+   <item row="0" column="0">
+    <layout class="QHBoxLayout" name="lyt_SelectorName">
+     <item>
+      <widget class="QLabel" name="lbl_SelectorName">
+       <property name="text">
+        <string>Название селектора</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>

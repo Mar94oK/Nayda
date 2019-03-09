@@ -14,7 +14,7 @@
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="2" column="0">
+   <item row="3" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <spacer name="horizontalSpacer_2">
@@ -77,6 +77,9 @@
       </widget>
      </item>
     </layout>
+   </item>
+   <item row="2" column="0">
+    <layout class="QVBoxLayout" name="lyt_OtherLabels"/>
    </item>
   </layout>
  </widget>

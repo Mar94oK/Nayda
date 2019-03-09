@@ -216,14 +216,31 @@ struct CardToBeShownInSellMenu: public CommonCardViewData
 
 //Продолжить здесь 09.03.2019
 
-
+//Это и требуется возвращать из метода получения инфо о карте
 struct CardToBeAmplifiedData: public CommonCardViewData
 {
-    uint32_t bonus;
-    uint32_t price;
-    Size size;
+    uint32_t    bonus;
+    uint32_t    price;
+    int32_t     flightBonus;
+    Size        size;
 
-    //Дописать селектор
+    CardToBeAmplifiedData (QSize size,
+                           const QString& str,
+                           uint32_t bon,
+                           uint32_t prc,
+                           int32_t flBon,
+                           Size sz) :
+        bonus(bon),
+        price(prc),
+        flightBonus(flBon),
+        size(sz)
+    {
+        explicitSize = size;
+        pictureAddress = str;
+    }
+
+    CardToBeAmplifiedData ()
+    { }
 
 };
 
@@ -813,7 +830,7 @@ class gameCardTreasureArmor : public GameCardBasis
     Body_Part _part;
     Size _size;
 
-    int _bonus;
+    int _bonus; //Это косяк. Должен быть uint32_t
     int _additionalBonusforElf;
     int _additionalBonusforOrk;
 
