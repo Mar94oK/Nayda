@@ -60,7 +60,7 @@ void SellMenu::AddCard(SimpleCard card)
 
 
     SelectableCardWidget* selectableCard = new SelectableCardWidget(SelectableCardMode::SellMenu,
-                                                                    CardToBeShownInSellMenu(cardSize,
+                                                                    std::make_shared<CardToBeShownInSellMenu>(cardSize,
                                                                                             cardData._picturePath,
                                                                                             cardData._price));
     _cardsToBeSoldOut.push_back(selectableCard);

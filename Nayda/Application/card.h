@@ -180,7 +180,14 @@ typedef std::pair<bool, unsigned int> SimpleCard;
 
 typedef std::pair<bool, SimpleCard> CardInGame;
 
-enum class SelectableCardMode { SellMenu, Theft, HandAlignment, DiplomacyTrade };
+enum class SelectableCardMode
+{
+    SellMenu,
+    Theft,
+    HandAlignment,
+    DiplomacyTrade,
+    AmplifierAddition
+};
 QDebug operator<<(QDebug debug, const SelectableCardMode& dt);
 
 
@@ -215,6 +222,11 @@ struct CardToBeShownInSellMenu: public CommonCardViewData
 //Типу относится данная конкретная реализация и сделает преобразование
 //К этому типу.
 //Возможно, лучше использовать снова shared_ptr<Type>
+
+//Для начала переделать CommonCardViewData к типу CardToBeShownInSellMenu
+//Делать преобразование типов.
+//Все наследуются от CommonCardViewData
+//Так что указатель на неё хранить в классе
 
 struct CardToBeAmplifiedData: public CommonCardViewData
 {

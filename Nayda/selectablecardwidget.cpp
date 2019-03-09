@@ -4,39 +4,66 @@
 #include <QPixmap>
 #include <QPalette>
 
-SelectableCardWidget::SelectableCardWidget(SelectableCardMode mode, CardToBeShownInSellMenu data, QWidget *parent) :
+SelectableCardWidget::SelectableCardWidget(SelectableCardMode mode,
+                                           std::shared_ptr<CommonCardViewData> data,
+                                           QWidget *parent) :
     QWidget(parent),
     ui(new Ui::SelectableCardWidget)
 {
     ui->setupUi(this);
 
-    qDebug() << "NAY-002: Created Selectable Card Widget with Mode: " << mode;
+    DECLARE_NAMED_LOGGER(SelectableCardWidget);
 
-    _dataSellCards = new CardToBeShownInSellMenu(data.explicitSize,
-                                                 data.pictureAddress,
-                                                 data.price);
+    logger.Algorithm() << "NAY-002: Created Selectable Card Widget with Mode: " << mode;
+
+
+    switch (mode)
+    {
+
+        case SelectableCardMode::SellMenu:
+        {
+            std::shared_ptr<CardToBeShownInSellMenu> infoData
+                    = std::static_pointer_cast<CardToBeShownInSellMenu>(data);
+            _cardData = new CardToBeShownInSellMenu(infoData->explicitSize,
+                                                infoData->pictureAddress,
+                                                infoData->price);
+
+            ui->lbl_Price->setText("Стоимость карты: " + QString::number(infoData->price));
+
+        }
+        break;
+
+
+    default:
+        logger.Error() << "NAY-002: Not handled Selectable Mode! To be Done" << mode;
+
+        break;
+    }
+
+
+//    _dataSellCards = new CardToBeShownInSellMenu(data.explicitSize,
+//                                                 data.pictureAddress,
+//                                                 data.price);
 
     SetUpSignalsSlotsConnection();
 
     //setCard_related Appearance:
 
     //setUpTheCard
-    QPixmap pxmp_theCard(data.pictureAddress);
+    //У базового инфо тоже есть все параметрпы, достаточные, чтобы настроить карту.
+    QPixmap pxmp_theCard(data->pictureAddress);
     QPalette plte_theCard;
     plte_theCard.setBrush(ui->btn_theCard->backgroundRole(),
-    QBrush(pxmp_theCard.scaled(data.explicitSize.width(),
-                               data.explicitSize.height(),
+    QBrush(pxmp_theCard.scaled(data->explicitSize.width(),
+                               data->explicitSize.height(),
                                Qt::IgnoreAspectRatio, Qt::SmoothTransformation)));
 
     ui->btn_theCard->setFlat(true);
     ui->btn_theCard->setAutoFillBackground(true);
     ui->btn_theCard->setPalette(plte_theCard);
     ui->btn_theCard->setText("");
-
-    ui->btn_theCard->setMinimumSize(data.explicitSize);
-
+    ui->btn_theCard->setMinimumSize(data->explicitSize);
     ui->chckBox_Selected->setCheckState(Qt::CheckState::Unchecked);
-    ui->lbl_Price->setText("Стоимость карты: " + QString::number(data.price));
 
 }
 
