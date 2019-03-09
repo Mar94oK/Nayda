@@ -35,10 +35,11 @@ class CardSelector : public QDialog
     Q_OBJECT
 
 public:
-    explicit CardSelector(CardSelectorMode mode = CardSelectorMode::Normal,
+    explicit CardSelector(const std::vector<SimpleCard>& cards,
+                          CardSelectorMode mode = CardSelectorMode::Normal,
                           SelectionMode selectionMode = SelectionMode::Single,
                           NecessityOfChoice choice = NecessityOfChoice::UserCan,
-                          QWidget *parent = 0);
+                          QWidget *parent = nullptr);
     ~CardSelector();
 
 private:
@@ -46,9 +47,16 @@ private:
 
 private:
 
+
+    CardSelectorMode _selectorMode;
+    SelectionMode _selectionMode;
+    NecessityOfChoice _typeOfChoice;
+
     std::vector<SimpleCard> _selectableCards;
-    std::vector<SelectableCardWidget*> _cardsToBeSelected; //к сожалению, этот класс плохо спроектирован - ему нужно передавать тип CardToBeShownInSellMenu
-                                                           //придётся либо переработать его, либо написать новый
+    std::vector<SelectableCardWidget*> _cardsToBeSelected;
+
+    //В общем случае может быть и одна.
+    //По размеру этого вектора можно делать видимой/скрывать кнопку "Ок"
     std::vector<SimpleCard> _selectedCards;
 
 
