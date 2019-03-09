@@ -33,6 +33,8 @@
 
 #include "smartqtlogger.h"
 
+#include "cardselector.h"
+
 
 #define PC_VERSION //begin with PC
 #define DEBUG_MESSAGES //start with debug enabled
@@ -315,7 +317,7 @@ private:
 //CardSelector
 //====================================
 
-    //CardSelector* _cardSelector = nullptr;
+    CardSelector* _cardSelector = nullptr;
 
 //====================================
 

@@ -3,7 +3,7 @@
 #include <QDialogButtonBox>
 #include <QPushButton>
 
-CardSelector::CardSelector(const std::vector<SimpleCard> &cards,
+CardSelector::CardSelector(const std::vector<ActiveIncativeCard> &cards,
                            QSize windowSize,
                            const AllDecksToBePassed &data,
                            CardSelectorSetup setup,
@@ -15,10 +15,12 @@ CardSelector::CardSelector(const std::vector<SimpleCard> &cards,
     _selectionType(setup.selectionType),
     _typeOfChoice(setup.choiceType),
     _totalCardsHaveToBeSelected(setup.totalCardsToBeSelected),
-    _selectableCards(cards),
+    _givenCards(cards),
     _windowSize(windowSize)
 {
     ui->setupUi(this);
+
+    _selectableCards = ActiveIncativeToSimpleCardsVector(_givenCards);
 
     DECLARE_NAMED_LOGGER(CardSelector);
 

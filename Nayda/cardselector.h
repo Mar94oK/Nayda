@@ -69,7 +69,7 @@ class CardSelector : public QDialog
 
 
 public:
-    explicit CardSelector(const std::vector<SimpleCard>& cards,
+    explicit CardSelector(const std::vector<ActiveIncativeCard>& cards,
                           QSize windowSize,
                           const AllDecksToBePassed &data,
                           CardSelectorSetup setup,
@@ -91,6 +91,7 @@ private:
     NecessityOfChoice _typeOfChoice;
     uint32_t _totalCardsHaveToBeSelected;
 
+    std::vector<ActiveIncativeCard> _givenCards;
     std::vector<SimpleCard> _selectableCards;
     std::vector<SelectableCardWidget*> _cardsToBeSelected;
     SelectableCardWidget* _lastSelectedCardWt = nullptr;

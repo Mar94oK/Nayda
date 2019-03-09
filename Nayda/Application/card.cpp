@@ -2090,7 +2090,8 @@ void gameCardTreasureWeapon::SetCardID(int cardID)
 
 QDebug operator<<(QDebug debug, const SelectableCardMode& dt) {
 
-    switch (dt) {
+    switch (dt)
+    {
     case SelectableCardMode::DiplomacyTrade:
         debug << "DiplomacyTrade";
         break;
@@ -2102,6 +2103,9 @@ QDebug operator<<(QDebug debug, const SelectableCardMode& dt) {
         break;
     case SelectableCardMode::SellMenu:
         debug << "SellMenu";
+        break;
+    case SelectableCardMode::AmplifierAddition:
+        debug << "AmplifierAddition";
         break;
     }
 
@@ -2206,4 +2210,17 @@ QDebug operator<<(QDebug debug, const CardImplementationDirection &dt)
     }
 
     return debug;
+}
+
+std::vector<SimpleCard> ActiveIncativeToSimpleCardsVector(const std::vector<ActiveIncativeCard> &cards)
+{
+    std::vector<SimpleCard> result;
+    std::vector<ActiveIncativeCard> cardsGiven = cards;
+
+    for (std::vector<ActiveIncativeCard>::iterator it = cardsGiven.begin();
+         it != cardsGiven.end(); ++it)
+    {
+        result.push_back(it->second);
+    }
+    return result;
 }

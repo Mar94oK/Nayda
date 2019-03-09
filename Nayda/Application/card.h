@@ -477,6 +477,8 @@ public:
 typedef std::pair<bool, SimpleCard> ActiveIncativeCard; // пусть и понятно, что это всегда только сокровища
 //всё равно...
 
+std::vector<SimpleCard> ActiveIncativeToSimpleCardsVector(const std::vector<ActiveIncativeCard>& cards);
+
 class TreasureArmorAmplifiersAllowance : public CardPlayAllowanceBase
 {
     std::vector<ActiveIncativeCard> _cards; //cards to which it is possible to add the amplifier.

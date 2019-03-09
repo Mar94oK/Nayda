@@ -2193,15 +2193,15 @@ void The_Game::MainCardImplementer(GamerWidget *wt, PositionedCard card, CardImp
                 std::shared_ptr<TreasureArmorAmplifiersAllowance> armorAmplifierAllowance = std::static_pointer_cast<TreasureArmorAmplifiersAllowance>(allowance);
                 logger.Algorithm() << "NAY-002: Starting armorAmplifier Implementation: armorAmplifierAllowance: Reason of restriction: " << armorAmplifierAllowance->GetReasonOfRestriction();
                 ProcessCardAllowedToBeImplemented(allowance, basisCard, wt, card, direction);
-                emit SignalCardIsRejectedToBePlayed(false);
+//                emit SignalCardIsRejectedToBePlayed(false);
                 //Отсюда отправить сообщение на сервер о применении карты
                 //в случае если это не сервер прислал сообщение о необходимости применения карты
-                emit SignalMainGamerHasImplementedCard(TheGameMainGamerHasImplementedCard(
-                                                           _mainGamerOrderOfMove,
-                                                           card.GetCard(),
-                                                           _roomID,
-                                                           false,
-                                                           CardImplementationDirection::HandToCardsInGame));
+//                emit SignalMainGamerHasImplementedCard(TheGameMainGamerHasImplementedCard(
+//                                                           _mainGamerOrderOfMove,
+//                                                           card.GetCard(),
+//                                                           _roomID,
+//                                                           false,
+//                                                           CardImplementationDirection::HandToCardsInGame));
 
             }
                 break;
@@ -2808,7 +2808,34 @@ void The_Game::ImplementTreasureArmorAmplifier(std::shared_ptr<CardPlayAllowance
     //Прерывание процесса работы с усилителем.
     //Работа селектора МОЖЕТ быть прервана проклятием
 
-    //_cardSelector = new CardSelector();
+//    explicit CardSelector(const std::vector<SimpleCard>& cards,
+//                          QSize windowSize,
+//                          const AllDecksToBePassed &data,
+//                          CardSelectorSetup setup,
+//                          QWidget *parent = nullptr);
+
+
+    AllDecksToBePassed decks(_monstersDeck,
+                             _amplifiersDeck,
+                             _cursesDeck,
+                             _professionsDeck,
+                             _racesDeck,
+                             _specialMechanicsDeck,
+
+                             _armorDeck,
+                             _armorAmplifiersDeck,
+                             _battleAmplifiersDeck,
+                             _levelUpDeck,
+                             _specialMechanicsTreasureDeck,
+                             _thingsAmplifiersDeck,
+                             _weaponsDeck);
+
+    _cardSelector = new CardSelector(armorAmplifierAllowance->GetCardsAllowedToBeAmplified(),
+                                     QSize(static_cast<int32_t>(_hwScreenSizeWidth),
+                                           static_cast<int32_t>(_hwScreenSizeHeigh)),
+                                     decks,
+                                     CardSelectorSetup(SelectableCardMode::AmplifierAddition)
+                                     );
 
 
 }

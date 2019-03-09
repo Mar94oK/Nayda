@@ -160,7 +160,7 @@ void CardsInGame::RemoveCard(SimpleCard card)
             _cardsAsButtonsRepresenter.erase(_cardsAsButtonsRepresenter.begin() + var);
             _cardsAsButtonsRepresenter.shrink_to_fit();
             qDebug() << "The card is removed from CardsInGame!";
-            break;
+            return;
         }
     }
     for (uint32_t var = 0; var < _activeCards.size(); ++var)
@@ -169,7 +169,7 @@ void CardsInGame::RemoveCard(SimpleCard card)
         {
             _activeCards.erase(_activeCards.begin() + var);
             _activeCards.shrink_to_fit();
-            break;
+            return;
         }
     }
     for (uint32_t var = 0; var < _disabledCards.size(); ++var)
@@ -178,7 +178,7 @@ void CardsInGame::RemoveCard(SimpleCard card)
         {
             _disabledCards.erase(_activeCards.begin() + var);
             _disabledCards.shrink_to_fit();
-            break;
+            return;
         }
     }
 }
