@@ -38,8 +38,8 @@ CardSelector::CardSelector(const std::vector<SimpleCard> &cards,
     {
     case SelectableCardMode::AmplifierAddition:
     {
-        ui->lbl_SelectorName->SetText("Выбер вещи для усиления");
-        ui->lbl_SelecotrDefinition->SetText("Выберите одну из предложенных. Усилитель будет прикреплён к ней.");
+        ui->lbl_SelectorName->setText("Выбер вещи для усиления");
+        ui->lbl_SelecotrDefinition->setText("Выберите одну из предложенных. Усилитель будет прикреплён к ней.");
     }
     break;
 
@@ -248,6 +248,11 @@ void CardSelector::SetUpSignalsSlotsConnections()
 
     connect(ui->btnBox_Controls->button(QDialogButtonBox::StandardButton::Cancel), &QPushButton::pressed,
             [this]{emit SignalUserClosedCardSelector();});
+}
+
+void CardSelector::closeEvent(QCloseEvent *event)
+{
+    emit SignalUserClosedCardSelector();
 }
 
 void CardSelector::SetFontAndAlignment(QLabel *lbl)
