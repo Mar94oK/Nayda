@@ -40,7 +40,7 @@ CardSelector::CardSelector(const std::vector<ActiveIncativeCard> &cards,
     {
     case SelectableCardMode::AmplifierAddition:
     {
-        ui->lbl_SelectorName->setText("Выбер вещи для усиления");
+        ui->lbl_SelectorName->setText("Выбор вещи для усиления");
         ui->lbl_SelecotrDefinition->setText("Выберите одну из предложенных. Усилитель будет прикреплён к ней.");
     }
     break;
