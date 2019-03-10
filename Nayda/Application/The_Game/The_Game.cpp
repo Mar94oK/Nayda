@@ -2257,6 +2257,8 @@ std::shared_ptr<CardPlayAllowanceBase> The_Game::GetAllowance(const GameCardBasi
 {
     Q_UNUSED(direction);
 
+    logger.Debug() << "NAY-002: Enetering GetAllowance.";
+
     if (card->GetCardType() == CardType::TreasureArmor)
     {
         const gameCardTreasureArmor* cardPtr = static_cast<const gameCardTreasureArmor* >(card);
@@ -2274,6 +2276,7 @@ std::shared_ptr<CardPlayAllowanceBase> The_Game::GetAllowance(const GameCardBasi
     }
     else if (card->GetCardType() == CardType::TreasureArmorAmplifier)
     {
+        logger.Debug() << "NAY-002: Enetering GetAllowance. TreasureArmorAmplifier";
         const gameCardTreasureArmorAmplifier* cardPtr = static_cast<const gameCardTreasureArmorAmplifier* >(card);
         return GetAllowanceTreasureArmorAmplifiers(cardPtr, player, true);
     }
@@ -2693,7 +2696,12 @@ std::shared_ptr<TreasureArmorAmplifiersAllowance> The_Game::GetAllowanceTreasure
     //И, кажется, всё.
     //Начинать с обычных "фазовых" проверок
 
+    logger.Debug() << "NAY-002: Enetering GetAllowanceTreasureArmorAmplifier.";
+
     Q_UNUSED(fromHand);
+
+
+    logger.Debug() << "NAY-002: Enetering GetAllowanceTreasureArmorAmplifier.";
 
     //Проверка, что нет боя:
     if (GetCurrentGamePhase() == GamePhase::Battle)
@@ -2894,8 +2902,11 @@ std::vector<ActiveIncativeCard> The_Game::GetThingsWithBonusesInGame(const Playe
 
     std::vector<ActiveIncativeCard> result;
 
-    for (std::vector<SimpleCard>::iterator it = player->GetActiveCardsInGame().begin();
-         it != player->GetActiveCardsInGame().end(); ++it)
+    std::vector<SimpleCard> activeCards = player->GetActiveCardsInGame();
+    std::vector<SimpleCard> disabledCards = player->GetDisabledCardsInGame();
+
+    for (std::vector<SimpleCard>::iterator it = activeCards.begin();
+         it != activeCards.end(); ++it)
     {
         _weaponsIterator = _weaponsDeck.find(static_cast <int> (it->second));
         if (_weaponsIterator != _weaponsDeck.end())
@@ -2908,8 +2919,8 @@ std::vector<ActiveIncativeCard> The_Game::GetThingsWithBonusesInGame(const Playe
                 result.push_back(std::make_pair(true, SimpleCard(true, it->second)));
     }
 
-    for (std::vector<SimpleCard>::iterator it = player->GetDisabledCardsInGame().begin();
-         it != player->GetDisabledCardsInGame().end(); ++it)
+    for (std::vector<SimpleCard>::iterator it = disabledCards.begin();
+         it != disabledCards.end(); ++it)
     {
         _weaponsIterator = _weaponsDeck.find(static_cast <int> (it->second));
         if (_weaponsIterator != _weaponsDeck.end())
