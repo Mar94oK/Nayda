@@ -2899,6 +2899,7 @@ std::vector<ActiveIncativeCard> The_Game::GetThingsWithBonusesInGame(const Playe
 
     std::map<int, gameCardTreasureWeapon> :: const_iterator _weaponsIterator;
     std::map<int, gameCardTreasureArmor> :: const_iterator _armorIterator;
+    std::map<int, gameCardTreasureThingsAmplifiers> :: const_iterator _thigsAmplifiersIterator;
 
     std::vector<ActiveIncativeCard> result;
 
@@ -2917,6 +2918,11 @@ std::vector<ActiveIncativeCard> The_Game::GetThingsWithBonusesInGame(const Playe
         if (_armorIterator != _armorDeck.end())
             if (_armorIterator->second.GetBonus())
                 result.push_back(std::make_pair(true, SimpleCard(true, it->second)));
+
+        _thigsAmplifiersIterator = _thingsAmplifiersDeck.find(static_cast <int> (it->second));
+        if (_thigsAmplifiersIterator != _thingsAmplifiersDeck.end())
+            if (_thigsAmplifiersIterator->second.bonus())
+                result.push_back(std::make_pair(true, SimpleCard(true, it->second)));
     }
 
     for (std::vector<SimpleCard>::iterator it = disabledCards.begin();
@@ -2931,6 +2937,11 @@ std::vector<ActiveIncativeCard> The_Game::GetThingsWithBonusesInGame(const Playe
         if (_armorIterator != _armorDeck.end())
             if (_armorIterator->second.GetBonus())
                 result.push_back(std::make_pair(false, SimpleCard(true, it->second)));
+
+        _thigsAmplifiersIterator = _thingsAmplifiersDeck.find(static_cast <int> (it->second));
+        if (_thigsAmplifiersIterator != _thingsAmplifiersDeck.end())
+            if (_thigsAmplifiersIterator->second.bonus())
+                result.push_back(std::make_pair(true, SimpleCard(true, it->second)));
 
     }
 
