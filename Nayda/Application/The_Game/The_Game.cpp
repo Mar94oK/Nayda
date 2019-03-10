@@ -1568,6 +1568,33 @@ void The_Game::ProcessFoldObserver(const std::vector<SimpleCard> foldedCards)
     _lastFold.clear();
 }
 
+void The_Game::CardSelectorHandler(const std::vector<SimpleCard> &cards)
+{
+    logger.Algorithm() << "Entering CardSelectorHandler.";
+
+    //Проверить фазу
+
+    GamePhase currentPhase = GetCurrentGamePhase();
+
+    switch (currentPhase)
+    {
+    case GamePhase::ImplementationOfAmplifier:
+    {
+        logger.Debug() << "CardSelectorHandler:: GamePhase::ImplementationOfAmplifier!";
+        if (cards.empty())
+            logger.Debug() << "CardSelectorHandler:: Empty vector. User had closed the selector!";
+
+    }
+        break;
+
+    default:
+        logger.Error() << "Unhelded Game Phase:: " << currentPhase;
+        return;
+        break;
+    }
+
+}
+
 //This procedure is responsible for giving initial 8 cards to players.
 //If the Server is Working, it is resposible for providing this info for the end-client.
 //For the DEBUG version, it will give the numbers (cardIDs) to end-gamers directly.
@@ -2844,6 +2871,11 @@ void The_Game::ImplementTreasureArmorAmplifier(std::shared_ptr<CardPlayAllowance
                                      decks,
                                      CardSelectorSetup(SelectableCardMode::AmplifierAddition)
                                      );
+
+    connect(_cardSelector, &CardSelector::SignalReportCardsWereSelected, this, &The_Game::CardSelectorHandler);
+    //Передать пустой вектор, если пользоватлеь просто закрыл окно (это должно отменить действие карты)
+    connect(_cardSelector, &CardSelector::SignalUserClosedCardSelector, [this] {CardSelectorHandler({});});
+
 
     _cardSelector->show();
 

@@ -319,6 +319,10 @@ private:
 
     CardSelector* _cardSelector = nullptr;
 
+private slots:
+
+    void CardSelectorHandler(const std::vector<SimpleCard>& cards);
+
 //====================================
 
     //SERVREW
