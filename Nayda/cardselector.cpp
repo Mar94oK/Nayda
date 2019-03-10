@@ -174,6 +174,8 @@ void CardSelector::SetDecks(const AllDecksToBePassed &data)
 
 void CardSelector::SlotCardWasSelectedByUser(SimpleCard card, bool selected, SelectableCardWidget *wt)
 {
+    logger.Debug() << "NAY-002: Check CardSelector::SlotCardWasSelectedByUser";
+
     if (selected)
     {
         //Проверить тип выбора
@@ -226,6 +228,7 @@ void CardSelector::SlotCardWasSelectedByUser(SimpleCard card, bool selected, Sel
 
             _lastSelectedCardWt = wt;
             _selectedCards.push_back(card);
+            ui->btnBox_Controls->button(QDialogButtonBox::StandardButton::Ok)->show();
         }
 
 
