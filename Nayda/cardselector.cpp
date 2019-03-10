@@ -34,7 +34,7 @@ CardSelector::CardSelector(const std::vector<ActiveIncativeCard> &cards,
 
     //Здесь установить настройки (графические) текстовых полей
     SetFontAndAlignment(ui->lbl_SelectorName);
-    SetFontAndAlignment(ui->lbl_SelecotrDefinition);
+    //SetFontAndAlignment(ui->lbl_SelecotrDefinition);
 
     switch (_generalMode)
     {
@@ -144,8 +144,12 @@ CardToBeAmplifiedData CardSelector::GetCardToBeAmplifiedCredentials(SimpleCard c
 
 CardPosition CardSelector::GetCurrentCardPosition()
 {
-    uint32_t column = (_selectableCards.size() % 4);
-    uint32_t row = 3 + _selectableCards.size() / 4;
+    uint32_t column = (_cardsToBeSelected.size() % 4);
+    uint32_t row = 3 + _cardsToBeSelected.size() / 4;
+
+    logger.Debug() << "NAY-002: Column: " << column;
+    logger.Debug() << "NAY-002: Row: " << row;
+
 
     return CardPosition(column, row);
 }

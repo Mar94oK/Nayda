@@ -44,6 +44,7 @@ SelectableCardWidget::SelectableCardWidget(SelectableCardMode mode,
                                            QString::number(infoData->flightBonus));
             QLabel* cardSizeLabel = new QLabel("Размер: " + QString(infoData->size == Size::Big ? "Большая" : " Мелкая"));
 
+            ui->lyt_OtherLabels->setAlignment(Qt::AlignCenter);
             ui->lyt_OtherLabels->addWidget(bonusLabel);
             ui->lyt_OtherLabels->addWidget(bonusFleeLabel);
             ui->lyt_OtherLabels->addWidget(cardSizeLabel);
@@ -84,6 +85,7 @@ SelectableCardWidget::SelectableCardWidget(SelectableCardMode mode,
     ui->btn_theCard->setPalette(plte_theCard);
     ui->btn_theCard->setText("");
     ui->btn_theCard->setMinimumSize(data->explicitSize);
+    setMaximumWidth(data->explicitSize.width() + 15);
     ui->chckBox_Selected->setCheckState(Qt::CheckState::Unchecked);
 
 }
