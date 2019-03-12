@@ -23,7 +23,7 @@ enum class LoggerLevel
 
 static const LoggerLevel logLevel = LoggerLevel::All;
 
-static const uint32_t msecloggerNextMessageTimeout = 1000;
+static const uint32_t msecloggerNextMessageTimeout = 5000;
 
 class Logger : public QObject
 {
