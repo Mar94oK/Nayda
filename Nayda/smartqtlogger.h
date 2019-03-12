@@ -23,6 +23,8 @@ enum class LoggerLevel
 
 static const LoggerLevel logLevel = LoggerLevel::All;
 
+static const uint32_t msecloggerNextMessageTimeout = 1000;
+
 class Logger : public QObject
 {
     Q_OBJECT
@@ -44,6 +46,10 @@ private:
 
     void NewLine()
     {
+        if (_outputController != nullptr)
+            if (_outputController->isActive())
+                _outputController->stop();
+
         QDebug dbg = qDebug();
         _debug.swap(dbg);
         _initializerStringAlreadyPrinted = false;
@@ -97,7 +103,7 @@ public:
                _debug << QTime::currentTime().toString("hh:mm:ss.zzz") << qPrintable(_initializerString) << message;
                _initializerStringAlreadyPrinted = true;
             }
-            _outputController->setInterval(100);
+            _outputController->setInterval(msecloggerNextMessageTimeout);
             _outputController->start();
         }
         return *this;
@@ -115,8 +121,8 @@ public:
     Logger& Algorithm();
 
     ~Logger() { }
-    Logger (QObject *parent = 0);
-    Logger (const QString& className, QObject *parent = 0);
+    Logger (QObject *parent = nullptr);
+    Logger (const QString& className, QObject *parent = nullptr);
 
 };
 
