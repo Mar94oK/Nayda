@@ -4506,8 +4506,8 @@ void The_Game::SlotProcessCardsSelectedToBeSold(const std::vector<SimpleCard> ca
     //2. Удалить карты с руки
     //3. Проверить и убрать в случае необходимости кнопку "Торговля"
     //4. Добавить уровень//уровни
-    qDebug() << "NAY-002: In the SlotProcessCardsSelectedToBeSold() ";
-    qDebug() << "NAY-002: CardsToBeSold size " << cards.size();   
+    logger.Algorithm() << "NAY-002: In the SlotProcessCardsSelectedToBeSold() ";
+    //logger.Debug() << "NAY-002: CardsToBeSold size " << cards.size();
     uint32_t totalMoneySpent = 0;
     for (uint32_t var = 0; var < cards.size(); ++var)
     {
@@ -4515,12 +4515,12 @@ void The_Game::SlotProcessCardsSelectedToBeSold(const std::vector<SimpleCard> ca
         totalMoneySpent += GetCardPrice(cards[var]);
     }
     _lastFold = cards;
-    qDebug() << "NAY-002: Total Money Spent: " << totalMoneySpent;
+    logger.Debug() << "NAY-002: Total Money Spent: " << totalMoneySpent;
     _mainPlayer->SetPlayerLevel(_mainPlayer->GetPlayerLevel() + GetLevelPurchased(totalMoneySpent));
     _mainPlayer->SetBattlePower(_mainPlayer->GetBattlePower()
                                 + static_cast<int32_t>(GetLevelPurchased(totalMoneySpent)));
 
-    qDebug() << "NAY-002: Emitting Signal MainGamer Has Sold Cards: "
+    logger.Debug() << "NAY-002: Emitting Signal MainGamer Has Sold Cards: "
              << " For Room with id: " << _roomID;
 
     emit SignalMainGamerHasSoldCards(TheGameMainGamerHasSoldCards(
@@ -4538,8 +4538,8 @@ void The_Game::SlotProcessCardsSelectedToBeSold(const std::vector<SimpleCard> ca
     std::vector<PositionedCard> posCardsOnHands = GetPositionedCardsFromHand(ui->MainGamer, separatedCards.cardsOnHands);
     std::vector<PositionedCard> posCardsInGame = GetPositionedCardsFromCardsInGame(ui->MainGamer, separatedCards.cardsInGame);
 
-    qDebug() << "NAY-002: posCardsOnHands size " << posCardsOnHands.size();
-    qDebug() << "NAY-002: posCardsInGame size " << posCardsInGame.size();
+    logger.Debug() << "NAY-002: posCardsOnHands size " << posCardsOnHands.size();
+    logger.Debug() << "NAY-002: posCardsInGame size " << posCardsInGame.size();
 
     //Убрать проданные карты с руки и/или из игры. (Карты хранятся во временном векторе posCards)
     //Была либо фаза торговли, либо фаза "ход другого игрока"
