@@ -4495,7 +4495,7 @@ void The_Game::SlotShowTradeMenu()
 
 void The_Game::SlotHideTradeMenu()
 {
-    qDebug() << "NAY-002: Closing Trade Menu in The_Game: ";
+    logger.Debug() << "HideTradeMenu:: NAY-002: Closing Trade Menu in The_Game: ";
     if (_sellMenu != nullptr)
         _sellMenu->deleteLater();
 }

@@ -291,6 +291,7 @@ void SellMenu::SetUpSignalsSlotsConnections()
 
 void SellMenu::closeEvent(QCloseEvent *event)
 {
+    Q_UNUSED(event);
     emit SignalUserClosedTradeMenu();
 }
 
