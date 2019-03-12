@@ -2775,7 +2775,6 @@ std::shared_ptr<TreasureArmorAmplifiersAllowance> The_Game::GetAllowanceTreasure
     {
         //Получить карты, имеющие бонус (можно и неактивные)
         std::vector<ActiveIncativeCard> result = GetThingsWithBonusesInGame(player);
-        //Продолжить здесь 06.03
         if (result.empty())
             return std::make_shared<TreasureArmorAmplifiersAllowance>
                     (TreasureArmorAmplifiersAllowance(false,
@@ -2873,7 +2872,7 @@ void The_Game::ImplementTreasureArmorAmplifier(std::shared_ptr<CardPlayAllowance
                                      );
 
     connect(_cardSelector, &CardSelector::SignalReportCardsWereSelected, this, &The_Game::CardSelectorHandler);
-    //Передать пустой вектор, если пользоватлеь просто закрыл окно (это должно отменить действие карты)
+    //Передать пустой вектор, если пользователь просто закрыл окно (это должно отменить действие карты)
     connect(_cardSelector, &CardSelector::SignalUserClosedCardSelector, [this] {CardSelectorHandler({});});
 
 

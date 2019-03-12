@@ -252,8 +252,6 @@ void CardSelector::SetUpSignalsSlotsConnections()
 {
     connect(ui->btnBox_Controls->button(QDialogButtonBox::StandardButton::Ok), &QPushButton::pressed,
             [this]{emit SignalReportCardsWereSelected(_selectedCards);});
-    connect(ui->btnBox_Controls->button(QDialogButtonBox::StandardButton::Ok), &QPushButton::pressed,
-            this, &CardSelector::close);
 
     connect(ui->btnBox_Controls->button(QDialogButtonBox::StandardButton::Cancel), &QPushButton::pressed,
             [this]{emit SignalUserClosedCardSelector();});
@@ -261,6 +259,8 @@ void CardSelector::SetUpSignalsSlotsConnections()
 
 void CardSelector::closeEvent(QCloseEvent *event)
 {
+    Q_UNUSED(event);
+    logger.Debug() << "CardSelector CloseEvent";
     emit SignalUserClosedCardSelector();
 }
 
