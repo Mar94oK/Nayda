@@ -23,6 +23,10 @@ enum class LoggerLevel
 
 static const LoggerLevel logLevel = LoggerLevel::All;
 
+
+//Actually, I can see only minor trouble here. Only the last message won't be shown till the timer send timeout.
+//Nonetheless, logger time will be exactly correct? since the string was formed IN TIME.
+//If the Application is silent - nothing to be shown in the log...
 static const uint32_t msecloggerNextMessageTimeout = 5000;
 
 class Logger : public QObject
