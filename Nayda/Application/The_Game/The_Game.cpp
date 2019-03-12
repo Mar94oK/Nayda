@@ -1572,6 +1572,8 @@ void The_Game::CardSelectorHandler(const std::vector<SimpleCard> &cards)
 {
     logger.Algorithm() << "Entering CardSelectorHandler.";
 
+
+    //Продолжить здесь 13.03.2019
     //Проверить фазу
 
     GamePhase currentPhase = GetCurrentGamePhase();
@@ -2871,16 +2873,13 @@ void The_Game::ImplementTreasureArmorAmplifier(std::shared_ptr<CardPlayAllowance
                                      CardSelectorSetup(SelectableCardMode::AmplifierAddition)
                                      );
 
+    //Соединить здесь требуемые сигналы!
     connect(_cardSelector, &CardSelector::SignalReportCardsWereSelected, this, &The_Game::CardSelectorHandler);
     //Передать пустой вектор, если пользователь просто закрыл окно (это должно отменить действие карты)
     connect(_cardSelector, &CardSelector::SignalUserClosedCardSelector, [this] {CardSelectorHandler({});});
 
 
     _cardSelector->show();
-
-    //Соединить здесь требуемые сигналы!
-    //Продолжить здесь 10.03.2019
-
 
 }
 
