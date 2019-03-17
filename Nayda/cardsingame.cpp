@@ -160,6 +160,7 @@ void CardsInGame::AddCardToCardsInGame(CardInGame card, bool isMainPlayer)
     _cardsAsButtonsRepresenter.push_back(cardToShow);
     cardToShow->show();
 //    cardToShow->hide();
+    //Продолжить здесь 18.03.2019. Начать с контроля за Layout ами, которые содержат карты.
     cardToShow->installEventFilter(this);
 }
 
