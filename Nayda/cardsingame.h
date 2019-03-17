@@ -89,6 +89,10 @@ private:
     QTimer *_showCardsTimer;
     uint32_t _timeToShowTheCard = 100; //ms
 
+    std::vector <QLayout* > _cardsLayoutHolder; //Чтобы подкладывать новые карты-усилители нужно
+                                                //размещать каждую карту в своём Layout;
+                                                //Тогда можно будет добавить к конкретному Layout усилитель.
+
     std::vector <QPushButton* > _cardsAsButtonsRepresenter;
 
 private:

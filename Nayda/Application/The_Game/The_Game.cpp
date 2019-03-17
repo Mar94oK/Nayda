@@ -1542,7 +1542,7 @@ void The_Game::InitializeFoldObserver()
 
 void The_Game::ProcessFoldObserver(const std::vector<SimpleCard> foldedCards)
 {
-    QRect HW_Screen_Size = geometry();
+    //QRect HW_Screen_Size = geometry();
 
     if (_foldObserver->GetState() == FoldObsreverState::Disabled)
     {
@@ -1611,6 +1611,10 @@ void The_Game::CardSelectorImplementationOfAmplifierHandler(const std::vector<Si
     //Применить в такой последовательности
     //Только потребуется поменять каждую из функций.
 
+    //Как должна выглядеть карта, которая добавляется к другой?
+    //Лучше сделать так, как это делается в обычной игре. Под одну карту подкладывается другая.
+    //Реализовать это за счёт размещения каждой карты в дополнительном QVerticalLayout
+    //Чтобы к любой из них можно было добавить впоследствии усилитель (увы, это потребуется отразить визуально)
 
 
 //    Animation_PassPlayedCardToCardsInGame_Phase1(wt, posCard, weaponAllowance->GetIsActive());
@@ -2902,12 +2906,11 @@ void The_Game::ImplementTreasureArmorAmplifier(std::shared_ptr<CardPlayAllowance
     //Сохранить переданные параметры для дальнейшего использования
     const gameCardTreasureArmorAmplifier* cardPointer = static_cast<const gameCardTreasureArmorAmplifier* >(card);
 
-
+    //Заполнить соотвествующую структуру
     _amplifierImplementationConfig.wt = wt;
     _amplifierImplementationConfig.posCard = posCard;
-    _amplifierImplementationConfig.isProcessing = true;
+    _amplifierImplementationConfig.isProcessing = true; //Защита актуальности ресурса
     _amplifierImplementationConfig.cardPtr = cardPointer;
-
 
     _cardSelector = new CardSelector(armorAmplifierAllowance->GetCardsAllowedToBeAmplified(),
                                      QSize(static_cast<int32_t>(_hwScreenSizeWidth),

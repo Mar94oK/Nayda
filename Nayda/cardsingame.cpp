@@ -39,6 +39,15 @@ void CardsInGame::SetDecks(const AllDecksToBePassed &data)
 
 void CardsInGame::AddCardToCardsInGame(CardInGame card, bool isMainPlayer)
 {    
+    //17.03.2019
+    //Виджетами карт в игре также нужно управлять.
+    //Между виджетами и картой должно присутствовать взаимнооднозначное соответствие.
+    //Придётся переделать хранилище карт в отдельный класс, который хранит "Карты в игре"
+    //И удаление карты из которого ведёт к удалению конкретного виджета
+    //Впрочем, это, кажется, уже сделано. =))) Класс "Карты в иге" этим и занимается.
+
+
+
     QSize cardSize;
 
     if (isMainPlayer)
@@ -78,6 +87,7 @@ void CardsInGame::AddCardToCardsInGame(CardInGame card, bool isMainPlayer)
         _disabledCards.push_back(card.second);
 
     QPushButton* cardToShow = new QPushButton();
+    QVBoxLayout* cardLayout = new QVBoxLayout();
 
     qDebug() << "CardsInGame::AddCardToCardsInGame(CardInGame card): " << GetCardPictureAddress(card.second);
 
@@ -87,6 +97,9 @@ void CardsInGame::AddCardToCardsInGame(CardInGame card, bool isMainPlayer)
     cardToShow->setAutoFillBackground(true);
     cardToShow->setStyleSheet("QPushButton {background-color:transparent;}");
     //btn->setPalette(plteBtnMainRepresenter);
+
+    cardLayout->addWidget(cardToShow);
+
 
     bool active = card.first;
     if (_mode == CardsInGameWidgetMode::MainPlayer)
@@ -98,39 +111,50 @@ void CardsInGame::AddCardToCardsInGame(CardInGame card, bool isMainPlayer)
                 if (_cardsInGameHolder.size()
                         < CardsInGameWidgetPerfomanceValues::maximumCardsInARowInTheCardsInActiveGameLayout)
                 {
-                    ui->lyt_Top->addWidget(cardToShow);
+                    //cardLayout->addWidget(cardToShow);
+                    ui->lyt_Top->addLayout(cardLayout);
                 }
                 else if (_cardsInGameHolder.size()
                          > CardsInGameWidgetPerfomanceValues::maximumCardsInARowInTheCardsInActiveGameLayout
                          && _cardsInGameHolder.size()
                          < 2 * CardsInGameWidgetPerfomanceValues::maximumCardsInARowInTheCardsInActiveGameLayout)
                 {
-                    ui->lyt_Middle->addWidget(cardToShow);
+                    //ui->lyt_Middle->addWidget(cardToShow);
+                    ui->lyt_Middle->addLayout(cardLayout);
                 }
+
                 else
                 {
                     if (_cardsInGameHolder.size() % 2)
-                        ui->lyt_Top->addWidget(cardToShow);
+                        //ui->lyt_Top->addWidget(cardToShow);
+                        ui->lyt_Top->addLayout(cardLayout);
                     else
-                        ui->lyt_Middle->addWidget(cardToShow);
+                        //ui->lyt_Middle->addWidget(cardToShow);
+                        ui->lyt_Middle->addLayout(cardLayout);
                 }
             }
             else
             {
-                ui->lyt_Top->addWidget(cardToShow);
+                //ui->lyt_Top->addWidget(cardToShow);
+                ui->lyt_Top->addLayout(cardLayout);
             }
         }
         else
         {
-            ui->lyt_Bottom->addWidget(cardToShow);
+            //ui->lyt_Bottom->addWidget(cardToShow);
+            ui->lyt_Bottom->addLayout(cardLayout);
         }
     }
     else
     {
         if (active)
-            ui->lyt_Top->addWidget(cardToShow);
+            //ui->lyt_Top->addWidget(cardToShow);
+            ui->lyt_Top->addLayout(cardLayout);
+
         else
-            ui->lyt_TopSecondary->addWidget(cardToShow);
+            //ui->lyt_TopSecondary->addWidget(cardToShow);
+            ui->lyt_TopSecondary->addLayout(cardLayout);
+
     }
 
     _cardsAsButtonsRepresenter.push_back(cardToShow);
@@ -153,11 +177,11 @@ void CardsInGame::RemoveCard(SimpleCard card)
     {
         if (_cardsInGameHolder[var].second == card)
         {
-            _cardsInGameHolder.erase(_cardsInGameHolder.begin() + var);
+            _cardsInGameHolder.erase(_cardsInGameHolder.begin() + static_cast<int32_t>(var));
             _cardsInGameHolder.shrink_to_fit();
 
             _cardsAsButtonsRepresenter[var]->deleteLater();
-            _cardsAsButtonsRepresenter.erase(_cardsAsButtonsRepresenter.begin() + var);
+            _cardsAsButtonsRepresenter.erase(_cardsAsButtonsRepresenter.begin() + static_cast<int32_t>(var));
             _cardsAsButtonsRepresenter.shrink_to_fit();
             qDebug() << "The card is removed from CardsInGame!";
             return;
@@ -167,7 +191,7 @@ void CardsInGame::RemoveCard(SimpleCard card)
     {
         if (_activeCards[var] == card)
         {
-            _activeCards.erase(_activeCards.begin() + var);
+            _activeCards.erase(_activeCards.begin() + static_cast<int32_t>(var));
             _activeCards.shrink_to_fit();
             return;
         }
@@ -176,7 +200,7 @@ void CardsInGame::RemoveCard(SimpleCard card)
     {
         if (_disabledCards[var] == card)
         {
-            _disabledCards.erase(_activeCards.begin() + var);
+            _disabledCards.erase(_activeCards.begin() + static_cast<int32_t>(var));
             _disabledCards.shrink_to_fit();
             return;
         }
