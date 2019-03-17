@@ -195,6 +195,14 @@ struct CardsFromHandAndInGame
 };
 
 
+struct AmplifierImplementationConfig
+{
+    bool isProcessing = false;
+    GamerWidget *wt = nullptr;
+    PositionedCard posCard;
+    const gameCardTreasureArmorAmplifier* cardPtr = nullptr;
+};
+
 
 class The_Game :  public QMainWindow
 {
@@ -321,7 +329,7 @@ private:
 
 private slots:
 
-    void CardSelectorHandler(const std::vector<SimpleCard>& cards);
+    void CardSelectorImplementationOfAmplifierHandler(const std::vector<SimpleCard>& cards);
 
 //====================================
 
@@ -526,6 +534,9 @@ private:
 
     void ImplementTreasureArmorAmplifier(std::shared_ptr<CardPlayAllowanceBase> allowance, const GameCardBasis *card, GamerWidget *wt, PositionedCard posCard);
 
+
+
+    AmplifierImplementationConfig _amplifierImplementationConfig;
 
 private:
 //Specific checkers according to special functions!

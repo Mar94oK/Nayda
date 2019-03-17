@@ -1568,32 +1568,62 @@ void The_Game::ProcessFoldObserver(const std::vector<SimpleCard> foldedCards)
     _lastFold.clear();
 }
 
-void The_Game::CardSelectorHandler(const std::vector<SimpleCard> &cards)
+
+//Удобнее привязывать конкретные хэндлеры к конкретному селектору,
+//Т.к. они смогут выполнять специфицированную задачу, и сам код будет более читаемым
+void The_Game::CardSelectorImplementationOfAmplifierHandler(const std::vector<SimpleCard> &cards)
 {
     logger.Algorithm() << "Entering CardSelectorHandler.";
-
 
     //Продолжить здесь 13.03.2019
     //Проверить фазу
 
     GamePhase currentPhase = GetCurrentGamePhase();
 
-    switch (currentPhase)
+    //Проверить правильность текущей фазы
+    if (currentPhase != GamePhase::ImplementationOfAmplifier)
     {
-    case GamePhase::ImplementationOfAmplifier:
-    {
-        logger.Debug() << "CardSelectorHandler:: GamePhase::ImplementationOfAmplifier!";
-        if (cards.empty())
-            logger.Debug() << "CardSelectorHandler:: Empty vector. User had closed the selector!";
-
-    }
-        break;
-
-    default:
-        logger.Error() << "Unhelded Game Phase:: " << currentPhase;
+        logger.Error() << "NAY-002: Implementattion of amplifier."
+                          " Shouldn't be here. GamePhase is not the GamePhase::ImplementationOfAmplifier ";
         return;
-        break;
     }
+
+    //Проверить, что передана только одна карта
+    if (cards.size() != 1)
+    {
+        logger.Error() << "CardSelectorHandler:: Vector of more than 1 element. "
+                          "Error in the Selector";
+        return;
+    }
+
+    //Проверить, что вектор карт не пустой - если это так, то пользователь закрыл окно, отказавшись от выбора
+    if (cards.empty())
+    {
+        logger.Debug() << "CardSelectorHandler:: Empty vector. User had closed the selector!";
+        return;
+    }
+
+    //Применить карту-усилитель.
+    //Нужно получить указатель на игрока, который применяет карту, плюс саму карту усилителя
+    //В случае, если проверка не проходится, эта функция должна быть запущена там, где создавался селектор
+    //Т.к. в таком случае нет необходимости его создавать.
+
+    //Применить в такой последовательности
+    //Только потребуется поменять каждую из функций.
+
+
+
+//    Animation_PassPlayedCardToCardsInGame_Phase1(wt, posCard, weaponAllowance->GetIsActive());
+//    const gameCardTreasureWeapon* cardPointer = static_cast<const gameCardTreasureWeapon* >(card);
+//    gameCardTreasureWeapon realCard(cardPointer);
+//    wt->SlotAddCardToCardsInGame(std::make_pair(weaponAllowance->GetIsActive(), SimpleCard(true, realCard.GetCardID())));
+//    RemoveTheCardFromHand(wt, posCard.GetCard());
+//    MoveCardFromCardInHandToCardInGame(wt->GetPointerToPlayer(),
+//                                       std::make_pair(weaponAllowance->GetIsActive() && !CardIsSiegeEngine(cardPointer),
+//                                       SimpleCard(true, realCard.GetCardID())));
+
+//    ApplyNewWeapon(wt, realCard);
+
 
 }
 
@@ -2692,11 +2722,16 @@ void The_Game::ImplementTreasureWeapon(std::shared_ptr<CardPlayAllowanceBase> al
 {
     std::shared_ptr<TreasureWeaponAllowance> weaponAllowance = std::static_pointer_cast<TreasureWeaponAllowance>(allowance);
 
+    if (!weaponAllowance->GetIsActive())
+    {
+        ApplyCardImplementerMessage(weaponAllowance->GetReasonOfRestriction(), true);
+        return;
+    }
+
     SaveGamePhase();
     SetGamePhase(GamePhase::CardAnimation);
 
     Animation_PassPlayedCardToCardsInGame_Phase1(wt, posCard, weaponAllowance->GetIsActive());
-
     const gameCardTreasureWeapon* cardPointer = static_cast<const gameCardTreasureWeapon* >(card);
     gameCardTreasureWeapon realCard(cardPointer);
     wt->SlotAddCardToCardsInGame(std::make_pair(weaponAllowance->GetIsActive(), SimpleCard(true, realCard.GetCardID())));
@@ -2711,10 +2746,7 @@ void The_Game::ImplementTreasureWeapon(std::shared_ptr<CardPlayAllowanceBase> al
                                        std::make_pair(weaponAllowance->GetIsActive() && !CardIsSiegeEngine(cardPointer),
                                        SimpleCard(true, realCard.GetCardID())));
 
-    if (!weaponAllowance->GetIsActive())
-        ApplyCardImplementerMessage(weaponAllowance->GetReasonOfRestriction(), true);
-    else
-        ApplyNewWeapon(wt, realCard);
+    ApplyNewWeapon(wt, realCard);
 }
 
 std::shared_ptr<TreasureArmorAmplifiersAllowance> The_Game::GetAllowanceTreasureArmorAmplifiers(const gameCardTreasureArmorAmplifier *card, Player *player, bool fromHand)
@@ -2866,6 +2898,17 @@ void The_Game::ImplementTreasureArmorAmplifier(std::shared_ptr<CardPlayAllowance
                              _thingsAmplifiersDeck,
                              _weaponsDeck);
 
+
+    //Сохранить переданные параметры для дальнейшего использования
+    const gameCardTreasureArmorAmplifier* cardPointer = static_cast<const gameCardTreasureArmorAmplifier* >(card);
+
+
+    _amplifierImplementationConfig.wt = wt;
+    _amplifierImplementationConfig.posCard = posCard;
+    _amplifierImplementationConfig.isProcessing = true;
+    _amplifierImplementationConfig.cardPtr = cardPointer;
+
+
     _cardSelector = new CardSelector(armorAmplifierAllowance->GetCardsAllowedToBeAmplified(),
                                      QSize(static_cast<int32_t>(_hwScreenSizeWidth),
                                            static_cast<int32_t>(_hwScreenSizeHeigh)),
@@ -2874,9 +2917,9 @@ void The_Game::ImplementTreasureArmorAmplifier(std::shared_ptr<CardPlayAllowance
                                      );
 
     //Соединить здесь требуемые сигналы!
-    connect(_cardSelector, &CardSelector::SignalReportCardsWereSelected, this, &The_Game::CardSelectorHandler);
+    connect(_cardSelector, &CardSelector::SignalReportCardsWereSelected, this, &The_Game::CardSelectorImplementationOfAmplifierHandler);
     //Передать пустой вектор, если пользователь просто закрыл окно (это должно отменить действие карты)
-    connect(_cardSelector, &CardSelector::SignalUserClosedCardSelector, [this] {CardSelectorHandler({});});
+    connect(_cardSelector, &CardSelector::SignalUserClosedCardSelector, [this] {CardSelectorImplementationOfAmplifierHandler({});});
 
 
     _cardSelector->show();
