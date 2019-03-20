@@ -99,7 +99,7 @@ void CardsInGame::AddCardToCardsInGame(CardInGame card, bool isMainPlayer)
     //btn->setPalette(plteBtnMainRepresenter);
 
     cardLayout->addWidget(cardToShow);
-
+    _cardsLayoutHolder.push_back(cardLayout);
 
     bool active = card.first;
     if (_mode == CardsInGameWidgetMode::MainPlayer)
@@ -162,6 +162,13 @@ void CardsInGame::AddCardToCardsInGame(CardInGame card, bool isMainPlayer)
 //    cardToShow->hide();
     //Продолжить здесь 18.03.2019. Начать с контроля за Layout ами, которые содержат карты.
     cardToShow->installEventFilter(this);
+}
+
+void CardsInGame::AddAmplifierToCardsInGame(SimpleCard card)
+{
+    //Продолжить здесь 21.03.2019
+    //Реализовать это метод, затем потестить.
+
 }
 
 void CardsInGame::RemoveCard(SimpleCard card)

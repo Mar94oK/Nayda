@@ -68,6 +68,9 @@ public:
 public:
 
     void AddCardToCardsInGame(CardInGame card, bool isMainPlayer = true);
+    //Добавить усилитель к картам "в игре".
+    //Требуется указать, к какой карте он должен быть применён.
+    void AddAmplifierToCardsInGame(SimpleCard card);
     void RemoveCard(SimpleCard card);
 
     PositionedCard GetCardPosition(SimpleCard card);

@@ -214,8 +214,6 @@ struct CardToBeShownInSellMenu: public CommonCardViewData
     }
 };
 
-//Продолжить здесь 09.03.2019
-
 //Это и требуется возвращать из метода получения инфо о карте
 struct CardToBeAmplifiedData: public CommonCardViewData
 {

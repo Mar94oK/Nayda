@@ -1575,7 +1575,6 @@ void The_Game::CardSelectorImplementationOfAmplifierHandler(const std::vector<Si
 {
     logger.Algorithm() << "Entering CardSelectorHandler.";
 
-    //Продолжить здесь 13.03.2019
     //Проверить фазу
 
     GamePhase currentPhase = GetCurrentGamePhase();
@@ -1615,6 +1614,11 @@ void The_Game::CardSelectorImplementationOfAmplifierHandler(const std::vector<Si
     //Лучше сделать так, как это делается в обычной игре. Под одну карту подкладывается другая.
     //Реализовать это за счёт размещения каждой карты в дополнительном QVerticalLayout
     //Чтобы к любой из них можно было добавить впоследствии усилитель (увы, это потребуется отразить визуально)
+
+
+    //Для начала просто проверить добавление к "Картам в Игре" карты-усилителя
+
+
 
 
 //    Animation_PassPlayedCardToCardsInGame_Phase1(wt, posCard, weaponAllowance->GetIsActive());
