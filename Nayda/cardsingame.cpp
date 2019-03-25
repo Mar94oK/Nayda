@@ -12,6 +12,7 @@ CardsInGame::CardsInGame(QWidget *parent) :
     _showCardsTimer->setSingleShot(true);
     connect(_showCardsTimer, &QTimer::timeout, [this]{ emit SignalShowTheCard(_currentCardToShowNearItsPosition);});
 
+    DECLARE_NAMED_LOGGER(CardsInGame);
 }
 
 CardsInGame::~CardsInGame()
@@ -131,25 +132,36 @@ void CardsInGame::AddCardToCardsInGame(CardInGame card, bool isMainPlayer)
     cardToShow->installEventFilter(this);
 }
 
-void CardsInGame::AddAmplifierToCardsInGame(SimpleCard cardTarget, SimpleCard amplifier,  bool isMainPlayer)
+void CardsInGame::AddAmplifierToCardsInGame(SimpleCard amplifier, SimpleCard cardTarget,  bool isMainPlayer)
 {
-    //Продолжить здесь 21.03.2019
     //Реализовать это метод, затем потестить.
     //1.Найти карту, к которой следует подложить текущий усилитель
+    //И т. д.
     QSize cardSize = GetCardSize(isMainPlayer);
 
+    //Продолжить здесь 26.03.2019. Карта становится слишком большой. Исправить. Но добавляется. :)
+
+    uint32_t pos = 0;
     for (std::vector<CardInGame>::iterator it = _cardsInGameHolder.begin(); it != _cardsInGameHolder.end(); ++it)
     {
         if (it->second == cardTarget)
         {
             //Найдена
             QPushButton* cardToShow = new QPushButton();
-            cardToShow->setMinimumSize(cardSize);
-            cardToShow->setMaximumSize(cardSize);
-            cardToShow->setFlat(true);
-            cardToShow->setAutoFillBackground(true);
-            cardToShow->setStyleSheet("QPushButton {background-color:transparent;}");
+
+            SetUpButtonPicture(cardToShow,
+                               GetCardPictureAddress(amplifier),
+                               cardSize, true);
+
+            logger.Debug() << "NAY-2603:: Debugging AMplifierAddition. Step 1.";
+            QLayout* whereToPlace = _cardsLayoutHolder[pos];
+            whereToPlace->addWidget(cardToShow);
+
+            _amplifiersAsButtonsRepresenter.push_back(cardToShow);
+            cardToShow->show();
+            return;
         }
+        ++pos;
     }
 
 }
@@ -377,7 +389,7 @@ void CardsInGame::SetUpButtonPicture(QPushButton * const btn, const QString &pic
     btn->setAutoFillBackground(true);
     btn->setPalette(plteBtnMainRepresenter);
 
-    qDebug() << "NAY-002: CardsInGameSetCardPicture Function Checker()";
+    //qDebug() << "NAY-002: CardsInGameSetCardPicture Function Checker()";
 }
 
 void CardsInGame::ShowLastCardAdded(bool isMainPlayer)

@@ -5,6 +5,7 @@
 #include <Application/card.h>
 #include <QPushButton>
 #include "munchkinglobaldefines.h"
+#include "smartqtlogger.h"
 
 
 
@@ -26,6 +27,8 @@ class CardsInGame : public QWidget
 public:
     explicit CardsInGame(QWidget *parent = nullptr);
     ~CardsInGame();
+
+    Logger logger;
 
 private:
     Ui::CardsInGame *ui;
@@ -70,7 +73,7 @@ public:
     void AddCardToCardsInGame(CardInGame card, bool isMainPlayer = true);
     //Добавить усилитель к картам "в игре".
     //Требуется указать, к какой карте он должен быть применён.
-    void AddAmplifierToCardsInGame(SimpleCard cardTarget, SimpleCard amplifier, bool isMainPlayer);
+    void AddAmplifierToCardsInGame(SimpleCard amplifier, SimpleCard cardTarget, bool isMainPlayer);
     void RemoveCard(SimpleCard card);
 
     PositionedCard GetCardPosition(SimpleCard card);

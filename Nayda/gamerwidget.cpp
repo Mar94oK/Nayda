@@ -669,6 +669,14 @@ void GamerWidget::SlotShowLastCardInGameAdded()
         ui->wt_CardsInGameSecondaryPlayer->ShowLastCardAdded(false);
 }
 
+void GamerWidget::SlotShowAmplifierAdded(SimpleCard amplifier, SimpleCard target)
+{
+    if (_isMainPlayer)
+        ui->wt_CardsInGameMainPlayer->AddAmplifierToCardsInGame(amplifier, target, true);
+    else
+        ui->wt_CardsInGameMainPlayer->AddAmplifierToCardsInGame(amplifier, target, false);
+}
+
 QPoint GamerWidget::ProvidePositionOfTheLastCardAddedToCardsInGame() const
 {
     if (_isMainPlayer)

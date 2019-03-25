@@ -1618,8 +1618,13 @@ void The_Game::CardSelectorImplementationOfAmplifierHandler(const std::vector<Si
 
     //Для начала просто проверить добавление к "Картам в Игре" карты-усилителя
 
+    if (!_amplifierImplementationConfig.isProcessing)
+    {
+        logger.Error() << "No data in amplifierImplementation config!";
+        return;
+    }
 
-
+    _amplifierImplementationConfig.wt->SlotShowAmplifierAdded(_amplifierImplementationConfig.posCard.GetCard(), cards[0]);
 
 //    Animation_PassPlayedCardToCardsInGame_Phase1(wt, posCard, weaponAllowance->GetIsActive());
 //    const gameCardTreasureWeapon* cardPointer = static_cast<const gameCardTreasureWeapon* >(card);
@@ -2409,7 +2414,7 @@ void The_Game::ImplementCardFromHandsToCardsInGame(std::shared_ptr<CardPlayAllow
         {
             ImplementTreasureArmorAmplifier(allowance, card, wt, posCard);
         }
-
+        break;
 
         default:
         {

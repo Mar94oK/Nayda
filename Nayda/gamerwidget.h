@@ -297,6 +297,7 @@ public:
 public slots:
 
    void SlotShowLastCardInGameAdded();
+   void SlotShowAmplifierAdded(SimpleCard amplifier, SimpleCard target);
 
 public:
 
