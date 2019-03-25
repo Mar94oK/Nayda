@@ -70,7 +70,7 @@ public:
     void AddCardToCardsInGame(CardInGame card, bool isMainPlayer = true);
     //Добавить усилитель к картам "в игре".
     //Требуется указать, к какой карте он должен быть применён.
-    void AddAmplifierToCardsInGame(SimpleCard card);
+    void AddAmplifierToCardsInGame(SimpleCard cardTarget, SimpleCard amplifier, bool isMainPlayer);
     void RemoveCard(SimpleCard card);
 
     PositionedCard GetCardPosition(SimpleCard card);
@@ -79,6 +79,9 @@ public:
 private:
 
     QString GetCardPictureAddress(SimpleCard card);
+
+    QSize GetCardSize(bool isMainPlayer);
+    void SetCardAsButtonPerfomance();
 
 private:
 
@@ -97,6 +100,7 @@ private:
                                                 //Тогда можно будет добавить к конкретному Layout усилитель.
 
     std::vector <QPushButton* > _cardsAsButtonsRepresenter;
+    std::vector <QPushButton* > _amplifiersAsButtonsRepresenter;
 
 private:
 

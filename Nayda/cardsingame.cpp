@@ -46,40 +46,9 @@ void CardsInGame::AddCardToCardsInGame(CardInGame card, bool isMainPlayer)
     //И удаление карты из которого ведёт к удалению конкретного виджета
     //Впрочем, это, кажется, уже сделано. =))) Класс "Карты в иге" этим и занимается.
 
-
-
-    QSize cardSize;
-
-    if (isMainPlayer)
-    {
-        cardSize.setWidth((CardsInGameWidgetPerfomanceValues::threeLayoutForCardsAreEnabled ?
-                                  static_cast<int32_t>(_widnowSizeWidth *GeometricLimitations::handCardSizeWidht
-                                                       * GeometricLimitations::cardInGametoCardOnHandSizeRatio)
-                                :
-                                  static_cast<int32_t>(_widnowSizeWidth *GeometricLimitations::handCardSizeWidht * 2)));
-
-        cardSize.setHeight((CardsInGameWidgetPerfomanceValues::threeLayoutForCardsAreEnabled ?
-                                  static_cast<int32_t>(_windowSizeHeight *GeometricLimitations::handCardSizeHeight
-                                                       * GeometricLimitations::cardInGametoCardOnHandSizeRatio)
-                                :
-                                  static_cast<int32_t>(_windowSizeHeight *GeometricLimitations::handCardSizeHeight * 2)));
-    }
-    else
-    {
-        cardSize.setWidth(static_cast<int32_t>(GeometricLimitations::handCardSizeWidht*_widnowSizeWidth));
-        cardSize.setHeight(static_cast<int32_t>(GeometricLimitations::handCardSizeHeight*_windowSizeHeight));
-    }
-
-    qDebug() << "CardSize CardsInGame: _widnowSizeWidth: " << _widnowSizeWidth;
-    qDebug() << "CardSize CardsInGame: _windowSizeHeight: " << _windowSizeHeight;
-
-
-    qDebug() << "CardSize CardsInGame: width: " << cardSize.width();
-    qDebug() << "CardSize CardsInGame: height: " << cardSize.height();
+    QSize cardSize = GetCardSize(isMainPlayer);
 
     _cardsInGameHolder.push_back(card);
-    qDebug() << "NAY-002: CardsInGame::AddCardToCardsInGame(CardInGame card): "
-             << " cards is " << (card.first ? "Enabled!" : "Disabled!");
 
     if (card.first)
         _activeCards.push_back(card.second);
@@ -88,8 +57,6 @@ void CardsInGame::AddCardToCardsInGame(CardInGame card, bool isMainPlayer)
 
     QPushButton* cardToShow = new QPushButton();
     QVBoxLayout* cardLayout = new QVBoxLayout();
-
-    qDebug() << "CardsInGame::AddCardToCardsInGame(CardInGame card): " << GetCardPictureAddress(card.second);
 
     cardToShow->setMinimumSize(cardSize);
     cardToShow->setMaximumSize(cardSize);
@@ -158,16 +125,32 @@ void CardsInGame::AddCardToCardsInGame(CardInGame card, bool isMainPlayer)
     }
 
     _cardsAsButtonsRepresenter.push_back(cardToShow);
-    cardToShow->show();
-//    cardToShow->hide();
+//    cardToShow->show();
+    cardToShow->hide();
     //Продолжить здесь 18.03.2019. Начать с контроля за Layout ами, которые содержат карты.
     cardToShow->installEventFilter(this);
 }
 
-void CardsInGame::AddAmplifierToCardsInGame(SimpleCard card)
+void CardsInGame::AddAmplifierToCardsInGame(SimpleCard cardTarget, SimpleCard amplifier,  bool isMainPlayer)
 {
     //Продолжить здесь 21.03.2019
     //Реализовать это метод, затем потестить.
+    //1.Найти карту, к которой следует подложить текущий усилитель
+    QSize cardSize = GetCardSize(isMainPlayer);
+
+    for (std::vector<CardInGame>::iterator it = _cardsInGameHolder.begin(); it != _cardsInGameHolder.end(); ++it)
+    {
+        if (it->second == cardTarget)
+        {
+            //Найдена
+            QPushButton* cardToShow = new QPushButton();
+            cardToShow->setMinimumSize(cardSize);
+            cardToShow->setMaximumSize(cardSize);
+            cardToShow->setFlat(true);
+            cardToShow->setAutoFillBackground(true);
+            cardToShow->setStyleSheet("QPushButton {background-color:transparent;}");
+        }
+    }
 
 }
 
@@ -339,6 +322,33 @@ QString CardsInGame::GetCardPictureAddress(SimpleCard card)
     return QString("");
 }
 
+QSize CardsInGame::GetCardSize(bool isMainPlayer)
+{
+    QSize cardSize;
+
+    if (isMainPlayer)
+    {
+        cardSize.setWidth((CardsInGameWidgetPerfomanceValues::threeLayoutForCardsAreEnabled ?
+                                  static_cast<int32_t>(_widnowSizeWidth *GeometricLimitations::handCardSizeWidht
+                                                       * GeometricLimitations::cardInGametoCardOnHandSizeRatio)
+                                :
+                                  static_cast<int32_t>(_widnowSizeWidth *GeometricLimitations::handCardSizeWidht * 2)));
+
+        cardSize.setHeight((CardsInGameWidgetPerfomanceValues::threeLayoutForCardsAreEnabled ?
+                                  static_cast<int32_t>(_windowSizeHeight *GeometricLimitations::handCardSizeHeight
+                                                       * GeometricLimitations::cardInGametoCardOnHandSizeRatio)
+                                :
+                                  static_cast<int32_t>(_windowSizeHeight *GeometricLimitations::handCardSizeHeight * 2)));
+    }
+    else
+    {
+        cardSize.setWidth(static_cast<int32_t>(GeometricLimitations::handCardSizeWidht*_widnowSizeWidth));
+        cardSize.setHeight(static_cast<int32_t>(GeometricLimitations::handCardSizeHeight*_windowSizeHeight));
+    }
+
+    return cardSize;
+}
+
 void CardsInGame::SetUpButtonPicture(QPushButton * const btn, const QString &picturePath, QSize size, bool active)
 {
 
@@ -372,28 +382,7 @@ void CardsInGame::SetUpButtonPicture(QPushButton * const btn, const QString &pic
 
 void CardsInGame::ShowLastCardAdded(bool isMainPlayer)
 {
-    QSize cardSize;
-
-    if (isMainPlayer)
-    {
-        cardSize.setWidth((CardsInGameWidgetPerfomanceValues::threeLayoutForCardsAreEnabled ?
-                                  static_cast<int32_t>(_widnowSizeWidth *GeometricLimitations::handCardSizeWidht
-                                                       * GeometricLimitations::cardInGametoCardOnHandSizeRatio)
-                                :
-                                  static_cast<int32_t>(_widnowSizeWidth *GeometricLimitations::handCardSizeWidht * 2)));
-
-        cardSize.setHeight((CardsInGameWidgetPerfomanceValues::threeLayoutForCardsAreEnabled ?
-                                  static_cast<int32_t>(_windowSizeHeight *GeometricLimitations::handCardSizeHeight
-                                                       * GeometricLimitations::cardInGametoCardOnHandSizeRatio)
-                                :
-                                  static_cast<int32_t>(_windowSizeHeight *GeometricLimitations::handCardSizeHeight * 2)));
-    }
-    else
-    {
-        cardSize.setWidth(static_cast<int32_t>(GeometricLimitations::handCardSizeWidht*_widnowSizeWidth));
-        cardSize.setHeight(static_cast<int32_t>(GeometricLimitations::handCardSizeHeight*_windowSizeHeight));
-    }
-
+    QSize cardSize = GetCardSize(isMainPlayer);
 
     SetUpButtonPicture(_cardsAsButtonsRepresenter.back(),
                        GetCardPictureAddress(_cardsInGameHolder.back().second),
