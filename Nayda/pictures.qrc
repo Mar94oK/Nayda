@@ -462,5 +462,6 @@
         <file>Pictures/treasures_Weapon/Vorpal Blade.jpg</file>
         <file>Pictures/waitingForOpponentsLobby/BlackCrown.png</file>
         <file>Pictures/waitingForOpponentsLobby/Crown.png</file>
+        <file>Pictures/cardsInGame/binder.png</file>
     </qresource>
 </RCC>

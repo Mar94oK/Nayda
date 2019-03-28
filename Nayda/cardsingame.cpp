@@ -57,7 +57,7 @@ void CardsInGame::AddCardToCardsInGame(CardInGame card, bool isMainPlayer)
         _disabledCards.push_back(card.second);
 
     QPushButton* cardToShow = new QPushButton();
-    QVBoxLayout* cardLayout = new QVBoxLayout();
+    QHBoxLayout* cardLayout = new QHBoxLayout();
 
     cardToShow->setMinimumSize(cardSize);
     cardToShow->setMaximumSize(cardSize);
@@ -138,7 +138,6 @@ void CardsInGame::AddAmplifierToCardsInGame(SimpleCard amplifier, SimpleCard car
     //1.Найти карту, к которой следует подложить текущий усилитель
     //И т. д.
     QSize cardSize = GetCardSize(isMainPlayer);
-
     //Продолжить здесь 26.03.2019. Карта становится слишком большой. Исправить. Но добавляется. :)
 
     uint32_t pos = 0;
@@ -153,8 +152,15 @@ void CardsInGame::AddAmplifierToCardsInGame(SimpleCard amplifier, SimpleCard car
                                GetCardPictureAddress(amplifier),
                                cardSize, true);
 
-            logger.Debug() << "NAY-2603:: Debugging AMplifierAddition. Step 1.";
             QLayout* whereToPlace = _cardsLayoutHolder[pos];
+            //add Binder First
+            QPushButton* binder = new QPushButton();
+
+            SetUpButtonPicture(binder,
+                               ":/Pictures/cardsInGame/binder.png",
+                               QSize(cardSize.width() / 2, cardSize.height() / 5), true);
+
+            whereToPlace->addWidget(binder);
             whereToPlace->addWidget(cardToShow);
 
             _amplifiersAsButtonsRepresenter.push_back(cardToShow);
@@ -163,7 +169,6 @@ void CardsInGame::AddAmplifierToCardsInGame(SimpleCard amplifier, SimpleCard car
         }
         ++pos;
     }
-
 }
 
 void CardsInGame::RemoveCard(SimpleCard card)

@@ -361,8 +361,11 @@ private:
 //                                                                   {1,3}, {1, 26}};
 //    std::vector<SimpleCard> _debugCardsToBeGivenToMainPlayer = {{1,160}, {1,117},
 //                                                                 {1,65}, {1, 109}};
+//    std::vector<SimpleCard> _debugCardsToBeGivenToMainPlayer = {{1,160}, {1,117},
+//                                                                 {1,65}, {1, 123}};
+
     std::vector<SimpleCard> _debugCardsToBeGivenToMainPlayer = {{1,160}, {1,117},
-                                                                 {1,65}, {1, 123}};
+                                                                 {1,2}, {1, 123}};
 
 
 
