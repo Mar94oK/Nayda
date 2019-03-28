@@ -177,8 +177,8 @@ struct CardPosition
 
 //use this as the elements of arrays, controlled by The Game.
 typedef std::pair<bool, unsigned int> SimpleCard;
-
 typedef std::pair<bool, SimpleCard> CardInGame;
+typedef std::pair<SimpleCard, SimpleCard> AmplifierCard; // first - amplifier, second - target.
 
 enum class SelectableCardMode
 {
@@ -926,8 +926,8 @@ public:
     void setAddOn(const cardAddon &addOn);
     treasureType type() const;
     void setType(const treasureType &type);
-    int bonus() const;
-    void setBonus(int bonus);
+    int GetBonus() const;
+    void SetBonus(int GetBonus);
 };
 
 

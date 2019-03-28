@@ -1233,12 +1233,12 @@ void gameCardTreasureArmorAmplifier::setType(const treasureType &type)
     _type = type;
 }
 
-int gameCardTreasureArmorAmplifier::bonus() const
+int gameCardTreasureArmorAmplifier::GetBonus() const
 {
     return _bonus;
 }
 
-void gameCardTreasureArmorAmplifier::setBonus(int bonus)
+void gameCardTreasureArmorAmplifier::SetBonus(int bonus)
 {
     _bonus = bonus;
 }

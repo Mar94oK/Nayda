@@ -722,7 +722,7 @@ gameCardTreasureArmorAmplifier The_Game::armorAmplifierStringParser(const QStrin
     theArmorAmplifier.setType(treasureType::ArmorAmplifier);
     lst.removeFirst();
 
-    theArmorAmplifier.setBonus(lst.first().toInt());
+    theArmorAmplifier.SetBonus(lst.first().toInt());
 
     theArmorAmplifier.SetCardType(CardType::TreasureArmorAmplifier);
 
@@ -1624,19 +1624,12 @@ void The_Game::CardSelectorImplementationOfAmplifierHandler(const std::vector<Si
         return;
     }
 
+    //Конфигурация сохранила усилитель, и теперь его можно добавить.
     _amplifierImplementationConfig.wt->SlotShowAmplifierAdded(_amplifierImplementationConfig.posCard.GetCard(), cards[0]);
 
-//    Animation_PassPlayedCardToCardsInGame_Phase1(wt, posCard, weaponAllowance->GetIsActive());
-//    const gameCardTreasureWeapon* cardPointer = static_cast<const gameCardTreasureWeapon* >(card);
-//    gameCardTreasureWeapon realCard(cardPointer);
-//    wt->SlotAddCardToCardsInGame(std::make_pair(weaponAllowance->GetIsActive(), SimpleCard(true, realCard.GetCardID())));
-//    RemoveTheCardFromHand(wt, posCard.GetCard());
-//    MoveCardFromCardInHandToCardInGame(wt->GetPointerToPlayer(),
-//                                       std::make_pair(weaponAllowance->GetIsActive() && !CardIsSiegeEngine(cardPointer),
-//                                       SimpleCard(true, realCard.GetCardID())));
+    _amplifierImplementationConfig.wt->GetPointerToPlayer()->AddAmplifierToCardsInGame(AmplifierCard(_amplifierImplementationConfig.posCard.GetCard(), cards[0]));
 
-//    ApplyNewWeapon(wt, realCard);
-
+    //Далее применить свойства усилителя
 
 }
 
@@ -2889,13 +2882,6 @@ void The_Game::ImplementTreasureArmorAmplifier(std::shared_ptr<CardPlayAllowance
     //Прерывание процесса работы с усилителем.
     //Работа селектора МОЖЕТ быть прервана проклятием
 
-//    explicit CardSelector(const std::vector<SimpleCard>& cards,
-//                          QSize windowSize,
-//                          const AllDecksToBePassed &data,
-//                          CardSelectorSetup setup,
-//                          QWidget *parent = nullptr);
-
-
     AllDecksToBePassed decks(_monstersDeck,
                              _amplifiersDeck,
                              _cursesDeck,
@@ -3035,7 +3021,29 @@ std::vector<ActiveIncativeCard> The_Game::GetThingsWithBonusesInGame(const Playe
 
 bool The_Game::CardIsBigThing(SimpleCard card)
 {
-    return true;
+    //Большими могут являться только Оружие, Шмотки и Мелкие шмотки
+
+    std::map<int, gameCardTreasureWeapon> :: const_iterator _weaponsIterator;
+    std::map<int, gameCardTreasureArmor> :: const_iterator _armorIterator;
+    std::map<int, gameCardTreasureThingsAmplifiers> :: const_iterator _thigsAmplifiersIterator;
+
+    _weaponsIterator = _weaponsDeck.find(static_cast <int> (card.second));
+    if (_weaponsIterator != _weaponsDeck.end())
+        if (_weaponsIterator->second.GetSize() == Size::Big)
+            return true;
+
+
+    _armorIterator = _armorDeck.find(static_cast <int> (card.second));
+    if (_armorIterator != _armorDeck.end())
+        if (_armorIterator->second.size() == Size::Big)
+            return true;
+
+    _thigsAmplifiersIterator = _thingsAmplifiersDeck.find(static_cast <int> (card.second));
+    if (_thigsAmplifiersIterator != _thingsAmplifiersDeck.end())
+        if (_thigsAmplifiersIterator->second.size() == Size::Big)
+            return true;
+
+    return false;
 }
 
 bool The_Game::CardIsWeapon(SimpleCard card)
@@ -3283,6 +3291,51 @@ void The_Game::ApplyNewWeapon(GamerWidget *wt, const gameCardTreasureWeapon &car
     //Должен удалить эффект осадки в случае если Применитель вызван с фалгом "удалить"
     if (!CardIsSiegeEngine(&card) && addEffect)
         wt->SlotChangeTheGamerBattlePower(static_cast<int32_t>(addEffect ? totalBonus : -totalBonus));
+}
+
+void The_Game::ApplyArmorAmplifier(GamerWidget *wt, const gameCardTreasureArmorAmplifier &card, SimpleCard target, CardApplyMode apply)
+{
+    Player* player = wt->GetPointerToPlayer();
+
+    bool addEffect = true;
+
+    if (apply == CardApplyMode::Remove)
+       addEffect = false;
+
+    //добавить основной бонус
+    uint32_t totalBonus = static_cast<uint32_t>(card.GetBonus());
+    if (ArmorAmplifierIsConvinientHandles(card.cardID()))
+    {
+       if (CardIsBigThing(target))
+       {
+           //По идее сюда не может попасть карта, которая не является большой.
+           //1. Проверить, является ли текущая карта большой
+           //2. Если нет  - выдать ошибку (исключение)
+           //3. Если да
+           //4. Проверить, является ли игрок дворфом
+           //5. Если да,
+           // 5.1 Проверить установку ограничения "есть большая шмотка" - выдать в логгер для отладки
+           // 5.2 Больше ничего не делать, у них нет лимита на количество больших шмоток
+           //6. Если нет,
+           //   Параметр "есть большая шмотка" точно будет установлен (если у игрока нет применённой карты "Чит")
+           //   6.1 Проверить, установлен ли параметр "Есть большая шмотка"
+           //       6.1.2 Если нет  - это косвенно говорит о том, что применена карта "Чит", снимающая любые ограничения по применению карты
+           //             и делающая её автоматически активной. Сообщить в логгер.
+           //   6.2 Проверить, является ли карта активной.
+           //       6.2.1. Если да, проверить, находится ли эта карта под воздействием чита
+           //           6.2.1.1 Если да, ничего больше не делать, но для этой карты отменится свойство
+           //                   "большая".
+           //                   Её можно будет своровать или ударить по ней проклятьем "потеряй мелкую шмотку".
+           //                   Она будет проверяться обработчиком применений карт-проклятий
+           //           6.2.1.2 Если нет, отменить установку параметра "есть большая шмотка".
+           //                   Перезапустить проверку на разрешение применения этой карты
+           //                   Если она может быть применена, изменить её состояние на "активное",
+           //                   применить её бонусы
+           //   если игрок - не дварф, и если у него в неактивных картах есть большие карты,
+           //   требуется переполучить для них рарешение
+           //   Применители чита, проклятий и прочего будут автоматически разрешать
+       }
+    }
 }
 
 

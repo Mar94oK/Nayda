@@ -138,7 +138,8 @@ void CardsInGame::AddAmplifierToCardsInGame(SimpleCard amplifier, SimpleCard car
     //1.Найти карту, к которой следует подложить текущий усилитель
     //И т. д.
     QSize cardSize = GetCardSize(isMainPlayer);
-    //Продолжить здесь 26.03.2019. Карта становится слишком большой. Исправить. Но добавляется. :)
+
+    _amplifiers.push_back(AmplifierCard(amplifier, cardTarget));
 
     uint32_t pos = 0;
     for (std::vector<CardInGame>::iterator it = _cardsInGameHolder.begin(); it != _cardsInGameHolder.end(); ++it)

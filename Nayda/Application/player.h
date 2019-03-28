@@ -43,7 +43,6 @@ class Player
     bool _hasAdditionalClericalAbility = false;
     bool _hasAdditionalTheftAbility = false;
 
-
     bool _thereIsOneBigThing = false;
     bool _thereIsLimitOnBigThings= true; //may be remove it if checking the race
 
@@ -76,6 +75,7 @@ class Player
 
     std::vector<SimpleCard> _activeCardsInGame;
     std::vector<SimpleCard> _disabledCardsInGame;
+    std::vector<AmplifierCard> _amplifiersInGame;
 
     //Cards responsible for the Races and Classes
     SimpleCard _race1Card;
@@ -183,10 +183,11 @@ public:
     void AddCardToCardsInGame(CardInGame);
     void RemoveCardFromCardsInGame(SimpleCard);
 
+    void AddAmplifierToCardsInGame(AmplifierCard amplifier);
+
     bool CardIsActive(SimpleCard card);
 
     std::vector<SimpleCard>* cardsOnHandsVector();
-
 
     const std::vector<SimpleCard>& GetCardsOnHands()
     { return _cardsOnHands; }

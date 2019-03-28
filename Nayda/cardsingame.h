@@ -91,6 +91,7 @@ private:
     std::vector <CardInGame> _cardsInGameHolder;
     std::vector <SimpleCard> _disabledCards;
     std::vector <SimpleCard> _activeCards;
+    std::vector <AmplifierCard> _amplifiers; // Содержит чёткую привязку к конкретной карте
 
     SimpleCard _currentCardToShow;
     PositionedCard _currentCardToShowNearItsPosition;

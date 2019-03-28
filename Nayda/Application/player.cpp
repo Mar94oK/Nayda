@@ -484,34 +484,53 @@ void Player::AddCardToCardsInGame(CardInGame card)
 
 }
 
+
+//Удаление карты удалит и её усилитель
 void Player::RemoveCardFromCardsInGame(SimpleCard card)
 {
     std::vector<SimpleCard>::iterator itActive;
     itActive = std::find(_activeCardsInGame.begin(), _activeCardsInGame.end(), card);
-    if (itActive != _activeCardsInGame.end()) {
 
-        qDebug() << "Card"<< ((*itActive).first == 0 ? "Door" : "Treasure") << "with cardID = " << (*itActive).second << "was successfully removed from _activeCardsInGame!";
+    for (std::vector<AmplifierCard>::iterator it = _amplifiersInGame.begin(); it != _amplifiersInGame.end(); ++it)
+    {
+        if (it->second == card)
+        {
+            logger.Algorithm() << "Amplifier with cardID = " << it->second.second << " was successfully removed from _amplifiersInGame!";
+            _amplifiersInGame.erase(it);
+            _activeCardsInGame.shrink_to_fit();
+        }
+    }
+
+    if (itActive != _activeCardsInGame.end())
+    {
+        logger.Algorithm() << "Card"<< ((*itActive).first == 0 ? "Door" : "Treasure") << "with cardID = " << (*itActive).second << "was successfully removed from _activeCardsInGame!";
         _activeCardsInGame.erase(itActive);
+        _activeCardsInGame.shrink_to_fit();
         return;
     }
-    else {
-        qDebug() << "WARNING: During deleting a card from _activeCardsInGame. May be card is not active?" ;
+    else
+    {
+        logger.Error() << "WARNING: During deleting a card from _activeCardsInGame. May be card is not active?" ;
     }
-    _activeCardsInGame.shrink_to_fit();
 
     std::vector<SimpleCard>::iterator itDisabled;
     itDisabled = std::find(_disabledCardsInGame.begin(), _disabledCardsInGame.end(), card);
     if (itDisabled != _activeCardsInGame.end()) {
 
-        qDebug() << "Card"<< ((*itDisabled).first == 0 ? "Door" : "Treasure") << "with cardID = " << (*itDisabled).second << "was successfully removed from _disabledCardsInGame!";
+        logger.Algorithm() << "Card"<< ((*itDisabled).first == 0 ? "Door" : "Treasure") << "with cardID = " << (*itDisabled).second << "was successfully removed from _disabledCardsInGame!";
         _disabledCardsInGame.erase(itDisabled);
+        _disabledCardsInGame.shrink_to_fit();
         return;
     }
-    else {
-        qDebug() << "ERROR: During deleting a card from _disabledCardsInGame. CARD NOT FOUND." ;
+    else
+    {
+        logger.Debug() << "ERROR: During deleting a card from _disabledCardsInGame. CARD NOT FOUND." ;
     }
-    _disabledCardsInGame.shrink_to_fit();
+}
 
+void Player::AddAmplifierToCardsInGame(AmplifierCard amplifier)
+{
+    _amplifiersInGame.push_back(amplifier);
 }
 
 std::vector<SimpleCard> *Player::cardsOnHandsVector()
