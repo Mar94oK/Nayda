@@ -147,6 +147,15 @@ enum class CardCheckerPolicy
 };
 
 
+enum class AllowanceCheckerMode
+{
+    Normal,
+    RejectOneBigThingRequirement,
+    RejectRaceRequirements,
+    RejectSexRequirements,
+    RejectClassRequeriments
+};
+
 
 
 #endif

@@ -344,6 +344,21 @@ std::vector<SimpleCard> Player::GetDisabledCardsInGame() const
     return _disabledCardsInGame;
 }
 
+bool Player::IsDwarf() const
+{
+    return ((_race == Race::Dwarf) || (_secondRace == Race::Dwarf));
+}
+
+uint32_t Player::GetTotalBigThings() const
+{
+    return _totalBigThings;
+}
+
+void Player::SetTotalBigThings(const uint32_t &totalBigThings)
+{
+    _totalBigThings = totalBigThings;
+}
+
 bool Player::CheckCardIsFromCardsInGame(SimpleCard card)
 {
     for (uint32_t var = 0; var < _activeCardsInGame.size(); ++var)
@@ -394,7 +409,7 @@ Player::Player(const QString& name) : _name(name)
     _halfBreed = false;
     _superMunchkin = false;
 
-    _second_race = Race::Human;
+    _secondRace = Race::Human;
     _second_profession = Profession::No_Profession;
 
     _halfBloodWithoutSecondRace = false;
@@ -565,13 +580,13 @@ void Player::SetSecondProfession(const Profession &second_profession)
 
 Race Player::GetSecondRace() const
 {
-    return _second_race;
+    return _secondRace;
 }
 
 
 void Player::SetSecondRace(const Race &second_race)
 {
-    _second_race = second_race;
+    _secondRace = second_race;
 }
 
 

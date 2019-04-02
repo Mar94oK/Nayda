@@ -2318,7 +2318,7 @@ void The_Game::MainCardImplementer(GamerWidget *wt, PositionedCard card, CardImp
 
 }
 
-std::shared_ptr<CardPlayAllowanceBase> The_Game::GetAllowance(const GameCardBasis *card, Player *player, CardImplementationDirection direction)
+std::shared_ptr<CardPlayAllowanceBase> The_Game::GetAllowance(const GameCardBasis *card, Player *player, CardImplementationDirection direction, AllowanceCheckerMode mode)
 {
     Q_UNUSED(direction);
 
@@ -2327,7 +2327,7 @@ std::shared_ptr<CardPlayAllowanceBase> The_Game::GetAllowance(const GameCardBasi
     if (card->GetCardType() == CardType::TreasureArmor)
     {
         const gameCardTreasureArmor* cardPtr = static_cast<const gameCardTreasureArmor* >(card);
-        return GetAllowanceTreasureArmor(cardPtr, player, true);
+        return GetAllowanceTreasureArmor(cardPtr, player, true, mode);
     }
     else if (card->GetCardType() == CardType::TreasureLevelUp)
     {
@@ -2337,7 +2337,7 @@ std::shared_ptr<CardPlayAllowanceBase> The_Game::GetAllowance(const GameCardBasi
     else if (card->GetCardType() == CardType::TreasureWeapon)
     {
         const gameCardTreasureWeapon* cardPtr = static_cast<const gameCardTreasureWeapon* >(card);
-        return GetAllowanceTreasureWeapon(cardPtr, player, true);
+        return GetAllowanceTreasureWeapon(cardPtr, player, true, mode);
     }
     else if (card->GetCardType() == CardType::TreasureArmorAmplifier)
     {
@@ -2417,7 +2417,7 @@ void The_Game::ImplementCardFromHandsToCardsInGame(std::shared_ptr<CardPlayAllow
     }
 }
 
-std::shared_ptr<TreasureArmorAllowance> The_Game::GetAllowanceTreasureArmor(const gameCardTreasureArmor *card, Player *player, bool fromHand)
+std::shared_ptr<TreasureArmorAllowance> The_Game::GetAllowanceTreasureArmor(const gameCardTreasureArmor *card, Player *player, bool fromHand, AllowanceCheckerMode mode)
 {
     //Все подобные парсеры предполагают, что проверка на глобальные запреты уже пройдена.
     //На 11.12.2018 это только процесс анимирования карт (карт-процессинг CardProcessing)
@@ -2428,6 +2428,7 @@ std::shared_ptr<TreasureArmorAllowance> The_Game::GetAllowanceTreasureArmor(cons
     //MunRules
     //https://hobbyworld.ru/download/rules/m_color_rules.pdf
     //https://hobbyworld.ru/chastie-voprosi-po-manchkin#cardsitems
+    Q_UNUSED(fromHand);
 
     //Проверка, что нет боя:
     if (GetCurrentGamePhase() == GamePhase::Battle)
@@ -2436,16 +2437,12 @@ std::shared_ptr<TreasureArmorAllowance> The_Game::GetAllowanceTreasureArmor(cons
     if (GetCurrentGamePhase() == GamePhase::OtherPlayerMove)
         return std::make_shared<TreasureArmorAllowance>(TreasureArmorAllowance(false, "Сейчас чужой ход. Броню можно вводить в игру только в свой ход.", false));
 
-    //NAY-002: HARDCODED_BEHAVIOUR
-    //К сожалению, таблица сокровищ-доспехов не предусматривала поле "большой"
-    //Т.к. на ДАННЫЙ МОМЕНТ имеется лишь одна шмотка "Мифрильная броня", имеющая тип "большая"
-    //Я не буду дописывать в таблицу целое поле и дополнительно его парсить.
-    //Ниже сделаю привязку к конкретному Card-ID
-
-    //Ан-нет, я сделал это ещё тогда. =))))
-    if (player->GetThereIsLimitOnBigThings() && player->GetThereIsOneBigThing()
-            && (card->size() == Size::Big))
-        return std::make_shared<TreasureArmorAllowance>(TreasureArmorAllowance(false, "К сожалению, у Вас уже есть большие шмотки в игре!", false));
+    if (mode != AllowanceCheckerMode::RejectOneBigThingRequirement)
+    {
+        if (!player->IsDwarf() && player->GetThereIsOneBigThing()
+                && (card->size() == Size::Big))
+            return std::make_shared<TreasureArmorAllowance>(TreasureArmorAllowance(false, "К сожалению, у Вас уже есть большие шмотки в игре!", false));
+    }
 
     //Запреты кончились, теперь принятие решения о том, какой параметр ставить для активна/неактивна
 
@@ -2587,7 +2584,7 @@ void The_Game::ImplementTreasureLevelUpCard(std::shared_ptr<CardPlayAllowanceBas
 
 }
 
-std::shared_ptr<TreasureWeaponAllowance> The_Game::GetAllowanceTreasureWeapon(const gameCardTreasureWeapon *card, Player *player, bool fromHand)
+std::shared_ptr<TreasureWeaponAllowance> The_Game::GetAllowanceTreasureWeapon(const gameCardTreasureWeapon *card, Player *player, bool fromHand, AllowanceCheckerMode mode)
 {
     //Все подобные парсеры предполагают, что проверка на глобальные запреты уже пройдена.
     //На 11.12.2018 это только процесс анимирования карт (карт-процессинг CardProcessing)
@@ -2618,9 +2615,12 @@ std::shared_ptr<TreasureWeaponAllowance> The_Game::GetAllowanceTreasureWeapon(co
     if (GetCurrentGamePhase() == GamePhase::OtherPlayerMove)
         return std::make_shared<TreasureWeaponAllowance>(TreasureWeaponAllowance(false, "Сейчас чужой ход. Броню можно вводить в игру только в свой ход.", false));
 
-    if (player->GetThereIsLimitOnBigThings() && player->GetThereIsOneBigThing()
-            && ((card->GetSize() == Size::Big) && !CardIsSiegeEngine(card)))
-        return std::make_shared<TreasureWeaponAllowance>(TreasureWeaponAllowance(false, "К сожалению, у Вас уже есть большие шмотки в игре!", false));
+    if (mode != AllowanceCheckerMode::RejectOneBigThingRequirement)
+    {
+        if (!player->IsDwarf() && player->GetThereIsOneBigThing()
+                && ((card->GetSize() == Size::Big) && !CardIsSiegeEngine(card)))
+            return std::make_shared<TreasureWeaponAllowance>(TreasureWeaponAllowance(false, "К сожалению, у Вас уже есть большие шмотки в игре!", false));
+    }
 
     if (card->isOnlyForElf()
             && player->GetRace() != Race::Elf
@@ -2931,6 +2931,7 @@ std::vector<ActiveIncativeCard> The_Game::GetBigThingsInGame(const Player *playe
 
     std::map<int, gameCardTreasureWeapon> :: const_iterator _weaponsIterator;
     std::map<int, gameCardTreasureArmor> :: const_iterator _armorIterator;
+    std::map<int, gameCardTreasureThingsAmplifiers> :: const_iterator _thingsAmplifiersIterator;
 
     std::vector<ActiveIncativeCard> result;
 
@@ -2943,6 +2944,10 @@ std::vector<ActiveIncativeCard> The_Game::GetBigThingsInGame(const Player *playe
 
         _armorIterator = _armorDeck.find(static_cast <int> (it->second));
         if (_armorIterator != _armorDeck.end())
+            result.push_back(std::make_pair(true, SimpleCard(true, it->second)));
+
+        _thingsAmplifiersIterator = _thingsAmplifiersDeck.find(static_cast <int> (it->second));
+        if (_thingsAmplifiersIterator != _thingsAmplifiersDeck.end())
             result.push_back(std::make_pair(true, SimpleCard(true, it->second)));
     }
 
@@ -2957,6 +2962,9 @@ std::vector<ActiveIncativeCard> The_Game::GetBigThingsInGame(const Player *playe
         if (_armorIterator != _armorDeck.end())
             result.push_back(std::make_pair(false, SimpleCard(true, it->second)));
 
+        _thingsAmplifiersIterator = _thingsAmplifiersDeck.find(static_cast <int> (it->second));
+        if (_thingsAmplifiersIterator != _thingsAmplifiersDeck.end())
+            result.push_back(std::make_pair(true, SimpleCard(true, it->second)));
     }
 
     return result;
@@ -3048,8 +3056,37 @@ bool The_Game::CardIsBigThing(SimpleCard card)
 
 bool The_Game::CardIsWeapon(SimpleCard card)
 {
-    return true;
+    std::map<int, gameCardTreasureWeapon> :: const_iterator _weaponsIterator;
+
+    _weaponsIterator = _weaponsDeck.find(static_cast <int> (card.second));
+    if (_weaponsIterator != _weaponsDeck.end())
+        return true;
+
+    return false;
 }
+
+bool The_Game::CardIsArmor(SimpleCard card)
+{
+    std::map<int, gameCardTreasureArmor> :: const_iterator _armorIterator;
+
+    _armorIterator = _armorDeck.find(static_cast <int> (card.second));
+    if (_armorIterator != _armorDeck.end())
+        return true;
+
+    return false;
+}
+
+bool The_Game::CardIsThingAmplifier(SimpleCard card)
+{
+    std::map<int, gameCardTreasureThingsAmplifiers> :: const_iterator _thigsAmplifiersIterator;
+
+    _thigsAmplifiersIterator = _thingsAmplifiersDeck.find(static_cast <int> (card.second));
+    if (_thigsAmplifiersIterator != _thingsAmplifiersDeck.end())
+        return true;
+
+    return false;
+}
+
 
 void The_Game::ShowCardIsForbiddenToPlayMessage(const QString &message)
 {
@@ -3293,7 +3330,7 @@ void The_Game::ApplyNewWeapon(GamerWidget *wt, const gameCardTreasureWeapon &car
         wt->SlotChangeTheGamerBattlePower(static_cast<int32_t>(addEffect ? totalBonus : -totalBonus));
 }
 
-void The_Game::ApplyArmorAmplifier(GamerWidget *wt, const gameCardTreasureArmorAmplifier &card, SimpleCard target, CardApplyMode apply)
+void The_Game::ApplyArmorAmplifier(GamerWidget *wt, const gameCardTreasureArmorAmplifier &card, SimpleCard target, bool targetIsActive, CardApplyMode apply)
 {
     Player* player = wt->GetPointerToPlayer();
 
@@ -3304,37 +3341,61 @@ void The_Game::ApplyArmorAmplifier(GamerWidget *wt, const gameCardTreasureArmorA
 
     //добавить основной бонус
     uint32_t totalBonus = static_cast<uint32_t>(card.GetBonus());
+
+    //применение "ухватистых ручек"
     if (ArmorAmplifierIsConvinientHandles(card.cardID()))
     {
-       if (CardIsBigThing(target))
-       {
-           //По идее сюда не может попасть карта, которая не является большой.
-           //1. Проверить, является ли текущая карта большой
-           //2. Если нет  - выдать ошибку (исключение)
-           //3. Если да
-           //4. Проверить, является ли игрок дворфом
-           //5. Если да,
-           // 5.1 Проверить установку ограничения "есть большая шмотка" - выдать в логгер для отладки
-           // 5.2 Больше ничего не делать, у них нет лимита на количество больших шмоток
-           //6. Если нет,
-           //   Параметр "есть большая шмотка" точно будет установлен (если у игрока нет применённой карты "Чит")
-           //   6.1 Проверить, установлен ли параметр "Есть большая шмотка"
-           //       6.1.2 Если нет  - это косвенно говорит о том, что применена карта "Чит", снимающая любые ограничения по применению карты
-           //             и делающая её автоматически активной. Сообщить в логгер.
-           //   6.2 Проверить, является ли карта активной.
-           //       6.2.1. Если да, проверить, находится ли эта карта под воздействием чита
-           //           6.2.1.1 Если да, ничего больше не делать, но для этой карты отменится свойство
-           //                   "большая".
-           //                   Её можно будет своровать или ударить по ней проклятьем "потеряй мелкую шмотку".
-           //                   Она будет проверяться обработчиком применений карт-проклятий
-           //           6.2.1.2 Если нет, отменить установку параметра "есть большая шмотка".
-           //                   Перезапустить проверку на разрешение применения этой карты
-           //                   Если она может быть применена, изменить её состояние на "активное",
-           //                   применить её бонусы
-           //   если игрок - не дварф, и если у него в неактивных картах есть большие карты,
-           //   требуется переполучить для них рарешение
-           //   Применители чита, проклятий и прочего будут автоматически разрешать
-       }
+
+           //Сюда могла попасть только карта, на применение которой было получено разрешение
+           //Следовательно, карта большая. Требуется проверить, если игрок не дварф, отменит ли применение этой карты
+           //запрет на её использование
+           //Если игрок  - дфарф, то запрет на применение по этому фактору не мог наложиться.
+
+        //Добавить признак наличия модифицированной карты
+        //При обработке всех запросов, связанных с отображением такой карты, она будет трактоваться как "НЕ БОЛЬШАЯ"
+        player->SetThereIsThingModifiedByConvinientHandles(target.second);
+        if (player->IsDwarf())
+            return;
+
+        if (targetIsActive)
+            return;
+
+        //если карта неактивная, перезапустить её проверку.
+        //Причины неактивности карты
+        //Большая
+        //Раса
+        //Класс
+        //Пол
+        //Какие карты могут быть неактивными?
+        //Только сокровища
+        //Только оружие, броня, шмотки-усилители (ThingsAmplifiers, так я, допускаю, ошибочно назвал мелкие шмотки).
+        //Ухватистые ручки можно применить к любым трём из них.
+        if (CardIsArmor(target))
+        {
+            const GameCardBasis* basisCard = GetRealCard(target);
+            const gameCardTreasureArmor* cardPointer = static_cast<const gameCardTreasureArmor* >(basisCard);
+            gameCardTreasureArmor realCard(cardPointer);
+            //EXPECTED_ERROR
+            //PASSAGE Incorrect CardIMplementation Direction
+            std::shared_ptr<CardPlayAllowanceBase> allowance = GetAllowance(basisCard, wt->GetPointerToPlayer(), CardImplementationDirection::HandToCardsInGame, AllowanceCheckerMode::RejectOneBigThingRequirement);
+            std::shared_ptr<TreasureArmorAllowance> armorAllowance = std::static_pointer_cast<TreasureArmorAllowance>(allowance);
+
+            if (armorAllowance->GetIsActive())
+                ApplyNewArmor(wt, cardPointer);
+
+            //redraw as active here
+
+            return;
+
+        }
+        else if (CardIsWeapon(target))
+        {
+            //продолжить здесь 02.04.2019
+        }
+        else if (CardIsThingAmplifier(target))
+        {
+
+        }
     }
 }
 

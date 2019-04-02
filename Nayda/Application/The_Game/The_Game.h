@@ -505,7 +505,8 @@ public:
                              );
 private:
 
-    std::shared_ptr<CardPlayAllowanceBase> GetAllowance(const GameCardBasis* card, Player* player, CardImplementationDirection direction);
+    std::shared_ptr<CardPlayAllowanceBase> GetAllowance(const GameCardBasis* card, Player* player, CardImplementationDirection direction,
+                                                        AllowanceCheckerMode mode = AllowanceCheckerMode::Normal);
     void ProcessCardMightNotBeImplemented(std::shared_ptr<CardPlayAllowanceBase> allowance);
     void ProcessCardAllowedToBeImplemented(std::shared_ptr<CardPlayAllowanceBase> allowance,
                                            const GameCardBasis* card,
@@ -518,7 +519,7 @@ private:
                                              PositionedCard posCard);
 
 
-    std::shared_ptr<TreasureArmorAllowance> GetAllowanceTreasureArmor(const gameCardTreasureArmor* card, Player* player, bool fromHand);
+    std::shared_ptr<TreasureArmorAllowance> GetAllowanceTreasureArmor(const gameCardTreasureArmor* card, Player* player, bool fromHand, AllowanceCheckerMode mode = AllowanceCheckerMode::Normal);
     void ImplementTreasureArmorToCardsInGame(std::shared_ptr<CardPlayAllowanceBase> allowance, const GameCardBasis *card, GamerWidget *wt, PositionedCard posCard);
 
     std::shared_ptr<TreasureLevelUpAllowance> GetAllowanceTreasureLevelUp(const gameCardTreasureLevelUp* card,
@@ -528,7 +529,7 @@ private:
 
     std::shared_ptr<TreasureWeaponAllowance> GetAllowanceTreasureWeapon(const gameCardTreasureWeapon *card,
                                                                         Player* player,
-                                                                        bool fromHand);
+                                                                        bool fromHand, AllowanceCheckerMode mode = AllowanceCheckerMode::Normal);
     void ImplementTreasureWeapon(std::shared_ptr<CardPlayAllowanceBase> allowance, const GameCardBasis *card, GamerWidget *wt, PositionedCard posCard);
 
     std::shared_ptr<TreasureArmorAmplifiersAllowance> GetAllowanceTreasureArmorAmplifiers(const gameCardTreasureArmorAmplifier *card,
@@ -559,6 +560,8 @@ private:
     bool CardIsBigThing(SimpleCard card);
     bool CardIsWeapon(SimpleCard card);
     bool CardIsArmor(SimpleCard card);
+    bool CardIsThingAmplifier(SimpleCard card);
+
 
 private:
 
@@ -569,7 +572,7 @@ private:
     //Вызванная с флагом false, она должна отменить действие карты.
     void ApplyNewArmor(GamerWidget* wt, const gameCardTreasureArmor& card, CardApplyMode apply = CardApplyMode::Apply);
     void ApplyNewWeapon(GamerWidget* wt, const gameCardTreasureWeapon& card, CardApplyMode apply = CardApplyMode::Apply);
-    void ApplyArmorAmplifier(GamerWidget* wt, const gameCardTreasureArmorAmplifier& card, SimpleCard target, CardApplyMode apply = CardApplyMode::Apply);
+    void ApplyArmorAmplifier(GamerWidget* wt, const gameCardTreasureArmorAmplifier& card, SimpleCard target, bool targetIsActive, CardApplyMode apply = CardApplyMode::Apply);
 
 
 signals:

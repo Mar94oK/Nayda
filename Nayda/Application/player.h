@@ -43,8 +43,9 @@ class Player
     bool _hasAdditionalClericalAbility = false;
     bool _hasAdditionalTheftAbility = false;
 
-    bool _thereIsOneBigThing = false;
-    bool _thereIsLimitOnBigThings= true; //may be remove it if checking the race
+    bool     _thereIsOneBigThing = false;
+    uint32_t _totalBigThings = 0;
+    bool     _thereIsLimitOnBigThings= true; //may be remove it if checking the race
 
     //А вот эта конструкция легко бы влезла в std::optional
     bool _thereIsBigThingModifiedByConvinientHandles = false;
@@ -60,7 +61,7 @@ class Player
     bool _halfBreed = false;
     bool _superMunchkin = false;
 
-    Race _second_race = Race::Human;
+    Race _secondRace = Race::Human;
     Profession _second_profession = Profession::No_Profession;
 
     bool _halfBloodWithoutSecondRace = false;
@@ -280,6 +281,8 @@ public:
     std::vector<SimpleCard> GetActiveCardsInGame() const;
     std::vector<SimpleCard> GetDisabledCardsInGame() const;
 
+    bool IsDwarf() const;
+
 public:
 
     bool CheckThereIsBigThingModifiedByConvinientHandles() {return _thereIsBigThingModifiedByConvinientHandles; }
@@ -288,6 +291,9 @@ public:
         _thereIsBigThingModifiedByConvinientHandles = true;
         _cardIdModifiedByConvinientHandles = cardId;
     }
+
+    uint32_t GetTotalBigThings() const;
+    void SetTotalBigThings(const uint32_t &GetTotalBigThings);
 
 private:
     
