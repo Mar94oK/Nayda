@@ -500,6 +500,14 @@ void GamerWidget::SlotAddCardToCardsInGame(CardInGame card)
         ui->wt_CardsInGameSecondaryPlayer->AddCardToCardsInGame(card);
 }
 
+void GamerWidget::SlotRedrawCardAsActive(SimpleCard target)
+{
+    if (_isMainPlayer)
+        ui->wt_CardsInGameMainPlayer->RedrawAsActive(target, true);
+    else
+        ui->wt_CardsInGameSecondaryPlayer->RedrawAsActive(target, false);
+}
+
 
 void GamerWidget::SetUpSignalsSlotsConnections()
 {

@@ -51,11 +51,6 @@ void CardsInGame::AddCardToCardsInGame(CardInGame card, bool isMainPlayer)
 
     _cardsInGameHolder.push_back(card);
 
-    if (card.first)
-        _activeCards.push_back(card.second);
-    else
-        _disabledCards.push_back(card.second);
-
     QPushButton* cardToShow = new QPushButton();
     QHBoxLayout* cardLayout = new QHBoxLayout();
 
@@ -193,24 +188,6 @@ void CardsInGame::RemoveCard(SimpleCard card)
             _cardsAsButtonsRepresenter.erase(_cardsAsButtonsRepresenter.begin() + static_cast<int32_t>(var));
             _cardsAsButtonsRepresenter.shrink_to_fit();
             qDebug() << "The card is removed from CardsInGame!";
-            return;
-        }
-    }
-    for (uint32_t var = 0; var < _activeCards.size(); ++var)
-    {
-        if (_activeCards[var] == card)
-        {
-            _activeCards.erase(_activeCards.begin() + static_cast<int32_t>(var));
-            _activeCards.shrink_to_fit();
-            return;
-        }
-    }
-    for (uint32_t var = 0; var < _disabledCards.size(); ++var)
-    {
-        if (_disabledCards[var] == card)
-        {
-            _disabledCards.erase(_activeCards.begin() + static_cast<int32_t>(var));
-            _disabledCards.shrink_to_fit();
             return;
         }
     }
@@ -457,3 +434,22 @@ QPoint CardsInGame::ProvidePositionOfTheLastAddedCard()
 }
 
 
+
+void CardsInGame::RedrawAsActive(SimpleCard target, bool isMainPlayer)
+{
+    std::vector<QPushButton* >::iterator itButton = _cardsAsButtonsRepresenter.begin();
+    for (std::vector<CardInGame>::iterator it = _cardsInGameHolder.begin(); it != _cardsInGameHolder.end(); ++it, ++itButton)
+    {
+        if (target == it->second)
+        {
+            QSize cardSize = GetCardSize(isMainPlayer);
+
+            SetUpButtonPicture((*itButton),
+                               GetCardPictureAddress(target),
+                               cardSize, true);
+            return;
+        }
+    }
+
+    logger.Error() << "While RedrawAsActive() :: Target Not found!";
+}

@@ -565,8 +565,7 @@ private:
 
 private:
 
-   void ShowCardIsForbiddenToPlayMessage(const QString& message);
-
+    void ShowCardIsForbiddenToPlayMessage(const QString& message);
 
     //Все подобные функции должны уметь и применять, и отменять действие карты
     //Вызванная с флагом false, она должна отменить действие карты.

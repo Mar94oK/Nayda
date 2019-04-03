@@ -3384,19 +3384,49 @@ void The_Game::ApplyArmorAmplifier(GamerWidget *wt, const gameCardTreasureArmorA
                 ApplyNewArmor(wt, cardPointer);
 
             //redraw as active here
-
+            wt->SlotRedrawCardAsActive(target);
             return;
-
         }
         else if (CardIsWeapon(target))
         {
-            //продолжить здесь 02.04.2019
+            const GameCardBasis* basisCard = GetRealCard(target);
+            const gameCardTreasureWeapon* cardPointer = static_cast<const gameCardTreasureWeapon* >(basisCard);
+            gameCardTreasureWeapon realCard(cardPointer);
+            //EXPECTED_ERROR
+            //PASSAGE Incorrect CardIMplementation Direction
+            std::shared_ptr<CardPlayAllowanceBase> allowance = GetAllowance(basisCard,
+                                                                            wt->GetPointerToPlayer(),
+                                                                            CardImplementationDirection::HandToCardsInGame,
+                                                                            AllowanceCheckerMode::RejectOneBigThingRequirement);
+            std::shared_ptr<TreasureWeaponAllowance> weaponAllowance =
+                    std::static_pointer_cast<TreasureWeaponAllowance>(allowance);
+
+            if (weaponAllowance->GetIsActive())
+                ApplyNewWeapon(wt, cardPointer);
+
+            //redraw as active here
+            wt->SlotRedrawCardAsActive(target);
+            return;
         }
         else if (CardIsThingAmplifier(target))
         {
-
+            //ADD_LATER
+            logger.Error() << "Unimplememnted type while implememntation ArmorAmplifier: ThingAmplifier. Add.";
+            return;
         }
     }
+
+    //добавить/удалить бонус
+    wt->SlotChangeTheGamerBattlePower(static_cast<int32_t>(addEffect ? totalBonus : -totalBonus));
+
+    //кто-то должен также отчвеать за удаление усилителя (например, продажное).
+    //03.04.2019. Продолжить здесь, продумав удаление.
+    //Проконтролировать корректное добавление всех зависимотсей карты для её отображения при продаже
+    //И последующей корректной отмены её свойств после удаления.
+    //Кажется, приудалении "ручек" - продажи, например, ничего не надо делать. Т.к. удалена она может быть
+    //тольок при ПОТЕРЕ той карты, к оторой она была привязана. Так что здесь потребуется только уменьшитиь силу за счёт той карты
+    // std::vector<AmplifierCard> _amplifiersInGame; контролировать корректную настройку этого поля.
+
 }
 
 

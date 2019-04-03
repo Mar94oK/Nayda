@@ -79,6 +79,8 @@ public:
     PositionedCard GetCardPosition(SimpleCard card);
     std::vector<PositionedCard> GetPositionedCards(const std::vector<SimpleCard> &cards);
 
+    void RedrawAsActive(SimpleCard  target, bool isMainPlayer);
+
 private:
 
     QString GetCardPictureAddress(SimpleCard card);
@@ -89,8 +91,6 @@ private:
 private:
 
     std::vector <CardInGame> _cardsInGameHolder;
-    std::vector <SimpleCard> _disabledCards;
-    std::vector <SimpleCard> _activeCards;
     std::vector <AmplifierCard> _amplifiers; // Содержит чёткую привязку к конкретной карте
 
     SimpleCard _currentCardToShow;
@@ -164,5 +164,7 @@ public:
     QPoint ProvidePositionOfTheLastAddedCard();
 
 };
+
+
 
 #endif // CARDSINGAME_H
