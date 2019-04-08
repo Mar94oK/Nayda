@@ -937,6 +937,11 @@ public:
     void setType(const treasureType &type);
     int GetBonus() const;
     void SetBonus(int GetBonus);
+
+public:
+
+    gameCardTreasureArmorAmplifier(const gameCardTreasureArmorAmplifier* ptr);
+
 };
 
 

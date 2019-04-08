@@ -571,7 +571,7 @@ private:
     //Вызванная с флагом false, она должна отменить действие карты.
     void ApplyNewArmor(GamerWidget* wt, const gameCardTreasureArmor& card, CardApplyMode apply = CardApplyMode::Apply);
     void ApplyNewWeapon(GamerWidget* wt, const gameCardTreasureWeapon& card, CardApplyMode apply = CardApplyMode::Apply);
-    void ApplyArmorAmplifier(GamerWidget* wt, const gameCardTreasureArmorAmplifier& card, SimpleCard target, bool targetIsActive, CardApplyMode apply = CardApplyMode::Apply);
+    void ApplyArmorAmplifier(GamerWidget* wt, const gameCardTreasureArmorAmplifier& card, SimpleCard target, bool targetIsActive);
 
 
 signals:

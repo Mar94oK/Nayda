@@ -1243,6 +1243,11 @@ void gameCardTreasureArmorAmplifier::SetBonus(int bonus)
     _bonus = bonus;
 }
 
+gameCardTreasureArmorAmplifier::gameCardTreasureArmorAmplifier(const gameCardTreasureArmorAmplifier *ptr)
+{
+    //Продолжить здесь 09.04.2019
+}
+
 int gameCardTreasureArmorAmplifier::cardID() const
 {
     return _cardID;

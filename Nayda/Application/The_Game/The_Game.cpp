@@ -1630,7 +1630,9 @@ void The_Game::CardSelectorImplementationOfAmplifierHandler(const std::vector<Si
     _amplifierImplementationConfig.wt->GetPointerToPlayer()->AddAmplifierToCardsInGame(AmplifierCard(_amplifierImplementationConfig.posCard.GetCard(), cards[0]));
 
     //Далее применить свойства усилителя
-
+    gameCardTreasureArmorAmplifier amplifier(_amplifierImplementationConfig.cardPtr);
+    //
+    ApplyArmorAmplifier(_amplifierImplementationConfig.wt, amplifier,  cards[0], _amplifierImplementationConfig.wt->GetPointerToPlayer()->CardIsActive(cards[0]));
 }
 
 //This procedure is responsible for giving initial 8 cards to players.
@@ -3330,14 +3332,9 @@ void The_Game::ApplyNewWeapon(GamerWidget *wt, const gameCardTreasureWeapon &car
         wt->SlotChangeTheGamerBattlePower(static_cast<int32_t>(addEffect ? totalBonus : -totalBonus));
 }
 
-void The_Game::ApplyArmorAmplifier(GamerWidget *wt, const gameCardTreasureArmorAmplifier &card, SimpleCard target, bool targetIsActive, CardApplyMode apply)
+void The_Game::ApplyArmorAmplifier(GamerWidget *wt, const gameCardTreasureArmorAmplifier &card, SimpleCard target, bool targetIsActive)
 {
     Player* player = wt->GetPointerToPlayer();
-
-    bool addEffect = true;
-
-    if (apply == CardApplyMode::Remove)
-       addEffect = false;
 
     //добавить основной бонус
     uint32_t totalBonus = static_cast<uint32_t>(card.GetBonus());
@@ -3417,16 +3414,12 @@ void The_Game::ApplyArmorAmplifier(GamerWidget *wt, const gameCardTreasureArmorA
     }
 
     //добавить/удалить бонус
-    wt->SlotChangeTheGamerBattlePower(static_cast<int32_t>(addEffect ? totalBonus : -totalBonus));
+    wt->SlotChangeTheGamerBattlePower(static_cast<int32_t>(totalBonus));
 
-    //кто-то должен также отчвеать за удаление усилителя (например, продажное).
-    //03.04.2019. Продолжить здесь, продумав удаление.
-    //Проконтролировать корректное добавление всех зависимотсей карты для её отображения при продаже
-    //И последующей корректной отмены её свойств после удаления.
-    //Кажется, приудалении "ручек" - продажи, например, ничего не надо делать. Т.к. удалена она может быть
-    //тольок при ПОТЕРЕ той карты, к оторой она была привязана. Так что здесь потребуется только уменьшитиь силу за счёт той карты
-    // std::vector<AmplifierCard> _amplifiersInGame; контролировать корректную настройку этого поля.
-
+    //кто-то должен также отвечать за удаление усилителя (например, продажное).
+    //Для усилителя необходимо запретить вызов этой функции с параметром False
+    //Удаление усилителя проиходит только при удалении привязанной карты.
+    //По этому при вызове удаления необходимо проверять наличие привязанных к карте усилителей
 }
 
 

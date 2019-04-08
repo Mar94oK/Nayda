@@ -188,7 +188,7 @@ public:
 
     bool CardIsActive(SimpleCard card);
 
-    std::vector<SimpleCard>* cardsOnHandsVector();
+    std::vector<SimpleCard>* GetCardsOnHandsVector();
 
     const std::vector<SimpleCard>& GetCardsOnHands()
     { return _cardsOnHands; }

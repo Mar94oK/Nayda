@@ -349,6 +349,17 @@ bool Player::IsDwarf() const
     return ((_race == Race::Dwarf) || (_secondRace == Race::Dwarf));
 }
 
+bool Player::CardIsActive(SimpleCard card)
+{
+    for (std::vector<SimpleCard>::iterator it = _activeCardsInGame.begin();
+         it != _disabledCardsInGame.end(); ++it)
+    {
+        if (card == *it)
+            return true;
+    }
+    return false;
+}
+
 uint32_t Player::GetTotalBigThings() const
 {
     return _totalBigThings;
@@ -548,7 +559,7 @@ void Player::AddAmplifierToCardsInGame(AmplifierCard amplifier)
     _amplifiersInGame.push_back(amplifier);
 }
 
-std::vector<SimpleCard> *Player::cardsOnHandsVector()
+std::vector<SimpleCard> *Player::GetCardsOnHandsVector()
 {
     return &_cardsOnHands;
 }
@@ -740,22 +751,3 @@ void Player::SetPlayerLevel(uint32_t playerLevel)
     _playerLevel = playerLevel;
 }
 
-bool Player::CardIsActive(SimpleCard card)
-{
-    for (uint32_t var = 0; var < _activeCardsInGame.size(); ++var)
-    {
-        if (card == _activeCardsInGame[var])
-        {
-            return true;
-        }
-    }
-    for (uint32_t var = 0; var < _disabledCardsInGame.size(); ++var)
-    {
-        if (card == _disabledCardsInGame[var])
-        {
-            return false;
-        }
-    }
-    qDebug() << "ERROR! bool Player::CardIsActive(SimpleCard card) Card NOT FOUND!";
-    return false;
-}
