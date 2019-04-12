@@ -4501,7 +4501,7 @@ void The_Game::MainParser()
 void The_Game::SetUpSignalSlotsConnections()
 {
     QObject::connect(ui->btn_switch_back, SIGNAL(clicked()), this, SLOT(hide()));
-    QObject::connect(this, &The_Game::DEBUG_SignalToBeShown, this, &The_Game::showFullScreen);//SLOT(showFullScreen())) SLOT(show();
+    QObject::connect(this, &The_Game::DEBUG_SignalToBeShown, this, &The_Game::show);//SLOT(showFullScreen())) SLOT(show();
     QObject::connect(ui->btn_switch_back, SIGNAL(clicked(bool)), this, SLOT(dbg_return_to_the_main_window()));
 
     //Setting the in-Game connections with other Widgets

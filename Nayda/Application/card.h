@@ -941,7 +941,8 @@ public:
 public:
 
     gameCardTreasureArmorAmplifier(const gameCardTreasureArmorAmplifier* ptr);
-
+    gameCardTreasureArmorAmplifier()
+    { }
 };
 
 
